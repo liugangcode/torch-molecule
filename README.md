@@ -53,7 +53,7 @@ torch_molecule
    conda activate torch_molecule
    ```
 
-2. **Install dependencies**: Dependencies are listed in requirements.txt, along with the versions used during development. You can install them by copying and pasting from the `requirements.txt` file and then run:
+2. **Install dependencies**: Dependencies are listed in `requirements.txt`, along with the versions used during development. You can install them by copying and pasting from the `requirements.txt` file and then run:
 
    ```bash
    pip install -r requirements.txt

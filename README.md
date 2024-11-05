@@ -65,12 +65,6 @@ torch_molecule
    pip install -i https://test.pypi.org/simple/ torch-molecule
    ```
 
-4. For development mode, install with:
-
-   ```bash
-   pip install -e .
-   ```
-
 ## Usage
 
 See the `examples` folder for more detailed use cases.

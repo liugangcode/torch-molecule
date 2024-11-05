@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "torch_molecule"
+version = "0.1.0"
+description = "A package for molecular discovery with deep learning models"
+authors = [{name = "Gang Liu", email = "gliu7@nd.edu"}]
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "torch>=2.2.0",
+    "torch-geometric>=2.6.1",
+    "numpy",
+    "pandas>=2.2.3",
+    "click",
+    "huggingface_hub>=0.22.2",
+    "joblib>=1.3.2",
+    "networkx>=3.2.1",
+    "PyYAML>=6.0.2",
+    "rdkit>=2023.9.5",
+    "scikit_learn>=1.4.1.post1",
+    "scipy>=1.14.1",
+    "tqdm>=4.66.2",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/liugangcode"
+"Bug Tracker" = "https://github.com/liugangcode"
+
+[tool.setuptools.packages.find]
+include = ["torch_molecule*"]
+
+[tool.setuptools.package-data]
+"torch_molecule" = ["**/*.yaml", "**/*.json"]
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.pytest.ini_options]
+addopts = "--verbose"
+testpaths = ["tests"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "black",
+    "isort",
+    "flake8",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 100

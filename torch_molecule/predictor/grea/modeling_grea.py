@@ -81,18 +81,6 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
         self.gamma = gamma
         self.model_class = GREA
 
-        # Initialize GREA model
-        # self._initialize_model(GREA, self.device)
-        # self.model = GREA(
-        #     num_tasks=self.num_tasks,
-        #     num_layer=self.num_layer,
-        #     gamma=self.gamma,
-        #     emb_dim=self.emb_dim,
-        #     gnn_type=self.gnn_type,
-        #     drop_ratio=self.drop_ratio,
-        #     norm_layer=self.norm_layer,
-        # ).to(self.device)
-
     @staticmethod
     def _get_param_names() -> List[str]:
         """Get parameter names for the estimator.

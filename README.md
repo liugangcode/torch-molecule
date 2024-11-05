@@ -1,16 +1,16 @@
 # torch-molecule
 
-`torch-molecule` is an emerging package designed to accelerate molecular discovery using deep learning, featuring an intuitive, `sklearn`-style interface. This package provides model checkpoints for seamless deployment and benchmarking across various molecular tasks. The current development phase focuses on three main components:
+`torch-molecule` is a package in active development that streamlines molecular discovery through deep learning, with a user-friendly `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. The current scope focuses on three main components:
 
-1. **Predictive Models**: Includes graph-based models (GREA, SGIR, DCT), RNN-based models (SMILES-RNN, SMILES-Transformers), and other molecular representation models.
-2. **Generative Models**: Models such as Graph DiT, DiGress, GDSS, etc.
+1. **Predictive Models**: Supports graph-based models (e.g., GREA, SGIR, DCT), RNN-based models (e.g., SMILES-RNN, SMILES-Transformers), and other model based on molecular representation models.
+2. **Generative Models**: Models include Graph DiT, DiGress, GDSS, and others.
 3. **Representation Models**: Includes MoAMa, AttrMasking, ContextPred, EdgePred, and more.
 
-> **Note**: This project is actively under development; features may be subject to change.
+> **Note**: This project is under active development, and features may change.
 
 ## Project Structure
 
-The current folder structure of `torch_molecule`:
+The structure of `torch_molecule`:
 
 ```
 torch_molecule
@@ -53,13 +53,19 @@ torch_molecule
    conda activate torch_molecule
    ```
 
-2. **Install the package** via pip:
+2. **Install dependencies**: Dependencies are listed in requirements.txt, along with the versions used during development. You can install them by copying and pasting from the `requirements.txt` file and then run:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Install torch_molecule**:
 
    ```bash
    pip install -i https://test.pypi.org/simple/ torch-molecule
    ```
 
-3. For development, install in editable mode:
+4. For development mode, install with:
 
    ```bash
    pip install -e .
@@ -67,11 +73,11 @@ torch_molecule
 
 ## Usage
 
-Refer to the `examples` folder for detailed use cases.
+See the `examples` folder for more detailed use cases.
 
 ### Python API Example
 
-Here’s how to use the `GREAMolecularPredictor` class from `torch_molecule`:
+The following example demonstrates how to use the `GREAMolecularPredictor` class from `torch_molecule`:
 
 ```python
 from torch_molecule import GREAMolecularPredictor
@@ -88,7 +94,7 @@ model = GREAMolecularPredictor(
     verbose=True
 )
 
-# Fit the model with automatic hyperparameter optimization
+# Fit the model with hyperparameter optimization
 model.autofit(
     X_train=X.tolist(),  # List of SMILES strings
     y_train=y_train,     # numpy array [n_samples, n_tasks]
@@ -118,14 +124,14 @@ model.fit(
 )
 ```
 
-### Using Checkpoints for depolyment
+### Using Checkpoints for Deployment
 
-`torch-molecule` provides checkpoints hosted on Hugging Face for common tasks, which can save computational costs by initializing from a pretrained state. For example, you can use a checkpoint for gas permeability predictions (in log10 space):
+`torch-molecule` provides checkpoints hosted on Hugging Face, which can save computational resources by starting from a pretrained state. For instance, a checkpoint for gas permeability predictions (in log10 space) can be used as follows:
 
 ```python
 from torch_molecule import GREAMolecularPredictor
 
-# Use a pre-trained checkpoint from Hugging Face
+# Load a pretrained checkpoint from Hugging Face
 repo_id = "liuganghuggingface/torch-molecule-ckpt-GREA-gas-separation-logscale"
 model = GREAMolecularPredictor()
 model.load_model(f"{model_dir}/GREA_{gas}.pt", repo_id=repo_id)
@@ -135,13 +141,12 @@ model.set_params(verbose=True)
 predictions = model.predict(smiles_list)
 ```
 
-### Using Checkpoints for benchmarking
+### Using Checkpoints for Benchmarking
 
-TODO.
-
+_(Coming soon)_
 
 ## Acknowledgements
 
-This project is under active development, and some features may be subject to change.
+This project is actively developed, and some features may change over time.
 
-The project template was adapted from [https://github.com/lwaekfjlk/python-project-template](https://github.com/lwaekfjlk/python-project-template). We thank the authors for their open-source contribution.
+The project template was adapted from [https://github.com/lwaekfjlk/python-project-template](https://github.com/lwaekfjlk/python-project-template). We thank the authors for their contribution to the open-source community.

@@ -32,11 +32,17 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/liugangcode"
-"Bug Tracker" = "https://github.com/liugangcode"
+"Homepage" = "https://github.com/liugangcode/torch-molecule"
+"Bug Tracker" = "https://github.com/liugangcode/torch-molecule"
 
 [tool.setuptools.packages.find]
 include = ["torch_molecule*"]
+exclude = [
+    "private*", 
+    "tests*", 
+    "old_*.py", 
+    "**/old_*.py"
+]
 
 [tool.setuptools.package-data]
 "torch_molecule" = ["**/*.yaml", "**/*.json"]

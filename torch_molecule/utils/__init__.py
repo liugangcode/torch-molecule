@@ -4,6 +4,7 @@ from .generic.metrics import (
     accuracy_score,
     mean_squared_error,
     mean_absolute_error,
+    root_mean_squared_error,
     r2_score,
 )
 from .graph.graph_from_smiles import graph_from_smiles
@@ -16,6 +17,7 @@ __all__ = [
     "accuracy_score",
     "mean_squared_error", 
     "mean_absolute_error",
+    "root_mean_squared_error", 
     "r2_score",
     # graph
     "graph_from_smiles",

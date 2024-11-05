@@ -8,11 +8,16 @@ import warnings
 import torch
 import numpy as np
 from rdkit import Chem
-from .utils import roc_auc_score, accuracy_score, mean_absolute_error, mean_squared_error, r2_score
+from .utils import (
+    roc_auc_score,
+    accuracy_score,
+    mean_absolute_error,
+    mean_squared_error,
+    root_mean_squared_error,
+    r2_score,
+)
 from .utils.format import sanitize_config
 
-def rmse(y_true, y_pred):
-    return mean_squared_error(y_true, y_pred, squared=False)
 
 class BaseMolecularPredictor(ABC):
     """Base class for molecular discovery estimators.
@@ -27,9 +32,7 @@ class BaseMolecularPredictor(ABC):
         "classification": {
             "default": ("roc_auc", roc_auc_score, True),  # (name, function, higher_better)
         },
-        "regression": {
-            "default": ("mae", mean_absolute_error, False)
-        },
+        "regression": {"default": ("mae", mean_absolute_error, False)},
     }
 
     def __init__(self, num_tasks, task_type, model_name="BaseMolecularPredictor", device=None):
@@ -97,7 +100,7 @@ class BaseMolecularPredictor(ABC):
                 raise ValueError(f"Invalid parameter {key} for predictor {self}")
             setattr(self, key, value)
         return self
-    
+
     def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:
         """Setup optimization components including optimizer and learning rate scheduler.
 
@@ -137,7 +140,7 @@ class BaseMolecularPredictor(ABC):
                 metric_map = {
                     "accuracy": (accuracy_score, True),
                     "roc_auc": (roc_auc_score, True),
-                    "rmse": (rmse, False),
+                    "rmse": (root_mean_squared_error, False),
                     "mse": (mean_squared_error, False),
                     "mae": (mean_absolute_error, False),
                     "r2": (r2_score, True),
@@ -881,7 +884,7 @@ class BaseMolecularPredictor(ABC):
                         "molecular-property-prediction",
                     ],
                     "library_name": "torch_molecule",
-                    "pipeline_tag": "graph-ml"
+                    "pipeline_tag": "graph-ml",
                 }
                 metadata_update(repo_id=repo_id, metadata=metadata, token=token, overwrite=True)
 

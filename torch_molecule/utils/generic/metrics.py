@@ -331,6 +331,9 @@ def mean_absolute_error(
     else:
         return mae_scores
 
+def root_mean_squared_error(y_true, y_pred, average, sample_weight):
+    return mean_squared_error(y_true, y_pred, average, sample_weight, squared=False)
+
 def mean_squared_error(
     y_true: Union[np.ndarray, list],
     y_pred: Union[np.ndarray, list],

@@ -130,9 +130,9 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
             "scheduler_factor",
             "scheduler_patience",
             # others
-            "device",
             "fitting_epoch",
             "fitting_loss",
+            "device",
             "verbose"
         ]
 

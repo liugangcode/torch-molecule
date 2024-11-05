@@ -117,7 +117,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             # others
             "fitting_epoch",
             "fitting_loss",
-            "device"
+            "device",
             "verbose"
     ]
     

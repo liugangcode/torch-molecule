@@ -1,5 +1,6 @@
 import numpy as np
 from torch_molecule import GNNMolecularPredictor
+from torch_molecule.utils.search import ParameterType, ParameterSpec
 
 def test_gnn_predictor():
     # Test data
@@ -42,7 +43,20 @@ def test_gnn_predictor():
         'emb_dim': (64, 256),
         'learning_rate': (1e-4, 1e-2)
     }
-    
+    search_parameters = {
+        'num_layer': ParameterSpec(
+            param_type=ParameterType.INTEGER,
+            value_range=(2, 4)
+        ),
+        'emb_dim': ParameterSpec(
+            param_type=ParameterType.INTEGER,
+            value_range=(64, 256)
+        ),
+        'learning_rate': ParameterSpec(
+            param_type=ParameterType.LOG_FLOAT,
+            value_range=(1e-4, 1e-2)
+        ),
+    }
     model_auto = GNNMolecularPredictor(
         num_tasks=1,
         task_type="classification",

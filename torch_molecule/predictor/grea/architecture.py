@@ -4,6 +4,7 @@ import torch.nn as nn
 from torch_scatter import scatter_add
 
 from ..components.gnn_components import GNN_node, GNN_node_Virtualnode
+from ..components.mlp_componenet import MLP
 from ...utils import init_weights
 
 class GREA(nn.Module):
@@ -16,6 +17,7 @@ class GREA(nn.Module):
         gnn_type="gin-virtual",
         drop_ratio=0.5,
         norm_layer="batch_norm",
+        augmented_feature=['maccs', 'morgan']
     ):
         super(GREA, self).__init__()
         gnn_name = gnn_type.split("-")[0]
@@ -60,13 +62,16 @@ class GREA(nn.Module):
                 torch.nn.Linear(2 * emb_dim, 1),
             ),
         )
-        self.predictor = torch.nn.Sequential(
-            torch.nn.Linear(emb_dim, 2 * emb_dim),
-            torch.nn.BatchNorm1d(2 * emb_dim),
-            torch.nn.ReLU(),
-            torch.nn.Dropout(),
-            torch.nn.Linear(2 * emb_dim, self.num_tasks),
-        )
+        
+        graph_dim = emb_dim
+        self.augmented_feature = augmented_feature
+        if augmented_feature:
+            if "morgan" in augmented_feature:
+                graph_dim += 1024
+            if "maccs" in augmented_feature:
+                graph_dim += 167
+        self.predictor = MLP(graph_dim, hidden_features=2 * emb_dim, out_features=num_tasks)
+
     
     def initialize_parameters(self, seed=None):
         """
@@ -92,17 +97,31 @@ class GREA(nn.Module):
         
         self.apply(reset_parameters)
 
+    def _augment_graph_features(self, batched_data, h_r, h_rep):
+        if self.augmented_feature:
+            if 'morgan' in self.augmented_feature:
+                morgan = batched_data.morgan.type_as(h_r)
+                h_r = torch.cat((h_r, morgan), dim=1)
+                morgans = morgan.repeat_interleave(batched_data.batch[-1]+1, dim=0)
+                h_rep = torch.cat((h_rep, morgans), dim=1)
+            if 'maccs' in self.augmented_feature:
+                maccs = batched_data.maccs.type_as(h_r)
+                h_r = torch.cat((h_r, maccs), dim=1)
+                maccses = maccs.repeat_interleave(batched_data.batch[-1]+1, dim=0)
+                h_rep = torch.cat((h_rep, maccses), dim=1)
+        return h_r, h_rep
+    
     def compute_loss(self, batched_data, criterion):
         h_node, _ = self.graph_encoder(batched_data)
         h_r, h_env, rationale_size, envir_size, _ = self.separator(batched_data, h_node)
         h_rep = (h_r.unsqueeze(1) + h_env.unsqueeze(0)).view(-1, self.emb_dim)
+        h_r, h_rep = self._augment_graph_features(batched_data, h_r, h_rep)
         pred_rem = self.predictor(h_r)
         pred_rep = self.predictor(h_rep)
         loss = torch.abs(
             rationale_size / (rationale_size + envir_size)
             - self.gamma * torch.ones_like(rationale_size)
         ).mean()
-
         target = batched_data.y.to(torch.float32)
         is_labeled = batched_data.y == batched_data.y
         loss += criterion(pred_rem.to(torch.float32)[is_labeled], target[is_labeled])
@@ -118,6 +137,7 @@ class GREA(nn.Module):
         h_node, _ = self.graph_encoder(batched_data)
         h_r, h_env, _, _, node_score = self.separator(batched_data, h_node)
         h_rep = (h_r.unsqueeze(1) + h_env.unsqueeze(0)).view(-1, self.emb_dim)
+        h_r, h_rep = self._augment_graph_features(batched_data, h_r, h_rep)
         prediction = self.predictor(h_r)
         variance = self.predictor(h_rep).view(h_r.size(0), -1).var(dim=-1, keepdim=True)
         num_graphs = batched_data.batch.max().item() + 1

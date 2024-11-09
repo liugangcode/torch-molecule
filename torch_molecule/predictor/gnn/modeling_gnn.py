@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable
+from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal
 import warnings
 
 import torch
@@ -16,6 +16,7 @@ from ...utils.search import (
     suggest_parameter,
     ParameterSpec,
     ParameterType,
+    parse_list_params,
 )
 
 class GNNMolecularPredictor(BaseMolecularPredictor):
@@ -32,6 +33,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         drop_ratio: float = 0.5,
         norm_layer: str = "batch_norm",
         graph_pooling: str = "max",
+        # augmented features
+        augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = ["morgan", "maccs"],
         # training parameters
         batch_size: int = 128,
         epochs: int = 500,
@@ -50,7 +53,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         device: Optional[str] = None,
         verbose: bool = False,
         model_name: str = "GNNMolecularPredictor",
-    ):  
+    ): 
         super().__init__(num_tasks=num_tasks, task_type=task_type, model_name=model_name, device=device)
         # Model hyperparameters
         self.num_layer = num_layer
@@ -59,7 +62,16 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         self.drop_ratio = drop_ratio
         self.norm_layer = norm_layer
         self.graph_pooling = graph_pooling
-
+        # Augmented features
+        if augmented_feature is not None:
+            valid_augmented_feature = {"morgan", "maccs"}
+            invalid_fps = set(augmented_feature) - valid_augmented_feature
+            if invalid_fps:
+                raise ValueError(
+                    f"Invalid augmented types: {invalid_fps}. "
+                    f"Valid options are: {list(valid_augmented_feature)}"
+                )
+        self.augmented_feature = augmented_feature
         # Training parameters
         self.batch_size = batch_size
         self.epochs = epochs
@@ -76,8 +88,13 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         self.fitting_loss = []
         self.fitting_epoch = 0
         self.verbose = verbose
-
         self.model_class = GNN
+
+        self.X_train = None
+        self.y_train = None
+        self.X_valid = None
+        self.y_valid = None
+
 
     @staticmethod
     def _get_param_names() -> List[str]:
@@ -98,6 +115,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             "drop_ratio",
             "norm_layer",
             "graph_pooling",
+            # Augmented features
+            "augmented_feature",
             # Training parameters
             "batch_size",
             "epochs",
@@ -148,7 +167,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             # Define required parameters
             required_params = {
                 "num_tasks", "num_layer", "emb_dim", "gnn_type",
-                "drop_ratio", "norm_layer", "graph_pooling"
+                "drop_ratio", "norm_layer", "graph_pooling", 'augmented_feature'
             }
             
             # Validate parameters
@@ -162,7 +181,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 "gnn_type": hyperparameters.get("gnn_type", self.gnn_type),
                 "drop_ratio": hyperparameters.get("drop_ratio", self.drop_ratio),
                 "norm_layer": hyperparameters.get("norm_layer", self.norm_layer),
-                "graph_pooling": hyperparameters.get("graph_pooling", self.graph_pooling)
+                "graph_pooling": hyperparameters.get("graph_pooling", self.graph_pooling),
+                "augmented_feature": hyperparameters.get("augmented_feature", self.augmented_feature)
             }
         else:
             # Use current instance parameters
@@ -173,14 +193,12 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 "gnn_type": self.gnn_type,
                 "drop_ratio": self.drop_ratio,
                 "norm_layer": self.norm_layer,
-                "graph_pooling": self.graph_pooling
+                "graph_pooling": self.graph_pooling,
+                "augmented_feature": self.augmented_feature
             }
         
     def _convert_to_pytorch_data(self, X, y=None):
-        """Convert numpy arrays to PyTorch data format.
-
-        Should be implemented by child classes to handle specific molecular
-        representations (e.g., SMILES to graphs, conformers to graphs, etc.)
+        """Convert numpy arrays to PyTorch Geometric data format.
         """
         if self.verbose:
             iterator = tqdm(enumerate(X), desc="Converting molecules to graphs", total=len(X))
@@ -193,7 +211,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 properties = y[idx]
             else:
                 properties = None
-            graph = graph_from_smiles(smiles, properties)
+            graph = graph_from_smiles(smiles, properties, self.augmented_feature)
             g = Data()
             g.num_nodes = graph["num_nodes"]
             g.edge_index = torch.from_numpy(graph["edge_index"])
@@ -212,12 +230,14 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             if graph["y"] is not None:
                 g.y = torch.from_numpy(graph["y"])
                 del graph["y"]
-
-            try:
-                g.fp = torch.tensor(graph["fp"], dtype=torch.int8).view(1, -1)
-                del graph["fp"]
-            except:
-                pass
+   
+            if graph["morgan"] is not None:
+                g.morgan = torch.tensor(graph["morgan"], dtype=torch.int8).view(1, -1)
+                del graph["morgan"]
+            
+            if graph["maccs"] is not None:
+                g.maccs = torch.tensor(graph["maccs"], dtype=torch.int8).view(1, -1)
+                del graph["maccs"]
 
             pyg_graph_list.append(g)
 
@@ -342,6 +362,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             
             try:
                 # Update model parameters and train
+                if "augmented_feature" in params:
+                    params['augmented_feature'] = parse_list_params(params['augmented_feature'])
                 self.set_params(**params)
                 self.fit(X_train, y_train, X_val, y_val)
                 
@@ -363,7 +385,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                         'model': self.model.state_dict(),
                         'architecture': self._get_model_params()
                     }
-                    best_trial_params = params.copy()  # Added .copy() for safety
+                    best_trial_params = params.copy()
                     best_loss = self.fitting_loss.copy()  # Added .copy() for safety
                     best_epoch = self.fitting_epoch
                 
@@ -394,57 +416,57 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             study_name=f"{self.model_name}_optimization"
         )
         
-        try:
-            study.optimize(
-                objective,
-                n_trials=n_trials,
-                catch=(Exception,),
-                show_progress_bar=self.verbose
-            )
-            
-            if best_state_dict is not None:
-                self.set_params(**best_trial_params)
-                # Initialize model with saved architecture parameters
-                self._initialize_model(self.model_class, self.device)
-                # Load the saved state dict
-                self.model.load_state_dict(best_state_dict['model'])
-                self.fitting_loss = best_loss
-                self.fitting_epoch = best_epoch
-                self.is_fitted_ = True
-                
-                if self.verbose:
-                    print(f"\nOptimization completed successfully:")
-                    print(f"Best {self.evaluate_name}: {best_score:.4f}")
+        # try:
+        study.optimize(
+            objective,
+            n_trials=n_trials,
+            catch=(Exception,),
+            show_progress_bar=self.verbose
+        )
         
-                    eval_data = (X_val if X_val is not None else X_train)
-                    eval_labels = (y_val if y_val is not None else y_train)
-                    eval_results = self.predict(eval_data)
-                    score = float(self.evaluate_criterion(eval_labels, eval_results['prediction']))
-                    print('post score is: ', score)
+        if best_state_dict is not None:
+            self.set_params(**best_trial_params)
+            # Initialize model with saved architecture parameters
+            self._initialize_model(self.model_class, self.device)
+            # Load the saved state dict
+            self.model.load_state_dict(best_state_dict['model'])
+            self.fitting_loss = best_loss
+            self.fitting_epoch = best_epoch
+            self.is_fitted_ = True
+            
+            if self.verbose:
+                print(f"\nOptimization completed successfully:")
+                print(f"Best {self.evaluate_name}: {best_score:.4f}")
+    
+                eval_data = (X_val if X_val is not None else X_train)
+                eval_labels = (y_val if y_val is not None else y_train)
+                eval_results = self.predict(eval_data)
+                score = float(self.evaluate_criterion(eval_labels, eval_results['prediction']))
+                print('post score is: ', score)
 
-                    print("\nBest parameters:")
-                    for param, value in best_trial_params.items():
-                        param_spec = search_parameters[param]
-                        print(f"  {param}: {value} (type: {param_spec.param_type.value})")
-                    
-                    # Print optimization statistics
-                    print("\nOptimization statistics:")
-                    print(f"  Number of completed trials: {len(study.trials)}")
-                    print(f"  Number of pruned trials: {len(study.get_trials(states=[optuna.trial.TrialState.PRUNED]))}")
-                    print(f"  Number of failed trials: {len(study.get_trials(states=[optuna.trial.TrialState.FAIL]))}")
+                print("\nBest parameters:")
+                for param, value in best_trial_params.items():
+                    param_spec = search_parameters[param]
+                    print(f"  {param}: {value} (type: {param_spec.param_type.value})")
+                
+                # Print optimization statistics
+                print("\nOptimization statistics:")
+                print(f"  Number of completed trials: {len(study.trials)}")
+                print(f"  Number of pruned trials: {len(study.get_trials(states=[optuna.trial.TrialState.PRUNED]))}")
+                print(f"  Number of failed trials: {len(study.get_trials(states=[optuna.trial.TrialState.FAIL]))}")
             else:
                 raise RuntimeError("No successful trials completed during optimization")
                 
-        except KeyboardInterrupt:
-            print("\nOptimization interrupted by user. Saving best results so far...")
-            if best_state_dict is not None:
-                self.set_params(**best_trial_params)
-                # CHANGE: Use same restoration logic here
-                self._initialize_model(self.model_class, self.device)
-                self.model.load_state_dict(best_state_dict['model'])
-                self.fitting_loss = best_loss
-                self.fitting_epoch = best_epoch
-                self.is_fitted_ = True
+        # except KeyboardInterrupt:
+        #     print("\nOptimization interrupted by user. Saving best results so far...")
+        #     if best_state_dict is not None:
+        #         self.set_params(**best_trial_params)
+        #         # CHANGE: Use same restoration logic here
+        #         self._initialize_model(self.model_class, self.device)
+        #         self.model.load_state_dict(best_state_dict['model'])
+        #         self.fitting_loss = best_loss
+        #         self.fitting_epoch = best_epoch
+        #         self.is_fitted_ = True
         
         return self
     
@@ -515,7 +537,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         # Initialize training state
         self.fitting_loss = []
         self.fitting_epoch = 0
-        best_param_vector = None
+        best_state_dict = None
         best_eval = float('-inf') if self.evaluate_higher_better else float('inf')
         cnt_wait = 0
 
@@ -539,9 +561,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             if is_better:
                 self.fitting_epoch = epoch
                 best_eval = current_eval
-                best_param_vector = torch.nn.utils.parameters_to_vector(
-                    self.model.parameters()
-                )
+                best_state_dict = self.model.state_dict()
                 cnt_wait = 0
             else:
                 cnt_wait += 1
@@ -558,8 +578,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 )
 
         # Restore best model
-        if best_param_vector is not None:
-            torch.nn.utils.vector_to_parameters(best_param_vector, self.model.parameters())
+        if best_state_dict is not None:
+            self.model.load_state_dict(best_state_dict)
         else:
             warnings.warn(
                 "No improvement was achieved during training. "

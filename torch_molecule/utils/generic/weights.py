@@ -17,7 +17,7 @@ def init_weights(net, init_type='xavier', init_gain=0.02, verbose=False):
             elif init_type == 'kaiming':
                 torch.nn.init.kaiming_normal_(m.weight.data, a=0, mode='fan_in')
             elif init_type == 'orthogonal':
-                torch.nn.init.orthogonal_(m.weight.data, gain=init_gain)
+                torch.nn.init.orthogonal_(m.weight.data)
             else:
                 raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
             if hasattr(m, 'bias') and m.bias is not None:

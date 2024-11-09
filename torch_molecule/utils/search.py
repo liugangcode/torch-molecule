@@ -46,6 +46,7 @@ DEFAULT_GNN_SEARCH_SPACES: Dict[str, ParameterSpec] = {
         ],
     ),
     "graph_pooling": ParameterSpec(ParameterType.CATEGORICAL, ["mean", "sum", "max"]),
+    "augmented_feature": ParameterSpec(ParameterType.CATEGORICAL, ["maccs,morgan", "maccs", "morgan", None]),
     # Integer-valued parameters
     "num_layer": ParameterSpec(ParameterType.INTEGER, (2, 8)),
     "emb_dim": ParameterSpec(ParameterType.INTEGER, (64, 512)),
@@ -96,3 +97,8 @@ def suggest_parameter(trial: Any, param_name: str, param_spec: ParameterSpec) ->
 
     else:
         raise ValueError(f"Unknown parameter type: {param_spec.param_type}")
+    
+def parse_list_params(params_str):
+    if params_str is None:
+        return None
+    return params_str.split(',')

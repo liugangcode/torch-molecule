@@ -2,8 +2,9 @@
 import numpy as np
 from rdkit import Chem
 from .features import atom_to_feature_vector, bond_to_feature_vector
+from .features import getmaccsfingerprint, getmorganfingerprint
 
-def graph_from_smiles(smiles_string, properties):
+def graph_from_smiles(smiles_string, properties, augmented_features):
     """
     Converts SMILES string to graph Data object
     :input: SMILES string (str)
@@ -56,6 +57,20 @@ def graph_from_smiles(smiles_string, properties):
             graph['y'] = y.reshape(1, -1)
         else:
             graph['y'] = np.array(properties, dtype=np.float32).reshape(1, -1)
+    
+        if 'morgan' in augmented_features:
+            mgf = getmorganfingerprint(mol)
+            mgf_feat = np.array(mgf, dtype="int8")
+            graph['morgan']  = np.expand_dims(mgf_feat, axis=0) #2048
+        else:
+            graph['morgan'] = None
+        
+        if 'maccs' in augmented_features:
+            maccs = getmaccsfingerprint(mol)
+            maccs_feat = np.array(maccs, dtype="int8")
+            graph['maccs']  = np.expand_dims(maccs_feat, axis=0) #167
+        else:
+            graph['maccs'] = None
 
         return graph
     except:

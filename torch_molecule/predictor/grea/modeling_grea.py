@@ -3,7 +3,7 @@ import numpy as np
 import warnings
 import datetime
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable
+from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal
 
 import torch
 from torch_geometric.loader import DataLoader
@@ -18,8 +18,9 @@ from ...utils.search import (
 class GREAMolecularPredictor(GNNMolecularPredictor):
     """This predictor implements a GNN model based on Graph Rationalization
     for molecular property prediction tasks.
+    Paper: Graph Rationalization with Environment-based Augmentations (https://dl.acm.org/doi/10.1145/3534678.3539347)
+    Reference Code: https://github.com/liugangcode/GREA 
     """
-
     def __init__(
         self,
         gamma: float = 0.4,
@@ -32,6 +33,8 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
         drop_ratio: float = 0.5,
         norm_layer: str = "batch_norm",
         graph_pooling: str = "max",
+        # augmented features
+        augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = ["morgan", "maccs"],
         # training parameters
         batch_size: int = 128,
         epochs: int = 500,
@@ -61,6 +64,7 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
             drop_ratio=drop_ratio,
             norm_layer=norm_layer,
             graph_pooling=graph_pooling,
+            augmented_feature=augmented_feature,
             batch_size=batch_size,
             epochs=epochs,
             loss_criterion=loss_criterion,
@@ -101,6 +105,8 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
             "drop_ratio",
             "norm_layer",
             "graph_pooling",
+            # Augmented features
+            "augmented_feature",
             # Training parameters
             "batch_size",
             "epochs",
@@ -170,7 +176,7 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
             # Define required parameters
             required_params = {
                 "gamma", "num_tasks", "num_layer", "emb_dim", "gnn_type",
-                "drop_ratio", "norm_layer"
+                "drop_ratio", "norm_layer", "augmented_feature"
             }
             
             # Validate parameters
@@ -187,6 +193,7 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
                 "gnn_type": hyperparameters['gnn_type'],
                 "drop_ratio": hyperparameters['drop_ratio'],
                 "norm_layer": hyperparameters['norm_layer'],
+                "augmented_feature": hyperparameters.get("augmented_feature", self.augmented_feature)
             }
         else:
             # Use current instance parameters
@@ -198,6 +205,7 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
                 "gnn_type": self.gnn_type,
                 "drop_ratio": self.drop_ratio,
                 "norm_layer": self.norm_layer,
+                "augmented_feature": self.augmented_feature
             }
         
     def predict(self, X: List[str]) -> Dict[str, Union[np.ndarray, List[List]]]:

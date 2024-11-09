@@ -1,16 +1,18 @@
 # torch-molecule
 
-`torch-molecule` is a package in active development that streamlines molecular discovery through deep learning, with a user-friendly `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. The current scope focuses on three main components:
+`torch-molecule` is a package under active development that facilitates molecular discovery through deep learning, featuring a user-friendly, `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. Currently, the package focuses on three main components:
 
-1. **Predictive Models**: Supports graph-based models (e.g., GREA, SGIR, DCT), RNN-based models (e.g., SMILES-RNN, SMILES-Transformers), and other model based on molecular representation models.
-2. **Generative Models**: Models include Graph DiT, DiGress, GDSS, and others.
+1. **Predictive Models**: Supports graph-based models (e.g., GREA, SGIR, DCT), RNN-based models (e.g., SMILES-RNN, SMILES-Transformers), and other models based on molecular representations.
+2. **Generative Models**: Includes models such as Graph DiT, DiGress, GDSS, and others.
 3. **Representation Models**: Includes MoAMa, AttrMasking, ContextPred, EdgePred, and more.
 
-> **Note**: This project is under active development, and features may change.
+> **Note**: This project is in active development, and features may change.
 
 ## Project Structure
 
-The structure of `torch_molecule`:
+The structure of `torch_molecule` is as follows:
+
+`tree -L 2 torch_molecule -I '__pycache__|*.pyc|*.pyo|.git|old*'`
 
 ```
 torch_molecule
@@ -19,26 +21,14 @@ torch_molecule
 ├── __init__.py
 ├── predictor
 │   ├── components
-│   │   ├── gnn_components.py
-│   │   └── __init__.py
 │   ├── gnn
-│   │   ├── architecture.py
-│   │   ├── __init__.py
-│   │   └── modeling_gnn.py
 │   ├── grea
-│   │   ├── architecture.py
-│   │   ├── __init__.py
-│   │   └── modeling_grea.py
 │   └── __init__.py
 ├── representer
 └── utils
     ├── format.py
     ├── generic
-    │   ├── metrics.py
-    │   └── weights.py
     ├── graph
-    │   ├── features.py
-    │   └── graph_from_smiles.py
     ├── hf_hub.py
     ├── __init__.py
     └── search.py
@@ -53,7 +43,7 @@ torch_molecule
    conda activate torch_molecule
    ```
 
-2. **Install dependencies**: Dependencies are listed in `requirements.txt`, along with the versions used during development. You can install them by copying and pasting from the `requirements.txt` file and then run:
+2. **Install dependencies**: Dependencies are listed in `requirements.txt`, with versions used during development. Install them by running:
 
    ```bash
    pip install -r requirements.txt
@@ -67,7 +57,7 @@ torch_molecule
 
 ## Usage
 
-See the `examples` folder for more detailed use cases.
+Refer to the `examples` folder for detailed use cases.
 
 ### Python API Example
 
@@ -94,7 +84,7 @@ model.autofit(
     y_train=y_train,     # numpy array [n_samples, n_tasks]
     X_val=X_val.tolist(),
     y_val=y_val,
-    n_trials=10          # Number of trials for hyperparameter optimization
+    n_trials=100          # Number of trials for hyperparameter optimization
 )
 
 # Fit the model with predefined hyperparameters
@@ -113,22 +103,41 @@ model = GREAMolecularPredictor(
 model.fit(
     X_train=X.tolist(),  # List of SMILES strings
     y_train=y_train,     # numpy array [n_samples, n_tasks]
-    X_val=X_val.tolist(),
-    y_val=y_val,
+    X_val=None, # leave it None if the same as the train
+    y_val=None,
 )
 ```
 
 ### Using Checkpoints for Deployment
 
-`torch-molecule` provides checkpoints hosted on Hugging Face, which can save computational resources by starting from a pretrained state. For instance, a checkpoint for gas permeability predictions (in log10 space) can be used as follows:
+`torch-molecule` provides checkpoints hosted on Hugging Face, which can save computational resources by starting from a pretrained state. For example, a checkpoint for gas permeability predictions (in log10 space) can be used as follows:
 
 ```python
 from torch_molecule import GREAMolecularPredictor
 
-# Load a pretrained checkpoint from Hugging Face
-repo_id = "liuganghuggingface/torch-molecule-ckpt-GREA-gas-separation-logscale"
+repo_id = "user/repo_id"
+# Push a trained model to Hugging Face
 model = GREAMolecularPredictor()
-model.load_model(f"{model_dir}/GREA_{gas}.pt", repo_id=repo_id)
+model.autofit(
+    X_train=X.tolist(),  # List of SMILES strings
+    y_train=y_train,     # numpy array [n_samples, n_tasks]
+    X_val=X_val.tolist(),
+    y_val=y_val,
+    n_trials=100          # Number of trials for hyperparameter optimization
+)
+output = model.predict(X_test.tolist()) # (n_sample, n_task)
+mae = mean_absolute_error(y_test, output['prediction'])
+metrics = {'MAE': mae}
+model.push_to_huggingface(
+    repo_id=repo_id,
+    task_id=f"{task_name}",
+    metrics=metrics,
+    commit_message=f"Upload GREA_{task_name} model with metrics: {metrics}",
+    private=False
+)
+# Load a pretrained checkpoint from Hugging Face
+model = GREAMolecularPredictor()
+model.load_model(f"{model_dir}/GREA_{task_name}.pt", repo_id=repo_id)
 model.set_params(verbose=True)
 
 # Make predictions
@@ -141,6 +150,6 @@ _(Coming soon)_
 
 ## Acknowledgements
 
-This project is actively developed, and some features may change over time.
+This project is under active development, and some features may change over time.
 
 The project template was adapted from [https://github.com/lwaekfjlk/python-project-template](https://github.com/lwaekfjlk/python-project-template). We thank the authors for their contribution to the open-source community.

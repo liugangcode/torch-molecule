@@ -32,7 +32,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         gnn_type: str = "gin-virtual",
         drop_ratio: float = 0.5,
         norm_layer: str = "batch_norm",
-        graph_pooling: str = "max",
+        graph_pooling: str = "sum",
         # augmented features
         augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = ["morgan", "maccs"],
         # training parameters
@@ -90,11 +90,10 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         self.verbose = verbose
         self.model_class = GNN
 
-        self.X_train = None
-        self.y_train = None
-        self.X_valid = None
-        self.y_valid = None
-
+        # self.X_train = None
+        # self.y_train = None
+        # self.X_valid = None
+        # self.y_valid = None
 
     @staticmethod
     def _get_param_names() -> List[str]:
@@ -106,7 +105,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             List of parameter names that can be used for model configuration.
         """
         return [
-            # Model hyperparameters
+            # Model Hyperparameters
             "num_tasks",
             "task_type",
             "num_layer",
@@ -115,9 +114,9 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             "drop_ratio",
             "norm_layer",
             "graph_pooling",
-            # Augmented features
+            # Augmented Features
             "augmented_feature",
-            # Training parameters
+            # Training Parameters
             "batch_size",
             "epochs",
             "learning_rate",
@@ -125,20 +124,20 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             "patience",
             "grad_clip_value",
             "loss_criterion",
-            # evaluation parameters
+            # Evaluation Parameters
             "evaluate_name",
             "evaluate_criterion",
             "evaluate_higher_better",
-            # Scheduler parameters
+            # Scheduler Parameters
             "use_lr_scheduler",
             "scheduler_factor",
             "scheduler_patience",
-            # others
+            # Other Parameters
             "fitting_epoch",
             "fitting_loss",
             "device",
             "verbose"
-    ]
+        ]
     
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
         """Get model parameters either from checkpoint or current instance.
@@ -171,7 +170,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             }
             
             # Validate parameters
-            invalid_params = set(hyperparameters.keys()) - required_params
+            # invalid_params = set(hyperparameters.keys()) - required_params
             
             # Get parameters with fallback to instance values
             return {
@@ -296,6 +295,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         y_train: Optional[Union[List, np.ndarray]],
         X_val: Optional[List[str]] = None,
         y_val: Optional[Union[List, np.ndarray]] = None,
+        X_unlbl: Optional[List[str]] = None,
         search_parameters: Optional[Dict[str, ParameterSpec]] = None,
         n_trials: int = 10,
     ) -> "GNNMolecularPredictor":
@@ -365,7 +365,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 if "augmented_feature" in params:
                     params['augmented_feature'] = parse_list_params(params['augmented_feature'])
                 self.set_params(**params)
-                self.fit(X_train, y_train, X_val, y_val)
+                self.fit(X_train, y_train, X_val, y_val, X_unlbl)
                 
                 # Get evaluation score
                 eval_data = (X_val if X_val is not None else X_train)
@@ -475,7 +475,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         X_train: List[str],
         y_train: Optional[Union[List, np.ndarray]],
         X_val: Optional[List[str]] = None,
-        y_val: Optional[Union[List, np.ndarray]] = None
+        y_val: Optional[Union[List, np.ndarray]] = None,
+        X_unlbl: Optional[List[str]] = None,
     ) -> "GNNMolecularPredictor":
         """Fit the model to the training data with optional validation set.
 
@@ -490,7 +491,9 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             If None, training data will be used for validation
         y_val : Union[List, np.ndarray], optional
             Validation set target values. Required if X_val is provided
-
+        X_unlbl : List[str], optional
+            Unlabeled set input molecular structures as SMILES strings.
+            
         Returns
         -------
         self : GNNMolecularPredictor

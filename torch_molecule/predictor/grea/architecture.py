@@ -130,7 +130,6 @@ class GREA(nn.Module):
         )
         is_labeled_rep = target_rep == target_rep
         loss += criterion(pred_rep.to(torch.float32)[is_labeled_rep], target_rep[is_labeled_rep])
-
         return loss
 
     def forward(self, batched_data):
@@ -142,7 +141,23 @@ class GREA(nn.Module):
         variance = self.predictor(h_rep).view(h_r.size(0), -1).var(dim=-1, keepdim=True)
         num_graphs = batched_data.batch.max().item() + 1
         score_by_graph = [node_score[batched_data.batch == i].view(-1).tolist() for i in range(num_graphs)]
-        return {"prediction": prediction, "variance": variance, "score": score_by_graph}
+        return {"prediction": prediction, "variance": variance, "score": score_by_graph, "representation": h_r}
+
+    @staticmethod
+    def _disable_batchnorm_tracking(model):
+        def fn(module):
+            if isinstance(module, torch.nn.modules.batchnorm._BatchNorm):
+                module.track_running_stats = False
+
+        model.apply(fn)
+    
+    @staticmethod
+    def _enable_batchnorm_tracking(model):
+        def fn(module):
+            if isinstance(module, torch.nn.modules.batchnorm._BatchNorm):
+                module.track_running_stats = True
+
+        model.apply(fn)
 
 class Separator(torch.nn.Module):
     def __init__(self, rationale_encoder, gate_nn, nn=None):

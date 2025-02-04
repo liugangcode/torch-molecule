@@ -32,7 +32,7 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
         gnn_type: str = "gin-virtual",
         drop_ratio: float = 0.5,
         norm_layer: str = "batch_norm",
-        graph_pooling: str = "max",
+        graph_pooling: str = "sum",
         # augmented features
         augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = ["morgan", "maccs"],
         # training parameters
@@ -87,126 +87,80 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
 
     @staticmethod
     def _get_param_names() -> List[str]:
-        """Get parameter names for the estimator.
-
-        Returns
-        -------
-        List[str]
-            List of parameter names that can be used for model configuration.
-        """
-        return [
-            "gamma",
-            # Model hyperparameters
-            "num_tasks",
-            "task_type",
-            "num_layer",
-            "emb_dim",
-            "gnn_type",
-            "drop_ratio",
-            "norm_layer",
-            "graph_pooling",
-            # Augmented features
-            "augmented_feature",
-            # Training parameters
-            "batch_size",
-            "epochs",
-            "learning_rate",
-            "grad_clip_value",
-            "weight_decay",
-            "patience",
-            "loss_criterion",
-            # evaluation parameters
-            "evaluate_name",
-            "evaluate_criterion",
-            "evaluate_higher_better",
-            # Scheduler parameters
-            "use_lr_scheduler",
-            "scheduler_factor",
-            "scheduler_patience",
-            # others
-            "fitting_epoch",
-            "fitting_loss",
-            "device",
-            "verbose"
-        ]
+        return ["gamma"] + GNNMolecularPredictor._get_param_names()
 
     def _get_default_search_space(self):
-        """Get the default hyperparameter search space.
+        search_space = super()._get_default_search_space()
+        search_space["gamma"] = ParameterSpec(ParameterType.FLOAT, (0.1, 0.9))
+        return search_space
+
+    # def _get_default_search_space(self):
+    #     """Get the default hyperparameter search space.
         
-        Returns
-        -------
-        Dict[str, ParameterSpec]
-            Dictionary mapping parameter names to their search space specifications
-        """
-        default_parameters = DEFAULT_GNN_SEARCH_SPACES.copy()
+    #     Returns
+    #     -------
+    #     Dict[str, ParameterSpec]
+    #         Dictionary mapping parameter names to their search space specifications
+    #     """
+    #     default_parameters = DEFAULT_GNN_SEARCH_SPACES.copy()
         
-        # Add gamma parameter to the search space
-        default_parameters.update({
-            "gamma": ParameterSpec(
-                ParameterType.FLOAT,
-                (0.1, 0.9)
-            )
-        })
-        return default_parameters
+    #     # Add gamma parameter to the search space
+    #     default_parameters.update({
+    #         "gamma": ParameterSpec(
+    #             ParameterType.FLOAT,
+    #             (0.1, 0.9)
+    #         )
+    #     })
+    #     return default_parameters
 
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
-        """Get model parameters either from checkpoint or current instance.
-        
-        Parameters
-        ----------
-        checkpoint : Optional[Dict]
-            Checkpoint containing model hyperparameters
-            
-        Returns
-        -------
-        Dict[str, Any]
-            Dictionary of model parameters
-            
-        Raises
-        ------
-        ValueError
-            If checkpoint contains invalid parameters
-        """
-        if checkpoint is not None:
-            if "hyperparameters" not in checkpoint:
-                raise ValueError("Checkpoint missing 'hyperparameters' key")
-                
-            hyperparameters = checkpoint["hyperparameters"]
-            
-            # Define required parameters
-            required_params = {
-                "gamma", "num_tasks", "num_layer", "emb_dim", "gnn_type",
-                "drop_ratio", "norm_layer", "augmented_feature"
-            }
-            
-            # Validate parameters
-            invalid_params = set(hyperparameters.keys()) - required_params
-            # if invalid_params:
-            #     raise ValueError(f"Invalid parameters in checkpoint: {invalid_params}")
-            
-            # Get parameters with fallback to instance values
-            return {
-                "gamma": hyperparameters['gamma'],
-                "num_tasks": hyperparameters['num_tasks'],
-                "num_layer": hyperparameters['num_layer'],
-                "emb_dim": hyperparameters['emb_dim'],
-                "gnn_type": hyperparameters['gnn_type'],
-                "drop_ratio": hyperparameters['drop_ratio'],
-                "norm_layer": hyperparameters['norm_layer'],
-                "augmented_feature": hyperparameters.get("augmented_feature", self.augmented_feature)
-            }
+        base_params = super()._get_model_params(checkpoint)
+        if checkpoint and "hyperparameters" in checkpoint:
+            base_params["gamma"] = checkpoint["hyperparameters"].get("gamma", self.gamma)
         else:
-            # Use current instance parameters
-            return {
-                "gamma": self.gamma,
-                "num_tasks": self.num_tasks,
-                "num_layer": self.num_layer,
-                "emb_dim": self.emb_dim,
-                "gnn_type": self.gnn_type,
-                "drop_ratio": self.drop_ratio,
-                "norm_layer": self.norm_layer,
-                "augmented_feature": self.augmented_feature
-            }
+            base_params["gamma"] = self.gamma
+        base_params.pop("graph_pooling", None)
+        return base_params
+        # if checkpoint is not None:
+        #     if "hyperparameters" not in checkpoint:
+        #         raise ValueError("Checkpoint missing 'hyperparameters' key")
+                
+        #     hyperparameters = checkpoint["hyperparameters"]
+            
+        #     # Define required parameters
+        #     required_params = {
+        #         "gamma", "num_tasks", "num_layer", "emb_dim", "gnn_type",
+        #         "drop_ratio", "norm_layer", "augmented_feature"
+        #     }
+            
+        #     # Validate parameters
+        #     invalid_params = set(hyperparameters.keys()) - required_params
+        #     # if invalid_params:
+        #     #     raise ValueError(f"Invalid parameters in checkpoint: {invalid_params}")
+            
+        #     # Get parameters with fallback to instance values
+        #     return {
+        #         "gamma": hyperparameters['gamma'],
+        #         "num_tasks": hyperparameters['num_tasks'],
+        #         "num_layer": hyperparameters['num_layer'],
+        #         "emb_dim": hyperparameters['emb_dim'],
+        #         "gnn_type": hyperparameters['gnn_type'],
+        #         "drop_ratio": hyperparameters['drop_ratio'],
+        #         "norm_layer": hyperparameters['norm_layer'],
+        #         "augmented_feature": hyperparameters.get("augmented_feature", self.augmented_feature)
+        #     }
+        # else:
+        #     # Use current instance parameters
+        #     return {
+        #         "gamma": self.gamma,
+        #         "num_tasks": self.num_tasks,
+        #         "num_layer": self.num_layer,
+        #         "emb_dim": self.emb_dim,
+        #         "gnn_type": self.gnn_type,
+        #         "drop_ratio": self.drop_ratio,
+        #         "norm_layer": self.norm_layer,
+        #         "augmented_feature": self.augmented_feature
+        #     }
         
     def predict(self, X: List[str]) -> Dict[str, Union[np.ndarray, List[List]]]:
         """Make predictions using the fitted model.
@@ -221,7 +175,6 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
         Dict[str, np.ndarray]
             Dictionary containing:
                 - 'prediction': Model predictions (shape: [n_samples, n_tasks])
-                - 'confidence': Prediction confidences (shape: [n_samples, n_tasks])
                 - 'variance': Prediction variances (shape: [n_samples, n_tasks])
 
         """
@@ -257,30 +210,3 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
                 "No valid predictions could be made from the input data. Returning empty results."
             )
             return {"prediction": np.array([]), "variance": np.array([])}
-
-    def save_model(self, path: str) -> None:
-        """Save the model to disk.
-
-        Parameters
-        ----------
-        path : str
-            Path where to save the model
-        """
-        if not self.is_fitted_:
-            raise ValueError("Model must be fitted before saving")
-
-        if not path.endswith((".pt", ".pth")):
-            raise ValueError("Save path should end with '.pt' or '.pth'")
-
-        # Create directory if it doesn't exist
-        os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
-
-        model_name = os.path.splitext(os.path.basename(path))[0]
-        save_dict = {
-            "model_state_dict": self.model.state_dict(),
-            "hyperparameters": self.get_params(),
-            "model_name": model_name,
-            "date_saved": datetime.datetime.now().isoformat(),
-            "version": getattr(self, "__version__", "1.0.0"),
-        }
-        torch.save(save_dict, path)

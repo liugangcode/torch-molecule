@@ -173,12 +173,12 @@ class BaseMolecularPredictor(ABC):
                 self.evaluate_higher_better = evaluate_higher_better
 
     @abstractmethod
-    def fit(self, X_train, y_train, X_val=None, y_val=None) -> "BaseMolecularPredictor":
+    def fit(self, X_train, y_train, X_val=None, y_val=None, X_unlbl=None) -> "BaseMolecularPredictor":
         """Fit the model to the data.
 
         Parameters
         ----------
-        X_train / X_val : list of SMILES
+        X_train / X_val / X_unlbl: list of SMILES
         y_train / y_val: array-like of shape (n_samples,), optional
             Target values.
         Returns

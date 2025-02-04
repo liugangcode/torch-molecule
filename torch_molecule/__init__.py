@@ -8,9 +8,11 @@ Provides molecular property prediction functionality
 # from torch_molecule.base import BaseMolecularPredictor
 from torch_molecule.predictor.grea import GREAMolecularPredictor
 from torch_molecule.predictor.gnn import GNNMolecularPredictor
+from torch_molecule.predictor.sgir import SGIRMolecularPredictor
 
 __all__ = [
     # 'BaseMolecularPredictor',
+    'SGIRMolecularPredictor',
     'GREAMolecularPredictor',
     'GNNMolecularPredictor',
 ]

@@ -18,7 +18,6 @@ from .utils import (
 )
 from .utils.format import sanitize_config
 
-
 class BaseMolecularPredictor(ABC):
     """Base class for molecular discovery estimators.
 
@@ -35,17 +34,17 @@ class BaseMolecularPredictor(ABC):
         "regression": {"default": ("mae", mean_absolute_error, False)},
     }
 
-    def __init__(self, num_tasks, task_type, model_name="BaseMolecularPredictor", device=None):
+    def __init__(self, num_task, task_type, model_name="BaseMolecularPredictor", device=None):
         if task_type not in ["classification", "regression"]:
             raise ValueError(
                 f"task_type must be one of ['classification', 'regression'], got {task_type}"
             )
 
-        if not isinstance(num_tasks, (int, np.integer)) or num_tasks <= 0:
-            raise ValueError(f"num_tasks must be a positive integer, got {num_tasks}")
+        if not isinstance(num_task, (int, np.integer)) or num_task <= 0:
+            raise ValueError(f"num_task must be a positive integer, got {num_task}")
 
         self.is_fitted_ = False
-        self.num_tasks = num_tasks
+        self.num_task = num_task
         self.task_type = task_type
         self.model_name = model_name
         self.device = (
@@ -299,7 +298,7 @@ class BaseMolecularPredictor(ABC):
         attributes_str = []
 
         # First add important attributes that should appear first
-        important_attrs = ["num_tasks", "task_type", "model_name", "is_fitted_"]
+        important_attrs = ["num_task", "task_type", "model_name", "is_fitted_"]
         for attr in important_attrs:
             if attr in attributes:
                 value = attributes.pop(attr)
@@ -428,7 +427,7 @@ class BaseMolecularPredictor(ABC):
             List of SMILES strings
         y : Union[List, np.ndarray], optional
             Target values. Can be:
-            - 1D array/list for single task (num_tasks must be 1)
+            - 1D array/list for single task (num_task must be 1)
             - 2D array/list for multiple tasks
 
         Returns
@@ -470,9 +469,9 @@ class BaseMolecularPredictor(ABC):
 
             # Handle 1D array case
             if len(y.shape) == 1:
-                if self.num_tasks != 1:
+                if self.num_task != 1:
                     raise ValueError(
-                        f"1D target array provided but num_tasks is {self.num_tasks}. "
+                        f"1D target array provided but num_task is {self.num_task}. "
                         "For multiple tasks, y must be 2D array."
                     )
                 # Reshape to 2D
@@ -492,10 +491,10 @@ class BaseMolecularPredictor(ABC):
                 )
 
             # Check task dimension
-            if y.shape[1] != self.num_tasks:
+            if y.shape[1] != self.num_task:
                 raise ValueError(
                     f"Number of tasks in y ({y.shape[1]}) must match "
-                    f"num_tasks ({self.num_tasks})"
+                    f"num_task ({self.num_task})"
                 )
 
             # Handle infinite values
@@ -563,7 +562,7 @@ class BaseMolecularPredictor(ABC):
     @staticmethod
     def _get_param_names() -> List[str]:
         """Get parameter names for the estimator."""
-        return ["num_tasks", "task_type", "is_fitted_"]
+        return ["num_task", "task_type", "is_fitted_"]
 
     # def save_model(self, path: str) -> None:
     #     """Save the model to disk.
@@ -979,7 +978,7 @@ class BaseMolecularPredictor(ABC):
 # ## Model Description
 # - **Model Type**: {self.__class__.__name__}
 # - **Task Type**: {self.task_type}
-# - **Number of Tasks**: {self.num_tasks}
+# - **Number of Tasks**: {self.num_task}
 # - **Framework**: torch_molecule
 
 # ## Usage
@@ -989,7 +988,7 @@ class BaseMolecularPredictor(ABC):
 # # Load model
 # checkpoint = torch.load(f"local_model_dir/{self.model_name}.pt", repo="{repo_id}")
 # model = {self.__class__.__name__}(
-#     num_tasks={self.num_tasks},
+#     num_task={self.num_task},
 #     task_type="{self.task_type}"
 # )
 # model.load_model("local_model_dir/{self.model_name}.pt",  repo="{repo_id}")

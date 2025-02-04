@@ -25,10 +25,10 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
     def __init__(
         self,
         # model parameters
-        num_task: int = 1,
+        num_tasks: int = 1,
         task_type: str = "classification",
         num_layer: int = 5,
-        hidden_size: int = 300,
+        emb_dim: int = 300,
         gnn_type: str = "gin-virtual",
         drop_ratio: float = 0.5,
         norm_layer: str = "batch_norm",
@@ -54,10 +54,10 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         verbose: bool = False,
         model_name: str = "GNNMolecularPredictor",
     ): 
-        super().__init__(num_task=num_task, task_type=task_type, model_name=model_name, device=device)
+        super().__init__(num_tasks=num_tasks, task_type=task_type, model_name=model_name, device=device)
         # Model hyperparameters
         self.num_layer = num_layer
-        self.hidden_size = hidden_size
+        self.emb_dim = emb_dim
         self.gnn_type = gnn_type
         self.drop_ratio = drop_ratio
         self.norm_layer = norm_layer
@@ -106,10 +106,10 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         """
         return [
             # Model Hyperparameters
-            "num_task",
+            "num_tasks",
             "task_type",
             "num_layer",
-            "hidden_size",
+            "emb_dim",
             "gnn_type",
             "drop_ratio",
             "norm_layer",
@@ -163,10 +163,20 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 
             hyperparameters = checkpoint["hyperparameters"]
             
+            # Define required parameters
+            required_params = {
+                "num_tasks", "num_layer", "emb_dim", "gnn_type",
+                "drop_ratio", "norm_layer", "graph_pooling", 'augmented_feature'
+            }
+            
+            # Validate parameters
+            # invalid_params = set(hyperparameters.keys()) - required_params
+            
+            # Get parameters with fallback to instance values
             return {
-                "num_task": hyperparameters.get("num_task", self.num_task),
+                "num_tasks": hyperparameters.get("num_tasks", self.num_tasks),
                 "num_layer": hyperparameters.get("num_layer", self.num_layer),
-                "hidden_size": hyperparameters.get("hidden_size", self.hidden_size),
+                "emb_dim": hyperparameters.get("emb_dim", self.emb_dim),
                 "gnn_type": hyperparameters.get("gnn_type", self.gnn_type),
                 "drop_ratio": hyperparameters.get("drop_ratio", self.drop_ratio),
                 "norm_layer": hyperparameters.get("norm_layer", self.norm_layer),
@@ -174,10 +184,11 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 "augmented_feature": hyperparameters.get("augmented_feature", self.augmented_feature)
             }
         else:
+            # Use current instance parameters
             return {
-                "num_task": self.num_task,
+                "num_tasks": self.num_tasks,
                 "num_layer": self.num_layer,
-                "hidden_size": self.hidden_size,
+                "emb_dim": self.emb_dim,
                 "gnn_type": self.gnn_type,
                 "drop_ratio": self.drop_ratio,
                 "norm_layer": self.norm_layer,

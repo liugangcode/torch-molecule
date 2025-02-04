@@ -11,7 +11,7 @@ class GNN(nn.Module):
         self,
         num_tasks,
         num_layer,
-        emb_dim=300,
+        hidden_size=300,
         gnn_type="gin-virtual",
         drop_ratio=0.5,
         norm_layer="batch_norm",
@@ -21,12 +21,12 @@ class GNN(nn.Module):
         super(GNN, self).__init__()
         gnn_name = gnn_type.split("-")[0]
         self.num_tasks = num_tasks
-        self.emb_dim = emb_dim
+        self.hidden_size = hidden_size
 
         if "virtual" in gnn_type:
             self.graph_encoder = GNN_node_Virtualnode(
                 num_layer,
-                emb_dim,
+                hidden_size,
                 JK="last",
                 drop_ratio=drop_ratio,
                 residual=True,
@@ -36,7 +36,7 @@ class GNN(nn.Module):
         else:
             self.graph_encoder = GNN_node(
                 num_layer,
-                emb_dim,
+                hidden_size,
                 JK="last",
                 drop_ratio=drop_ratio,
                 residual=True,
@@ -52,14 +52,14 @@ class GNN(nn.Module):
         else:
             raise ValueError(f"Invalid graph pooling type {graph_pooling}.")
 
-        graph_dim = emb_dim
+        graph_dim = hidden_size
         self.augmented_feature = augmented_feature
         if augmented_feature:
             if "morgan" in augmented_feature:
                 graph_dim += 1024
             if "maccs" in augmented_feature:
                 graph_dim += 167
-        self.predictor = MLP(graph_dim, hidden_features=2 * emb_dim, out_features=num_tasks)
+        self.predictor = MLP(graph_dim, hidden_features=2 * hidden_size, out_features=num_tasks)
     
     def initialize_parameters(self, seed=None):
         """

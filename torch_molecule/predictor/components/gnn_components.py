@@ -11,17 +11,17 @@ full_atom_feature_dims = get_atom_feature_dims()
 full_bond_feature_dims = get_bond_feature_dims()
 
 class GINConv(MessagePassing):
-    def __init__(self, emb_dim):
+    def __init__(self, hidden_size):
         '''
-            emb_dim (int): node embedding dimensionality
+            hidden_size (int): node embedding dimensionality
         '''
 
         super(GINConv, self).__init__(aggr = "add")
 
-        self.mlp = torch.nn.Sequential(torch.nn.Linear(emb_dim, 2*emb_dim), torch.nn.BatchNorm1d(2*emb_dim), torch.nn.ReLU(), torch.nn.Linear(2*emb_dim, emb_dim))
+        self.mlp = torch.nn.Sequential(torch.nn.Linear(hidden_size, 2*hidden_size), torch.nn.BatchNorm1d(2*hidden_size), torch.nn.ReLU(), torch.nn.Linear(2*hidden_size, hidden_size))
         self.eps = torch.nn.Parameter(torch.Tensor([0]))
 
-        self.bond_encoder = BondEncoder(emb_dim = emb_dim)
+        self.bond_encoder = BondEncoder(hidden_size = hidden_size)
 
     def forward(self, x, edge_index, edge_attr):
         edge_embedding = self.bond_encoder(edge_attr)
@@ -36,12 +36,12 @@ class GINConv(MessagePassing):
         return aggr_out
     
 class GCNConv(MessagePassing):
-    def __init__(self, emb_dim):
+    def __init__(self, hidden_size):
         super(GCNConv, self).__init__(aggr='add')
 
-        self.linear = torch.nn.Linear(emb_dim, emb_dim)
-        self.root_emb = torch.nn.Embedding(1, emb_dim)
-        self.bond_encoder = BondEncoder(emb_dim = emb_dim)
+        self.linear = torch.nn.Linear(hidden_size, hidden_size)
+        self.root_emb = torch.nn.Embedding(1, hidden_size)
+        self.bond_encoder = BondEncoder(hidden_size = hidden_size)
 
     def forward(self, x, edge_index, edge_attr):
         x = self.linear(x)
@@ -64,16 +64,15 @@ class GCNConv(MessagePassing):
     def update(self, aggr_out):
         return aggr_out
 
-
 ### GNN to generate node embedding
 class GNN_node(torch.nn.Module):
     """
     Output:
         node representations
     """
-    def __init__(self, num_layer, emb_dim, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm'):
+    def __init__(self, num_layer, hidden_size, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm'):
         '''
-            emb_dim (int): node embedding dimensionality
+            hidden_size (int): node embedding dimensionality
             num_layer (int): number of GNN message passing layers
 
         '''
@@ -89,8 +88,8 @@ class GNN_node(torch.nn.Module):
         if self.num_layer < 2:
             raise ValueError("Number of GNN layers must be greater than 1.")
 
-        self.atom_encoder = AtomEncoder(emb_dim)
-        self.bond_encoder = BondEncoder(emb_dim)
+        self.atom_encoder = AtomEncoder(hidden_size)
+        self.bond_encoder = BondEncoder(hidden_size)
 
         ###List of GNNs
         self.convs = torch.nn.ModuleList()
@@ -98,29 +97,29 @@ class GNN_node(torch.nn.Module):
 
         for layer in range(num_layer):
             if gnn_name == 'gin':
-                self.convs.append(GINConv(emb_dim))
+                self.convs.append(GINConv(hidden_size))
             elif gnn_name == 'gcn':
-                self.convs.append(GCNConv(emb_dim))
+                self.convs.append(GCNConv(hidden_size))
             else:
                 raise ValueError('Undefined GNN type called {}'.format(gnn_name))
 
             if norm_layer.split('_')[0] == 'batch':
                 if norm_layer.split('_')[-1] == 'notrack':
-                    self.batch_norms.append(torch.nn.BatchNorm1d(emb_dim, track_running_stats=False, affine=False))
+                    self.batch_norms.append(torch.nn.BatchNorm1d(hidden_size, track_running_stats=False, affine=False))
                 else:
-                    self.batch_norms.append(torch.nn.BatchNorm1d(emb_dim))
+                    self.batch_norms.append(torch.nn.BatchNorm1d(hidden_size))
             elif norm_layer.split('_')[0] == 'instance':
-                self.batch_norms.append(InstanceNorm(emb_dim))
+                self.batch_norms.append(InstanceNorm(hidden_size))
             elif norm_layer.split('_')[0] == 'layer':
-                self.batch_norms.append(LayerNorm(emb_dim))
+                self.batch_norms.append(LayerNorm(hidden_size))
             elif norm_layer.split('_')[0] == 'graph':
-                self.batch_norms.append(GraphNorm(emb_dim))
+                self.batch_norms.append(GraphNorm(hidden_size))
             elif norm_layer.split('_')[0] == 'size':
                 self.batch_norms.append(GraphSizeNorm())
             elif norm_layer.split('_')[0] == 'pair':
-                self.batch_norms.append(PairNorm(emb_dim))
+                self.batch_norms.append(PairNorm(hidden_size))
             elif norm_layer.split('_')[0] == 'group':
-                self.batch_norms.append(DiffGroupNorm(emb_dim, groups=4))
+                self.batch_norms.append(DiffGroupNorm(hidden_size, groups=4))
             else:
                 raise ValueError('Undefined normalization layer called {}'.format(norm_layer))
         if norm_layer.split('_')[1] == 'size':
@@ -167,9 +166,9 @@ class GNN_node_Virtualnode(torch.nn.Module):
     Output:
         node representations
     """
-    def __init__(self, num_layer, emb_dim, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm'):
+    def __init__(self, num_layer, hidden_size, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm'):
         '''
-            emb_dim (int): node embedding dimensionality
+            hidden_size (int): node embedding dimensionality
         '''
 
         super(GNN_node_Virtualnode, self).__init__()
@@ -183,11 +182,11 @@ class GNN_node_Virtualnode(torch.nn.Module):
         if self.num_layer < 2:
             raise ValueError("Number of GNN layers must be greater than 1.")
 
-        self.atom_encoder = AtomEncoder(emb_dim)
-        self.bond_encoder = BondEncoder(emb_dim)
+        self.atom_encoder = AtomEncoder(hidden_size)
+        self.bond_encoder = BondEncoder(hidden_size)
 
         ### set the initial virtual node embedding to 0.
-        self.virtualnode_embedding = torch.nn.Embedding(1, emb_dim)
+        self.virtualnode_embedding = torch.nn.Embedding(1, hidden_size)
         torch.nn.init.constant_(self.virtualnode_embedding.weight.data, 0)
 
         ### List of GNNs
@@ -200,36 +199,36 @@ class GNN_node_Virtualnode(torch.nn.Module):
 
         for layer in range(num_layer):
             if gnn_name == 'gin':
-                self.convs.append(GINConv(emb_dim))
+                self.convs.append(GINConv(hidden_size))
             elif gnn_name == 'gcn':
-                self.convs.append(GCNConv(emb_dim))
+                self.convs.append(GCNConv(hidden_size))
             else:
                 raise ValueError('Undefined GNN type called {}'.format(gnn_name))
             
             if norm_layer.split('_')[0] == 'batch':
                 if norm_layer.split('_')[-1] == 'notrack':
-                    self.batch_norms.append(torch.nn.BatchNorm1d(emb_dim, track_running_stats=False, affine=False))
+                    self.batch_norms.append(torch.nn.BatchNorm1d(hidden_size, track_running_stats=False, affine=False))
                 else:
-                    self.batch_norms.append(torch.nn.BatchNorm1d(emb_dim))
+                    self.batch_norms.append(torch.nn.BatchNorm1d(hidden_size))
             elif norm_layer.split('_')[0] == 'instance':
-                self.batch_norms.append(InstanceNorm(emb_dim))
+                self.batch_norms.append(InstanceNorm(hidden_size))
             elif norm_layer.split('_')[0] == 'layer':
-                self.batch_norms.append(LayerNorm(emb_dim))
+                self.batch_norms.append(LayerNorm(hidden_size))
             elif norm_layer.split('_')[0] == 'graph':
-                self.batch_norms.append(GraphNorm(emb_dim))
+                self.batch_norms.append(GraphNorm(hidden_size))
             elif norm_layer.split('_')[0] == 'size':
                 self.batch_norms.append(GraphSizeNorm())
             elif norm_layer.split('_')[0] == 'pair':
-                self.batch_norms.append(PairNorm(emb_dim))
+                self.batch_norms.append(PairNorm(hidden_size))
             elif norm_layer.split('_')[0] == 'group':
-                self.batch_norms.append(DiffGroupNorm(emb_dim, groups=4))
+                self.batch_norms.append(DiffGroupNorm(hidden_size, groups=4))
             else:
                 raise ValueError('Undefined normalization layer called {}'.format(norm_layer))
         if norm_layer.split('_')[1] == 'size':
             self.graph_size_norm = GraphSizeNorm()
         for layer in range(num_layer - 1):
-            self.mlp_virtualnode_list.append(torch.nn.Sequential(torch.nn.Linear(emb_dim, 2*emb_dim), torch.nn.BatchNorm1d(2*emb_dim), torch.nn.ReLU(), \
-                                                    torch.nn.Linear(2*emb_dim, emb_dim), torch.nn.BatchNorm1d(emb_dim), torch.nn.ReLU()))
+            self.mlp_virtualnode_list.append(torch.nn.Sequential(torch.nn.Linear(hidden_size, 2*hidden_size), torch.nn.BatchNorm1d(2*hidden_size), torch.nn.ReLU(), \
+                                                    torch.nn.Linear(2*hidden_size, hidden_size), torch.nn.BatchNorm1d(hidden_size), torch.nn.ReLU()))
 
 
     def forward(self, batched_data):
@@ -283,13 +282,13 @@ class GNN_node_Virtualnode(torch.nn.Module):
 
 class AtomEncoder(torch.nn.Module):
 
-    def __init__(self, emb_dim):
+    def __init__(self, hidden_size):
         super(AtomEncoder, self).__init__()
         
         self.atom_embedding_list = torch.nn.ModuleList()
 
         for i, dim in enumerate(full_atom_feature_dims):
-            emb = torch.nn.Embedding(dim, emb_dim, max_norm=1)
+            emb = torch.nn.Embedding(dim, hidden_size, max_norm=1)
             torch.nn.init.xavier_uniform_(emb.weight.data)
             self.atom_embedding_list.append(emb)
 
@@ -303,13 +302,13 @@ class AtomEncoder(torch.nn.Module):
 
 class BondEncoder(torch.nn.Module):
     
-    def __init__(self, emb_dim):
+    def __init__(self, hidden_size):
         super(BondEncoder, self).__init__()
         
         self.bond_embedding_list = torch.nn.ModuleList()
 
         for i, dim in enumerate(full_bond_feature_dims):
-            emb = torch.nn.Embedding(dim, emb_dim, max_norm=1)
+            emb = torch.nn.Embedding(dim, hidden_size, max_norm=1)
             torch.nn.init.xavier_uniform_(emb.weight.data)
             self.bond_embedding_list.append(emb)
 

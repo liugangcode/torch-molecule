@@ -25,10 +25,10 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
         self,
         gamma: float = 0.4,
         # model parameters
-        num_tasks: int = 1,
+        num_task: int = 1,
         task_type: str = "classification",
         num_layer: int = 5,
-        emb_dim: int = 300,
+        hidden_size: int = 300,
         gnn_type: str = "gin-virtual",
         drop_ratio: float = 0.5,
         norm_layer: str = "batch_norm",
@@ -56,10 +56,10 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
     ):
         # Call parent class's __init__ with all the common parameters
         super().__init__(
-            num_tasks=num_tasks,
+            num_task=num_task,
             task_type=task_type,
             num_layer=num_layer,
-            emb_dim=emb_dim,
+            hidden_size=hidden_size,
             gnn_type=gnn_type,
             drop_ratio=drop_ratio,
             norm_layer=norm_layer,
@@ -129,7 +129,7 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
             
         #     # Define required parameters
         #     required_params = {
-        #         "gamma", "num_tasks", "num_layer", "emb_dim", "gnn_type",
+        #         "gamma", "num_task", "num_layer", "hidden_size", "gnn_type",
         #         "drop_ratio", "norm_layer", "augmented_feature"
         #     }
             
@@ -141,9 +141,9 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
         #     # Get parameters with fallback to instance values
         #     return {
         #         "gamma": hyperparameters['gamma'],
-        #         "num_tasks": hyperparameters['num_tasks'],
+        #         "num_task": hyperparameters['num_task'],
         #         "num_layer": hyperparameters['num_layer'],
-        #         "emb_dim": hyperparameters['emb_dim'],
+        #         "hidden_size": hyperparameters['hidden_size'],
         #         "gnn_type": hyperparameters['gnn_type'],
         #         "drop_ratio": hyperparameters['drop_ratio'],
         #         "norm_layer": hyperparameters['norm_layer'],
@@ -153,9 +153,9 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
         #     # Use current instance parameters
         #     return {
         #         "gamma": self.gamma,
-        #         "num_tasks": self.num_tasks,
+        #         "num_task": self.num_task,
         #         "num_layer": self.num_layer,
-        #         "emb_dim": self.emb_dim,
+        #         "hidden_size": self.hidden_size,
         #         "gnn_type": self.gnn_type,
         #         "drop_ratio": self.drop_ratio,
         #         "norm_layer": self.norm_layer,

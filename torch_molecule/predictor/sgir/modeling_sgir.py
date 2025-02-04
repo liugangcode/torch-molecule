@@ -36,10 +36,10 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
         # GREA parameters
         gamma: float = 0.4,
         # model parameters
-        num_tasks: int = 1,
+        num_task: int = 1,
         task_type: str = "regression",
         num_layer: int = 5,
-        emb_dim: int = 300,
+        hidden_size: int = 300,
         gnn_type: str = "gin-virtual",
         drop_ratio: float = 0.5,
         norm_layer: str = "batch_norm",
@@ -67,10 +67,10 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
     ):
         super().__init__(
             gamma=gamma,
-            num_tasks=num_tasks,
+            num_task=num_task,
             task_type=task_type,
             num_layer=num_layer,
-            emb_dim=emb_dim,
+            hidden_size=hidden_size,
             gnn_type=gnn_type,
             drop_ratio=drop_ratio,
             norm_layer=norm_layer,

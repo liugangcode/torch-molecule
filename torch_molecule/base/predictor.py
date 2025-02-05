@@ -2,13 +2,11 @@ import os
 import json
 import datetime
 import tempfile
-from abc import ABC, abstractmethod
-from typing import Optional, Union, List, Dict, Any, Tuple, Callable, Type
 import warnings
 import torch
 import numpy as np
 from rdkit import Chem
-from .utils import (
+from ..utils import (
     roc_auc_score,
     accuracy_score,
     mean_absolute_error,
@@ -16,44 +14,68 @@ from .utils import (
     root_mean_squared_error,
     r2_score,
 )
-from .utils.format import sanitize_config
+from ..utils.format import sanitize_config
 
+from dataclasses import dataclass, field
+from abc import ABC, abstractmethod
+from typing import Optional, ClassVar, Union, List, Dict, Any, Tuple, Callable, Type
+
+@dataclass
 class BaseMolecularPredictor(ABC):
     """Base class for molecular discovery estimators.
 
     This class provides a skeleton for implementing custom molecular discovery
     models following scikit-learn's conventions. It includes basic functionality
     for parameter management, fitting, prediction, and validation.
-    """
 
-    # Default evaluation metrics for each task type
-    DEFAULT_METRICS = {
+    Attributes
+    ----------
+    num_task : int
+        Number of prediction tasks
+    task_type : str
+        Type of task ('classification' or 'regression')
+    model_name : str
+        Name of the model
+    device : Optional[torch.device]
+        Device to run the model on
+    model : Optional[torch.nn.Module]
+        Model instance
+    """
+    
+    num_task: int
+    task_type: str
+    model_name: str = field(default="BaseMolecularPredictor")
+    device: Optional[torch.device] = field(default=None)
+    model: Optional[torch.nn.Module] = field(default=None, init=False)
+    
+    # Class variables
+    DEFAULT_METRICS: ClassVar[Dict] = {
         "classification": {
             "default": ("roc_auc", roc_auc_score, True),  # (name, function, higher_better)
         },
         "regression": {"default": ("mae", mean_absolute_error, False)},
     }
-
-    def __init__(self, num_task, task_type, model_name="BaseMolecularPredictor", device=None):
-        if task_type not in ["classification", "regression"]:
+    
+    # Instance variables with default values
+    is_fitted_: bool = field(default=False, init=False)
+    model_class: Optional[Type[torch.nn.Module]] = field(default=None, init=False)
+    
+    def __post_init__(self):
+        """Validate inputs and set device after initialization."""
+        if self.task_type not in ["classification", "regression"]:
             raise ValueError(
-                f"task_type must be one of ['classification', 'regression'], got {task_type}"
+                f"task_type must be one of ['classification', 'regression'], got {self.task_type}"
             )
 
-        if not isinstance(num_task, (int, np.integer)) or num_task <= 0:
-            raise ValueError(f"num_task must be a positive integer, got {num_task}")
-
-        self.is_fitted_ = False
-        self.num_task = num_task
-        self.task_type = task_type
-        self.model_name = model_name
-        self.device = (
-            torch.device(device)
-            if device
-            else torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        )
-        self.model_class = None
-
+        if not isinstance(self.num_task, (int, np.integer)) or self.num_task <= 0:
+            raise ValueError(f"num_task must be a positive integer, got {self.num_task}")
+            
+        # Set device if not provided
+        if self.device is None:
+            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        elif isinstance(self.device, str):
+            self.device = torch.device(self.device)
+    
     def get_params(self, deep: bool = True) -> Dict[str, Any]:
         """Get parameters for this estimator.
 
@@ -406,7 +428,7 @@ class BaseMolecularPredictor(ABC):
     def _load_default_criterion(self):
         """Sets default criterion based on task_type."""
         if self.task_type == "regression":
-            return torch.nn.MSELoss()
+            return torch.nn.L1Loss()
         elif self.task_type == "classification":
             return torch.nn.BCEWithLogitsLoss()
         else:
@@ -414,11 +436,11 @@ class BaseMolecularPredictor(ABC):
                 "Unknown task type. Using MSE Loss as the default criterion. "
                 "Please specify a valid task type ('regression' or 'classification') or provide a criterion."
             )
-            return torch.nn.MSELoss()
+            return torch.nn.L1Loss()
 
     def _validate_inputs(
-        self, X: List[str], y: Optional[Union[List, np.ndarray]] = None
-    ) -> Tuple[List[str], Optional[np.ndarray]]:
+        self, X: List[str], y: Optional[Union[List, np.ndarray]] = None, return_rdkit_mol: bool = True
+    ) -> Tuple[Union[List[str], List["Mol"]], Optional[np.ndarray]]:
         """Validate input SMILES strings and target values.
 
         Parameters
@@ -429,11 +451,13 @@ class BaseMolecularPredictor(ABC):
             Target values. Can be:
             - 1D array/list for single task (num_task must be 1)
             - 2D array/list for multiple tasks
+        return_rdkit_mol : bool, default=False
+            If True, returns RDKit Mol objects instead of SMILES strings
 
         Returns
         -------
-        X : List[str]
-            Validated SMILES strings
+        X : Union[List[str], List[Mol]]
+            Validated SMILES strings or RDKit Mol objects if return_rdkit_mol=True
         y : np.ndarray or None
             Validated target values as numpy array, reshaped to 2D if needed
 
@@ -449,12 +473,15 @@ class BaseMolecularPredictor(ABC):
         if not all(isinstance(s, str) for s in X):
             raise ValueError("All elements in X must be strings")
 
-        # Validate SMILES using RDKit
+        # Validate SMILES using RDKit and store Mol objects
         invalid_smiles = []
+        rdkit_mols = []
         for i, smiles in enumerate(X):
-            is_valid, error_msg = self._validate_smiles(smiles, i)
+            is_valid, error_msg, mol = self._validate_smiles(smiles, i)
             if not is_valid:
                 invalid_smiles.append(error_msg)
+            else:
+                rdkit_mols.append(mol)
 
         if invalid_smiles:
             raise ValueError("Invalid SMILES found:\n" + "\n".join(invalid_smiles))
@@ -463,7 +490,7 @@ class BaseMolecularPredictor(ABC):
         if y is not None:
             try:
                 # Convert to numpy array if it's a list
-                y = np.asarray(y, dtype=np.float64)
+                y = np.asarray(y, dtype=np.float32)
             except Exception as e:
                 raise ValueError(f"Could not convert y to numpy array: {str(e)}")
 
@@ -529,9 +556,9 @@ class BaseMolecularPredictor(ABC):
                     RuntimeWarning,
                 )
 
-        return X, y
+        return rdkit_mols if return_rdkit_mol else X, y
 
-    def _validate_smiles(self, smiles: str, idx: int) -> Tuple[bool, Optional[str]]:
+    def _validate_smiles(self, smiles: str, idx: int) -> Tuple[bool, Optional[str], Optional["Mol"]]:
         """Validate a single SMILES string using RDKit.
 
         Parameters
@@ -547,47 +574,24 @@ class BaseMolecularPredictor(ABC):
             Whether the SMILES is valid
         error_msg : str or None
             Error message if invalid, None if valid
+        mol : Mol or None
+            RDKit Mol object if valid, None if invalid
         """
         if not smiles or not smiles.strip():
-            return False, f"Empty SMILES at index {idx}"
+            return False, f"Empty SMILES at index {idx}", None
 
         try:
             mol = Chem.MolFromSmiles(smiles)
             if mol is None:
-                return False, f"Invalid SMILES structure at index {idx}: {smiles}"
-            return True, None
+                return False, f"Invalid SMILES structure at index {idx}: {smiles}", None
+            return True, None, mol
         except Exception as e:
-            return False, f"RDKit error at index {idx}: {str(e)}"
+            return False, f"RDKit error at index {idx}: {str(e)}", None
 
     @staticmethod
     def _get_param_names() -> List[str]:
         """Get parameter names for the estimator."""
         return ["num_task", "task_type", "is_fitted_"]
-
-    # def save_model(self, path: str) -> None:
-    #     """Save the model to disk.
-
-    #     Parameters
-    #     ----------
-    #     path : str
-    #         Path where to save the model.
-    #     """
-    #     raise NotImplementedError("save_model method not implemented for this estimator")
-
-    # def load_model(self, path: str) -> "MolecularBaseEstimator":
-    #     """Load the model from disk.
-
-    #     Parameters
-    #     ----------
-    #     path : str
-    #         Path where the model is saved.
-
-    #     Returns
-    #     -------
-    #     self : object
-    #         Loaded estimator.
-    #     """
-    #     raise NotImplementedError("load_model method not implemented for this estimator")
 
     def save_model(self, path: str) -> None:
         """Save the model to disk.
@@ -897,116 +901,3 @@ class BaseMolecularPredictor(ABC):
 
         except Exception as e:
             raise RuntimeError(f"Failed to push to Hugging Face Hub: {str(e)}")
-
-
-#     def push_to_huggingface(
-#         self,
-#         repo_id: str,
-#         commit_message: str = "Update model",
-#         token: Optional[str] = None,
-#         private: bool = False,
-#     ) -> None:
-#         """Push the model to Hugging Face Hub.
-
-#         Parameters
-#         ----------
-#         repo_id : str
-#             The ID of the model repository (format: '<username>/<model_name>')
-#         commit_message : str, default="Update model"
-#             Message to commit with
-#         token : Optional[str], default=None
-#             HuggingFace token. If None, will look for token in env variables
-#         private : bool, default=False
-#             Whether to make the repository private
-
-#         Raises
-#         ------
-#         ImportError
-#             If huggingface_hub is not installed
-#         ValueError
-#             If model is not fitted or parameters are invalid
-#         RuntimeError
-#             If pushing to hub fails
-#         """
-#         try:
-#             from huggingface_hub import HfApi, create_repo, metadata_update
-#         except ImportError:
-#             raise ImportError(
-#                 "huggingface_hub package is required to push to Hugging Face Hub. "
-#                 "Install it with: pip install huggingface_hub"
-#             )
-
-#         # Validate inputs
-#         if not isinstance(repo_id, str) or "/" not in repo_id:
-#             raise ValueError("repo_id must be in format '<username>/<model_name>'")
-
-#         self._check_is_fitted()
-
-#         # Initialize Hugging Face API
-#         api = HfApi(token=token)
-
-#         try:
-#             # Create repo if it doesn't exist
-#             create_repo(repo_id, private=private, token=token, exist_ok=True)
-
-#             with tempfile.TemporaryDirectory() as tmp_dir:
-#                 # Save model state
-#                 model_path = os.path.join(tmp_dir, f"{self.model_name}.pt")
-#                 self.save_model(model_path)
-#                 model_params = sanitize_config(self.get_params(deep=True))
-#                 # Create config file
-#                 config = {
-#                     "model_name": self.__class__.__name__,
-#                     "task_type": self.task_type,
-#                     "framework": "torch_molecule",
-#                     # Model configuration
-#                     f"{self.model_name}_config": {
-#                         # Include all parameters from get_params
-#                         **model_params,
-#                         "is_fitted": self.is_fitted_,
-#                         "num_parameters": sum(p.numel() for p in self.model.parameters()),
-#                     },
-#                 }
-#                 config_path = os.path.join(tmp_dir, "config.json")
-#                 with open(config_path, "w") as f:
-#                     json.dump(config, f, indent=2)
-
-#                 # Create simple model card
-#                 readme_content = f"""
-# # {self.__class__.__name__} Model
-
-# ## Model Description
-# - **Model Type**: {self.__class__.__name__}
-# - **Task Type**: {self.task_type}
-# - **Number of Tasks**: {self.num_task}
-# - **Framework**: torch_molecule
-
-# ## Usage
-
-# ```python
-# from torch_molecule import {self.__class__.__name__}
-# # Load model
-# checkpoint = torch.load(f"local_model_dir/{self.model_name}.pt", repo="{repo_id}")
-# model = {self.__class__.__name__}(
-#     num_task={self.num_task},
-#     task_type="{self.task_type}"
-# )
-# model.load_model("local_model_dir/{self.model_name}.pt",  repo="{repo_id}")
-# ```
-# """
-#                 readme_path = os.path.join(tmp_dir, "README.md")
-#                 with open(readme_path, "w") as f:
-#                     f.write(readme_content)
-
-#                 # Push all files to hub
-#                 api.upload_folder(
-#                     repo_id=repo_id, folder_path=tmp_dir, commit_message=commit_message
-#                 )
-#                 # Update repository metadata
-#                 metadata = {
-#                     "tags": ["torch_molecule", self.task_type, "molecular-property-prediction"],
-#                     "library_name": "torch_molecule",
-#                 }
-#                 metadata_update(repo_id=repo_id, metadata=metadata, token=token)
-#         except Exception as e:
-#             raise RuntimeError(f"Failed to push to Hugging Face Hub: {str(e)}")

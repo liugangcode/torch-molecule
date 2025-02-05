@@ -7,6 +7,7 @@ from .generic.metrics import (
     root_mean_squared_error,
     r2_score,
 )
+from .generic.pseudo_tasks import PSEUDOTASK
 from .graph.graph_from_smiles import graph_from_smiles
 from .graph.features import get_atom_feature_dims, get_bond_feature_dims
 
@@ -23,4 +24,6 @@ __all__ = [
     "graph_from_smiles",
     "get_atom_feature_dims",
     "get_bond_feature_dims",
+    # pseudo_tasks
+    "PSEUDOTASK",
 ]

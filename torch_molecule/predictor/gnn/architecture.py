@@ -2,14 +2,13 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 
-from ..components.gnn_components import GNN_node, GNN_node_Virtualnode
-from ..components.mlp_componenet import MLP
+from ...nn_component import GNN_node, GNN_node_Virtualnode, MLP
 from ...utils import init_weights
 
 class GNN(nn.Module):
     def __init__(
         self,
-        num_tasks,
+        num_task,
         num_layer,
         hidden_size=300,
         gnn_type="gin-virtual",
@@ -20,7 +19,7 @@ class GNN(nn.Module):
     ):
         super(GNN, self).__init__()
         gnn_name = gnn_type.split("-")[0]
-        self.num_tasks = num_tasks
+        self.num_task = num_task
         self.hidden_size = hidden_size
 
         if "virtual" in gnn_type:
@@ -59,7 +58,7 @@ class GNN(nn.Module):
                 graph_dim += 1024
             if "maccs" in augmented_feature:
                 graph_dim += 167
-        self.predictor = MLP(graph_dim, hidden_features=2 * hidden_size, out_features=num_tasks)
+        self.predictor = MLP(graph_dim, hidden_features=2 * hidden_size, out_features=num_task)
     
     def initialize_parameters(self, seed=None):
         """

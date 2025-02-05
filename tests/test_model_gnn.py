@@ -20,10 +20,10 @@ def test_data():
 def base_model():
     """Fixture providing a basic GNN model instance."""
     return GNNMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification",
         num_layer=3,
-        emb_dim=128,
+        hidden_size=128,
         batch_size=4,
         epochs=5,
         verbose=False
@@ -32,10 +32,10 @@ def base_model():
 def test_model_initialization(base_model):
     """Test basic model initialization."""
     assert isinstance(base_model, GNNMolecularPredictor)
-    assert base_model.num_tasks == 1
+    assert base_model.num_task == 1
     assert base_model.task_type == "classification"
     assert base_model.num_layer == 3
-    assert base_model.emb_dim == 128
+    assert base_model.hidden_size == 128
 
 def test_model_fitting(base_model, test_data):
     """Test model fitting functionality."""
@@ -65,7 +65,7 @@ def test_model_autofit(test_data):
     smiles_list, properties = test_data
     
     model_auto = GNNMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification",
         epochs=3,
         verbose=False
@@ -76,7 +76,7 @@ def test_model_autofit(test_data):
             param_type=ParameterType.INTEGER,
             value_range=(2, 4)
         ),
-        'emb_dim': ParameterSpec(
+        'hidden_size': ParameterSpec(
             param_type=ParameterType.INTEGER,
             value_range=(64, 256)
         ),
@@ -110,7 +110,7 @@ def test_model_save_load(base_model, test_data, tmp_path):
     
     # Load model and verify
     new_model = GNNMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification"
     )
     new_model.load_model(str(save_path))

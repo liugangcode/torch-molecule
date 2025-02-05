@@ -16,11 +16,11 @@ def test_grea_predictor():
     # 1. Basic initialization test
     print("\n=== Testing GREA model initialization ===")
     model = GREAMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification",
         gamma=0.8,
         num_layer=3,
-        emb_dim=128,
+        hidden_size=128,
         batch_size=4,
         epochs=5,
         verbose=True
@@ -47,7 +47,7 @@ def test_grea_predictor():
             param_type=ParameterType.INTEGER,
             value_range=(2, 4)
         ),
-        'emb_dim': ParameterSpec(
+        'hidden_size': ParameterSpec(
             param_type=ParameterType.INTEGER,
             value_range=(64, 256)
         ),
@@ -68,7 +68,7 @@ def test_grea_predictor():
     # Test different search configurations
     print("\n--- Testing with full search space ---")
     model_auto = GREAMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification",
         epochs=3,
         verbose=True
@@ -90,7 +90,7 @@ def test_grea_predictor():
     }
     
     model_partial = GREAMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification",
         epochs=3,
         verbose=True
@@ -107,7 +107,7 @@ def test_grea_predictor():
     # Test with default search space
     print("\n--- Testing with default search space ---")
     model_default = GREAMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification",
         epochs=3,
         verbose=True
@@ -127,7 +127,7 @@ def test_grea_predictor():
     print(f"GREA model saved to {save_path}")
 
     new_model = GREAMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification"
     )
     new_model.load_model(save_path)
@@ -152,7 +152,7 @@ def test_grea_predictor():
             )
         }
         model_invalid = GREAMolecularPredictor(
-            num_tasks=1,
+            num_task=1,
             task_type="classification",
             verbose=True
         )
@@ -190,11 +190,11 @@ def test_grea_upload():
     try:
         # Initialize and fit a small model for testing upload
         model_for_upload = GREAMolecularPredictor(
-            num_tasks=1,
+            num_task=1,
             task_type="regression",
             gamma=0.8,
             num_layer=2,  # Small model for quick testing
-            emb_dim=64,   # Small embedding dimension
+            hidden_size=64,   # Small embedding dimension
             batch_size=4,
             epochs=2,     # Few epochs for quick testing
             verbose=False,
@@ -206,13 +206,13 @@ def test_grea_upload():
         
         # Push to Hugging Face Hub
         # Note: HF_TOKEN should be set in environment variables
-        repo_id = "liuganghuggingface/test-torch-molecule-ckpt-GREA-gas-separation"
-        model_for_upload.push_to_huggingface(
-            repo_id=repo_id,
-            commit_message="Upload GREA model for gas separation tasks",
-            private=False
-        )
-        print("Successfully pushed model to Hugging Face Hub")
+        # repo_id = "liuganghuggingface/test-torch-molecule-ckpt-GREA-gas-separation"
+        # model_for_upload.push_to_huggingface(
+        #     repo_id=repo_id,
+        #     commit_message="Upload GREA model for gas separation tasks",
+        #     private=False
+        # )
+        # print("Successfully pushed model to Hugging Face Hub")
         
         # Test downloading and loading from Hub
         print("\n=== Testing model loading from Hugging Face Hub ===")        

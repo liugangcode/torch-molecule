@@ -27,37 +27,6 @@ class ParameterSpec(NamedTuple):
     param_type: ParameterType
     value_range: Union[Tuple[Any, Any], List[Any]]
 
-
-# Dictionary mapping parameter names to their types and ranges
-DEFAULT_GNN_SEARCH_SPACES: Dict[str, ParameterSpec] = {
-    # Model architecture parameters
-    "gnn_type": ParameterSpec(
-        ParameterType.CATEGORICAL, ["gin-virtual", "gcn-virtual", "gin", "gcn"]
-    ),
-    "norm_layer": ParameterSpec(
-        ParameterType.CATEGORICAL,
-        [
-            "batch_norm",
-            "layer_norm",
-            "instance_norm",
-            "graph_norm",
-            "size_norm",
-            "pair_norm",
-        ],
-    ),
-    "graph_pooling": ParameterSpec(ParameterType.CATEGORICAL, ["mean", "sum", "max"]),
-    "augmented_feature": ParameterSpec(ParameterType.CATEGORICAL, ["maccs,morgan", "maccs", "morgan", None]),
-    # Integer-valued parameters
-    "num_layer": ParameterSpec(ParameterType.INTEGER, (2, 8)),
-    "emb_dim": ParameterSpec(ParameterType.INTEGER, (64, 512)),
-    # Float-valued parameters with linear scale
-    "drop_ratio": ParameterSpec(ParameterType.FLOAT, (0.0, 0.75)),
-    "scheduler_factor": ParameterSpec(ParameterType.FLOAT, (0.1, 0.5)),
-    # Float-valued parameters with log scale
-    "learning_rate": ParameterSpec(ParameterType.LOG_FLOAT, (1e-5, 1e-2)),
-    "weight_decay": ParameterSpec(ParameterType.LOG_FLOAT, (1e-8, 1e-3)),
-}
-
 def suggest_parameter(trial: Any, param_name: str, param_spec: ParameterSpec) -> Any:
     """Suggest a parameter value using the appropriate Optuna suggest method.
 

@@ -4,6 +4,7 @@ import warnings
 import datetime
 from tqdm import tqdm
 from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal
+from dataclasses import dataclass
 
 import torch
 from torch_geometric.loader import DataLoader
@@ -13,96 +14,36 @@ from ..grea.modeling_grea import GREAMolecularPredictor
 from ..grea.architecture import GREA
 
 from ...utils.search import (
-    DEFAULT_GNN_SEARCH_SPACES,
     ParameterSpec,
     ParameterType,
 )
 
+@dataclass
 class SGIRMolecularPredictor(GREAMolecularPredictor):
     """This predictor implements a GNN model based on pseudo-labeling and data augmentation.
     Paper: Semi-Supervised Graph Imbalanced Regression (https://dl.acm.org/doi/10.1145/3580305.3599497)
     Reference Code: https://github.com/liugangcode/SGIR
     """
-    def __init__(
-        self,
-        # SGIR-specific parameters
-        num_anchor: int = 10,
-        warmup_epoch: int = 20,
-        labeling_interval: int = 5,
-        augmentation_interval: int = 5,
-        top_quantile: float = 0.1,
-        label_logscale: bool = False,
-        lw_aug: float = 1,
-        # GREA parameters
-        gamma: float = 0.4,
-        # model parameters
-        num_task: int = 1,
-        task_type: str = "regression",
-        num_layer: int = 5,
-        hidden_size: int = 300,
-        gnn_type: str = "gin-virtual",
-        drop_ratio: float = 0.5,
-        norm_layer: str = "batch_norm",
-        graph_pooling: str = "sum",
-        # augmented features
-        augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = ["morgan", "maccs"],
-        # training parameters
-        batch_size: int = 128,
-        epochs: int = 500,
-        loss_criterion: Optional[Callable] = None,
-        evaluate_criterion: Optional[Union[str, Callable]] = None,
-        evaluate_higher_better: Optional[bool] = None,
-        learning_rate: float = 0.001,
-        grad_clip_value: Optional[float] = None,
-        weight_decay: float = 0.0,
-        patience: int = 50,
-        # scheduler
-        use_lr_scheduler: bool = True,
-        scheduler_factor: float = 0.5,
-        scheduler_patience: int = 5,
-        # others
-        device: Optional[str] = None,
-        verbose: bool = False,
-        model_name: str = "SGIRMolecularPredictor",
-    ):
-        super().__init__(
-            gamma=gamma,
-            num_task=num_task,
-            task_type=task_type,
-            num_layer=num_layer,
-            hidden_size=hidden_size,
-            gnn_type=gnn_type,
-            drop_ratio=drop_ratio,
-            norm_layer=norm_layer,
-            graph_pooling=graph_pooling,
-            augmented_feature=augmented_feature,
-            batch_size=batch_size,
-            epochs=epochs,
-            loss_criterion=loss_criterion,
-            evaluate_criterion=evaluate_criterion,
-            evaluate_higher_better=evaluate_higher_better,
-            learning_rate=learning_rate,
-            grad_clip_value=grad_clip_value,
-            weight_decay=weight_decay,
-            patience=patience,
-            use_lr_scheduler=use_lr_scheduler,
-            scheduler_factor=scheduler_factor,
-            scheduler_patience=scheduler_patience,
-            device=device,
-            verbose=verbose,
-            model_name=model_name,
-        )
-        assert task_type == 'regression'
-        # SGIR-specific parameter
-        self.lw_aug = lw_aug
-        self.num_anchor = num_anchor
-        self.warmup_epoch = warmup_epoch
-        self.labeling_interval = labeling_interval
-        self.augmentation_interval = augmentation_interval
-        self.top_quantile = top_quantile
-        self.label_logscale = label_logscale
-        self.model_class = GREA
-
+    
+    # SGIR-specific parameters
+    num_anchor: int = 10
+    warmup_epoch: int = 20
+    labeling_interval: int = 5
+    augmentation_interval: int = 5
+    top_quantile: float = 0.1
+    label_logscale: bool = False
+    lw_aug: float = 1
+    
+    # Override parent defaults
+    task_type: str = "regression"
+    model_name: str = "SGIRMolecularPredictor"
+    
+    def __post_init__(self):
+        super().__post_init__()
+        
+        if self.task_type != "regression" or self.num_task != 1:
+            raise ValueError("SGIR only supports regression tasks with 1 task")
+        
     @staticmethod
     def _get_param_names():
         grea_params = [

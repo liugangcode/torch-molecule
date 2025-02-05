@@ -5,10 +5,46 @@ from torch_geometric.nn.norm import GraphNorm, PairNorm, DiffGroupNorm, Instance
 from torch_geometric.nn import MessagePassing
 from torch_geometric.nn import global_add_pool
 
-from ...utils import get_atom_feature_dims, get_bond_feature_dims 
+from ..utils import get_atom_feature_dims, get_bond_feature_dims 
 
 full_atom_feature_dims = get_atom_feature_dims()
 full_bond_feature_dims = get_bond_feature_dims()
+
+class AtomEncoder(torch.nn.Module):
+    def __init__(self, hidden_size):
+        super(AtomEncoder, self).__init__()
+        
+        self.atom_embedding_list = torch.nn.ModuleList()
+
+        for i, dim in enumerate(full_atom_feature_dims):
+            emb = torch.nn.Embedding(dim, hidden_size, max_norm=1)
+            torch.nn.init.xavier_uniform_(emb.weight.data)
+            self.atom_embedding_list.append(emb)
+
+    def forward(self, x):
+        x_embedding = 0
+        for i in range(x.shape[1]):
+            x_embedding += self.atom_embedding_list[i](x[:,i])
+
+        return x_embedding
+
+class BondEncoder(torch.nn.Module):
+    def __init__(self, hidden_size):
+        super(BondEncoder, self).__init__()
+        
+        self.bond_embedding_list = torch.nn.ModuleList()
+
+        for i, dim in enumerate(full_bond_feature_dims):
+            emb = torch.nn.Embedding(dim, hidden_size, max_norm=1)
+            torch.nn.init.xavier_uniform_(emb.weight.data)
+            self.bond_embedding_list.append(emb)
+
+    def forward(self, edge_attr):
+        bond_embedding = 0
+        for i in range(edge_attr.shape[1]):
+            bond_embedding += self.bond_embedding_list[i](edge_attr[:,i])
+
+        return bond_embedding
 
 class GINConv(MessagePassing):
     def __init__(self, hidden_size):
@@ -278,43 +314,3 @@ class GNN_node_Virtualnode(torch.nn.Module):
                 node_representation += h_list[layer]
 
         return node_representation, h_list
-
-
-class AtomEncoder(torch.nn.Module):
-
-    def __init__(self, hidden_size):
-        super(AtomEncoder, self).__init__()
-        
-        self.atom_embedding_list = torch.nn.ModuleList()
-
-        for i, dim in enumerate(full_atom_feature_dims):
-            emb = torch.nn.Embedding(dim, hidden_size, max_norm=1)
-            torch.nn.init.xavier_uniform_(emb.weight.data)
-            self.atom_embedding_list.append(emb)
-
-    def forward(self, x):
-        x_embedding = 0
-        for i in range(x.shape[1]):
-            x_embedding += self.atom_embedding_list[i](x[:,i])
-
-        return x_embedding
-
-
-class BondEncoder(torch.nn.Module):
-    
-    def __init__(self, hidden_size):
-        super(BondEncoder, self).__init__()
-        
-        self.bond_embedding_list = torch.nn.ModuleList()
-
-        for i, dim in enumerate(full_bond_feature_dims):
-            emb = torch.nn.Embedding(dim, hidden_size, max_norm=1)
-            torch.nn.init.xavier_uniform_(emb.weight.data)
-            self.bond_embedding_list.append(emb)
-
-    def forward(self, edge_attr):
-        bond_embedding = 0
-        for i in range(edge_attr.shape[1]):
-            bond_embedding += self.bond_embedding_list[i](edge_attr[:,i])
-
-        return bond_embedding

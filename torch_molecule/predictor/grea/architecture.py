@@ -3,17 +3,16 @@ import torch
 import torch.nn as nn
 from torch_scatter import scatter_add
 
-from ..components.gnn_components import GNN_node, GNN_node_Virtualnode
-from ..components.mlp_componenet import MLP
+from ...nn_component import GNN_node, GNN_node_Virtualnode, MLP
 from ...utils import init_weights
 
 class GREA(nn.Module):
     def __init__(
         self,
-        num_tasks,
+        num_task,
         num_layer,
         gamma=0.4,
-        emb_dim=300,
+        hidden_size=300,
         gnn_type="gin-virtual",
         drop_ratio=0.5,
         norm_layer="batch_norm",
@@ -21,17 +20,17 @@ class GREA(nn.Module):
     ):
         super(GREA, self).__init__()
         gnn_name = gnn_type.split("-")[0]
-        self.num_tasks = num_tasks
+        self.num_task = num_task
         self.gamma = gamma
-        self.emb_dim = emb_dim
+        self.hidden_size = hidden_size
 
         if "virtual" in gnn_type:
             rationale_encoder = GNN_node_Virtualnode(
-                2, emb_dim, JK="last", drop_ratio=drop_ratio, residual=True, gnn_name=gnn_name
+                2, hidden_size, JK="last", drop_ratio=drop_ratio, residual=True, gnn_name=gnn_name
             )
             self.graph_encoder = GNN_node_Virtualnode(
                 num_layer,
-                emb_dim,
+                hidden_size,
                 JK="last",
                 drop_ratio=drop_ratio,
                 residual=True,
@@ -40,11 +39,11 @@ class GREA(nn.Module):
             )
         else:
             rationale_encoder = GNN_node(
-                2, emb_dim, JK="last", drop_ratio=drop_ratio, residual=True, gnn_name=gnn_name
+                2, hidden_size, JK="last", drop_ratio=drop_ratio, residual=True, gnn_name=gnn_name
             )
             self.graph_encoder = GNN_node(
                 num_layer,
-                emb_dim,
+                hidden_size,
                 JK="last",
                 drop_ratio=drop_ratio,
                 residual=True,
@@ -55,22 +54,22 @@ class GREA(nn.Module):
         self.separator = Separator(
             rationale_encoder=rationale_encoder,
             gate_nn=torch.nn.Sequential(
-                torch.nn.Linear(emb_dim, 2 * emb_dim),
-                torch.nn.BatchNorm1d(2 * emb_dim),
+                torch.nn.Linear(hidden_size, 2 * hidden_size),
+                torch.nn.BatchNorm1d(2 * hidden_size),
                 torch.nn.ReLU(),
                 torch.nn.Dropout(),
-                torch.nn.Linear(2 * emb_dim, 1),
+                torch.nn.Linear(2 * hidden_size, 1),
             ),
         )
         
-        graph_dim = emb_dim
+        graph_dim = hidden_size
         self.augmented_feature = augmented_feature
         if augmented_feature:
             if "morgan" in augmented_feature:
                 graph_dim += 1024
             if "maccs" in augmented_feature:
                 graph_dim += 167
-        self.predictor = MLP(graph_dim, hidden_features=2 * emb_dim, out_features=num_tasks)
+        self.predictor = MLP(graph_dim, hidden_features=2 * hidden_size, out_features=num_task)
 
     
     def initialize_parameters(self, seed=None):
@@ -114,7 +113,7 @@ class GREA(nn.Module):
     def compute_loss(self, batched_data, criterion):
         h_node, _ = self.graph_encoder(batched_data)
         h_r, h_env, rationale_size, envir_size, _ = self.separator(batched_data, h_node)
-        h_rep = (h_r.unsqueeze(1) + h_env.unsqueeze(0)).view(-1, self.emb_dim)
+        h_rep = (h_r.unsqueeze(1) + h_env.unsqueeze(0)).view(-1, self.hidden_size)
         h_r, h_rep = self._augment_graph_features(batched_data, h_r, h_rep)
         pred_rem = self.predictor(h_r)
         pred_rep = self.predictor(h_rep)
@@ -135,7 +134,7 @@ class GREA(nn.Module):
     def forward(self, batched_data):
         h_node, _ = self.graph_encoder(batched_data)
         h_r, h_env, _, _, node_score = self.separator(batched_data, h_node)
-        h_rep = (h_r.unsqueeze(1) + h_env.unsqueeze(0)).view(-1, self.emb_dim)
+        h_rep = (h_r.unsqueeze(1) + h_env.unsqueeze(0)).view(-1, self.hidden_size)
         h_r, h_rep = self._augment_graph_features(batched_data, h_r, h_rep)
         prediction = self.predictor(h_r)
         variance = self.predictor(h_rep).view(h_r.size(0), -1).var(dim=-1, keepdim=True)

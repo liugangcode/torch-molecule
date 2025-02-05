@@ -10,9 +10,12 @@ from torch_molecule.predictor.grea import GREAMolecularPredictor
 from torch_molecule.predictor.gnn import GNNMolecularPredictor
 from torch_molecule.predictor.sgir import SGIRMolecularPredictor
 
+from torch_molecule.encoder.supervised import SupervisedMolecularEncoder
+
 __all__ = [
     # 'BaseMolecularPredictor',
     'SGIRMolecularPredictor',
     'GREAMolecularPredictor',
     'GNNMolecularPredictor',
+    'SupervisedMolecularEncoder',
 ]

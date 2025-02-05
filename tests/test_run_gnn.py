@@ -15,10 +15,10 @@ def test_gnn_predictor():
     # 1. Basic initialization test
     print("\n=== Testing model initialization ===")
     model = GNNMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification",
         num_layer=3,
-        emb_dim=128,
+        hidden_size=128,
         batch_size=4,
         epochs=5,  # Small number for testing
         verbose=True
@@ -40,7 +40,7 @@ def test_gnn_predictor():
     print("\n=== Testing model auto-fitting ===")
     search_parameters = {
         'num_layer': (2, 4),
-        'emb_dim': (64, 256),
+        'hidden_size': (64, 256),
         'learning_rate': (1e-4, 1e-2)
     }
     search_parameters = {
@@ -48,7 +48,7 @@ def test_gnn_predictor():
             param_type=ParameterType.INTEGER,
             value_range=(2, 4)
         ),
-        'emb_dim': ParameterSpec(
+        'hidden_size': ParameterSpec(
             param_type=ParameterType.INTEGER,
             value_range=(64, 256)
         ),
@@ -58,7 +58,7 @@ def test_gnn_predictor():
         ),
     }
     model_auto = GNNMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification",
         epochs=3,  # Small number for testing
         # verbose=True
@@ -80,7 +80,7 @@ def test_gnn_predictor():
     print(f"Model saved to {save_path}")
 
     new_model = GNNMolecularPredictor(
-        num_tasks=1,
+        num_task=1,
         task_type="classification"
     )
     new_model.load_model(save_path)

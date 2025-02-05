@@ -1,8 +1,9 @@
 import os
 import numpy as np
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal
+from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal, Type
 import warnings
+from dataclasses import dataclass, field
 
 import torch
 from torch_geometric.loader import DataLoader
@@ -12,88 +13,101 @@ from .architecture import GNN
 from ...base import BaseMolecularPredictor
 from ...utils import graph_from_smiles
 from ...utils.search import (
-    DEFAULT_GNN_SEARCH_SPACES,
     suggest_parameter,
     ParameterSpec,
     ParameterType,
     parse_list_params,
 )
 
+# Dictionary mapping parameter names to their types and ranges
+DEFAULT_GNN_SEARCH_SPACES: Dict[str, ParameterSpec] = {
+    # Model architecture parameters
+    "gnn_type": ParameterSpec(
+        ParameterType.CATEGORICAL, ["gin-virtual", "gcn-virtual", "gin", "gcn"]
+    ),
+    "norm_layer": ParameterSpec(
+        ParameterType.CATEGORICAL,
+        [
+            "batch_norm",
+            "layer_norm",
+            "instance_norm",
+            "graph_norm",
+            "size_norm",
+            "pair_norm",
+        ],
+    ),
+    "graph_pooling": ParameterSpec(ParameterType.CATEGORICAL, ["mean", "sum", "max"]),
+    "augmented_feature": ParameterSpec(ParameterType.CATEGORICAL, ["maccs,morgan", "maccs", "morgan", None]),
+    # Integer-valued parameters
+    "num_layer": ParameterSpec(ParameterType.INTEGER, (2, 8)),
+    "hidden_size": ParameterSpec(ParameterType.INTEGER, (64, 512)),
+    # Float-valued parameters with linear scale
+    "drop_ratio": ParameterSpec(ParameterType.FLOAT, (0.0, 0.75)),
+    "scheduler_factor": ParameterSpec(ParameterType.FLOAT, (0.1, 0.5)),
+    # Float-valued parameters with log scale
+    "learning_rate": ParameterSpec(ParameterType.LOG_FLOAT, (1e-5, 1e-2)),
+    "weight_decay": ParameterSpec(ParameterType.LOG_FLOAT, (1e-8, 1e-3)),
+}
+
+@dataclass
 class GNNMolecularPredictor(BaseMolecularPredictor):
     """This predictor implements a GNN model for molecular property prediction tasks.
     """
-    def __init__(
-        self,
-        # model parameters
-        num_task: int = 1,
-        task_type: str = "classification",
-        num_layer: int = 5,
-        hidden_size: int = 300,
-        gnn_type: str = "gin-virtual",
-        drop_ratio: float = 0.5,
-        norm_layer: str = "batch_norm",
-        graph_pooling: str = "sum",
-        # augmented features
-        augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = ["morgan", "maccs"],
-        # training parameters
-        batch_size: int = 128,
-        epochs: int = 500,
-        loss_criterion: Optional[Callable] = None,
-        evaluate_criterion: Optional[Union[str, Callable]] = None,
-        evaluate_higher_better: Optional[bool] = None,
-        learning_rate: float = 0.001,
-        grad_clip_value: Optional[float] = None,
-        weight_decay: float = 0.0,
-        patience: int = 50,
-        # scheduler
-        use_lr_scheduler: bool = True,
-        scheduler_factor: float = 0.5,
-        scheduler_patience: int = 5,
-        # others
-        device: Optional[str] = None,
-        verbose: bool = False,
-        model_name: str = "GNNMolecularPredictor",
-    ): 
-        super().__init__(num_task=num_task, task_type=task_type, model_name=model_name, device=device)
-        # Model hyperparameters
-        self.num_layer = num_layer
-        self.hidden_size = hidden_size
-        self.gnn_type = gnn_type
-        self.drop_ratio = drop_ratio
-        self.norm_layer = norm_layer
-        self.graph_pooling = graph_pooling
-        # Augmented features
-        if augmented_feature is not None:
+    # Model parameters
+    num_task: int = 1
+    task_type: str = "regression"
+    num_layer: int = 5
+    hidden_size: int = 300
+    gnn_type: str = "gin-virtual"
+    drop_ratio: float = 0.5
+    norm_layer: str = "batch_norm"
+    graph_pooling: str = "sum"
+    
+    # Augmented features
+    augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = field(
+        default_factory=lambda: ["morgan", "maccs"]
+    )
+    
+    # Training parameters
+    batch_size: int = 128
+    epochs: int = 500
+    loss_criterion: Optional[Callable] = None
+    evaluate_criterion: Optional[Union[str, Callable]] = None
+    evaluate_higher_better: Optional[bool] = None
+    learning_rate: float = 0.001
+    grad_clip_value: Optional[float] = None
+    weight_decay: float = 0.0
+    patience: int = 50
+    
+    # Scheduler parameters
+    use_lr_scheduler: bool = False
+    scheduler_factor: float = 0.5
+    scheduler_patience: int = 5
+    
+    # Other parameters
+    verbose: bool = False
+    model_name: str = "GNNMolecularPredictor"
+    
+    # Non-init fields
+    fitting_loss: List[float] = field(default_factory=list, init=False)
+    fitting_epoch: int = field(default=0, init=False)
+    model_class: Type[GNN] = field(default=GNN, init=False)
+
+    def __post_init__(self):
+        """Initialize and validate the model after dataclass initialization."""
+        if self.augmented_feature is not None:
             valid_augmented_feature = {"morgan", "maccs"}
-            invalid_fps = set(augmented_feature) - valid_augmented_feature
+            invalid_fps = set(self.augmented_feature) - valid_augmented_feature
             if invalid_fps:
                 raise ValueError(
                     f"Invalid augmented types: {invalid_fps}. "
                     f"Valid options are: {list(valid_augmented_feature)}"
                 )
-        self.augmented_feature = augmented_feature
-        # Training parameters
-        self.batch_size = batch_size
-        self.epochs = epochs
-        self.learning_rate = learning_rate
-        self.weight_decay = weight_decay
-        self.patience = patience
-        self.use_lr_scheduler = use_lr_scheduler
-        self.scheduler_factor = scheduler_factor
-        self.scheduler_patience = scheduler_patience
-        self.grad_clip_value = grad_clip_value
-        self.loss_criterion = loss_criterion if loss_criterion is not None else self._load_default_criterion()
-        self._setup_evaluation(evaluate_criterion, evaluate_higher_better)
-
-        self.fitting_loss = []
-        self.fitting_epoch = 0
-        self.verbose = verbose
-        self.model_class = GNN
-
-        # self.X_train = None
-        # self.y_train = None
-        # self.X_valid = None
-        # self.y_valid = None
+        
+        # Setup loss criterion and evaluation
+        if self.loss_criterion is None:
+            self.loss_criterion = self._load_default_criterion()
+        self._setup_evaluation(self.evaluate_criterion, self.evaluate_higher_better)
 
     @staticmethod
     def _get_param_names() -> List[str]:
@@ -140,23 +154,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         ]
     
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
-        """Get model parameters either from checkpoint or current instance.
-        
-        Parameters
-        ----------
-        checkpoint : Optional[Dict]
-            Checkpoint containing model hyperparameters
-            
-        Returns
-        -------
-        Dict[str, Any]
-            Dictionary of model parameters
-            
-        Raises
-        ------
-        ValueError
-            If checkpoint contains invalid parameters
-        """
         if checkpoint is not None:
             if "hyperparameters" not in checkpoint:
                 raise ValueError("Checkpoint missing 'hyperparameters' key")
@@ -194,12 +191,12 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             iterator = enumerate(X)
 
         pyg_graph_list = []
-        for idx, smiles in iterator:
+        for idx, smiles_or_mol in iterator:
             if y is not None:
                 properties = y[idx]
             else:
                 properties = None
-            graph = graph_from_smiles(smiles, properties, self.augmented_feature)
+            graph = graph_from_smiles(smiles_or_mol, properties, self.augmented_feature)
             g = Data()
             g.num_nodes = graph["num_nodes"]
             g.edge_index = torch.from_numpy(graph["edge_index"])
@@ -443,8 +440,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 print(f"  Number of completed trials: {len(study.trials)}")
                 print(f"  Number of pruned trials: {len(study.get_trials(states=[optuna.trial.TrialState.PRUNED]))}")
                 print(f"  Number of failed trials: {len(study.get_trials(states=[optuna.trial.TrialState.FAIL]))}")
-            else:
-                raise RuntimeError("No successful trials completed during optimization")
+            # else:
+            #     raise RuntimeError("No successful trials completed during optimization")
                 
         # except KeyboardInterrupt:
         #     print("\nOptimization interrupted by user. Saving best results so far...")

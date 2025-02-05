@@ -9,7 +9,7 @@ import torch
 from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 
-from .architecture import GNN
+from .model import GNN
 from ...base import BaseMolecularPredictor
 from ...utils import graph_from_smiles
 from ...utils.search import (
@@ -346,50 +346,50 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                     print(f"Error suggesting parameter {param_name}: {str(e)}")
                     return float('inf')
             
-            try:
-                # Update model parameters and train
-                if "augmented_feature" in params:
-                    params['augmented_feature'] = parse_list_params(params['augmented_feature'])
-                self.set_params(**params)
-                self.fit(X_train, y_train, X_val, y_val, X_unlbl)
-                
-                # Get evaluation score
-                eval_data = (X_val if X_val is not None else X_train)
-                eval_labels = (y_val if y_val is not None else y_train)
-                eval_results = self.predict(eval_data)
-                score = float(self.evaluate_criterion(eval_labels, eval_results['prediction']))
-                
-                # Update best state if current score is better
-                is_better = (
-                    score > best_score if self.evaluate_higher_better 
-                    else score < best_score
+            # try:
+            # Update model parameters and train
+            if "augmented_feature" in params:
+                params['augmented_feature'] = parse_list_params(params['augmented_feature'])
+            self.set_params(**params)
+            self.fit(X_train, y_train, X_val, y_val, X_unlbl)
+            
+            # Get evaluation score
+            eval_data = (X_val if X_val is not None else X_train)
+            eval_labels = (y_val if y_val is not None else y_train)
+            eval_results = self.predict(eval_data)
+            score = float(self.evaluate_criterion(eval_labels, eval_results['prediction']))
+            
+            # Update best state if current score is better
+            is_better = (
+                score > best_score if self.evaluate_higher_better 
+                else score < best_score
+            )
+            
+            if is_better:
+                best_score = score
+                best_state_dict = {
+                    'model': self.model.state_dict(),
+                    'architecture': self._get_model_params()
+                }
+                best_trial_params = params.copy()
+                best_loss = self.fitting_loss.copy()  # Added .copy() for safety
+                best_epoch = self.fitting_epoch
+            
+            if self.verbose:
+                print(
+                    f"Trial {trial.number}: {self.evaluate_name} = {score:.4f} "
+                    f"({'better' if is_better else 'worse'} than best = {best_score:.4f})"
                 )
+                print("Current parameters:")
+                for param_name, value in params.items():
+                    print(f"  {param_name}: {value}")
+            
+            # Return score (negated if higher is better, since Optuna minimizes)
+            return -score if self.evaluate_higher_better else score
                 
-                if is_better:
-                    best_score = score
-                    best_state_dict = {
-                        'model': self.model.state_dict(),
-                        'architecture': self._get_model_params()
-                    }
-                    best_trial_params = params.copy()
-                    best_loss = self.fitting_loss.copy()  # Added .copy() for safety
-                    best_epoch = self.fitting_epoch
-                
-                if self.verbose:
-                    print(
-                        f"Trial {trial.number}: {self.evaluate_name} = {score:.4f} "
-                        f"({'better' if is_better else 'worse'} than best = {best_score:.4f})"
-                    )
-                    print("Current parameters:")
-                    for param_name, value in params.items():
-                        print(f"  {param_name}: {value}")
-                
-                # Return score (negated if higher is better, since Optuna minimizes)
-                return -score if self.evaluate_higher_better else score
-                
-            except Exception as e:
-                print(f"Trial {trial.number} failed with error: {str(e)}")
-                return float('inf')
+            # except Exception as e:
+            #     print(f"Trial {trial.number} failed with error: {str(e)}")
+            #     return float('inf')
         
         # Create study with optional output control
         optuna.logging.set_verbosity(

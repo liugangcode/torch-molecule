@@ -9,7 +9,7 @@ import torch
 from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 
-from .architecture_GNN import GNN
+from .GNNModel import GNN
 from ...base import BaseMolecularEncoder
 from ...utils import graph_from_smiles
 from ...utils import PSEUDOTASK
@@ -167,7 +167,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
                 properties = y[idx]
             else: 
                 properties = None
-            graph = graph_from_smiles(smiles_or_mol, properties, [], self.predefined_task)
+            graph = graph_from_smiles(smiles_or_mol, properties, augmented_properties = self.predefined_task)
             g = Data()
             g.num_nodes = graph["num_nodes"]
             g.edge_index = torch.from_numpy(graph["edge_index"])

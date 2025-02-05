@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 import torch
 from torch_geometric.loader import DataLoader
 
-from .architecture import GREA
+from .model import GREA
 from ..gnn.modeling_gnn import GNNMolecularPredictor
 from ...utils.search import (
     ParameterSpec,
@@ -18,8 +18,7 @@ from ...utils.search import (
 
 @dataclass
 class GREAMolecularPredictor(GNNMolecularPredictor):
-    """This predictor implements a GNN model based on Graph Rationalization
-    for molecular property prediction tasks.
+    """This predictor implements a GNN model based on Graph Rationalization.
     Paper: Graph Rationalization with Environment-based Augmentations (https://dl.acm.org/doi/10.1145/3534678.3539347)
     Reference Code: https://github.com/liugangcode/GREA 
     """

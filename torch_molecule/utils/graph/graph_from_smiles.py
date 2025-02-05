@@ -5,6 +5,12 @@ from .features import atom_to_feature_vector, bond_to_feature_vector
 from .features import getmaccsfingerprint, getmorganfingerprint
 from ..generic.pseudo_tasks import PSEUDOTASK
 
+def add_fingerprint_feature(mol, feature_type, get_fingerprint_fn):
+    if feature_type is None:
+        return None
+    fingerprint = get_fingerprint_fn(mol)
+    return np.expand_dims(np.array(fingerprint, dtype="int8"), axis=0)
+    
 def get_augmented_property(mol, properties):
     if mol is None:
         return None
@@ -26,7 +32,7 @@ def get_augmented_property(mol, properties):
         augmented_property.append(logp)
     return augmented_property
 
-def graph_from_smiles(smiles_or_mol, properties, augmented_features, augmented_properties=None):
+def graph_from_smiles(smiles_or_mol, properties, augmented_features=None, augmented_properties=None):
     """
     Converts SMILES string or RDKit molecule to graph Data object
     
@@ -67,7 +73,6 @@ def graph_from_smiles(smiles_or_mol, properties, augmented_features, augmented_p
         for bond in mol.GetBonds():
             i = bond.GetBeginAtomIdx()
             j = bond.GetEndAtomIdx()
-
             edge_feature = bond_to_feature_vector(bond)
             # add edges in both directions
             edges_list.append((i, j))
@@ -90,11 +95,11 @@ def graph_from_smiles(smiles_or_mol, properties, augmented_features, augmented_p
     graph["edge_feat"] = edge_attr
     graph["node_feat"] = x
     graph["num_nodes"] = len(x)
+
     # Handle properties and augmented properties
     props_list = []            
     if properties is not None:
-        props_list.append(np.array(properties, dtype=np.float32))      
-    
+        props_list.append(np.array(properties, dtype=np.float32))
     if augmented_properties is not None:
         aug_props = get_augmented_property(mol, augmented_properties)
         if aug_props:
@@ -105,21 +110,24 @@ def graph_from_smiles(smiles_or_mol, properties, augmented_features, augmented_p
     else:
         graph['y'] = np.full((1, 1), np.nan, dtype=np.float32)
 
-    if 'morgan' in augmented_features:
-        mgf = getmorganfingerprint(mol)
-        mgf_feat = np.array(mgf, dtype="int8")
-        graph['morgan']  = np.expand_dims(mgf_feat, axis=0) #1024
+    # Handle augmented features
+    if augmented_features is not None:
+        graph['morgan'] = add_fingerprint_feature(
+            mol,
+            'morgan' if 'morgan' in augmented_features else None,
+            getmorganfingerprint
+        )
+        graph['maccs'] = add_fingerprint_feature(
+            mol,
+            'maccs' if 'maccs' in augmented_features else None,
+            getmaccsfingerprint
+        )
     else:
         graph['morgan'] = None
-    
-    if 'maccs' in augmented_features:
-        maccs = getmaccsfingerprint(mol)
-        maccs_feat = np.array(maccs, dtype="int8")
-        graph['maccs']  = np.expand_dims(maccs_feat, axis=0) #167
-    else:
         graph['maccs'] = None
 
-    return graph
+    return graph    
+    
     # except Exception as e:
     #     print(f"Error: {e} during converting {smiles_or_mol} to graph")
     #     return None

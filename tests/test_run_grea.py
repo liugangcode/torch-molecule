@@ -187,54 +187,54 @@ def test_grea_upload():
 
     # 8. Test Hugging Face upload
     print("\n=== Testing Hugging Face Hub upload ===")
-    try:
-        # Initialize and fit a small model for testing upload
-        model_for_upload = GREAMolecularPredictor(
-            num_task=1,
-            task_type="regression",
-            gamma=0.8,
-            num_layer=2,  # Small model for quick testing
-            hidden_size=64,   # Small embedding dimension
-            batch_size=4,
-            epochs=2,     # Few epochs for quick testing
-            verbose=False,
-            model_name='GREA_O2'
-        )
-        
-        # Fit the model with sample data
-        model_for_upload.autofit(smiles_list[:3], properties[:3])
-        
-        # Push to Hugging Face Hub
-        # Note: HF_TOKEN should be set in environment variables
-        # repo_id = "liuganghuggingface/test-torch-molecule-ckpt-GREA-gas-separation"
-        # model_for_upload.push_to_huggingface(
-        #     repo_id=repo_id,
-        #     commit_message="Upload GREA model for gas separation tasks",
-        #     private=False
-        # )
-        # print("Successfully pushed model to Hugging Face Hub")
-        
-        # Test downloading and loading from Hub
-        print("\n=== Testing model loading from Hugging Face Hub ===")        
-        # Load model
-        downloaded_model = GREAMolecularPredictor()
-        downloaded_model.load_model("./downloaded_model/GREA_O2.pt", repo_id=repo_id)
-        
-        # Test prediction with downloaded model
-        test_pred = downloaded_model.predict(smiles_list[3:])
-        print("Successfully loaded and tested model from Hugging Face Hub")
-        print(f"Test prediction shape: {test_pred['prediction'].shape}")
-        
-    except Exception as e:
-        print(f"Hugging Face Hub operations failed with error: {str(e)}")
-        print("Note: Make sure HF_TOKEN environment variable is set")
+    # try:
+    # Initialize and fit a small model for testing upload
+    model_for_upload = GREAMolecularPredictor(
+        num_task=1,
+        task_type="regression",
+        gamma=0.8,
+        num_layer=2,  # Small model for quick testing
+        hidden_size=64,   # Small embedding dimension
+        batch_size=4,
+        epochs=2,     # Few epochs for quick testing
+        verbose=False,
+        model_name='GREA_O2'
+    )
     
-    finally:
-        # Clean up downloaded files
-        if os.path.exists("./downloaded_model"):
-            import shutil
-            shutil.rmtree("./downloaded_model")
-            print("Cleaned up downloaded model files")
+    # Fit the model with sample data
+    model_for_upload.autofit(smiles_list[:3], properties[:3])
+    
+    # Push to Hugging Face Hub
+    # Note: HF_TOKEN should be set in environment variables
+    # repo_id = "liuganghuggingface/test-torch-molecule-ckpt-GREA-gas-separation"
+    # model_for_upload.push_to_huggingface(
+    #     repo_id=repo_id,
+    #     commit_message="Upload GREA model for gas separation tasks",
+    #     private=False
+    # )
+    # print("Successfully pushed model to Hugging Face Hub")
+    
+    # # Test downloading and loading from Hub
+    # print("\n=== Testing model loading from Hugging Face Hub ===")        
+    # # Load model
+    # downloaded_model = GREAMolecularPredictor()
+    # downloaded_model.load_model("./downloaded_model/GREA_O2.pt", repo_id=repo_id)
+    
+    # # Test prediction with downloaded model
+    # test_pred = downloaded_model.predict(smiles_list[3:])
+    # print("Successfully loaded and tested model from Hugging Face Hub")
+    # print(f"Test prediction shape: {test_pred['prediction'].shape}")
+        
+    # except Exception as e:
+    #     print(f"Hugging Face Hub operations failed with error: {str(e)}")
+    #     print("Note: Make sure HF_TOKEN environment variable is set")
+    
+    # finally:
+    #     # Clean up downloaded files
+    if os.path.exists("./downloaded_model"):
+        import shutil
+        shutil.rmtree("./downloaded_model")
+        print("Cleaned up downloaded model files")
 
     # Previous cleanup code remains the same...
     if os.path.exists("test_grea_model.pt"):

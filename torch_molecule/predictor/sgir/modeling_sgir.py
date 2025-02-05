@@ -11,7 +11,7 @@ from torch_geometric.loader import DataLoader
 
 from .strategy import build_selection_dataset, build_augmentation_dataset
 from ..grea.modeling_grea import GREAMolecularPredictor
-from ..grea.architecture import GREA
+from ..grea.model import GREA
 
 from ...utils.search import (
     ParameterSpec,
@@ -20,11 +20,10 @@ from ...utils.search import (
 
 @dataclass
 class SGIRMolecularPredictor(GREAMolecularPredictor):
-    """This predictor implements a GNN model based on pseudo-labeling and data augmentation.
+    """This predictor trains the GREA model based on pseudo-labeling and data augmentation.
     Paper: Semi-Supervised Graph Imbalanced Regression (https://dl.acm.org/doi/10.1145/3580305.3599497)
     Reference Code: https://github.com/liugangcode/SGIR
     """
-    
     # SGIR-specific parameters
     num_anchor: int = 10
     warmup_epoch: int = 20

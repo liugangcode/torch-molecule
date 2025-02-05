@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 
-from ...nn_component import GNN_node, GNN_node_Virtualnode, MLP
+from ...architecture import GNN_node, GNN_node_Virtualnode, MLP
 from ...utils import init_weights
 
 class GNN(nn.Module):

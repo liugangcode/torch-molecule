@@ -76,13 +76,13 @@ def test_sgir_predictor():
 
     # Test save/load
     save_path = "test_sgir_model.pt"
-    model.save_model(save_path)
+    model.save(save_path)
     
     new_model = SGIRMolecularPredictor(
         num_task=1,
         task_type="regression"
     )
-    new_model.load_model(save_path)
+    new_model.load(save_path)
 
     # # Test invalid SMILES
     # try:

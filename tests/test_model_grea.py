@@ -96,14 +96,14 @@ class TestGREAMolecularPredictor(unittest.TestCase):
         """Test that saving an unfitted model raises an error."""
         self.predictor.is_fitted_ = False
         with self.assertRaises(ValueError):
-            self.predictor.save_model(self.model_path)
+            self.predictor.save_to_local(self.model_path)
 
     def test_save_model_invalid_path(self):
         """Test that saving with invalid file extension raises an error."""
         self.predictor.is_fitted_ = True
         invalid_path = os.path.join(self.temp_dir, "model.invalid")
         with self.assertRaises(ValueError):
-            self.predictor.save_model(invalid_path)
+            self.predictor.save_to_local(invalid_path)
 
     @patch('torch.save')
     def test_save_model_success(self, mock_save):
@@ -114,7 +114,7 @@ class TestGREAMolecularPredictor(unittest.TestCase):
         self.predictor.fitting_loss_mean = 0.4
         self.predictor.model = MagicMock()
         self.predictor.model.state_dict = MagicMock(return_value={})
-        self.predictor.save_model(self.model_path)
+        self.predictor.save_to_local(self.model_path)
         
         # Verify torch.save was called with correct arguments
         mock_save.assert_called_once()

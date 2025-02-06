@@ -76,14 +76,14 @@ def test_gnn_predictor():
     # 5. Model saving and loading test
     print("\n=== Testing model saving and loading ===")
     save_path = "test_model.pt"
-    model.save_model(save_path)
+    model.save_to_local(save_path)
     print(f"Model saved to {save_path}")
 
     new_model = GNNMolecularPredictor(
         num_task=1,
         task_type="classification"
     )
-    new_model.load_model(save_path)
+    new_model.load_from_local(save_path)
     print("Model loaded successfully")
 
     # Clean up

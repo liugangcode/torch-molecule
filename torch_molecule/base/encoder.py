@@ -6,8 +6,8 @@ import warnings
 import torch
 import numpy as np
 from rdkit import Chem
-from ..utils.format import sanitize_config
-
+from ..utils.checker import MolecularInputChecker
+from ..utils.checkpoint import LocalCheckpointManager, HuggingFaceCheckpointManager
 from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
 from typing import Optional, ClassVar, Union, List, Dict, Any, Tuple, Callable, Type, Literal
@@ -93,73 +93,23 @@ class BaseMolecularEncoder(ABC):
         return self
 
     def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:
-        """Setup optimization components including optimizer and learning rate scheduler.
-
-        Returns
-        -------
-        Tuple[optim.Optimizer, Optional[Any]]
-            A tuple containing:
-            - The configured optimizer
-            - The learning rate scheduler (if enabled, else None)
-        """
         raise NotImplementedError("optimizers and schedulers must be implemented by child class")
 
     @abstractmethod
     def fit(self, X: List[str], y: Optional[np.ndarray] = None) -> "BaseMolecularEncoder":
-        """Fit the model to learn molecular representations.
-
-        Parameters
-        ----------
-        X : List[str]
-            List of SMILES strings
-        y : Optional[np.ndarray]
-            Optional target values for supervised representation learning
-
-        Returns
-        -------
-        self : object
-            Fitted representer.
-        """
         pass
 
     @abstractmethod
     def encode(self, X: List[str], return_type: Literal["np", "pt"] = "pt") -> Union[np.ndarray, torch.Tensor]:
-        """Encode molecules into vector representations.
-
-        Parameters
-        ----------
-        X : List[str]
-            List of SMILES strings
-        return_type : Literal["np", "pt"], default="pt"
-            Return type of the representations
-        -------
-        representations : ndarray or torch.Tensor
-            Molecular representations
-        """
         pass
 
     def _train_epoch(self, train_loader, optimizer):
-        """Training logic for one epoch.
-
-        Should be implemented by child classes based on specific model architecture.
-        """
         raise NotImplementedError("Training epoch logic must be implemented by child class")
 
     def _evaluation_epoch(self, evaluate_loader):
-        """Training logic for one evaluation.
-
-        Should be implemented by child classes based on specific model architecture.
-        """
         raise NotImplementedError("Evaluation epoch logic must be implemented by child class")
 
     def _check_is_fitted(self) -> None:
-        """Check if the estimator is fitted.
-
-        Raises
-        ------
-        NotFittedError
-            If the estimator is not fitted.
-        """
         if not self.is_fitted_:
             raise AttributeError(
                 "This MolecularBaseRepresenter instance is not fitted yet. "
@@ -247,25 +197,6 @@ class BaseMolecularEncoder(ABC):
 
     @abstractmethod
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
-        """Get model parameters either from checkpoint or current instance.
-
-        Parameters
-        ----------
-        checkpoint : Optional[Dict]
-            Checkpoint containing model hyperparameters
-
-        Returns
-        -------
-        Dict[str, Any]
-            Dictionary of model parameters
-
-        Raises
-        ------
-        NotImplementedError
-            If the child class doesn't implement this method
-        ValueError
-            If checkpoint contains invalid parameters
-        """
         raise NotImplementedError(
             "Method _get_model_params must be implemented by child class. "
             "This method should return a dictionary of model parameters either "
@@ -276,21 +207,6 @@ class BaseMolecularEncoder(ABC):
         self, model_class: Type[torch.nn.Module], device, checkpoint: Optional[Dict] = None
     ) -> None:
         """Initialize the model with given parameters or checkpoint.
-
-        Parameters
-        ----------
-        checkpoint : Optional[Dict]
-            If provided, should contain:
-                - hyperparameters: Dict of model configuration
-                - model_state_dict: Dict of model state
-            If None, initializes model with current instance parameters.
-
-        Raises
-        ------
-        ValueError
-            If checkpoint is provided but missing required keys or contains invalid parameters
-        RuntimeError
-            If device initialization fails
         """
         try:
             model_params = self._get_model_params(checkpoint)
@@ -316,336 +232,13 @@ class BaseMolecularEncoder(ABC):
 
     @staticmethod
     def _get_param_names() -> List[str]:
-        """Get parameter names for the representer."""
         return ["model_name", "is_fitted_"]
-
-    def save_model(self, path: str) -> None:
-        """Save the model to disk.
-
-        Parameters
-        ----------
-        path : str
-            Path where to save the model
-        """
-        if not self.is_fitted_:
-            raise ValueError("Model must be fitted before saving")
-
-        if not path.endswith((".pt", ".pth")):
-            raise ValueError("Save path should end with '.pt' or '.pth'")
-
-        # Create directory if it doesn't exist
-        os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
-
-        model_name = os.path.splitext(os.path.basename(path))[0]
-        save_dict = {
-            "model_state_dict": self.model.state_dict(),
-            "hyperparameters": self.get_params(),
-            "model_name": model_name,
-            "date_saved": datetime.datetime.now().isoformat(),
-            "version": getattr(self, "__version__", "1.0.0"),
-        }
-        torch.save(save_dict, path)
-
-    def load_model(self, path: str, repo_id: Optional[str] = None):
-        """Load a saved model from disk or download from HuggingFace hub.
-
-        Parameters
-        ----------
-        path : str
-            Path to the saved model file or desired local path for downloaded model
-        repo_id : str, optional
-            HuggingFace model repository ID (e.g., 'username/model-name')
-            If provided and local path doesn't exist, will attempt to download from hub
-
-        Returns
-        -------
-        self : BaseMolecularEncoder
-            Updated model instance with loaded weights and parameters
-
-        Raises
-        ------
-        FileNotFoundError
-            If the model file doesn't exist locally and no repo is provided,
-            or if download from repo fails
-        ValueError
-            If the saved file is corrupted or incompatible
-        """
-        # First try to load from local path
-        if os.path.exists(path):
-            try:
-                checkpoint = torch.load(path, map_location=self.device)
-            except Exception as e:
-                raise ValueError(f"Error loading model from {path}: {str(e)}")
-
-        # If local file doesn't exist and repo is provided, try downloading
-        elif repo_id is not None:
-            try:
-                from huggingface_hub import hf_hub_download
-
-                # Create directory if it doesn't exist
-                os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
-
-                # Download from HuggingFace using specified parameters
-                model_name = os.path.splitext(os.path.basename(path))[0]
-
-                # Download model file
-                downloaded_path = hf_hub_download(
-                    repo_id=repo_id,
-                    filename=f"{model_name}.pt",
-                    local_dir=os.path.dirname(path),
-                    # local_dir_use_symlinks=False
-                )
-                hf_hub_download(
-                    repo_id=repo_id,
-                    filename="config.json",
-                    local_dir=os.path.dirname(path),
-                )
-                # Load the downloaded model
-                checkpoint = torch.load(downloaded_path, map_location=self.device)
-
-            except Exception as e:
-                if os.path.exists(path):
-                    os.remove(path)  # Clean up partial downloads
-                raise FileNotFoundError(
-                    f"Failed to download model from repository '{repo_id}': {str(e)}"
-                )
-
-        # If neither local file exists nor repo provided
-        else:
-            raise FileNotFoundError(f"No model file found at '{path}' and no repository provided")
-
-        try:
-            # Validate checkpoint contents
-            required_keys = {
-                "model_state_dict",
-                "hyperparameters",
-                "model_name",
-            }
-            if not all(key in checkpoint for key in required_keys):
-                missing_keys = required_keys - set(checkpoint.keys())
-                raise ValueError(f"Checkpoint missing required keys: {missing_keys}")
-
-            # Validate and track all hyperparameter comparisons
-            parameter_status = []
-            for key, new_value in checkpoint["hyperparameters"].items():
-                if hasattr(self, key):
-                    old_value = getattr(self, key)
-                    is_changed = old_value != new_value
-                    parameter_status.append(
-                        {
-                            "Parameter": key,
-                            "Old Value": old_value,
-                            "New Value": new_value,
-                            "Status": "Changed" if is_changed else "Unchanged",
-                        }
-                    )
-                    if is_changed:
-                        setattr(self, key, new_value)
-
-            # Print comprehensive parameter status table
-            if parameter_status:
-                print("\nHyperparameter Status:")
-                print("-" * 80)
-                print(f"{'Parameter':<20} {'Old Value':<20} {'New Value':<20} {'Status':<10}")
-                print("-" * 80)
-
-                # Sort by status (Changed first, then Unchanged)
-                parameter_status.sort(key=lambda x: (x["Status"] != "Changed", x["Parameter"]))
-
-                for param in parameter_status:
-                    status_color = (
-                        "\033[91m" if param["Status"] == "Changed" else "\033[92m"
-                    )  # Red for changed, green for unchanged
-                    print(
-                        f"{param['Parameter']:<20} "
-                        f"{str(param['Old Value']):<20} "
-                        f"{str(param['New Value']):<20} "
-                        f"{status_color}{param['Status']}\033[0m"
-                    )
-                print("-" * 80)
-
-                # Print summary
-                changes_count = sum(1 for p in parameter_status if p["Status"] == "Changed")
-                print(
-                    f"\nSummary: {changes_count} parameters changed, "
-                    f"{len(parameter_status) - changes_count} unchanged"
-                )
-
-            self._initialize_model(self.model_class, self.device, checkpoint)
-            self.model_name = checkpoint["model_name"]
-            self.is_fitted_ = True
-
-            # Move model to correct device
-            self.model = self.model.to(self.device)
-
-            print(f"Model successfully loaded from {'repository' if repo_id else 'local path'}")
-            return self
-
-        except Exception as e:
-            raise ValueError(f"Error loading model checkpoint: {str(e)}")
-
-        finally:
-            # Clean up any temporary files
-            if (
-                repo_id is not None
-                and os.path.exists(downloaded_path)
-                and os.path.abspath(downloaded_path) != os.path.abspath(path)
-            ):
-                try:
-                    os.remove(downloaded_path)
-                except Exception:
-                    pass
     
     def _validate_inputs(
-        self, X: List[str], y: Optional[Union[List, np.ndarray]] = None, return_rdkit_mol: bool = True, predefined_num_task: int = 0
+        self, X: List[str], y: Optional[Union[List, np.ndarray]] = None, return_rdkit_mol: bool = True, num_task: int = 0, predefined_num_task: int = 0
     ) -> Tuple[Union[List[str], List["Mol"]], Optional[np.ndarray]]:
-        """Validate input SMILES strings and target values.
+        return MolecularInputChecker.validate_inputs(X, y, num_task, predefined_num_task, return_rdkit_mol)
 
-        Parameters
-        ----------
-        X : List[str]
-            List of SMILES strings
-        y : Union[List, np.ndarray], optional
-            Target values. Can be:
-            - 1D array/list for single task (num_task must be 1)
-            - 2D array/list for multiple tasks
-        return_rdkit_mol : bool, default=False
-            If True, returns RDKit Mol objects instead of SMILES strings
-
-        Returns
-        -------
-        X : Union[List[str], List[Mol]]
-            Validated SMILES strings or RDKit Mol objects if return_rdkit_mol=True
-        y : np.ndarray or None
-            Validated target values as numpy array, reshaped to 2D if needed
-
-        Raises
-        ------
-        ValueError
-            If inputs don't meet requirements
-        """
-        # Validate X
-        if not isinstance(X, list):
-            raise ValueError("X must be a list of SMILES strings")
-
-        if not all(isinstance(s, str) for s in X):
-            raise ValueError("All elements in X must be strings")
-
-        # Validate SMILES using RDKit and store Mol objects
-        invalid_smiles = []
-        rdkit_mols = []
-        for i, smiles in enumerate(X):
-            is_valid, error_msg, mol = self._validate_smiles(smiles, i)
-            if not is_valid:
-                invalid_smiles.append(error_msg)
-            else:
-                rdkit_mols.append(mol)
-
-        if invalid_smiles:
-            raise ValueError("Invalid SMILES found:\n" + "\n".join(invalid_smiles))
-
-        # Validate y if provided
-        if y is not None:
-            try:
-                # Convert to numpy array if it's a list
-                y = np.asarray(y, dtype=np.float64)
-            except Exception as e:
-                raise ValueError(f"Could not convert y to numpy array: {str(e)}")
-
-            # Handle 1D array case
-            if len(y.shape) == 1:
-                if self.num_task - predefined_num_task != 1:
-                    raise ValueError(
-                        f"1D target array provided but num_task is {self.num_task - predefined_num_task}. "
-                        "For multiple tasks, y must be 2D array."
-                    )
-                # Reshape to 2D
-                y = y.reshape(-1, 1)
-
-            # Validate dimensions
-            if len(y.shape) != 2:
-                raise ValueError(
-                    f"y must be 1D (for single task) or 2D (for multiple tasks), "
-                    f"got shape {y.shape}"
-                )
-
-            # Check sample dimension
-            if y.shape[0] != len(X):
-                raise ValueError(
-                    f"First dimension of y ({y.shape[0]}) must match " f"length of X ({len(X)})"
-                )
-
-            # Check task dimension
-            if y.shape[1] != self.num_task - predefined_num_task:
-                raise ValueError(
-                    f"Number of tasks in y ({y.shape[1]}) must match "
-                    f"num_task ({self.num_task - predefined_num_task})"
-                )
-
-            # Handle infinite values
-            inf_mask = ~np.isfinite(y)
-            if np.any(inf_mask):
-                inf_indices = np.where(inf_mask)
-                warnings.warn(
-                    f"Infinite values found in y at indices: {list(zip(*inf_indices))}. "
-                    "Converting to NaN.",
-                    RuntimeWarning,
-                )
-                y = y.astype(float)  # Ensure float type for NaN support
-                y[inf_mask] = np.nan
-
-            # Check for NaN values after conversion
-            nan_mask = np.isnan(y)
-            if np.any(nan_mask):
-                # Count NaNs per task
-                nan_counts = np.sum(nan_mask, axis=0)
-                nan_percentages = (nan_counts / len(X)) * 100
-
-                # Create detailed warning message
-                task_warnings = []
-                for task_idx, (count, percentage) in enumerate(zip(nan_counts, nan_percentages)):
-                    if count > 0:
-                        task_warnings.append(f"Task {task_idx}: {count} NaNs ({percentage:.1f}%)")
-
-                warnings.warn(
-                    "NaN values present in y:\n"
-                    + "\n".join(task_warnings)
-                    + "\nSamples with NaN values may be ignored during training.",
-                    RuntimeWarning,
-                )
-
-        return rdkit_mols if return_rdkit_mol else X, y
-
-    def _validate_smiles(self, smiles: str, idx: int) -> Tuple[bool, Optional[str], Optional["Mol"]]:
-        """Validate a single SMILES string using RDKit.
-
-        Parameters
-        ----------
-        smiles : str
-            SMILES string to validate
-        idx : int
-            Index of the SMILES in the input list (for error reporting)
-
-        Returns
-        -------
-        is_valid : bool
-            Whether the SMILES is valid
-        error_msg : str or None
-            Error message if invalid, None if valid
-        mol : Mol or None
-            RDKit Mol object if valid, None if invalid
-        """
-        if not smiles or not smiles.strip():
-            return False, f"Empty SMILES at index {idx}", None
-
-        try:
-            mol = Chem.MolFromSmiles(smiles)
-            if mol is None:
-                return False, f"Invalid SMILES structure at index {idx}: {smiles}", None
-            return True, None, mol
-        except Exception as e:
-            return False, f"RDKit error at index {idx}: {str(e)}", None
-        
     def _inspect_task_types(self, y: Union[np.ndarray, torch.Tensor], return_type: Literal["pt", "np"] = "pt") -> Union[np.ndarray, torch.Tensor]:
         """Inspect the task types of the target values.
 
@@ -663,7 +256,65 @@ class BaseMolecularEncoder(ABC):
         """
         if isinstance(y, np.ndarray):
             y = torch.from_numpy(y)
+        # 0/1/nan -> binary classification (True), otherwise -> regression (False)
         result = torch.tensor([torch.all(torch.isnan(y[:, i]) | (y[:, i] == 0) | (y[:, i] == 1)) for i in range(y.shape[1])], dtype=torch.bool)
         if return_type == "np":
             return result.numpy()
         return result
+
+    def save_to_local(self, path: str) -> None:
+        """Save to local disk using LocalCheckpointManager."""
+        LocalCheckpointManager.save_model_to_local(self, path)
+
+    def load_from_local(self, path: str) -> None:
+        """Load from local disk using LocalCheckpointManager."""
+        LocalCheckpointManager.load_model_from_local(self, path)
+
+    def save_to_hf(
+        self,
+        repo_id: str,
+        task_id: str = "default",
+        metadata_dict: Optional[Dict[str, Any]] = None,
+        metrics: Optional[Dict[str, float]] = None,
+        commit_message: str = "Update model",
+        token: Optional[str] = None,
+        private: bool = False,
+    ) -> None:
+        HuggingFaceCheckpointManager.push_to_huggingface(
+            model_instance=self,
+            repo_id=repo_id,
+            task_id=task_id,
+            metadata_dict=metadata_dict,
+            metrics=metrics,
+            commit_message=commit_message,
+            token=token,
+            private=private,
+        )
+
+    def load_from_hf(self, repo_id: str, path: str) -> None:
+        """Download and load model from Hugging Face Hub."""
+        HuggingFaceCheckpointManager.load_model_from_hf(self, repo_id, path)
+
+    def save(self, path: str, repo_id: Optional[str] = None, **kwargs) -> None:
+        """
+        Automatic save. If `repo_id` is given, push to Hugging Face Hub.
+        Otherwise, save to local path.
+        """
+        if repo_id is not None:
+            self.save_to_hf(repo_id=repo_id, **kwargs)
+        else:
+            self.save_to_local(path)
+
+    def load(self, path: str, repo_id: Optional[str] = None) -> None:
+        """
+        Automatic load. If local `path` exists, load from there. 
+        Otherwise, try loading from Hugging Face Hub if `repo_id` is given.
+        """
+        if os.path.exists(path):
+            self.load_from_local(path)
+        else:
+            if repo_id is None:
+                raise FileNotFoundError(
+                    f"No local file found at '{path}' and no repo_id provided."
+                )
+            self.load_from_hf(repo_id, path)

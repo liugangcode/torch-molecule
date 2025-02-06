@@ -435,13 +435,10 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                     param_spec = search_parameters[param]
                     print(f"  {param}: {value} (type: {param_spec.param_type.value})")
                 
-                # Print optimization statistics
                 print("\nOptimization statistics:")
                 print(f"  Number of completed trials: {len(study.trials)}")
                 print(f"  Number of pruned trials: {len(study.get_trials(states=[optuna.trial.TrialState.PRUNED]))}")
                 print(f"  Number of failed trials: {len(study.get_trials(states=[optuna.trial.TrialState.FAIL]))}")
-            # else:
-            #     raise RuntimeError("No successful trials completed during optimization")
                 
         # except KeyboardInterrupt:
         #     print("\nOptimization interrupted by user. Saving best results so far...")

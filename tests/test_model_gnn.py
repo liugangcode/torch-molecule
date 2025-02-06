@@ -105,7 +105,7 @@ def test_model_save_load(base_model, test_data, tmp_path):
     
     # Fit and save model
     base_model.fit(smiles_list[:3], properties[:3])
-    base_model.save_model(str(save_path))
+    base_model.save_to_local(str(save_path))
     assert save_path.exists()
     
     # Load model and verify
@@ -113,7 +113,7 @@ def test_model_save_load(base_model, test_data, tmp_path):
         num_task=1,
         task_type="classification"
     )
-    new_model.load_model(str(save_path))
+    new_model.load_from_local(str(save_path))
     
     # Compare predictions
     original_pred = base_model.predict(smiles_list[3:])

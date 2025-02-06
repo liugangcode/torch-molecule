@@ -265,7 +265,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         optimizer, scheduler = self._setup_optimizers()
         
         # Prepare datasets and loaders
-        X_train, y_train = self._validate_inputs(X_train, y_train, return_rdkit_mol=True, predefined_num_task=self.predefined_num_task)
+        X_train, y_train = self._validate_inputs(X_train, y_train, return_rdkit_mol=True, num_task=self.num_task, predefined_num_task=self.predefined_num_task)
         train_dataset = self._convert_to_pytorch_data(X_train, y_train)
         train_loader = DataLoader(
             train_dataset,

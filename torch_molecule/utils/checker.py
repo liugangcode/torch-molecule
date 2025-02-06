@@ -37,8 +37,8 @@ class MolecularInputChecker:
     def validate_inputs(
         X: List[str],
         y: Optional[Union[List, np.ndarray]] = None,
-        num_task: int = 1,
-        predefined_num_task: int = 0,
+        num_task: int = 0,
+        num_pretask: int = 0,
         return_rdkit_mol: bool = True
     ) -> Tuple[Union[List[str], List["Chem.Mol"]], Optional[np.ndarray]]:
         """
@@ -48,7 +48,7 @@ class MolecularInputChecker:
             X: List of SMILES strings.
             y: Optional target values.
             num_task: Total number of tasks; used to check dimensions of y.
-            predefined_num_task: Number of tasks that are predefined in the modeling; used to check dimensions of y.
+            num_pretask: Number of tasks that are predefined in the modeling; used to check dimensions of y.
             return_rdkit_mol: If True, convert SMILES to RDKit Mol objects.
 
         Returns:
@@ -84,9 +84,9 @@ class MolecularInputChecker:
                 raise ValueError(f"Could not convert y to numpy array: {str(e)}")
 
             if len(y.shape) == 1:
-                if num_task - predefined_num_task != 1:
+                if num_task - num_pretask != 1:
                     raise ValueError(
-                        f"1D target array provided but num_task is {num_task - predefined_num_task}. "
+                        f"1D target array provided but num_task is {num_task - num_pretask}. "
                         "For multiple tasks, y must be 2D."
                     )
                 y = y.reshape(-1, 1)
@@ -102,9 +102,9 @@ class MolecularInputChecker:
                     f"Number of samples in y ({y.shape[0]}) must match length of X ({len(X)})."
                 )
 
-            if y.shape[1] != num_task - predefined_num_task:
+            if y.shape[1] != num_task - num_pretask:
                 raise ValueError(
-                    f"Second dimension of y ({y.shape[1]}) must match num_task ({num_task - predefined_num_task})."
+                    f"Second dimension of y ({y.shape[1]}) must match num_task ({num_task - num_pretask})."
                 )
 
             inf_mask = ~np.isfinite(y)

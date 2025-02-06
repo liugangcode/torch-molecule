@@ -31,7 +31,6 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
     
     def __post_init__(self):
         super().__post_init__()
-        
 
     @staticmethod
     def _get_param_names() -> List[str]:

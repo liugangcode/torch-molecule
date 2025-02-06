@@ -23,7 +23,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     """
     # pretraiing task
     num_task: Optional[int] = None
-    predefined_num_task: Optional[int] = None
+    num_pretask: Optional[int] = None
     predefined_task: Optional[List[str]] = None
     # Model parameters
     num_layer: int = 5
@@ -68,24 +68,24 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
                     raise ValueError(f"Invalid predefined_task: {task}. Currently only {PSEUDOTASK.keys()} are supported.")
         
         # Calculate number of predefined tasks if any are specified
-        predefined_num_task = 0
+        num_pretask = 0
         if self.predefined_task is not None:
-            predefined_num_task = sum(PSEUDOTASK[task][0] for task in self.predefined_task)
+            num_pretask = sum(PSEUDOTASK[task][0] for task in self.predefined_task)
         elif self.predefined_task is None and self.num_task is None:
             # Use all predefined tasks if none specified
             self.predefined_task = list(PSEUDOTASK.keys())
-            predefined_num_task = sum(task[0] for task in PSEUDOTASK.values())
+            num_pretask = sum(task[0] for task in PSEUDOTASK.values())
 
-        self.predefined_num_task = predefined_num_task
-        self.num_task = (self.num_task or 0) + predefined_num_task
+        self.num_pretask = num_pretask
+        self.num_task = (self.num_task or 0) + num_pretask
 
         if self.verbose:
             if self.predefined_task is None:
                 print(f"Using {self.num_task} user-defined tasks.")
-            elif self.num_task == predefined_num_task:
-                print(f"Using {predefined_num_task} predefined tasks from: {self.predefined_task}")
+            elif self.num_task == num_pretask:
+                print(f"Using {num_pretask} predefined tasks from: {self.predefined_task}")
             else:
-                print(f"Using {predefined_num_task} predefined tasks and {self.num_task - predefined_num_task} user-defined tasks.")
+                print(f"Using {num_pretask} predefined tasks and {self.num_task - num_pretask} user-defined tasks.")
 
     @staticmethod
     def _get_param_names() -> List[str]:
@@ -100,7 +100,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
             # Task Parameters
             "num_task",
             "predefined_task",
-            "predefined_num_task",
+            "num_pretask",
             # Model Hyperparameters
             "num_layer",
             "hidden_size", 
@@ -237,7 +237,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     def fit(
         self,
         X_train: List[str],
-        y_train: Optional[Union[List, np.ndarray]],
+        y_train: Optional[Union[List, np.ndarray]] = None,
     ) -> "SupervisedMolecularEncoder":
         """Fit the model to the training data with optional validation set.
 
@@ -252,20 +252,19 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         self : SupervisedMolecularEncoder
             Fitted estimator
         """
-        user_defined_task = self.num_task - self.predefined_num_task
+        user_defined_task = self.num_task - self.num_pretask
         if user_defined_task > 0:
             if y_train is None:
                 raise ValueError("User-defined tasks require target values but y_train is None.")
             if y_train.shape[1] != user_defined_task:
                 raise ValueError(f"Number of user-defined tasks ({user_defined_task}) must match the number of target values in y_train ({y_train.shape[1]}).")
 
-        self._initialize_model(self.model_class, self.device)
+        self._initialize_model(self.model_class)
         self.model.initialize_parameters()
-        self.model = self.model.to(self.device)
         optimizer, scheduler = self._setup_optimizers()
         
         # Prepare datasets and loaders
-        X_train, y_train = self._validate_inputs(X_train, y_train, return_rdkit_mol=True, num_task=self.num_task, predefined_num_task=self.predefined_num_task)
+        X_train, y_train = self._validate_inputs(X_train, y_train, return_rdkit_mol=True, num_task=self.num_task, num_pretask=self.num_pretask)
         train_dataset = self._convert_to_pytorch_data(X_train, y_train)
         train_loader = DataLoader(
             train_dataset,

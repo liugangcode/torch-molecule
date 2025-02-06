@@ -153,10 +153,10 @@ def create_model_card(
             f"{task_info['num_parameters']:,} | {metrics_str} |\n"
         )
 
+# - molecular-property-prediction
     readme_content = f"""---
 tags:
 - torch_molecule
-- molecular-property-prediction
 library_name: torch_molecule
 ---
 
@@ -177,13 +177,17 @@ from torch_molecule import {model_class}
 
 # Load model for specific task
 model = {model_class}()
-model.load_model(
+model.load(
     "local_model_dir/{model_name}.pt",
     repo="{repo_id}"
 )
 
 # Make predictions
-predictions = model.predict(smiles_list)
+# predictions = model.predict(smiles_list)
+# Make generations
+# generations = model.generate(n_samples)
+# Make encodings
+# encodings = model.encode(smiles_list)
 ```
 
 ## Tasks Details

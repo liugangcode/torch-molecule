@@ -237,11 +237,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             A tuple containing:
             - The configured optimizer
             - The learning rate scheduler (if enabled, else None)
-
-        Notes
-        -----
-        The scheduler returned can be either _LRScheduler or ReduceLROnPlateau,
-        hence we use Any as the type hint instead of optim.lr_scheduler._LRScheduler
         """
         optimizer = torch.optim.Adam(
             self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay
@@ -413,7 +408,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         if best_state_dict is not None:
             self.set_params(**best_trial_params)
             # Initialize model with saved architecture parameters
-            self._initialize_model(self.model_class, self.device)
+            self._initialize_model(self.model_class)
             # Load the saved state dict
             self.model.load_state_dict(best_state_dict['model'])
             self.fitting_loss = best_loss
@@ -445,7 +440,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         #     if best_state_dict is not None:
         #         self.set_params(**best_trial_params)
         #         # CHANGE: Use same restoration logic here
-        #         self._initialize_model(self.model_class, self.device)
+        #         self._initialize_model(self.model_class)
         #         self.model.load_state_dict(best_state_dict['model'])
         #         self.fitting_loss = best_loss
         #         self.fitting_epoch = best_epoch
@@ -488,9 +483,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 f"Got X_val={X_val is not None}, y_val={y_val is not None}"
             )
 
-        self._initialize_model(self.model_class, self.device)
+        self._initialize_model(self.model_class)
         self.model.initialize_parameters()
-        self.model = self.model.to(self.device)
         optimizer, scheduler = self._setup_optimizers()
         
         # Prepare datasets and loaders

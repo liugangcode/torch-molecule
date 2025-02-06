@@ -23,6 +23,23 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
     """This predictor trains the GREA model based on pseudo-labeling and data augmentation.
     Paper: Semi-Supervised Graph Imbalanced Regression (https://dl.acm.org/doi/10.1145/3580305.3599497)
     Reference Code: https://github.com/liugangcode/SGIR
+
+    Parameters
+    ----------
+    num_anchor : int, default=10
+        Number of anchor points used to split the label space during pseudo-labeling
+    warmup_epoch : int, default=20 
+        Number of epochs to train before starting pseudo-labeling and data augmentation
+    labeling_interval : int, default=5
+        Interval (in epochs) between pseudo-labeling steps
+    augmentation_interval : int, default=5
+        Interval (in epochs) between data augmentation steps
+    top_quantile : float, default=0.1
+        Quantile threshold for selecting high confidence predictions during pseudo-labeling
+    label_logscale : bool, default=False
+        Whether to use log scale for the label space during pseudo-labeling and data augmentation
+    lw_aug : float, default=1
+        Weight for the data augmentation loss
     """
     # SGIR-specific parameters
     num_anchor: int = 10
@@ -32,7 +49,6 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
     top_quantile: float = 0.1
     label_logscale: bool = False
     lw_aug: float = 1
-    
     # Override parent defaults
     task_type: str = "regression"
     model_name: str = "SGIRMolecularPredictor"
@@ -72,11 +88,14 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
         """
         if (X_val is None) != (y_val is None):
             raise ValueError("X_val and y_val must both be provided for validation")
+        if X_unlbl is None:
+            raise ValueError("X_unlbl (unlabeled SMILES strings) must be provided in SGIR")
+        if len(X_unlbl) == 0:
+            raise ValueError("X_unlbl (unlabeled SMILES strings) must not be empty")
 
         # Initialize model and optimization
-        self._initialize_model(self.model_class, self.device)
+        self._initialize_model(self.model_class)
         self.model.initialize_parameters()
-        self.model = self.model.to(self.device)
         optimizer, scheduler = self._setup_optimizers()
         
         # Prepare datasets

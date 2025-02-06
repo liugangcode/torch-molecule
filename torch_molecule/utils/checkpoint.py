@@ -96,7 +96,7 @@ class LocalCheckpointManager:
             )
 
         # Reinitialize
-        model_instance._initialize_model(model_instance.model_class, model_instance.device, checkpoint)
+        model_instance._initialize_model(model_instance.model_class, checkpoint)
         model_instance.model_name = checkpoint["model_name"]
         model_instance.is_fitted_ = True
         model_instance.model = model_instance.model.to(model_instance.device)
@@ -175,7 +175,7 @@ class HuggingFaceCheckpointManager:
                     f"{len(parameter_status) - changes_count} unchanged"
                 )
 
-            model_instance._initialize_model(model_instance.model_class, model_instance.device, checkpoint)
+            model_instance._initialize_model(model_instance.model_class, checkpoint)
             model_instance.model_name = checkpoint["model_name"]
             model_instance.is_fitted_ = True
             model_instance.model = model_instance.model.to(model_instance.device)
@@ -200,7 +200,7 @@ class HuggingFaceCheckpointManager:
         """Push a task-specific model checkpoint to Hugging Face Hub."""
         try:
             from huggingface_hub import HfApi, create_repo, metadata_update
-            from .huggingface import merge_task_configs, get_existing_repo_data, create_model_card
+            from .hf import merge_task_configs, get_existing_repo_data, create_model_card
         except ImportError:
             raise ImportError(
                 "huggingface_hub package is required to push to Hugging Face Hub. "
@@ -218,7 +218,7 @@ class HuggingFaceCheckpointManager:
             api = HfApi(token=token)
             repo_exists, existing_config, existing_readme = get_existing_repo_data(repo_id, token)
             create_repo(repo_id, private=private, token=token, exist_ok=True)
-
+            
             with tempfile.TemporaryDirectory() as tmp_dir:
                 local_path = os.path.join(tmp_dir, f"{model_instance.model_name}.pt")
                 # Use the local manager to save a copy

@@ -295,7 +295,7 @@ class BaseMolecularEncoder(ABC):
         """Download and load model from Hugging Face Hub."""
         HuggingFaceCheckpointManager.load_model_from_hf(self, repo_id, path)
 
-    def save(self, path: str, repo_id: Optional[str] = None, **kwargs) -> None:
+    def save(self, path: Optional[str] = None, repo_id: Optional[str] = None, **kwargs) -> None:
         """
         Automatic save. If `repo_id` is given, push to Hugging Face Hub.
         Otherwise, save to local path.
@@ -303,6 +303,8 @@ class BaseMolecularEncoder(ABC):
         if repo_id is not None:
             self.save_to_hf(repo_id=repo_id, **kwargs)
         else:
+            if path is None:
+                raise ValueError("path must be provided if repo_id is not given.")
             self.save_to_local(path)
 
     def load(self, path: str, repo_id: Optional[str] = None) -> None:

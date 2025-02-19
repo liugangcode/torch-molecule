@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from torch_scatter import scatter_add
 
-from ...architecture import GNN_node, GNN_node_Virtualnode, MLP
+from ...nn import GNN_node, GNN_node_Virtualnode, MLP
 from ...utils import init_weights
 
 class GREA(nn.Module):

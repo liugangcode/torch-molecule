@@ -16,20 +16,32 @@ The structure of `torch_molecule` is as follows:
 
 ```
 torch_molecule
-├── base.py
+├── base
+│   ├── base.py
+│   ├── encoder.py
+│   ├── generator.py
+│   ├── __init__.py
+│   └── predictor.py
+├── encoder
+│   └── supervised
 ├── generator
 ├── __init__.py
+├── nn
+│   ├── gnn.py
+│   ├── __init__.py
+│   └── mlp.py
 ├── predictor
-│   ├── components
 │   ├── gnn
 │   ├── grea
-│   └── __init__.py
-├── representer
+│   ├── __init__.py
+│   └── sgir
 └── utils
+    ├── checker.py
+    ├── checkpoint.py
     ├── format.py
     ├── generic
     ├── graph
-    ├── hf_hub.py
+    ├── hf.py
     ├── __init__.py
     └── search.py
 ```

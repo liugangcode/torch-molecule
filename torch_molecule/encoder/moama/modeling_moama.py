@@ -23,44 +23,15 @@ from ...utils.search import (
 ALLOWABLE_ENCODER_MODELS = ["gin-virtual", "gcn-virtual", "gin", "gcn"]
 ALLOWABLE_ENCODER_READOUTS = ["sum", "mean", "max"]
 
-# Dictionary mapping parameter names to their types and ranges
-DEFAULT_GNN_SEARCH_SPACES: Dict[str, ParameterSpec] = {
-    # Model architecture parameters
-    "gnn_type": ParameterSpec(
-        ParameterType.CATEGORICAL, ["gin-virtual", "gcn-virtual", "gin", "gcn"]
-    ),
-    "norm_layer": ParameterSpec(
-        ParameterType.CATEGORICAL,
-        [
-            "batch_norm",
-            "layer_norm",
-            "instance_norm",
-            "graph_norm",
-            "size_norm",
-            "pair_norm",
-        ],
-    ),
-    "graph_pooling": ParameterSpec(ParameterType.CATEGORICAL, ["mean", "sum", "max"]),
-    "augmented_feature": ParameterSpec(ParameterType.CATEGORICAL, ["maccs,morgan", "maccs", "morgan", None]),
-    # Integer-valued parameters
-    "num_layer": ParameterSpec(ParameterType.INTEGER, (2, 8)),
-    "hidden_size": ParameterSpec(ParameterType.INTEGER, (64, 512)),
-    # Float-valued parameters with linear scale
-    "drop_ratio": ParameterSpec(ParameterType.FLOAT, (0.0, 0.75)),
-    "scheduler_factor": ParameterSpec(ParameterType.FLOAT, (0.1, 0.5)),
-    # Float-valued parameters with log scale
-    "learning_rate": ParameterSpec(ParameterType.LOG_FLOAT, (1e-5, 1e-2)),
-    "weight_decay": ParameterSpec(ParameterType.LOG_FLOAT, (1e-8, 1e-3)),
-}
-
 @dataclass
-class SupervisedMolecularEncoder(BaseMolecularEncoder):
+class MoamaMolecularEncoder(BaseMolecularEncoder):
     """This encoder implements a GNN model for molecular representation learning.
     """
-    # pretraiing task
+    # pretraining task
     num_task: Optional[int] = None
     num_pretask: Optional[int] = None
     predefined_task: Optional[List[str]] = None
+    task_type: str = "classification"
     # Model parameters
     num_layer: int = 5
     hidden_size: int = 300
@@ -84,7 +55,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     
     # Other parameters
     verbose: bool = False
-    model_name: str = "SupervisedMolecularEncoder"
+    model_name: str = "MoamaMolecularEncoder"
     
     # Non-init fields
     fitting_loss: List[float] = field(default_factory=list, init=False)
@@ -238,9 +209,9 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:
         """Setup optimization components including optimizer and learning rate scheduler.
         """
-        optimizer = torch.optim.Adam(
-            self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay
-        )
+
+        optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay)
+        
         if self.grad_clip_value is not None:
             for group in optimizer.param_groups:
                 group.setdefault("max_norm", self.grad_clip_value)
@@ -260,21 +231,11 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
 
         return optimizer, scheduler
     
-    def _get_default_search_space(self):
-        """Get the default hyperparameter search space.
-        
-        Returns
-        -------
-        Dict[str, ParameterSpec]
-            Dictionary mapping parameter names to their search space specifications
-        """
-        return DEFAULT_GNN_SEARCH_SPACES
-    
     def fit(
         self,
         X_train: List[str],
         y_train: Optional[Union[List, np.ndarray]] = None,
-    ) -> "SupervisedMolecularEncoder":
+    ) -> "MoamaMolecularEncoder":
         """Fit the model to the training data with optional validation set.
 
         Parameters
@@ -285,23 +246,20 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
             Training set target values for representation learning
         Returns
         -------
-        self : SupervisedMolecularEncoder
+        self : MoamaMolecularEncoder
             Fitted estimator
         """
-        user_defined_task = self.num_task - self.num_pretask
-        if user_defined_task > 0:
-            if y_train is None:
-                raise ValueError("User-defined tasks require target values but y_train is None.")
-            if y_train.shape[1] != user_defined_task:
-                raise ValueError(f"Number of user-defined tasks ({user_defined_task}) must match the number of target values in y_train ({y_train.shape[1]}).")
 
         self._initialize_model(self.model_class)
         self.model.initialize_parameters()
         optimizer, scheduler = self._setup_optimizers()
         
         # Prepare datasets and loaders
+        smiles = X_train
         X_train, y_train = self._validate_inputs(X_train, y_train, return_rdkit_mol=True, num_task=self.num_task, num_pretask=self.num_pretask)
         train_dataset = self._convert_to_pytorch_data(X_train, y_train)
+        for i in range(len(X_train)):
+            train_dataset[i].smiles = smiles[i]
         train_loader = DataLoader(
             train_dataset,
             batch_size=self.batch_size,
@@ -309,20 +267,10 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
             num_workers=0
         )
         self.fitting_loss = []
-        if user_defined_task > 0:
-            is_class_user = self._inspect_task_types(y_train, return_type="pt")
-        else:
-            is_class_user = torch.tensor([], dtype=torch.bool)
 
-        if self.predefined_task is not None:
-            is_class_predefined = torch.cat([torch.full((PSEUDOTASK[task][0],), PSEUDOTASK[task][1] == "classification", dtype=torch.bool) for task in self.predefined_task])
-        else:
-            is_class_predefined = torch.tensor([], dtype=torch.bool)
-
-        is_class = torch.cat([is_class_user, is_class_predefined])
         for epoch in range(self.epochs):
             # Training phase
-            train_losses = self._train_epoch(train_loader, optimizer, is_class)
+            train_losses = self._train_epoch(train_loader, optimizer)
             self.fitting_loss.append(np.mean(train_losses))
             if scheduler:
                 scheduler.step(np.mean(train_losses))
@@ -331,7 +279,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer, is_class):
+    def _train_epoch(self, train_loader, optimizer):
         """Training logic for one epoch.
 
         Args:
@@ -353,7 +301,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         for batch in iterator:
             batch = batch.to(self.device)
             optimizer.zero_grad()
-            loss = self.model.compute_loss(batch, is_class)
+            loss = self.model.compute_loss(batch)
             loss.backward()
             if self.grad_clip_value is not None:
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip_value)

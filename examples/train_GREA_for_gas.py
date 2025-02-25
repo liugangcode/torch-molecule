@@ -81,7 +81,7 @@ def train_gas_permeability_models(
         
         # Initialize model
         model = GREAMolecularPredictor(
-            num_tasks=1,
+            num_task=1,
             task_type="regression",
             model_name=f"GREA_{gas}",
             batch_size=512,

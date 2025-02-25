@@ -68,7 +68,7 @@ from torch_molecule import GREAMolecularPredictor
 
 # Initialize the model
 model = GREAMolecularPredictor(
-    num_tasks=1,
+    num_task=1,
     task_type="regression",
     model_name=f"GREA_{task_name}",
     batch_size=512,
@@ -89,7 +89,7 @@ model.autofit(
 
 # Fit the model with predefined hyperparameters
 model = GREAMolecularPredictor(
-    num_tasks=1,
+    num_task=1,
     task_type="regression",
     num_layer=5,         # Specify hyperparameter
     model_name=f"GREA_{task_name}",

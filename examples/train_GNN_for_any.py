@@ -72,7 +72,7 @@ def train_models(
         if model_type == "GREA":
             print("Using GREA")
             model = GREAMolecularPredictor(
-                num_tasks=1,
+                num_task=1,
                 task_type="regression",
                 model_name=f"GREA_{task}",
                 batch_size=256,
@@ -84,7 +84,7 @@ def train_models(
         elif model_type == "GNN":
             print("Using GNN")
             model = GNNMolecularPredictor(
-                num_tasks=1,
+                num_task=1,
                 task_type="regression",
                 model_name=f"GNN_{task}",
                 # loss_criterion=torch.nn.L1Loss(),

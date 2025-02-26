@@ -3,12 +3,10 @@ import torch.nn as nn
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 from torch_geometric.data import Data
 
-from ...architecture import GNN_node, GNN_node_Virtualnode, MLP
+from ...nn import GNN_node, GNN_node_Virtualnode, MLP
 from ...utils import init_weights
 
 from .utils import ExtractSubstructureContextPair
-
-import random
 
 reg_criterion = torch.nn.L1Loss()
 class_criterion = torch.nn.CrossEntropyLoss()

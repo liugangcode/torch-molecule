@@ -13,12 +13,6 @@ from .GNNModel import GNN
 from ...base import BaseMolecularEncoder
 from ...utils import graph_from_smiles
 from ...utils import PSEUDOTASK
-from ...utils.search import (
-    suggest_parameter,
-    ParameterSpec,
-    ParameterType,
-    parse_list_params,
-)
 
 ALLOWABLE_ENCODER_MODELS = ["gin-virtual", "gcn-virtual", "gin", "gcn"]
 ALLOWABLE_ENCODER_READOUTS = ["sum", "mean", "max"]

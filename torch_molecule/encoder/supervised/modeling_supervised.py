@@ -13,45 +13,9 @@ from .GNNModel import GNN
 from ...base import BaseMolecularEncoder
 from ...utils import graph_from_smiles
 from ...utils import PSEUDOTASK
-from ...utils.search import (
-    suggest_parameter,
-    ParameterSpec,
-    ParameterType,
-    parse_list_params,
-)
 
 ALLOWABLE_ENCODER_MODELS = ["gin-virtual", "gcn-virtual", "gin", "gcn"]
 ALLOWABLE_ENCODER_READOUTS = ["sum", "mean", "max"]
-
-# Dictionary mapping parameter names to their types and ranges
-DEFAULT_GNN_SEARCH_SPACES: Dict[str, ParameterSpec] = {
-    # Model architecture parameters
-    "gnn_type": ParameterSpec(
-        ParameterType.CATEGORICAL, ["gin-virtual", "gcn-virtual", "gin", "gcn"]
-    ),
-    "norm_layer": ParameterSpec(
-        ParameterType.CATEGORICAL,
-        [
-            "batch_norm",
-            "layer_norm",
-            "instance_norm",
-            "graph_norm",
-            "size_norm",
-            "pair_norm",
-        ],
-    ),
-    "graph_pooling": ParameterSpec(ParameterType.CATEGORICAL, ["mean", "sum", "max"]),
-    "augmented_feature": ParameterSpec(ParameterType.CATEGORICAL, ["maccs,morgan", "maccs", "morgan", None]),
-    # Integer-valued parameters
-    "num_layer": ParameterSpec(ParameterType.INTEGER, (2, 8)),
-    "hidden_size": ParameterSpec(ParameterType.INTEGER, (64, 512)),
-    # Float-valued parameters with linear scale
-    "drop_ratio": ParameterSpec(ParameterType.FLOAT, (0.0, 0.75)),
-    "scheduler_factor": ParameterSpec(ParameterType.FLOAT, (0.1, 0.5)),
-    # Float-valued parameters with log scale
-    "learning_rate": ParameterSpec(ParameterType.LOG_FLOAT, (1e-5, 1e-2)),
-    "weight_decay": ParameterSpec(ParameterType.LOG_FLOAT, (1e-8, 1e-3)),
-}
 
 @dataclass
 class SupervisedMolecularEncoder(BaseMolecularEncoder):
@@ -61,14 +25,13 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     num_task: Optional[int] = None
     num_pretask: Optional[int] = None
     predefined_task: Optional[List[str]] = None
-    # Model parameters
+    # Model parameters    
+    encoder_type: str = "gin-virtual"
+    readout: str = "sum"
     num_layer: int = 5
     hidden_size: int = 300
     drop_ratio: float = 0.5
     norm_layer: str = "batch_norm"
-    
-    encoder_model: str = "gin-virtual"
-    encoder_readout: str = "sum"
     
     # Training parameters
     batch_size: int = 128
@@ -94,10 +57,10 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     def __post_init__(self):
         """Initialize the model after dataclass initialization."""
         super().__post_init__()
-        if self.encoder_model not in ALLOWABLE_ENCODER_MODELS:
-            raise ValueError(f"Invalid encoder_model: {self.encoder_model}. Currently only {ALLOWABLE_ENCODER_MODELS} are supported.")
-        if self.encoder_readout not in ALLOWABLE_ENCODER_READOUTS:
-            raise ValueError(f"Invalid encoder_readout: {self.encoder_readout}. Currently only {ALLOWABLE_ENCODER_READOUTS} are supported.")
+        if self.encoder_type not in ALLOWABLE_ENCODER_MODELS:
+            raise ValueError(f"Invalid encoder: {self.encoder_type}. Currently only {ALLOWABLE_ENCODER_MODELS} are supported.")
+        if self.readout not in ALLOWABLE_ENCODER_READOUTS:
+            raise ValueError(f"Invalid readout: {self.readout}. Currently only {ALLOWABLE_ENCODER_READOUTS} are supported.")
         if self.predefined_task is not None:
             for task in self.predefined_task:
                 if task not in PSEUDOTASK.keys():
@@ -138,12 +101,12 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
             "predefined_task",
             "num_pretask",
             # Model Hyperparameters
+            "encoder_type",
+            "readout",
             "num_layer",
             "hidden_size", 
             "drop_ratio",
             "norm_layer",
-            "encoder_model",
-            "encoder_readout",
             # Training Parameters
             "batch_size",
             "epochs",
@@ -175,18 +138,18 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
                 "num_task": hyperparameters.get("num_task", self.num_task),
                 "drop_ratio": hyperparameters.get("drop_ratio", self.drop_ratio),
                 "norm_layer": hyperparameters.get("norm_layer", self.norm_layer),
-                "encoder_readout": hyperparameters.get("encoder_readout", self.encoder_readout),
-                "encoder_model": hyperparameters.get("encoder_model", self.encoder_model),
+                "readout": hyperparameters.get("readout", self.readout),
+                "encoder_type": hyperparameters.get("encoder_type", self.encoder_type),
             }
         else:
             return {
                 "num_layer": self.num_layer,
                 "hidden_size": self.hidden_size,
                 "num_task": self.num_task,
-                "encoder_model": self.encoder_model,
+                "encoder_type": self.encoder_type,
                 "drop_ratio": self.drop_ratio,
                 "norm_layer": self.norm_layer,
-                "encoder_readout": self.encoder_readout,
+                "readout": self.readout,
             }
         
     def _convert_to_pytorch_data(self, X, y=None):
@@ -259,16 +222,6 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
             )
 
         return optimizer, scheduler
-    
-    def _get_default_search_space(self):
-        """Get the default hyperparameter search space.
-        
-        Returns
-        -------
-        Dict[str, ParameterSpec]
-            Dictionary mapping parameter names to their search space specifications
-        """
-        return DEFAULT_GNN_SEARCH_SPACES
     
     def fit(
         self,

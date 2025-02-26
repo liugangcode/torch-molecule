@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 
-from ...architecture import GNN_node, GNN_node_Virtualnode, MLP
+from ...nn import GNN_node, GNN_node_Virtualnode, MLP
 from ...utils import init_weights
 
 reg_criterion = torch.nn.L1Loss()
@@ -16,11 +16,11 @@ class GNN(nn.Module):
         num_task,
         drop_ratio=0.5,
         norm_layer="batch_norm",
-        encoder_model="gin-virtual",
-        encoder_readout="max",
+        encoder_type="gin-virtual",
+        readout="max",
     ):
         super(GNN, self).__init__()
-        gnn_name = encoder_model.split("-")[0]
+        gnn_name = encoder_type.split("-")[0]
         self.num_task = num_task
         self.hidden_size = hidden_size
 
@@ -34,17 +34,17 @@ class GNN(nn.Module):
             "norm_layer": norm_layer
         }
         
-        # Choose encoder type based on encoder_model
-        encoder_class = GNN_node_Virtualnode if "virtual" in encoder_model else GNN_node
+        # Choose encoder type based on encoder
+        encoder_class = GNN_node_Virtualnode if "virtual" in encoder_type else GNN_node
         self.graph_encoder = encoder_class(**encoder_params)
         pooling_funcs = {
             "sum": global_add_pool,
             "mean": global_mean_pool,
             "max": global_max_pool
         }
-        self.pool = pooling_funcs.get(encoder_readout)
-        if self.pool is None:
-            raise ValueError(f"Invalid graph pooling type {encoder_readout}.")
+        self.readout = pooling_funcs.get(readout)
+        if self.readout is None:
+            raise ValueError(f"Invalid graph pooling type {readout}.")
 
         self.predictor = MLP(hidden_size, hidden_features=2 * hidden_size, out_features=num_task)
     
@@ -73,7 +73,7 @@ class GNN(nn.Module):
 
     def compute_loss(self, batched_data, is_class):
         h_node, _ = self.graph_encoder(batched_data)
-        h_rep = self.pool(h_node, batched_data.batch)
+        h_rep = self.readout(h_node, batched_data.batch)
         prediction = self.predictor(h_rep)
 
         target = batched_data.y.to(torch.float32)
@@ -93,5 +93,5 @@ class GNN(nn.Module):
 
     def forward(self, batched_data):
         h_node, _ = self.graph_encoder(batched_data)
-        h_rep = self.pool(h_node, batched_data.batch)
+        h_rep = self.readout(h_node, batched_data.batch)
         return {"graph": h_rep, "node": h_node}

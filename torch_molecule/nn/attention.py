@@ -15,8 +15,8 @@ class AttentionWithNodeMask(nn.Module):
             num_heads=8,
             qkv_bias=False,
             qk_norm=False,
-            attn_drop=0,
-            proj_drop=0,
+            attn_drop=0.,
+            proj_drop=0.,
             norm_layer=nn.LayerNorm,
     ):
         super().__init__()

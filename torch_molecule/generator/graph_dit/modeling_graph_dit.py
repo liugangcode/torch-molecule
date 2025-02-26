@@ -10,6 +10,8 @@ from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 
 from .transformer import Transformer
+from .diffusion import NoiseScheduleDiscrete, MarginalTransition
+from .utils import PlaceHolder
 from ...base import BaseMolecularGenerator
 from ...utils import graph_from_smiles
 
@@ -25,12 +27,16 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
     hidden_size: int = 1152
     dropout: float = 0.
     drop_condition: float = 0.
-    num_heads: int = 16
+    num_head: int = 16
     mlp_ratio: float = 4
-    max_n_nodes: int = 50
+    max_node: int = 50
     X_dim: int = 118
     E_dim: int = 5
     y_dim: int = 1
+    task_type: List[str] = [] # 'regression' or 'classification'
+
+    # Diffusion parameters
+    timesteps: int = 500
     
     # Training parameters
     batch_size: int = 128
@@ -75,16 +81,19 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         return [
             # Model Hyperparameters
             "generator_type",
-            "num_layer",
+            "max_node",
             "hidden_size", 
+            "num_layer",
+            "num_head",
+            "mlp_ratio",
             "dropout",
             "drop_condition",
-            "num_heads",
-            "mlp_ratio",
-            "max_n_nodes",
             "X_dim",
             "E_dim",
             "y_dim",
+            "task_type",
+            # Diffusion parameters
+            "timesteps",
             # Training Parameters
             "batch_size",
             "epochs",
@@ -113,32 +122,41 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
                 raise ValueError("Checkpoint missing 'hyperparameters' key")
                 
             hyperparameters = checkpoint["hyperparameters"]
+            diffusion_params = checkpoint['diffusion_params']
             
-            return {
-                "num_layer": hyperparameters.get("num_layer", self.num_layer),
+            transformer_config = {
+                "max_node": hyperparameters.get("max_node", self.max_node),
                 "hidden_size": hyperparameters.get("hidden_size", self.hidden_size),
+                "num_layer": hyperparameters.get("num_layer", self.num_layer),
+                "num_head": hyperparameters.get("num_head", self.num_head),
+                "mlp_ratio": hyperparameters.get("mlp_ratio", self.mlp_ratio),
                 "dropout": hyperparameters.get("dropout", self.dropout),
                 "drop_condition": hyperparameters.get("drop_condition", self.drop_condition),
-                "num_heads": hyperparameters.get("num_heads", self.num_heads),
-                "mlp_ratio": hyperparameters.get("mlp_ratio", self.mlp_ratio),
-                "max_n_nodes": hyperparameters.get("max_n_nodes", self.max_n_nodes),
                 "X_dim": hyperparameters.get("X_dim", self.X_dim),
                 "E_dim": hyperparameters.get("E_dim", self.E_dim),
                 "y_dim": hyperparameters.get("y_dim", self.y_dim),
+                "task_type": hyperparameters.get("task_type", self.task_type),
             }
+            diffusion_config = {
+                "timesteps": diffusion_params["timesteps"],
+                "limit_dist": diffusion_params["limit_dist"],
+                "transition_model": diffusion_params["transition_model"],
+                "active_index": diffusion_params["active_index"],
+            }
+            return transformer_config
         else:
             return {
-                "num_layer": self.num_layer,
+                "max_node": self.max_node,
                 "hidden_size": self.hidden_size,
+                "num_layer": self.num_layer,
+                "num_head": self.num_head,
+                "mlp_ratio": self.mlp_ratio,
                 "dropout": self.dropout,
                 "drop_condition": self.drop_condition,
-                "num_heads": self.num_heads,
-                "mlp_ratio": self.mlp_ratio,
-                "guide_scale": self.guide_scale,
-                "max_n_nodes": self.max_n_nodes,
                 "X_dim": self.X_dim,
                 "E_dim": self.E_dim,
                 "y_dim": self.y_dim,
+                "task_type": self.task_type,
             }
         
     def _convert_to_pytorch_data(self, X, y=None):
@@ -174,18 +192,16 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             if graph["y"] is not None:
                 g.y = torch.from_numpy(graph["y"])
                 del graph["y"]
-   
-            if graph["morgan"] is not None:
-                g.morgan = torch.tensor(graph["morgan"], dtype=torch.int8).view(1, -1)
-                del graph["morgan"]
-            
-            if graph["maccs"] is not None:
-                g.maccs = torch.tensor(graph["maccs"], dtype=torch.int8).view(1, -1)
-                del graph["maccs"]
 
             pyg_graph_list.append(g)
 
         return pyg_graph_list
+    
+    def _compute_dataset_metainfo(self, X, y):
+        return {
+            "num_nodes": max([g.num_nodes for g in X]),
+            "num_edges": max([g.edge_index.shape[1] for g in X]),
+        }
     
     def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:
         """Setup optimization components including optimizer and learning rate scheduler.
@@ -212,6 +228,22 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
 
         return optimizer, scheduler
     
+    def _initialize_model(
+        self,
+        model_class: Type[torch.nn.Module],
+        checkpoint: Optional[Dict] = None
+    ) -> None:
+        """Initialize the model with parameters or a checkpoint."""
+        try:
+            model_params = self._get_model_params(checkpoint)
+            self.model = model_class(**model_params)
+            self.model = self.model.to(self.device)
+            
+            if checkpoint is not None:
+                self.model.load_state_dict(checkpoint["model_state_dict"])
+        except Exception as e:
+            raise RuntimeError(f"Model initialization failed: {str(e)}")
+
     def fit(
         self,
         X_train: List[str],
@@ -230,12 +262,47 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         self : GraphDITMolecularGenerator
             Fitted estimator
         """
-        raise NotImplementedError("Training not yet implemented for this model.")
+
+        self._initialize_model(self.model_class)
+        self.model.initialize_parameters()
+        optimizer, scheduler = self._setup_optimizers()
+        X_train, y_train = self._validate_inputs(X_train, y_train)
+        train_dataset = self._convert_to_pytorch_data(X_train, y_train)
+        train_loader = DataLoader(
+            train_dataset,
+            batch_size=self.batch_size,
+            shuffle=True,
+            num_workers=0
+        )
+        # diffusion related
+        noise_schedule = NoiseScheduleDiscrete(timesteps=self.timesteps)
+        
+        metadata = self._compute_dataset_metainfo(X_train, y_train)
+        active_index = metadata["active_index"]
+        x_limit = metadata["x_margins"] / metadata["x_margins"].sum()
+        e_limit = metadata["e_margins"] / metadata["e_margins"].sum()
+        xe_conditions = metadata["xe_conditions"][active_index][:, active_index]
+        xe_conditions = xe_conditions.sum(dim=1) 
+        ex_conditions = xe_conditions.t()
+        xe_conditions = xe_conditions / xe_conditions.sum(dim=-1, keepdim=True)
+        ex_conditions = ex_conditions / ex_conditions.sum(dim=-1, keepdim=True)
+
+        transition_model = MarginalTransition(x_limit, e_limit, xe_conditions, ex_conditions, metadata["ydim"], self.max_node)
+        limit_dist = PlaceHolder(X=x_limit, E=e_limit, y=None)
+
+        self.fitting_loss = []
+        self.fitting_epoch = 0
+        for epoch in range(self.epochs):
+            train_losses = self._train_epoch(train_loader, optimizer, transition_model, limit_dist)
+            self.fitting_loss.append(np.mean(train_losses))
+            if scheduler:
+                scheduler.step(np.mean(train_losses))
+
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer, is_class):
+    def _train_epoch(self, train_loader, optimizer, transition_model, limit_dist):
         raise NotImplementedError("Training not yet implemented for this model.")
 
 

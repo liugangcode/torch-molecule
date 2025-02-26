@@ -11,22 +11,21 @@ def modulate(x, shift, scale):
 class Transformer(nn.Module):
     def __init__(
         self,
-        max_n_nodes,
+        max_node,
         hidden_size=384,
         num_layer=12,
-        num_heads=16,
+        num_head=16,
         mlp_ratio=4.0,
         dropout=0.,
         drop_condition=0.1,
         Xdim=118,
         Edim=5,
         ydim=3,
-        task_type=['regression', 'classification', 'regression'],
+        task_type=[], # 'regression' or 'classification'
     ):
         super().__init__()
-        self.num_heads = num_heads
         self.ydim = ydim
-        self.x_embedder = nn.Linear(Xdim + max_n_nodes * Edim, hidden_size, bias=False)
+        self.x_embedder = nn.Linear(Xdim + max_node * Edim, hidden_size, bias=False)
 
         self.t_embedder = TimestepEmbedder(hidden_size)
         self.y_embedder_list = torch.nn.ModuleList()
@@ -39,18 +38,18 @@ class Transformer(nn.Module):
 
         self.blocks = nn.ModuleList(
             [
-                AttentionBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio)
+                AttentionBlock(hidden_size, num_head, mlp_ratio=mlp_ratio, dropout=dropout)
                 for _ in range(num_layer)
             ]
         )
 
         self.final_layer = FinalLayer(
-            max_n_nodes=max_n_nodes,
+            max_node=max_node,
             hidden_size=hidden_size,
             atom_type=Xdim,
             bond_type=Edim,
             mlp_ratio=mlp_ratio,
-            num_heads=num_heads,
+            num_head=num_head,
         )
 
         self.initialize_weights()
@@ -96,14 +95,14 @@ class Transformer(nn.Module):
         return PlaceHolder(X=X, E=E, y=y).mask(node_mask)
 
 class AttentionBlock(nn.Module):
-    def __init__(self, hidden_size, num_heads, mlp_ratio=4.0, **block_kwargs):
+    def __init__(self, hidden_size, num_head, mlp_ratio=4.0, dropout=0.):
         super().__init__()
-        self.dropout = block_kwargs.get('dropout', 0.)
+        self.dropout = dropout
         self.norm1 = nn.LayerNorm(hidden_size, elementwise_affine=False)
         self.norm2 = nn.LayerNorm(hidden_size, elementwise_affine=False)
 
         self.attn = AttentionWithNodeMask(
-            hidden_size, num_heads=num_heads, qkv_bias=True, qk_norm=True, **block_kwargs
+            hidden_size, num_head=num_head, qkv_bias=True, qk_norm=True, proj_drop=dropout
         )
         self.mlp = MLP(
             in_features=hidden_size,
@@ -131,12 +130,12 @@ class AttentionBlock(nn.Module):
 
 
 class FinalLayer(nn.Module):
-    def __init__(self, max_n_nodes, hidden_size, atom_type, bond_type, mlp_ratio, num_heads=None):
+    def __init__(self, max_node, hidden_size, atom_type, bond_type, mlp_ratio, num_head=None):
         super().__init__()
         self.atom_type = atom_type
         self.bond_type = bond_type
-        final_size = atom_type + max_n_nodes * bond_type
-        self.xedecoder = MLP(in_features=hidden_size, 
+        final_size = atom_type + max_node * bond_type
+        self.XEdecoder = MLP(in_features=hidden_size, 
                             out_features=final_size, drop=0)
 
         self.norm_final = nn.LayerNorm(final_size, elementwise_affine=False)
@@ -147,7 +146,7 @@ class FinalLayer(nn.Module):
         )
 
     def forward(self, x, x_in, e_in, c, t, node_mask):
-        x_all = self.xedecoder(x)
+        x_all = self.XEdecoder(x)
         B, N, D = x_all.size()
         shift, scale = self.adaLN_modulation(c).chunk(2, dim=1)
         x_all = modulate(self.norm_final(x_all), shift, scale)

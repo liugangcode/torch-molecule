@@ -9,7 +9,7 @@ import torch
 from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 
-from .GNNModel import GNN
+from .model import GNN
 from ...base import BaseMolecularEncoder
 from ...utils import graph_from_smiles
 from ...utils import PSEUDOTASK
@@ -19,7 +19,7 @@ ALLOWABLE_ENCODER_READOUTS = ["sum", "mean", "max"]
 
 @dataclass
 class SupervisedMolecularEncoder(BaseMolecularEncoder):
-    """This encoder implements a GNN model for molecular representation learning.
+    """This encoder implements a GNN model for supervised molecular representation learning.
     """
     # pretraiing task
     num_task: Optional[int] = None

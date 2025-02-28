@@ -144,7 +144,7 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
         self.model.train()
         for epoch in range(self.epochs):
             # Training phase
-            train_losses = self._train_epoch(train_loader, augmented_dataset, optimizer)
+            train_losses = self._train_epoch(train_loader, augmented_dataset, optimizer, epoch)
             
             # Update datasets after warmup
             if epoch > self.warmup_epoch:
@@ -205,7 +205,7 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
         self.is_fitted_ = True
         return self
     
-    def _train_epoch(self, train_loader, augmented_dataset, optimizer):
+    def _train_epoch(self, train_loader, augmented_dataset, optimizer, epoch):
         losses = []
 
         if augmented_dataset is not None and self.lw_aug != 0:
@@ -238,7 +238,7 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
                 pred_aug = self.model.predictor(aug_inputs[batch_idx])
                 self.model._enable_batchnorm_tracking(self.model)
                 targets_aug = aug_outputs[batch_idx]
-                Laug = self.loss_criterion(pred_aug.view(targets_aug.size()).to(torch.float32), targets_aug)
+                Laug = self.loss_criterion(pred_aug.view(targets_aug.size()).to(torch.float32), targets_aug).mean()
             else:
                 Laug = torch.tensor(0.)      
             Lx = self.model.compute_loss(batch, self.loss_criterion)
@@ -256,6 +256,6 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
 
             # Update progress bar if using tqdm
             if self.verbose:
-                iterator.set_postfix({"loss": f"{loss.item():.4f}", "loss X": f"{Lx.item():.4f}", "loss aug": f"{Laug.item():.4f}",})
+                iterator.set_postfix({"Epoch": epoch, "Total Loss": f"{loss.item():.4f}", "Lbls Loss": f"{Lx.item():.4f}", "Aug Loss": f"{Laug.item():.4f}",})
 
         return losses

@@ -123,12 +123,12 @@ class GREA(nn.Module):
         ).mean()
         target = batched_data.y.to(torch.float32)
         is_labeled = batched_data.y == batched_data.y
-        loss += criterion(pred_rem.to(torch.float32)[is_labeled], target[is_labeled])
+        loss += criterion(pred_rem.to(torch.float32)[is_labeled], target[is_labeled]).mean()
         target_rep = batched_data.y.to(torch.float32).repeat_interleave(
             batched_data.batch[-1] + 1, dim=0
         )
         is_labeled_rep = target_rep == target_rep
-        loss += criterion(pred_rep.to(torch.float32)[is_labeled_rep], target_rep[is_labeled_rep])
+        loss += criterion(pred_rep.to(torch.float32)[is_labeled_rep], target_rep[is_labeled_rep]).mean()
         return loss
 
     def forward(self, batched_data):

@@ -96,15 +96,15 @@ class BaseMolecularPredictor(BaseModel, ABC):
     
     def _load_default_criterion(self):
         if self.task_type == "regression":
-            return torch.nn.L1Loss()
+            return torch.nn.L1Loss(reduction='none')
         elif self.task_type == "classification":
-            return torch.nn.BCEWithLogitsLoss()
+            return torch.nn.BCEWithLogitsLoss(reduction='none')
         else:
             warnings.warn(
                 "Unknown task type. Using L1 Loss as default. "
                 "Please specify 'regression' or 'classification' for better results."
             )
-            return torch.nn.L1Loss()
+            return torch.nn.L1Loss(reduction='none')
     
     def _validate_inputs(
         self, X: List[str], y: Optional[Union[List, np.ndarray]] = None, num_task: int = 0, num_pretask: int = 0, return_rdkit_mol: bool = True

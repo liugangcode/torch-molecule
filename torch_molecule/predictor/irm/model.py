@@ -100,21 +100,20 @@ class GNN(nn.Module):
         prediction = self.predictor(h_rep)
         target = batched_data.y.to(torch.float32)
         is_labeled = batched_data.y == batched_data.y
-        
-        losses_erm = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled])
+
+        dummy = torch.nn.Parameter(torch.Tensor([scale])).to(prediction.device)
+        losses_erm = criterion(prediction.to(torch.float32)[is_labeled] * dummy, target[is_labeled])
         
         environments = batched_data.environment[is_labeled]
         unique_envs = environments.unique()  
-        dummy = torch.nn.Parameter(torch.Tensor([scale])).to(prediction.device)
         env_losses = []
         for env in unique_envs:
             env_mask = environments == env
-            env_loss = losses_erm[env_mask].mean() * dummy
+            env_loss = losses_erm[env_mask].mean()
             env_grad = torch.autograd.grad(env_loss, dummy, create_graph=True)[0]
             env_losses.append(torch.sum(env_grad**2))
         
         penalty = torch.sum(torch.stack(env_losses))
-        print('penalty', penalty, 'losses_erm', losses_erm.mean())
         total_loss = losses_erm.mean() + penalty_weight * penalty
         if penalty_weight > 1.0:
             total_loss /= penalty_weight

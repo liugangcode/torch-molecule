@@ -64,6 +64,9 @@ class IRMMolecularPredictor(GNNMolecularPredictor):
                 self.IRM_environment = environment.reshape(-1).tolist()
             else:
                 self.IRM_environment = environment
+            
+            if not all(isinstance(item, int) for item in self.IRM_environment):
+                raise ValueError("IRM_environment must be a list of integers")
 
     def _convert_to_pytorch_data(self, X, y=None):
         """Convert numpy arrays to PyTorch Geometric data format.

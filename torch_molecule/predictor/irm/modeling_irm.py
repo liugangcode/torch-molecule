@@ -139,7 +139,7 @@ class IRMMolecularPredictor(GNNMolecularPredictor):
             batch = batch.to(self.device)
             optimizer.zero_grad()
 
-            if step >= self.penalty_anneal_iters:
+            if epoch >= self.penalty_anneal_iters:
                 penalty_weight = self.penalty_weight
             else:
                 penalty_weight = 1.0

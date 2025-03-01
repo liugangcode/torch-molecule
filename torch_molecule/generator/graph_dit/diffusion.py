@@ -169,3 +169,21 @@ def sample_discrete_feature_noise(limit_dist, node_mask):
 
     assert (U_E == torch.transpose(U_E, 1, 2)).all()
     return PlaceHolder(X=U_X, E=U_E, y=None).mask(node_mask)
+
+def reverse_diffusion(predX_0, X_t, Qt, Qsb, Qtb):
+    """M: X or E
+    Compute xt @ Qt.T * x0 @ Qsb / x0 @ Qtb @ xt.T for each possible value of x0
+    X_t: bs, n, dt          or bs, n, n, dt
+    Qt: bs, d_t-1, dt
+    Qsb: bs, d0, d_t-1
+    Qtb: bs, d0, dt.
+    """
+    Qt_T = Qt.transpose(-1, -2)  # bs, N, dt
+    assert Qt.dim() == 3
+    left_term = X_t @ Qt_T  # bs, N, d_t-1
+    right_term = predX_0 @ Qsb
+    numerator = left_term * right_term  # bs, N, d_t-1
+
+    denominator = Qtb @ X_t.transpose(-1, -2)  # bs, d0, N
+    denominator = denominator.transpose(-1, -2)  # bs, N, d0
+    return numerator / denominator.clamp_min(1e-5)

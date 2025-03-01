@@ -67,18 +67,16 @@ class BaseModel(ABC):
         self,
         model_class: Type[torch.nn.Module],
         checkpoint: Optional[Dict] = None
-    ) -> None:
+    ) -> torch.nn.Module:
         """Initialize the model with parameters or a checkpoint."""
-        try:
-            model_params = self._get_model_params(checkpoint)
-            self.model = model_class(**model_params)
-            self.model = self.model.to(self.device)
-            
-            if checkpoint is not None:
-                self.model.load_state_dict(checkpoint["model_state_dict"])
-        except Exception as e:
-            raise RuntimeError(f"Model initialization failed: {str(e)}")
-
+        model_params = self._get_model_params(checkpoint)
+        self.model = model_class(**model_params)
+        self.model = self.model.to(self.device)
+        
+        if checkpoint is not None:
+            self.model.load_state_dict(checkpoint["model_state_dict"])
+        return self.model
+    
     def _validate_inputs(
         self, X: List[str], y: Optional[Union[List, np.ndarray]] = None, num_task: int = 0, num_pretask: int = 0, return_rdkit_mol: bool = True
     ) -> Tuple[Union[List[str], List["Chem.Mol"]], Optional[np.ndarray]]:

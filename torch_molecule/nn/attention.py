@@ -12,7 +12,7 @@ class AttentionWithNodeMask(nn.Module):
     def __init__(
             self,
             dim,
-            num_heads=8,
+            num_head=8,
             qkv_bias=False,
             qk_norm=False,
             attn_drop=0.,
@@ -20,9 +20,9 @@ class AttentionWithNodeMask(nn.Module):
             norm_layer=nn.LayerNorm,
     ):
         super().__init__()
-        assert dim % num_heads == 0, 'dim should be divisible by num_heads'
-        self.num_heads = num_heads
-        self.head_dim = dim // num_heads
+        assert dim % num_head == 0, 'dim should be divisible by num_head'
+        self.num_head = num_head
+        self.head_dim = dim // num_head
 
         self.scale = self.head_dim ** -0.5
         self.fast_attn = hasattr(torch.nn.functional, 'scaled_dot_product_attention')  # FIXME
@@ -41,11 +41,11 @@ class AttentionWithNodeMask(nn.Module):
         B, N, D = x.shape
         
         # B, head, N, head_dim
-        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, self.head_dim).permute(2, 0, 3, 1, 4)
+        qkv = self.qkv(x).reshape(B, N, 3, self.num_head, self.head_dim).permute(2, 0, 3, 1, 4)
         q, k, v = qkv.unbind(0) # B, head, N, head_dim
         q, k = self.q_norm(q), self.k_norm(k)
         
-        attn_mask = (node_mask[:, None, :, None] & node_mask[:, None, None, :]).expand(-1, self.num_heads, N, N)
+        attn_mask = (node_mask[:, None, :, None] & node_mask[:, None, None, :]).expand(-1, self.num_head, N, N)
         attn_mask[attn_mask.sum(-1) == 0] = True
 
         x = F.scaled_dot_product_attention(

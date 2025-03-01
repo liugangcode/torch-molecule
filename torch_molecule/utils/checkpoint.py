@@ -102,7 +102,6 @@ class LocalCheckpointManager:
         model_instance.model = model_instance.model.to(model_instance.device)
         print(f"Model successfully loaded from local path: {path}")
 
-
 class HuggingFaceCheckpointManager:
     """Handles saving and loading of models to and from the Hugging Face Hub."""
 

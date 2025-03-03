@@ -13,7 +13,7 @@ from .utils import PlaceHolder, to_dense
 from .diffusion import NoiseScheduleDiscrete, MarginalTransition, sample_discrete_features, sample_discrete_feature_noise, reverse_diffusion
 
 from ...base import BaseMolecularGenerator
-from ...utils import graph_from_smiles, graph_to_smiles
+from ...utils import graph_from_smiles, graph_to_smiles, compute_dataset_info
 
 @dataclass
 class GraphDITMolecularGenerator(BaseMolecularGenerator):
@@ -81,41 +81,20 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         """
         return [
             # Model Hyperparameters
-            "generator_type",
-            "max_node",
-            "hidden_size", 
-            "num_layer",
-            "num_head",
-            "mlp_ratio",
-            "dropout",
-            "drop_condition",
-            "X_dim",
-            "E_dim",
-            "y_dim",
+            "generator_type", "max_node", "hidden_size", "num_layer", "num_head",
+            "mlp_ratio", "dropout", "drop_condition", "X_dim", "E_dim", "y_dim",
             "task_type",
-            # Diffusion parameters
-            "timesteps",
-            "dataset_info",
+            # Diffusion parameters  
+            "timesteps", "dataset_info",
             # Training Parameters
-            "batch_size",
-            "epochs",
-            "learning_rate",
-            "grad_clip_value",
-            "weight_decay",
-            "weight_X",
-            "weight_E",
+            "batch_size", "epochs", "learning_rate", "grad_clip_value", 
+            "weight_decay", "weight_X", "weight_E",
             # Scheduler Parameters
-            "use_lr_scheduler",
-            "scheduler_factor", 
-            "scheduler_patience",
+            "use_lr_scheduler", "scheduler_factor", "scheduler_patience",
             # Sampling Parameters
             "guide_scale",
             # Other Parameters
-            "fitting_epoch",
-            "fitting_loss",
-            "device",
-            "verbose",
-            "model_name"
+            "fitting_epoch", "fitting_loss", "device", "verbose", "model_name"
         ]
     
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
@@ -166,15 +145,8 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             timesteps = X["hyperparameters"]["timesteps"] 
             max_node = X["hyperparameters"]["max_node"]
         else:
-            # TODO: compute dataset info
-            dataset_info = {
-                'active_index': None,
-                'x_margins': None, 
-                'e_margins': None,
-                'xe_conditions': None,
-                'atom_decoder': None,
-                'node_dist': None
-            }
+            assert isinstance(X, list)
+            dataset_info = compute_dataset_info(X, max_node=self.max_node)
             timesteps = self.timesteps
             max_node = self.max_node
             
@@ -187,7 +159,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             "e_margins": dataset_info["e_margins"], 
             "xe_conditions": dataset_info["xe_conditions"],
             "atom_decoder": dataset_info["atom_decoder"],
-            "node_dist": dataset_info["node_dist"]
+            "num_nodes_dist": dataset_info["num_nodes_dist"]
         }
     
     def setup_diffusion_params(self, X: Union[List, Dict]) -> None:
@@ -231,22 +203,6 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             )
 
         return optimizer, scheduler
-    
-    # def _initialize_model(
-    #     self,
-    #     model_class: Type[torch.nn.Module],
-    #     checkpoint: Optional[Dict] = None
-    # ) -> None:
-    #     """Initialize the model with parameters or a checkpoint."""
-    #     try:
-    #         model_params = self._get_model_params(checkpoint)
-    #         self.model = model_class(**model_params)
-    #         self.model = self.model.to(self.device)
-            
-    #         if checkpoint is not None:
-    #             self.model.load_state_dict(checkpoint["model_state_dict"])
-    #     except Exception as e:
-    #         raise RuntimeError(f"Model initialization failed: {str(e)}")
 
     def fit(
         self,
@@ -378,8 +334,8 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         batch_size = labels.size(0)
         
         if num_node is None:
-            node_dist = self.dataset_info["node_dist"]
-            num_node = node_dist.sample_n(batch_size, self.device)
+            num_nodes_dist = self.dataset_info["num_nodes_dist"]
+            num_node = num_nodes_dist.sample_n(batch_size, self.device)
         elif isinstance(num_node, list):
             num_node = torch.tensor(num_node)
         elif isinstance(num_node, np.ndarray):

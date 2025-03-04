@@ -143,7 +143,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
 
         return pyg_graph_list
     
-    def _get_diffusion_params(self, X: Union[List, Dict]) -> Dict[str, Any]:     
+    def _setup_diffusion_params(self, X: Union[List, Dict]) -> None:
         # Extract dataset info from X if it's a dict, otherwise use defaults
         if isinstance(X, dict):
             dataset_info = X["hyperparameters"]["dataset_info"]
@@ -158,28 +158,13 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         self.X_dim = dataset_info["x_margins"].shape[0]
         self.E_dim = dataset_info["e_margins"].shape[0]
         self.dataset_info = dataset_info
+        self.timesteps = timesteps
+        self.max_node = max_node
 
-        return {
-            "timesteps": timesteps,
-            "max_node": max_node,
-            "active_index": dataset_info["active_index"],
-            "x_margins": dataset_info["x_margins"],
-            "e_margins": dataset_info["e_margins"], 
-            "xe_conditions": dataset_info["xe_conditions"],
-            "ex_conditions": dataset_info["ex_conditions"],
-            "atom_decoder": dataset_info["atom_decoder"],
-            "num_nodes_dist": dataset_info["num_nodes_dist"]
-        }
-    
-    def setup_diffusion_params(self, X: Union[List, Dict]) -> None:
-        diffusion_params = self._get_diffusion_params(X)
-        self.timesteps = diffusion_params["timesteps"]
-        self.max_node = diffusion_params["max_node"]
-        # active_index = diffusion_params["active_index"]
-        x_limit = diffusion_params["x_margins"].to(self.device)
-        e_limit = diffusion_params["e_margins"].to(self.device)
-        xe_conditions = diffusion_params["xe_conditions"].to(self.device)
-        ex_conditions = diffusion_params["ex_conditions"].to(self.device)
+        x_limit = dataset_info["x_margins"].to(self.device)
+        e_limit = dataset_info["e_margins"].to(self.device)
+        xe_conditions = dataset_info["xe_conditions"].to(self.device)
+        ex_conditions = dataset_info["ex_conditions"].to(self.device)
 
         self.transition_model = MarginalTransition(x_limit, e_limit, xe_conditions, ex_conditions, self.max_node)
         self.limit_dist = PlaceHolder(X=x_limit, E=e_limit, y=None)
@@ -196,7 +181,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         self.model = self.model.to(self.device)
         
         if checkpoint is not None:
-            self.setup_diffusion_params(checkpoint)
+            self._setup_diffusion_params(checkpoint)
             self.model.load_state_dict(checkpoint["model_state_dict"])
         return self.model
 
@@ -231,7 +216,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         X_train: List[str],
         y_train: Optional[Union[List, np.ndarray]] = None,
     ) -> "GraphDITMolecularGenerator":
-        self.setup_diffusion_params(X_train)
+        self._setup_diffusion_params(X_train)
         self._initialize_model(self.model_class)
         self.model.initialize_parameters()
 

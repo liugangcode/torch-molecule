@@ -19,23 +19,26 @@ class Transformer(nn.Module):
         mlp_ratio=4.0,
         dropout=0.,
         drop_condition=0.1,
-        Xdim=118,
-        Edim=5,
-        ydim=3,
+        X_dim=118,
+        E_dim=5,
+        y_dim=None,
         task_type=[], # 'regression' or 'classification'
     ):
         super().__init__()
-        self.ydim = ydim
-        self.x_embedder = nn.Linear(Xdim + max_node * Edim, hidden_size, bias=False)
+        self.y_dim = y_dim
+        self.x_embedder = nn.Linear(X_dim + max_node * E_dim, hidden_size, bias=False)
 
         self.t_embedder = TimestepEmbedder(hidden_size)
-        self.y_embedder_list = torch.nn.ModuleList()
 
-        for i in range(ydim):
-            if task_type[i] == 'regression':
-                self.y_embedder_list.append(ClusterContinuousEmbedder(1, hidden_size, drop_condition))
-            else:
-                self.y_embedder_list.append(CategoricalEmbedder(2, hidden_size, drop_condition))
+        if y_dim is not None:
+            self.y_embedder_list = torch.nn.ModuleList()
+            for i in range(y_dim):
+                if task_type[i] == 'regression':
+                    self.y_embedder_list.append(ClusterContinuousEmbedder(1, hidden_size, drop_condition))
+                else:
+                    self.y_embedder_list.append(CategoricalEmbedder(2, hidden_size, drop_condition))
+        else:
+            self.y_embedder_list = None
 
         self.blocks = nn.ModuleList(
             [
@@ -47,15 +50,18 @@ class Transformer(nn.Module):
         self.final_layer = FinalLayer(
             max_node=max_node,
             hidden_size=hidden_size,
-            atom_type=Xdim,
-            bond_type=Edim,
+            atom_type=X_dim,
+            bond_type=E_dim,
             mlp_ratio=mlp_ratio,
             num_head=num_head,
         )
 
-        self.initialize_weights()
+        self.initialize_parameters()
 
-    def initialize_weights(self):
+    def initialize_parameters(self, seed=None):
+        if seed is not None:
+            torch.manual_seed(seed)
+
         # Initialize transformer layers:
         def _basic_init(module):
             if isinstance(module, nn.Linear):
@@ -76,21 +82,25 @@ class Transformer(nn.Module):
         _constant_init(self.final_layer.adaLN_modulation[0], 0)
 
     def forward(self, noisy_data, unconditioned):
-        X, E, y = noisy_data['X_t'].float(), noisy_data['E_t'].float(), noisy_data['y_t'].float().clone()
+        X, E = noisy_data['X_t'].float(), noisy_data['E_t'].float()
         X_in, E_in = X, E
         node_mask, t =  noisy_data['node_mask'], noisy_data['t']
+        y = noisy_data['y_t'] if self.y_embedder_list is not None else None
+        assert (y is None) == (self.y_embedder_list is None), "y and y_embedder_list must both be None or both be not None"
 
-        force_drop_id = torch.zeros_like(y.sum(-1))
-        force_drop_id[torch.isnan(y.sum(-1))] = 1
-        if unconditioned:
-            force_drop_id = torch.ones_like(y[:, 0])
+        if y is not None:
+            force_drop_id = torch.zeros_like(y.sum(-1))
+            force_drop_id[torch.isnan(y.sum(-1))] = 1
+            if unconditioned:
+                force_drop_id = torch.ones_like(y[:, 0])
         
         bs, n, _ = X.size()
         h = torch.cat([X, E.reshape(bs, n, -1)], dim=-1)
         h = self.x_embedder(h)
         c = self.t_embedder(t)
-        for i in range(self.ydim):
-            c = c + self.y_embedder_list[i](y[:, i:i+1], self.training, force_drop_id, t)
+        if self.y_embedder_list is not None:
+            for i in range(self.y_dim):
+                c = c + self.y_embedder_list[i](y[:, i:i+1], self.training, force_drop_id, t)
         
         for i, block in enumerate(self.blocks):
             h = block(h, c, node_mask)
@@ -136,6 +146,7 @@ class AttentionBlock(nn.Module):
             in_features=hidden_size,
             hidden_features=int(hidden_size * mlp_ratio),
             drop=self.dropout,
+            use_bn=False,
         )
         self.adaLN_modulation = nn.Sequential(
             nn.Linear(hidden_size, hidden_size, bias=True),
@@ -156,14 +167,13 @@ class AttentionBlock(nn.Module):
         x = x + gate_mlp.unsqueeze(1) * modulate(self.norm2(self.mlp(x)), shift_mlp, scale_mlp)
         return x
 
-
 class FinalLayer(nn.Module):
     def __init__(self, max_node, hidden_size, atom_type, bond_type, mlp_ratio, num_head=None):
         super().__init__()
         self.atom_type = atom_type
         self.bond_type = bond_type
         final_size = atom_type + max_node * bond_type
-        self.XEdecoder = MLP(in_features=hidden_size, out_features=final_size, drop=0)
+        self.XEdecoder = MLP(in_features=hidden_size, out_features=final_size, drop=0., use_bn=False)
 
         self.norm_final = nn.LayerNorm(final_size, elementwise_affine=False)
         self.adaLN_modulation = nn.Sequential(

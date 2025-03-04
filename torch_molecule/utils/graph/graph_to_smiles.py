@@ -20,20 +20,6 @@ bond_dict = [
 
 ATOM_VALENCY = {6: 4, 7: 3, 8: 2, 9: 1, 15: 3, 16: 2, 17: 1, 35: 1, 53: 1}
 
-logger = logging.getLogger(__name__)
-
-
-def check_polymer(smiles):
-    if "*" in smiles:
-        monomer = smiles.replace("*", "[H]")
-        if mol2smiles(get_mol(monomer)) is None:
-            logger.warning(f"Invalid polymerization point")
-            return False
-        else:
-            return True
-    return True
-
-
 def graph_to_smiles(molecule_list: List[Tuple], atom_decoder: list) -> List[Optional[str]]:
     smiles_list = []
     for index, graph in enumerate(molecule_list):
@@ -47,13 +33,11 @@ def graph_to_smiles(molecule_list: List[Tuple], atom_decoder: list) -> List[Opti
                 if mol_conn is not None:
                     break
             else:
-                logger.warning(f"Failed to correct molecule {index}")
                 mol_conn = mol_init  # Fallback to initial molecule
 
             # Convert to SMILES
             smiles = mol2smiles(mol_conn)
             if not smiles:
-                logger.warning(f"Failed to convert molecule {index} to SMILES, falling back to RDKit MolToSmiles")
                 smiles = Chem.MolToSmiles(mol_conn)
 
             if smiles:
@@ -65,38 +49,26 @@ def graph_to_smiles(molecule_list: List[Tuple], atom_decoder: list) -> List[Opti
                     
                     largest_smiles = mol2smiles(largest_mol)
                     if largest_smiles and len(largest_smiles) > 1:
-                        if check_polymer(largest_smiles):
-                            smiles_list.append(largest_smiles)
-                        else:
-                            smiles_list.append(None)
-                    elif check_polymer(smiles):
-                        smiles_list.append(smiles)
+                        smiles_list.append(largest_smiles)
                     else:
                         smiles_list.append(None)
                 else:
-                    logger.warning(f"Failed to convert SMILES back to molecule for index {index}")
                     smiles_list.append(None)
             else:
-                logger.warning(f"Failed to generate SMILES for molecule {index}, appending None")
                 smiles_list.append(None)
 
         except Exception as e:
-            logger.error(f"Error processing molecule {index}: {str(e)}")
             try:
                 # Fallback to RDKit's MolToSmiles if everything else fails
                 fallback_smiles = Chem.MolToSmiles(mol_init)
                 if fallback_smiles:
                     smiles_list.append(fallback_smiles)
-                    logger.warning(f"Used RDKit MolToSmiles fallback for molecule {index}")
                 else:
                     smiles_list.append(None)
-                    logger.warning(f"RDKit MolToSmiles fallback failed for molecule {index}, appending None")
             except Exception as e2:
-                logger.error(f"All attempts failed for molecule {index}: {str(e2)}")
                 smiles_list.append(None)
 
     return smiles_list
-
 
 def build_molecule_with_partial_charges(atom_types, edge_types, atom_decoder, verbose=False):
     if verbose:

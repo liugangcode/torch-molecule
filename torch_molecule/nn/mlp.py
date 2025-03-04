@@ -8,7 +8,8 @@ class MLP(nn.Module):
         out_features=None,
         act_layer=nn.GELU,
         bias=True,
-        drop=0.5,
+        drop=0.,
+        use_bn=True,
     ):
         super().__init__()
         out_features = out_features or in_features
@@ -16,7 +17,10 @@ class MLP(nn.Module):
         linear_layer = nn.Linear
 
         self.fc1 = linear_layer(in_features, hidden_features, bias=bias)
-        self.bn1 = nn.BatchNorm1d(hidden_features)
+        if use_bn:
+            self.bn1 = nn.BatchNorm1d(hidden_features)
+        else:
+            self.bn1 = nn.Identity()
         self.act = act_layer()
         self.drop1 = nn.Dropout(drop)
         self.fc2 = linear_layer(hidden_features, out_features, bias=bias)

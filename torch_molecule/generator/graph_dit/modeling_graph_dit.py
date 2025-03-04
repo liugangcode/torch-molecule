@@ -9,11 +9,11 @@ from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 
 from .transformer import Transformer
-from .utils import PlaceHolder, to_dense
+from .utils import PlaceHolder, to_dense, compute_dataset_info
 from .diffusion import NoiseScheduleDiscrete, MarginalTransition, sample_discrete_features, sample_discrete_feature_noise, reverse_diffusion
 
 from ...base import BaseMolecularGenerator
-from ...utils import graph_from_smiles, graph_to_smiles, compute_dataset_info
+from ...utils import graph_from_smiles, graph_to_smiles
 
 @dataclass
 class GraphDITMolecularGenerator(BaseMolecularGenerator):
@@ -33,7 +33,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
     X_dim: int = 118
     E_dim: int = 5
     y_dim: int = 1
-    task_type: List[str] = [] # 'regression' or 'classification'
+    task_type: List[str] = field(default_factory=list) # a list of 'regression' or 'classification'
 
     # Diffusion parameters
     timesteps: int = 500
@@ -68,7 +68,6 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
     def __post_init__(self):
         """Initialize the model after dataclass initialization."""
         super().__post_init__()
-        pass
 
     @staticmethod
     def _get_param_names() -> List[str]:
@@ -125,11 +124,17 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             graph = graph_from_smiles(smiles_or_mol, property)
             g = Data()
             
-            g.x = torch.from_numpy(graph["node_feat"])
+            node_type = torch.from_numpy(graph['node_feat'][:, 0] - 2) # 117 for * (misc)
+            g.x = node_type.long().squeeze(-1)
             del graph["node_feat"]
 
             g.edge_index = torch.from_numpy(graph["edge_index"])
             del graph["edge_index"]
+
+            # Single -> 1, Double -> 2, Triple -> 3, Aromatic -> 4
+            edge_attr = torch.from_numpy(graph["edge_feat"])[:, 0] + 1
+            g.edge_attr = edge_attr.long().squeeze(-1)
+            del graph["edge_feat"]
 
             g.y = torch.from_numpy(graph["y"])
             del graph["y"]
@@ -149,8 +154,11 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             dataset_info = compute_dataset_info(X, max_node=self.max_node)
             timesteps = self.timesteps
             max_node = self.max_node
-            
+
+        self.X_dim = dataset_info["x_margins"].shape[0]
+        self.E_dim = dataset_info["e_margins"].shape[0]
         self.dataset_info = dataset_info
+
         return {
             "timesteps": timesteps,
             "max_node": max_node,
@@ -158,6 +166,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             "x_margins": dataset_info["x_margins"],
             "e_margins": dataset_info["e_margins"], 
             "xe_conditions": dataset_info["xe_conditions"],
+            "ex_conditions": dataset_info["ex_conditions"],
             "atom_decoder": dataset_info["atom_decoder"],
             "num_nodes_dist": dataset_info["num_nodes_dist"]
         }
@@ -166,18 +175,31 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         diffusion_params = self._get_diffusion_params(X)
         self.timesteps = diffusion_params["timesteps"]
         self.max_node = diffusion_params["max_node"]
-        active_index = diffusion_params["active_index"]
-        x_limit = diffusion_params["x_margins"] / diffusion_params["x_margins"].sum()
-        e_limit = diffusion_params["e_margins"] / diffusion_params["e_margins"].sum()
-        xe_conditions = diffusion_params["xe_conditions"][active_index][:, active_index]
-        xe_conditions = xe_conditions.sum(dim=1)
-        ex_conditions = xe_conditions.t()
-        xe_conditions = xe_conditions / xe_conditions.sum(dim=-1, keepdim=True)
-        ex_conditions = ex_conditions / ex_conditions.sum(dim=-1, keepdim=True)
+        # active_index = diffusion_params["active_index"]
+        x_limit = diffusion_params["x_margins"].to(self.device)
+        e_limit = diffusion_params["e_margins"].to(self.device)
+        xe_conditions = diffusion_params["xe_conditions"].to(self.device)
+        ex_conditions = diffusion_params["ex_conditions"].to(self.device)
 
-        self.transition_model = MarginalTransition(x_limit, e_limit, xe_conditions, ex_conditions, self.y_dim, self.max_node)
+        self.transition_model = MarginalTransition(x_limit, e_limit, xe_conditions, ex_conditions, self.max_node)
         self.limit_dist = PlaceHolder(X=x_limit, E=e_limit, y=None)
-        self.noise_schedule = NoiseScheduleDiscrete(timesteps=self.timesteps)
+        self.noise_schedule = NoiseScheduleDiscrete(timesteps=self.timesteps).to(self.device)
+
+    def _initialize_model(
+        self,
+        model_class: Type[torch.nn.Module],
+        checkpoint: Optional[Dict] = None
+    ) -> torch.nn.Module:
+        """Initialize the model with parameters or a checkpoint."""
+        model_params = self._get_model_params(checkpoint)
+        self.model = model_class(**model_params)
+        self.model = self.model.to(self.device)
+        
+        if checkpoint is not None:
+            self.setup_diffusion_params(checkpoint)
+            self.model.load_state_dict(checkpoint["model_state_dict"])
+        return self.model
+
 
     def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:
         """Setup optimization components including optimizer and learning rate scheduler.
@@ -209,12 +231,13 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         X_train: List[str],
         y_train: Optional[Union[List, np.ndarray]] = None,
     ) -> "GraphDITMolecularGenerator":
+        self.setup_diffusion_params(X_train)
         self._initialize_model(self.model_class)
         self.model.initialize_parameters()
-        self.setup_diffusion_params(X_train)
 
         optimizer, scheduler = self._setup_optimizers()
-        X_train, y_train = self._validate_inputs(X_train, y_train)
+        num_task = 0 if self.y_dim is None else self.y_dim
+        X_train, y_train = self._validate_inputs(X_train, y_train, num_task=num_task)
         train_dataset = self._convert_to_pytorch_data(X_train, y_train)
         train_loader = DataLoader(
             train_dataset,
@@ -286,6 +309,8 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         probX = prob_all[:, :, :self.X_dim]
         probE = prob_all[:, :, self.X_dim:].reshape(bs, n, n, -1)
 
+        # check whether X_all/prob_all/probX/probE contain nan
+        
         sampled_t = sample_discrete_features(probX=probX, probE=probE, node_mask=node_mask)
 
         X_t = F.one_hot(sampled_t.X, num_classes=self.X_dim)
@@ -294,67 +319,80 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
 
         z_t = PlaceHolder(X=X_t, E=E_t, y=y).type_as(X_t).mask(node_mask)
 
-        noisy_data = {'t_int': t_int, 't': t_float, 'beta_t': beta_t, 'alpha_s_bar': alpha_s_bar,
+        noisy_data = {'t': t_float * self.timesteps, 'beta_t': beta_t, 'alpha_s_bar': alpha_s_bar,
                       'alpha_t_bar': alpha_t_bar, 'X_t': z_t.X, 'E_t': z_t.E, 'y_t': z_t.y, 'node_mask': node_mask}
         
         return noisy_data
 
     @torch.no_grad()
-    def generate(self, labels: Union[List[List], np.ndarray, torch.Tensor], num_node: Optional[Union[List[List], np.ndarray, torch.Tensor]] = None) -> List[str]:
+    def generate(self, labels: Optional[Union[List[List], np.ndarray, torch.Tensor]] = None, num_nodes: Optional[Union[List[List], np.ndarray, torch.Tensor]] = None, batch_size: int = 32) -> List[str]:
         """Generate molecules with specified properties and optional node counts.
 
         Parameters
         ----------
-        labels : Union[List[List], np.ndarray, torch.Tensor]
+        labels : Optional[Union[List[List], np.ndarray, torch.Tensor]], default=None
             Target properties for the generated molecules. Can be provided as:
-            - A list of lists for multiple properties
+            - A list of lists for multiple properties 
             - A numpy array of shape (batch_size, n_properties)
             - A torch tensor of shape (batch_size, n_properties)
             For single label (property values), can also be provided as 1D array/tensor.
+            If None, generates unconditional samples.
             
-        num_node : Optional[Union[List[List], np.ndarray, torch.Tensor]], default=None
+        num_nodes : Optional[Union[List[List], np.ndarray, torch.Tensor]], default=None
             Number of nodes for each molecule in the batch. If None, samples from
             the training distribution. Can be provided as:
             - A list of lists
-            - A numpy array of shape (batch_size, 1)
+            - A numpy array of shape (batch_size, 1) 
             - A torch tensor of shape (batch_size, 1)
+            
+        batch_size : int, default=32
+            Number of molecules to generate. Only used if labels is None.
 
         Returns
         -------
         List[str]
             List of generated molecules in SMILES format.
         """
+        if labels is not None and num_nodes is not None:
+            assert len(labels) == len(num_nodes), "labels and num_nodes must have the same batch size"
+        
+        if labels is not None and num_nodes is None:
+            batch_size = len(labels)
+        elif labels is None and num_nodes is not None:
+            batch_size = len(num_nodes)
+        elif labels is not None and num_nodes is not None:
+            batch_size = len(labels)
+
         # Convert property to 2D tensor if needed
         if isinstance(labels, list):
             labels = torch.tensor(labels)
         elif isinstance(labels, np.ndarray):
             labels = torch.from_numpy(labels)
-        if labels.dim() == 1:
+        if labels is not None and labels.dim() == 1:
             labels = labels.unsqueeze(-1)
-        batch_size = labels.size(0)
         
-        if num_node is None:
+        if num_nodes is None:
             num_nodes_dist = self.dataset_info["num_nodes_dist"]
-            num_node = num_nodes_dist.sample_n(batch_size, self.device)
-        elif isinstance(num_node, list):
-            num_node = torch.tensor(num_node)
-        elif isinstance(num_node, np.ndarray):
-            num_node = torch.from_numpy(num_node)
-        if num_node.dim() == 1:
-            num_node = num_node.unsqueeze(-1)
+            num_nodes = num_nodes_dist.sample_n(batch_size, self.device)
+        elif isinstance(num_nodes, list):
+            num_nodes = torch.tensor(num_nodes).to(self.device)
+        elif isinstance(num_nodes, np.ndarray):
+            num_nodes = torch.from_numpy(num_nodes).to(self.device)
+        if num_nodes.dim() == 1:
+            num_nodes = num_nodes.unsqueeze(-1)
         
-        assert num_node.size(0) == batch_size
+        assert num_nodes.size(0) == batch_size
         arange = (
-            torch.arange(self.max_node, device=self.device)
+            torch.arange(self.max_node).to(self.device)
             .unsqueeze(0)
             .expand(batch_size, -1)
         )
-        node_mask = arange < num_node
+        node_mask = arange < num_nodes
 
         if not hasattr(self, 'limit_dist') or self.limit_dist is None:
             raise ValueError("Limit distribution not found. Please call setup_diffusion_params first.")
-        if not hasattr(self, 'atom_decoder') or self.atom_decoder is None:
-            raise ValueError("Atom decoder not found. Please call setup_diffusion_params first.")
+        if not hasattr(self, 'dataset_info') or self.dataset_info is None:
+            raise ValueError("Dataset info not found. Please call setup_diffusion_params first.")
         
         z_T = sample_discrete_feature_noise(
             limit_dist=self.limit_dist, node_mask=node_mask
@@ -364,9 +402,12 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         assert (E == torch.transpose(E, 1, 2)).all()
 
         # Iteratively sample p(z_s | z_t) for t = 1, ..., T, with s = t - 1.
-        y = labels
+        if labels is not None:
+            y = labels.to(self.device).float()
+        else:
+            y = None
         for s_int in reversed(range(0, self.timesteps)):
-            s_array = s_int * torch.ones((batch_size, 1)).type_as(y)
+            s_array = s_int * torch.ones((batch_size, 1)).float().to(self.device)
             t_array = s_array + 1
             s_norm = s_array / self.timesteps
             t_norm = t_array / self.timesteps
@@ -374,14 +415,14 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             # Sample z_s
             sampled_s = self.sample_p_zs_given_zt(s_norm, t_norm, X, E, y, node_mask)
             X, E, y = sampled_s.X, sampled_s.E, sampled_s.y
-            
+
         # Sample
         sampled_s = sampled_s.mask(node_mask, collapse=True)
         X, E, y = sampled_s.X, sampled_s.E, sampled_s.y
 
         molecule_list = []
         for i in range(batch_size):
-            n = num_node[i][0]
+            n = num_nodes[i][0].item()
             atom_types = X[i, :n].cpu()
             edge_types = E[i, :n, :n].cpu()
             molecule_list.append([atom_types, edge_types])
@@ -408,14 +449,14 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             "node_mask": node_mask,
         }
 
-        def get_prob(noisy_data, text_embedding, unconditioned=False):
+        def get_prob(noisy_data, unconditioned=False):
             pred = self.model(noisy_data, unconditioned=unconditioned)
 
             # Normalize predictions
             pred_X = F.softmax(pred.X, dim=-1)  # bs, n, d0
             pred_E = F.softmax(pred.E, dim=-1)  # bs, n, n, d0
 
-            device = text_embedding.device
+            device = pred_X.device
             # Retrieve transitions matrix
             Qtb = self.transition_model.get_Qt_bar(alpha_t_bar, device)
             Qsb = self.transition_model.get_Qt_bar(alpha_s_bar, device)
@@ -424,6 +465,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             Xt_all = torch.cat([X_t, E_t.reshape(bs, n, -1)], dim=-1)
             predX_all = torch.cat([pred_X, pred_E.reshape(bs, n, -1)], dim=-1)
 
+            # raise ValueError('stop here')
             unnormalized_probX_all = reverse_diffusion(
                 predX_0=predX_all, X_t=Xt_all, Qt=Qt.X, Qsb=Qsb.X, Qtb=Qtb.X
             )
@@ -446,13 +488,11 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
 
             return prob_X, prob_E
 
-        prob_X, prob_E = get_prob(noisy_data, text_embedding)
+        prob_X, prob_E = get_prob(noisy_data)
 
         ### Guidance
         if self.guide_scale is not None and self.guide_scale != 1:
-            uncon_prob_X, uncon_prob_E = get_prob(
-                noisy_data, text_embedding, unconditioned=True
-            )
+            uncon_prob_X, uncon_prob_E = get_prob(noisy_data, unconditioned=True)
             prob_X = (
                 uncon_prob_X
                 * (prob_X / uncon_prob_X.clamp_min(1e-5)) ** self.guide_scale
@@ -474,4 +514,4 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
 
         out_one_hot = PlaceHolder(X=X_s, E=E_s, y=properties)
 
-        return out_one_hot.mask(node_mask).type_as(properties)
+        return out_one_hot.mask(node_mask)

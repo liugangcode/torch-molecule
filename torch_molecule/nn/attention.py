@@ -46,6 +46,7 @@ class AttentionWithNodeMask(nn.Module):
         q, k = self.q_norm(q), self.k_norm(k)
         
         attn_mask = (node_mask[:, None, :, None] & node_mask[:, None, None, :]).expand(-1, self.num_head, N, N)
+        attn_mask = attn_mask.clone()
         attn_mask[attn_mask.sum(-1) == 0] = True
 
         x = F.scaled_dot_product_attention(

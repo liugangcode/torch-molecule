@@ -14,6 +14,11 @@ torch_molecule.encoder module
 """
 from torch_molecule.encoder.supervised import SupervisedMolecularEncoder
 
+"""
+torch_molecule.generator module
+"""
+from torch_molecule.generator.graph_dit import GraphDITMolecularGenerator
+
 __all__ = [
     # 'BaseMolecularPredictor',
     # predictors
@@ -23,4 +28,6 @@ __all__ = [
     'IRMMolecularPredictor',
     # encoders
     'SupervisedMolecularEncoder',
+    # generators
+    'GraphDITMolecularGenerator',
 ]

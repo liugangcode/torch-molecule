@@ -43,10 +43,9 @@ class NoiseScheduleDiscrete(torch.nn.Module):
         return self.alphas_bar[t_int.long()]
     
 class MarginalTransition:
-    def __init__(self, x_marginals, e_marginals, xe_conditions, ex_conditions, y_classes, n_nodes):
+    def __init__(self, x_marginals, e_marginals, xe_conditions, ex_conditions, n_nodes):
         self.X_classes = len(x_marginals)
         self.E_classes = len(e_marginals)
-        self.y_classes = y_classes
         self.x_marginals = x_marginals # Dx
         self.e_marginals = e_marginals # Dx, De
         self.xe_conditions = xe_conditions

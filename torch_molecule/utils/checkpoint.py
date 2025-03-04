@@ -54,6 +54,8 @@ class LocalCheckpointManager:
         except Exception as e:
             raise ValueError(f"Error loading model from {path}: {str(e)}")
 
+        verbose = model_instance.get_params().get("verbose", False)
+
         required_keys = {"model_state_dict", "hyperparameters", "model_name"}
         if not all(key in checkpoint for key in required_keys):
             missing_keys = required_keys - set(checkpoint.keys())
@@ -73,7 +75,7 @@ class LocalCheckpointManager:
                 if is_changed:
                     setattr(model_instance, key, new_value)
 
-        if parameter_status:
+        if parameter_status and verbose:
             print("\nHyperparameter Status:")
             print("-" * 80)
             print(f"{'Parameter':<20} {'Old Value':<20} {'New Value':<20} {'Status':<10}")

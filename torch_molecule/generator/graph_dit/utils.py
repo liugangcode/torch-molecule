@@ -69,7 +69,7 @@ def compute_dataset_info(smiles_list, max_node=50, cache_path=None):
     atom_count_list.append(0)
     n_atoms_per_mol = [0] * (max_node + 1)
     bond_count_list = [0, 0, 0, 0, 0]
-    bond_type_to_index =  {BT.SINGLE: 1, BT.DOUBLE: 2, BT.TRIPLE: 3, BT.AROMATIC: 4}
+    bond_type_to_index =  {Chem.BondType.SINGLE: 1, Chem.BondType.DOUBLE: 2, Chem.BondType.TRIPLE: 3, Chem.BondType.AROMATIC: 4}
     tansition_E = np.zeros((118, 118, 5))
 
     n_atom_list = []
@@ -150,26 +150,27 @@ def compute_dataset_info(smiles_list, max_node=50, cache_path=None):
     active_index = (node_types > 0).nonzero().squeeze()
 
     x_margins = node_types.float() / torch.sum(node_types)
+    x_margins = x_margins[active_index]
     e_margins = edge_types.float() / torch.sum(edge_types)
 
-    xe_conditions = tansition_E.float()
+    xe_conditions = torch.Tensor(tansition_E)
     xe_conditions = xe_conditions[active_index][:, active_index] 
     
-    xe_conditions = xe_conditions.sum(dim=1) 
+    xe_conditions = xe_conditions.sum(dim=1)
     ex_conditions = xe_conditions.t()
-    xe_conditions = xe_conditions / xe_conditions.sum(dim=-1, keepdim=True)
-    ex_conditions = ex_conditions / ex_conditions.sum(dim=-1, keepdim=True)
-
-    num_nodes_dist = DistributionNodes(n_atoms_per_mol)
+    xe_conditions = xe_conditions / (xe_conditions.sum(dim=-1, keepdim=True) + 1e-10)
+    ex_conditions = ex_conditions / (ex_conditions.sum(dim=-1, keepdim=True) + 1e-10)
+    num_nodes_dist = DistributionNodes(torch.Tensor(n_atoms_per_mol))
 
     meta_dict = {
         'active_index': active_index,
         'x_margins': x_margins,
         'e_margins': e_margins,
         'xe_conditions': xe_conditions,
+        'ex_conditions': ex_conditions,
         'atom_decoder': active_atoms,
         'num_nodes_dist': num_nodes_dist,
-        'max_node': max(n_atom_list), 
+        'max_node': max_node, 
         }
         # dataset_info = {
         #     'active_index': None,

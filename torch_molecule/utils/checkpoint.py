@@ -50,7 +50,7 @@ class LocalCheckpointManager:
             raise FileNotFoundError(f"No model file found at '{path}'.")
 
         try:
-            checkpoint = torch.load(path, map_location=model_instance.device)
+            checkpoint = torch.load(path, map_location=model_instance.device, weights_only=False)
         except Exception as e:
             raise ValueError(f"Error loading model from {path}: {str(e)}")
 
@@ -134,7 +134,7 @@ class HuggingFaceCheckpointManager:
                 local_dir=os.path.dirname(path),
             )
 
-            checkpoint = torch.load(downloaded_path, map_location=model_instance.device)
+            checkpoint = torch.load(downloaded_path, map_location=model_instance.device, weights_only=False)
 
             required_keys = {"model_state_dict", "hyperparameters", "model_name"}
             if not all(key in checkpoint for key in required_keys):

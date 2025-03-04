@@ -56,9 +56,7 @@ class PlaceHolder:
             assert torch.allclose(self.E, torch.transpose(self.E, 1, 2))
         return self
 
-
-
-def compute_dataset_info(smiles_list, max_node=50, cache_path=None):
+def compute_dataset_info(smiles_or_mol_list, max_node=50, cache_path=None):
     pt = Chem.GetPeriodicTable()
     atom_name_list = []
     atom_count_list = []
@@ -74,11 +72,11 @@ def compute_dataset_info(smiles_list, max_node=50, cache_path=None):
 
     n_atom_list = []
     n_bond_list = []
-    for i, sms in enumerate(smiles_list):
-        try:
-            mol = Chem.MolFromSmiles(sms)
-        except:
-            continue
+    for i, sms_or_mol in enumerate(smiles_or_mol_list):
+        if isinstance(sms_or_mol, str):
+            mol = Chem.MolFromSmiles(sms_or_mol)
+        else:
+            mol = sms_or_mol
 
         n_atom = mol.GetNumHeavyAtoms()
         n_bond = mol.GetNumBonds()
@@ -172,14 +170,6 @@ def compute_dataset_info(smiles_list, max_node=50, cache_path=None):
         'num_nodes_dist': num_nodes_dist,
         'max_node': max_node, 
         }
-        # dataset_info = {
-        #     'active_index': None,
-        #     'x_margins': None, 
-        #     'e_margins': None,
-        #     'xe_conditions': None,
-        #     'atom_decoder': None,
-        #     'num_nodes_dist': None
-        # }
     if cache_path is not None:
         with open(cache_path, "w") as f:
             json.dump(meta_dict, f)

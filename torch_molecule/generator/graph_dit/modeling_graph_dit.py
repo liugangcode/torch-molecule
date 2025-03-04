@@ -216,13 +216,13 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         X_train: List[str],
         y_train: Optional[Union[List, np.ndarray]] = None,
     ) -> "GraphDITMolecularGenerator":
+        num_task = 0 if self.y_dim is None else self.y_dim
+        X_train, y_train = self._validate_inputs(X_train, y_train, num_task=num_task)
         self._setup_diffusion_params(X_train)
         self._initialize_model(self.model_class)
         self.model.initialize_parameters()
 
         optimizer, scheduler = self._setup_optimizers()
-        num_task = 0 if self.y_dim is None else self.y_dim
-        X_train, y_train = self._validate_inputs(X_train, y_train, num_task=num_task)
         train_dataset = self._convert_to_pytorch_data(X_train, y_train)
         train_loader = DataLoader(
             train_dataset,

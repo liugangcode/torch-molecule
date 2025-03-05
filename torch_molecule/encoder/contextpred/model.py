@@ -3,12 +3,11 @@ import torch.nn as nn
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 from torch_geometric.data import Data
 
-from ...nn import GNN_node, GNN_node_Virtualnode, MLP
+from ...nn import GNN_node, GNN_node_Virtualnode
 from ...utils import init_weights
 
 from .utils import ExtractSubstructureContextPair
 
-reg_criterion = torch.nn.L1Loss()
 class_criterion = torch.nn.CrossEntropyLoss()
 
 def cycle_index(num, shift):
@@ -24,14 +23,14 @@ class GNN(nn.Module):
         num_task,
         drop_ratio=0.5,
         norm_layer="batch_norm",
-        encoder_model="gin-virtual",
-        encoder_readout="max",
+        encoder_type="gin-virtual",
+        readout="max",
         mode="cbow",
         csize=3,
         neg_samples=1
     ):
         super(GNN, self).__init__()
-        gnn_name = encoder_model.split("-")[0]
+        gnn_name = encoder_type.split("-")[0]
         self.num_layer = num_layer
         self.num_task = num_task
         self.hidden_size = hidden_size
@@ -60,16 +59,16 @@ class GNN(nn.Module):
         }
         
         # Choose encoder type based on encoder_model
-        encoder_class = GNN_node_Virtualnode if "virtual" in encoder_model else GNN_node
+        encoder_class = GNN_node_Virtualnode if "virtual" in encoder_type else GNN_node
         self.graph_encoder_substuct = encoder_class(**encoder_params_substruct)
         pooling_funcs = {
             "sum": global_add_pool,
             "mean": global_mean_pool,
             "max": global_max_pool
         }
-        self.pool = pooling_funcs.get(encoder_readout)
+        self.pool = pooling_funcs.get(readout)
         if self.pool is None:
-            raise ValueError(f"Invalid graph pooling type {encoder_readout}.")
+            raise ValueError(f"Invalid graph pooling type {readout}.")
 
         self.graph_encoder_context = encoder_class(**encoder_params_context)
     
@@ -165,8 +164,7 @@ class GNN(nn.Module):
             else:
                 dim = 0
             batched_data[key] = torch.cat(batched_data[key], dim=dim)
-                #batched_data[key], dim=batched_data.__cat_dim__(key))
-        #batch.batch = torch.cat(batch.batch, dim=-1)
+
         batched_data.batch_substruct = torch.cat(batched_data.batch_substruct, dim=-1)
         batched_data.batch_context = torch.cat(batched_data.batch_context, dim=-1)
         batched_data.batch_overlapped_context = torch.cat(batched_data.batch_overlapped_context, dim=-1)
@@ -176,10 +174,10 @@ class GNN(nn.Module):
         substruct_data = Data(x=batched_data.x_substruct, edge_index=batched_data.edge_index_substruct, edge_attr=batched_data.edge_attr_substruct, batch=batched_data.batch_substruct)
         context_data = Data(x=batched_data.x_context, edge_index=batched_data.edge_index_context, edge_attr=batched_data.edge_attr_context, batch=batched_data.batch_context)
         
-        substruct_node_rep, _ = self.graph_encoder_substuct(substruct_data)#[batched_data.center_substruct_idx]
-        substruct_h_rep = self.pool(substruct_node_rep, batched_data.batch_substruct)
+        substruct_node_rep, _ = self.graph_encoder_substuct(substruct_data)
+        #substruct_h_rep = self.pool(substruct_node_rep, batched_data.batch_substruct)
         
-        context_node_rep, _ = self.graph_encoder_context(context_data)#[batched_data.overlap_context_substruct_idx]
+        context_node_rep, _ = self.graph_encoder_context(context_data)
         context_h_rep = self.pool(context_node_rep, batched_data.batch_context)
         
         # contexts are represented by 

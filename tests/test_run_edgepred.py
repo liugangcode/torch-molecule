@@ -13,7 +13,6 @@ def test_edgepred_encoder():
 
     # Basic initilization test
     model = EdgePredMolecularEncoder(
-        task_type="classification",
         num_layer=3,
         hidden_size=300,
         batch_size=5,
@@ -32,10 +31,7 @@ def test_edgepred_encoder():
     model.save_to_local(save_path)
     print(f"Model saved to {save_path}")
 
-    new_model = EdgePredMolecularEncoder(
-        num_task=1,
-        task_type="classification"
-    )
+    new_model = EdgePredMolecularEncoder()
     new_model.load_from_local(save_path)
     print("Model loaded successfully")
     

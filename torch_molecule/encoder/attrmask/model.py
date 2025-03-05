@@ -7,7 +7,6 @@ from ...utils import init_weights
 
 import random
 
-reg_criterion = torch.nn.L1Loss()
 class_criterion = torch.nn.CrossEntropyLoss()
 
 class GNN(nn.Module):
@@ -18,13 +17,13 @@ class GNN(nn.Module):
         num_task,
         drop_ratio=0.5,
         norm_layer="batch_norm",
-        encoder_model="gin-virtual",
-        encoder_readout="max",
+        encoder_type="gin-virtual",
+        readout="max",
         mask_num=0,
         mask_rate=0.15
     ):
         super(GNN, self).__init__()
-        gnn_name = encoder_model.split("-")[0]
+        gnn_name = encoder_type.split("-")[0]
         self.num_task = num_task
         self.hidden_size = hidden_size
         self.mask_num = mask_num
@@ -41,16 +40,16 @@ class GNN(nn.Module):
         }
         
         # Choose encoder type based on encoder_model
-        encoder_class = GNN_node_Virtualnode if "virtual" in encoder_model else GNN_node
+        encoder_class = GNN_node_Virtualnode if "virtual" in encoder_type else GNN_node
         self.graph_encoder = encoder_class(**encoder_params)
         pooling_funcs = {
             "sum": global_add_pool,
             "mean": global_mean_pool,
             "max": global_max_pool
         }
-        self.pool = pooling_funcs.get(encoder_readout)
+        self.pool = pooling_funcs.get(readout)
         if self.pool is None:
-            raise ValueError(f"Invalid graph pooling type {encoder_readout}.")
+            raise ValueError(f"Invalid graph pooling type {readout}.")
 
         self.predictor = MLP(hidden_size, hidden_features=2 * hidden_size, out_features=num_task)
     
@@ -102,7 +101,7 @@ class GNN(nn.Module):
     
         # generate predictions
         h_node, _ = self.graph_encoder(batched_data)
-        h_rep = self.pool(h_node, batched_data.batch)
+        #h_rep = self.pool(h_node, batched_data.batch)
         prediction_class = self.predictor(h_node[masked_node_indices])
         
         target_class = batched_data.y.to(torch.float32)      

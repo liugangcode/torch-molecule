@@ -9,10 +9,9 @@ import torch
 from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 
-from .GNNModel import GNN
+from .model import GNN
 from ...base import BaseMolecularEncoder
 from ...utils import graph_from_smiles
-from ...utils import PSEUDOTASK
 
 ALLOWABLE_ENCODER_MODELS = ["gin-virtual", "gcn-virtual", "gin", "gcn"]
 ALLOWABLE_ENCODER_READOUTS = ["sum", "mean", "max"]
@@ -23,17 +22,14 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
     """
     # pretraining task
     num_task: Optional[int] = None
-    num_pretask: Optional[int] = None
-    predefined_task: Optional[List[str]] = None
-    task_type: str = "classification"
     # Model parameters
     num_layer: int = 5
     hidden_size: int = 300
     drop_ratio: float = 0.5
     norm_layer: str = "batch_norm"
     
-    encoder_model: str = "gin-virtual"
-    encoder_readout: str = "sum"
+    encoder_type: str = "gin-virtual"
+    readout: str = "sum"
     
     # Training parameters
     batch_size: int = 128
@@ -59,35 +55,11 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
     def __post_init__(self):
         """Initialize the model after dataclass initialization."""
         super().__post_init__()
-        if self.encoder_model not in ALLOWABLE_ENCODER_MODELS:
-            raise ValueError(f"Invalid encoder_model: {self.encoder_model}. Currently only {ALLOWABLE_ENCODER_MODELS} are supported.")
-        if self.encoder_readout not in ALLOWABLE_ENCODER_READOUTS:
-            raise ValueError(f"Invalid encoder_readout: {self.encoder_readout}. Currently only {ALLOWABLE_ENCODER_READOUTS} are supported.")
-        if self.predefined_task is not None:
-            for task in self.predefined_task:
-                if task not in PSEUDOTASK.keys():
-                    raise ValueError(f"Invalid predefined_task: {task}. Currently only {PSEUDOTASK.keys()} are supported.")
+        if self.encoder_type not in ALLOWABLE_ENCODER_MODELS:
+            raise ValueError(f"Invalid encoder_model: {self.encoder_type}. Currently only {ALLOWABLE_ENCODER_MODELS} are supported.")
+        if self.readout not in ALLOWABLE_ENCODER_READOUTS:
+            raise ValueError(f"Invalid encoder_readout: {self.readout}. Currently only {ALLOWABLE_ENCODER_READOUTS} are supported.")
         
-        # Calculate number of predefined tasks if any are specified
-        num_pretask = 0
-        if self.predefined_task is not None:
-            num_pretask = sum(PSEUDOTASK[task][0] for task in self.predefined_task)
-        elif self.predefined_task is None and self.num_task is None:
-            # Use all predefined tasks if none specified
-            self.predefined_task = list(PSEUDOTASK.keys())
-            num_pretask = sum(task[0] for task in PSEUDOTASK.values())
-
-        self.num_pretask = num_pretask
-        self.num_task = (self.num_task or 0) + num_pretask
-
-        if self.verbose:
-            if self.predefined_task is None:
-                print(f"Using {self.num_task} user-defined tasks.")
-            elif self.num_task == num_pretask:
-                print(f"Using {num_pretask} predefined tasks from: {self.predefined_task}")
-            else:
-                print(f"Using {num_pretask} predefined tasks and {self.num_task - num_pretask} user-defined tasks.")
-
     @staticmethod
     def _get_param_names() -> List[str]:
         """Get parameter names for the estimator.
@@ -100,15 +72,13 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
         return [
             # Task Parameters
             "num_task",
-            "predefined_task",
-            "num_pretask",
             # Model Hyperparameters
+            "encoder_type",
+            "readout",
             "num_layer",
             "hidden_size", 
             "drop_ratio",
             "norm_layer",
-            "encoder_model",
-            "encoder_readout",
             # Training Parameters
             "batch_size",
             "epochs",
@@ -140,21 +110,21 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
                 "num_task": hyperparameters.get("num_task", self.num_task),
                 "drop_ratio": hyperparameters.get("drop_ratio", self.drop_ratio),
                 "norm_layer": hyperparameters.get("norm_layer", self.norm_layer),
-                "encoder_readout": hyperparameters.get("encoder_readout", self.encoder_readout),
-                "encoder_model": hyperparameters.get("encoder_model", self.encoder_model),
+                "readout": hyperparameters.get("readout", self.readout),
+                "encoder_type": hyperparameters.get("encoder_type", self.encoder_type),
             }
         else:
             return {
                 "num_layer": self.num_layer,
                 "hidden_size": self.hidden_size,
                 "num_task": self.num_task,
-                "encoder_model": self.encoder_model,
+                "encoder_type": self.encoder_type,
                 "drop_ratio": self.drop_ratio,
                 "norm_layer": self.norm_layer,
-                "encoder_readout": self.encoder_readout,
+                "readout": self.readout,
             }
         
-    def _convert_to_pytorch_data(self, X, y=None):
+    def _convert_to_pytorch_data(self, X):
         """Convert numpy arrays to PyTorch Geometric data format.
         """
         if self.verbose:
@@ -164,11 +134,7 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
 
         pyg_graph_list = []
         for idx, smiles_or_mol in iterator:
-            if y is not None:
-                properties = y[idx]
-            else: 
-                properties = None
-            graph = graph_from_smiles(smiles_or_mol, properties, augmented_properties = self.predefined_task)
+            graph = graph_from_smiles(smiles_or_mol, None)
             g = Data()
             g.num_nodes = graph["num_nodes"]
             g.edge_index = torch.from_numpy(graph["edge_index"])
@@ -183,18 +149,6 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
             if graph["node_feat"] is not None:
                 g.x = torch.from_numpy(graph["node_feat"])
                 del graph["node_feat"]
-
-            if graph["y"] is not None:
-                g.y = torch.from_numpy(graph["y"])
-                del graph["y"]
-   
-            if graph["morgan"] is not None:
-                g.morgan = torch.tensor(graph["morgan"], dtype=torch.int8).view(1, -1)
-                del graph["morgan"]
-            
-            if graph["maccs"] is not None:
-                g.maccs = torch.tensor(graph["maccs"], dtype=torch.int8).view(1, -1)
-                del graph["maccs"]
 
             pyg_graph_list.append(g)
 
@@ -228,7 +182,6 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
     def fit(
         self,
         X_train: List[str],
-        y_train: Optional[Union[List, np.ndarray]] = None,
     ) -> "EdgePredMolecularEncoder":
         """Fit the model to the training data with optional validation set.
 
@@ -236,8 +189,6 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
         ----------
         X_train : List[str]
             Training set input molecular structures as SMILES strings
-        y_train : Union[List, np.ndarray]
-            Training set target values for representation learning
         Returns
         -------
         self : EdgePredMolecularEncoder
@@ -249,8 +200,8 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
         optimizer, scheduler = self._setup_optimizers()
         
         # Prepare datasets and loaders
-        X_train, y_train = self._validate_inputs(X_train, y_train, return_rdkit_mol=True, num_task=self.num_task, num_pretask=self.num_pretask)
-        train_dataset = self._convert_to_pytorch_data(X_train, y_train)
+        X_train, _ = self._validate_inputs(X_train, return_rdkit_mol=True, num_task=self.num_task)
+        train_dataset = self._convert_to_pytorch_data(X_train)
         train_loader = DataLoader(
             train_dataset,
             batch_size=self.batch_size,

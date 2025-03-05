@@ -13,7 +13,6 @@ def test_contextpred_encoder():
     # Basic initilization test
     model = ContextPredMolecularEncoder(
         num_task=119,
-        task_type="classification",
         num_layer=3,
         hidden_size=300,
         batch_size=5,
@@ -36,8 +35,7 @@ def test_contextpred_encoder():
     print(f"Model saved to {save_path}")
 
     new_model = ContextPredMolecularEncoder(
-        num_task=1,
-        task_type="classification"
+        num_task=119
     )
     new_model.load_from_local(save_path)
     print("Model loaded successfully")

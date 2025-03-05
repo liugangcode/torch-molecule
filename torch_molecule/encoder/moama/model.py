@@ -2,13 +2,12 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 
-from ...nn import GNN_node, GNN_node_Virtualnode, MLP
+from ...nn import GNN_node, GNN_node_Virtualnode, GNN_Decoder
 from ...utils import init_weights
 
-import random
+from .utils import get_mask_indices, get_fingerprint_loss
 
-reg_criterion = torch.nn.L1Loss()
-class_criterion = torch.nn.BCEWithLogitsLoss()
+class_criterion = torch.nn.CrossEntropyLoss()
 
 class GNN(nn.Module):
     def __init__(
@@ -18,17 +17,19 @@ class GNN(nn.Module):
         num_task,
         drop_ratio=0.5,
         norm_layer="batch_norm",
-        encoder_model="gin-virtual",
-        encoder_readout="max",
+        encoder_type="gin-virtual",
+        readout="max",
         mask_num=0,
-        mask_rate=0.15
+        mask_rate=0.15,
+        beta=0.5
     ):
         super(GNN, self).__init__()
-        gnn_name = encoder_model.split("-")[0]
+        gnn_name = encoder_type.split("-")[0]
         self.num_task = num_task
         self.hidden_size = hidden_size
         self.mask_num = mask_num
         self.mask_rate = mask_rate
+        self.beta = beta
 
         encoder_params = {
             "num_layer": num_layer,
@@ -41,17 +42,20 @@ class GNN(nn.Module):
         }
         
         # Choose encoder type based on encoder_model
-        encoder_class = GNN_node_Virtualnode if "virtual" in encoder_model else GNN_node
+        encoder_class = GNN_node_Virtualnode if "virtual" in encoder_type else GNN_node
         self.graph_encoder = encoder_class(**encoder_params)
         pooling_funcs = {
             "sum": global_add_pool,
             "mean": global_mean_pool,
             "max": global_max_pool
         }
-        self.pool = pooling_funcs.get(encoder_readout)
+        self.pool = pooling_funcs.get(readout)
         if self.pool is None:
-            raise ValueError(f"Invalid graph pooling type {encoder_readout}.")
+            raise ValueError(f"Invalid graph pooling type {readout}.")
 
+        self.predictor = GNN_Decoder(hidden_size, num_task)
+        #self.predictor = MLP(hidden_size, hidden_features=2 * hidden_size, out_features=num_task)
+    
     def initialize_parameters(self, seed=None):
         """
         Randomly initialize all model parameters using the init_weights function.
@@ -64,6 +68,7 @@ class GNN(nn.Module):
         
         # Initialize the main components
         init_weights(self.graph_encoder)
+        init_weights(self.predictor)
         
         # Reset all parameters using PyTorch Geometric's reset function
         def reset_parameters(module):
@@ -75,38 +80,31 @@ class GNN(nn.Module):
         self.apply(reset_parameters)
 
     def compute_loss(self, batched_data):
-        # sample negative edges
-        num_nodes = batched_data.num_nodes
-        num_edges = batched_data.num_edges
+        
+        masked_node_indices = get_mask_indices(batched_data, self.mask_rate, self.mask_num)
 
-        edge_set = set([str(batched_data.edge_index[0, i].cpu().item()) + "," + str(
-            batched_data.edge_index[1, i].cpu().item()) for i in range(batched_data.edge_index.shape[1])])
+        batched_data.masked_node_indices = torch.tensor(masked_node_indices)
 
-        redandunt_sample = torch.randint(0, num_nodes, (2, 5 * num_edges))
-        sampled_ind = []
-        sampled_edge_set = set([])
-        for i in range(5 * num_edges):
-            node1 = redandunt_sample[0, i].cpu().item()
-            node2 = redandunt_sample[1, i].cpu().item()
-            edge_str = str(node1) + "," + str(node2)
-            if not edge_str in edge_set and not edge_str in sampled_edge_set and not node1 == node2:
-                sampled_edge_set.add(edge_str)
-                sampled_ind.append(i)
-            if len(sampled_ind) == num_edges / 2:
-                break
+        batched_data.y = batched_data.x[masked_node_indices][:, 0]
 
-        batched_data.negative_edge_index = redandunt_sample[:, sampled_ind]
+        # mask nodes' features
+        for node_idx in masked_node_indices:
+            batched_data.x[node_idx] = torch.tensor([self.num_task] + [0] * (batched_data.x.shape[1] - 1))
     
         # generate predictions
         h_node, _ = self.graph_encoder(batched_data)
         h_rep = self.pool(h_node, batched_data.batch)
+        batched_data.x = h_node
+        prediction_class = self.predictor(batched_data)[masked_node_indices]
         
-        positive_score = torch.sum(h_node[batched_data.edge_index[0, ::2]] * h_node[batched_data.edge_index[1, ::2]], dim = 1)
-        negative_score = torch.sum(h_node[batched_data.negative_edge_index[0]] * h_node[batched_data.negative_edge_index[1]], dim = 1)
+        target_class = batched_data.y.to(torch.float32)      
+        loss_class = class_criterion(prediction_class.to(torch.float32), target_class.long())
         
-        loss_class = class_criterion(positive_score, torch.ones_like(positive_score)) + class_criterion(negative_score, torch.zeros_like(negative_score))
-        
-        return loss_class
+        fingerprint_loss = get_fingerprint_loss(batched_data.smiles, h_rep)
+                
+        loss = self.beta * loss_class + (1 - self.beta) * fingerprint_loss
+
+        return loss
 
     def forward(self, batched_data):
         h_node, _ = self.graph_encoder(batched_data)

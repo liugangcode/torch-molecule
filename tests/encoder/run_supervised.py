@@ -14,7 +14,7 @@ def test_supervised_encoder():
     # Test case 1: Using only predefined tasks
     print("\nTest 1: Using predefined tasks (morgan and maccs, logp)")
     encoder1 = SupervisedMolecularEncoder(
-        predefined_task=["morgan", "maccs", "logP" ],
+        predefined_task=["morgan", "maccs", "logP"],
         epochs=2,  # Small number for testing
         verbose=True
     )

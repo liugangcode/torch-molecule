@@ -5,14 +5,13 @@ from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_poo
 from ...nn import GNN_node, GNN_node_Virtualnode
 from ...utils import init_weights
 
-class_criterion = torch.nn.BCEWithLogitsLoss()
+criterion = torch.nn.BCEWithLogitsLoss()
 
 class GNN(nn.Module):
     def __init__(
         self,
         num_layer,
         hidden_size,
-        num_task,
         drop_ratio=0.5,
         norm_layer="batch_norm",
         encoder_type="gin-virtual",
@@ -20,9 +19,7 @@ class GNN(nn.Module):
     ):
         super(GNN, self).__init__()
         gnn_name = encoder_type.split("-")[0]
-        self.num_task = num_task
         self.hidden_size = hidden_size
-
         encoder_params = {
             "num_layer": num_layer,
             "hidden_size": hidden_size,
@@ -97,7 +94,7 @@ class GNN(nn.Module):
         positive_score = torch.sum(h_node[batched_data.edge_index[0, ::2]] * h_node[batched_data.edge_index[1, ::2]], dim = 1)
         negative_score = torch.sum(h_node[batched_data.negative_edge_index[0]] * h_node[batched_data.negative_edge_index[1]], dim = 1)
         
-        loss_class = class_criterion(positive_score, torch.ones_like(positive_score)) + class_criterion(negative_score, torch.zeros_like(negative_score))
+        loss_class = criterion(positive_score, torch.ones_like(positive_score)) + criterion(negative_score, torch.zeros_like(negative_score))
         
         return loss_class
 

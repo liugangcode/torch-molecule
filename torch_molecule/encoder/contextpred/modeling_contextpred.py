@@ -10,18 +10,22 @@ from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 
 from .model import GNN
+from ..constant import GNN_ENCODER_MODELS, GNN_ENCODER_READOUTS, GNN_ENCODER_PARAMS
 from ...base import BaseMolecularEncoder
 from ...utils import graph_from_smiles
 
-ALLOWABLE_ENCODER_MODELS = ["gin-virtual", "gcn-virtual", "gin", "gcn"]
-ALLOWABLE_ENCODER_READOUTS = ["sum", "mean", "max"]
+ALLOWABLE_ENCODER_MODELS = GNN_ENCODER_MODELS
+ALLOWABLE_ENCODER_READOUTS = GNN_ENCODER_READOUTS
 
 @dataclass
 class ContextPredMolecularEncoder(BaseMolecularEncoder):
     """This encoder implements a GNN model for molecular representation learning.
     """
-    # pretraining task
-    num_task: Optional[int] = None
+    # Task related parameters
+    mode: str = "cbow" # cbow or skipgram
+    context_size: int = 2
+    neg_samples: int = 1
+    
     # Model parameters
     num_layer: int = 3
     hidden_size: int = 300
@@ -30,10 +34,6 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
     
     encoder_type: str = "gin-virtual"
     readout: str = "sum"
-    
-    mode: str = "cbow"
-    csize: int = 2
-    neg_samples: int = 1
     
     # Training parameters
     batch_size: int = 128
@@ -49,9 +49,6 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
     
     # Other parameters
     verbose: bool = False
-    mode: str = "cbow"
-    csize: int = 2
-    neg_samples: int = 1
     model_name: str = "ContextPredMolecularEncoder"
     
     # Non-init fields
@@ -69,79 +66,27 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
 
     @staticmethod
     def _get_param_names() -> List[str]:
-        """Get parameter names for the estimator.
+        return ["mode", "context_size", "neg_samples"] + GNN_ENCODER_PARAMS
 
-        Returns
-        -------
-        List[str]
-            List of parameter names that can be used for model configuration.
-        """
-        return [
-            # Task Parameters
-            "num_task",
-            # Model Hyperparameters
-            "encoder_type",
-            "readout",
-            "num_layer",
-            "hidden_size", 
-            "drop_ratio",
-            "norm_layer",
-            "mode",
-            "csize",
-            "neg_samples",
-            # Training Parameters
-            "batch_size",
-            "epochs",
-            "learning_rate",
-            "weight_decay",
-            "grad_clip_value",
-            # Scheduler Parameters
-            "use_lr_scheduler",
-            "scheduler_factor", 
-            "scheduler_patience",
-            # Other Parameters
-            "fitting_epoch",
-            "fitting_loss",
-            "device",
-            "verbose",
-            "mode",
-            "csize",
-            "neg_samples",
-            "model_name"
-        ]
-    
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
+        params = {
+            "num_layer": self.num_layer,
+            "hidden_size": self.hidden_size,
+            "drop_ratio": self.drop_ratio,
+            "norm_layer": self.norm_layer,
+            "readout": self.readout,
+            "encoder_type": self.encoder_type,
+            "mode": self.mode,
+            "context_size": self.context_size,
+            "neg_samples": self.neg_samples
+        }
         if checkpoint is not None:
             if "hyperparameters" not in checkpoint:
-                raise ValueError("Checkpoint missing 'hyperparameters' key")
-                
+                raise ValueError("Checkpoint missing 'hyperparameters' key")                
             hyperparameters = checkpoint["hyperparameters"]
-            
-            return {
-                "num_layer": hyperparameters.get("num_layer", self.num_layer),
-                "hidden_size": hyperparameters.get("hidden_size", self.hidden_size),
-                "num_task": hyperparameters.get("num_task", self.num_task),
-                "drop_ratio": hyperparameters.get("drop_ratio", self.drop_ratio),
-                "norm_layer": hyperparameters.get("norm_layer", self.norm_layer),
-                "readout": hyperparameters.get("readout", self.readout),
-                "encoder_type": hyperparameters.get("encoder_type", self.encoder_type),
-                "mode": hyperparameters.get("mode", self.mode),
-                "csize": hyperparameters.get("csize", self.csize),
-                "neg_samples": hyperparameters.get("neg_samples", self.neg_samples),
-            }
-        else:
-            return {
-                "num_layer": self.num_layer,
-                "hidden_size": self.hidden_size,
-                "num_task": self.num_task,
-                "encoder_type": self.encoder_type,
-                "drop_ratio": self.drop_ratio,
-                "norm_layer": self.norm_layer,
-                "readout": self.readout,
-                "mode": self.mode,
-                "csize": self.csize,
-                "neg_samples": self.neg_samples
-            }
+            params = {k: hyperparameters.get(k, v) for k, v in params.items()}
+                
+        return params
         
     def _convert_to_pytorch_data(self, X):
         """Convert numpy arrays to PyTorch Geometric data format.
@@ -219,7 +164,7 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
         optimizer, scheduler = self._setup_optimizers()
         
         # Prepare datasets and loaders
-        X_train, _ = self._validate_inputs(X_train, return_rdkit_mol=True, num_task=self.num_task)
+        X_train, _ = self._validate_inputs(X_train, return_rdkit_mol=True)
         train_dataset = self._convert_to_pytorch_data(X_train)
         train_loader = DataLoader(
             train_dataset,
@@ -231,7 +176,7 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
 
         for epoch in range(self.epochs):
             # Training phase
-            train_losses = self._train_epoch(train_loader, optimizer)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch)
             self.fitting_loss.append(np.mean(train_losses))
             if scheduler:
                 scheduler.step(np.mean(train_losses))
@@ -240,7 +185,7 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer):
+    def _train_epoch(self, train_loader, optimizer, epoch):
         """Training logic for one epoch.
 
         Args:
@@ -271,7 +216,7 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
 
             # Update progress bar if using tqdm
             if self.verbose:
-                iterator.set_postfix({"loss": f"{loss.item():.4f}"})
+                iterator.set_postfix({"Epoch": f"{epoch}", "Loss": f"{loss.item():.4f}"})
 
         return losses
 

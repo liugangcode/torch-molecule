@@ -13,7 +13,6 @@ def test_attrmask_encoder():
 
     # Basic initilization test
     model = AttrMaskMolecularEncoder(
-        num_task=119,
         num_layer=3,
         hidden_size=300,
         batch_size=5,
@@ -32,9 +31,7 @@ def test_attrmask_encoder():
     model.save_to_local(save_path)
     print(f"Model saved to {save_path}")
 
-    new_model = AttrMaskMolecularEncoder(
-        num_task=119,
-    )
+    new_model = AttrMaskMolecularEncoder()
     new_model.load_from_local(save_path)
     print("Model loaded successfully")
     

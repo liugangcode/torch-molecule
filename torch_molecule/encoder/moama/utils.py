@@ -17,7 +17,7 @@ def get_fingerprint_loss(smiles, h_rep):
 
     return fingerprint_loss
 
-def get_mask_indices(batched_data, mask_rate=0.15, mask_num=0):
+def get_mask_indices(batched_data, mask_rate=0.15):
     masked_node_indices_full = list()
     offset = 0
     

@@ -10,18 +10,32 @@ from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 
 from .model import GNN
+from ..constant import GNN_ENCODER_MODELS, GNN_ENCODER_READOUTS, GNN_ENCODER_PARAMS
 from ...base import BaseMolecularEncoder
 from ...utils import graph_from_smiles
 
-ALLOWABLE_ENCODER_MODELS = ["gin-virtual", "gcn-virtual", "gin", "gcn"]
-ALLOWABLE_ENCODER_READOUTS = ["sum", "mean", "max"]
+ALLOWABLE_ENCODER_MODELS = GNN_ENCODER_MODELS
+ALLOWABLE_ENCODER_READOUTS = GNN_ENCODER_READOUTS
 
 @dataclass
 class MoamaMolecularEncoder(BaseMolecularEncoder):
-    """This encoder implements a GNN model for molecular representation learning.
+    """This encoder implements Motif-aware Attribute Masking for Molecular Graph Pre-training.
+    
+    The model learns molecular representations by masking and reconstructing motif-aware substructures.
+    Paper: https://github.com/zhengli09/MoAMA
+
+    Parameters
+    ----------
+    mask_rate : float, default=0.15 
+        Fraction of nodes to mask in each graph
+    lw_rec : float, default=0.5
+        Weight balancing between reconstruction loss and fingerprint loss.
+        Higher values emphasize reconstruction, lower values emphasize fingerprint matching.
     """
-    # pretraining task
-    num_task: Optional[int] = None
+    # Pretraining task parameters
+    mask_rate: float = 0.15
+    lw_rec: float = 0.5
+    
     # Model parameters
     num_layer: int = 5
     hidden_size: int = 300
@@ -30,10 +44,6 @@ class MoamaMolecularEncoder(BaseMolecularEncoder):
     
     encoder_type: str = "gin-virtual"
     readout: str = "sum"
-    
-    mask_num: int = 0
-    mask_rate: float = 0.15
-    beta: float = 0.5
     
     # Training parameters
     batch_size: int = 128
@@ -73,69 +83,26 @@ class MoamaMolecularEncoder(BaseMolecularEncoder):
         List[str]
             List of parameter names that can be used for model configuration.
         """
-        return [
-            # Task Parameters
-            "num_task",
-            # Model Hyperparameters
-            "encoder_type",
-            "readout",
-            "num_layer",
-            "hidden_size", 
-            "drop_ratio",
-            "norm_layer",
-            "mask_num",
-            "mask_rate",
-            "beta",
-            # Training Parameters
-            "batch_size",
-            "epochs",
-            "learning_rate",
-            "weight_decay",
-            "grad_clip_value",
-            # Scheduler Parameters
-            "use_lr_scheduler",
-            "scheduler_factor", 
-            "scheduler_patience",
-            # Other Parameters
-            "fitting_epoch",
-            "fitting_loss",
-            "device",
-            "verbose",
-            "model_name"
-        ]
+        return ["mask_rate", "lw_rec"] + GNN_ENCODER_PARAMS
     
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
+        params = {
+            "num_layer": self.num_layer,
+            "hidden_size": self.hidden_size,
+            "encoder_type": self.encoder_type, 
+            "drop_ratio": self.drop_ratio,
+            "norm_layer": self.norm_layer,
+            "readout": self.readout,
+            "mask_rate": self.mask_rate,
+            "lw_rec": self.lw_rec
+        }
+        
         if checkpoint is not None:
             if "hyperparameters" not in checkpoint:
                 raise ValueError("Checkpoint missing 'hyperparameters' key")
-                
-            hyperparameters = checkpoint["hyperparameters"]
+            params = {k: checkpoint["hyperparameters"].get(k, v) for k, v in params.items()}
             
-            return {
-                "num_layer": hyperparameters.get("num_layer", self.num_layer),
-                "hidden_size": hyperparameters.get("hidden_size", self.hidden_size),
-                "num_task": hyperparameters.get("num_task", self.num_task),
-                "drop_ratio": hyperparameters.get("drop_ratio", self.drop_ratio),
-                "norm_layer": hyperparameters.get("norm_layer", self.norm_layer),
-                "readout": hyperparameters.get("readout", self.readout),
-                "encoder_type": hyperparameters.get("encoder_type", self.encoder_type),
-                "mask_num": hyperparameters.get("mask_num", self.mask_num),
-                "mask_rate": hyperparameters.get("mask_rate", self.mask_rate),
-                "beta": hyperparameters.get("beta", self.beta),
-            }
-        else:
-            return {
-                "num_layer": self.num_layer,
-                "hidden_size": self.hidden_size,
-                "num_task": self.num_task,
-                "encoder_type": self.encoder_type,
-                "drop_ratio": self.drop_ratio,
-                "norm_layer": self.norm_layer,
-                "readout": self.readout,
-                "mask_num": self.mask_num,
-                "mask_rate": self.mask_rate,
-                "beta": self.beta
-            }
+        return params
         
     def _convert_to_pytorch_data(self, X):
         """Convert numpy arrays to PyTorch Geometric data format.
@@ -214,7 +181,7 @@ class MoamaMolecularEncoder(BaseMolecularEncoder):
         
         # Prepare datasets and loaders
         smiles = X_train
-        X_train, _ = self._validate_inputs(X_train, return_rdkit_mol=True, num_task=self.num_task)
+        X_train, _ = self._validate_inputs(X_train, return_rdkit_mol=True)
         train_dataset = self._convert_to_pytorch_data(X_train)
         for i in range(len(X_train)):
             train_dataset[i].smiles = smiles[i]
@@ -228,7 +195,7 @@ class MoamaMolecularEncoder(BaseMolecularEncoder):
 
         for epoch in range(self.epochs):
             # Training phase
-            train_losses = self._train_epoch(train_loader, optimizer)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch)
             self.fitting_loss.append(np.mean(train_losses))
             if scheduler:
                 scheduler.step(np.mean(train_losses))
@@ -237,7 +204,7 @@ class MoamaMolecularEncoder(BaseMolecularEncoder):
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer):
+    def _train_epoch(self, train_loader, optimizer, epoch):
         """Training logic for one epoch.
 
         Args:
@@ -268,7 +235,7 @@ class MoamaMolecularEncoder(BaseMolecularEncoder):
 
             # Update progress bar if using tqdm
             if self.verbose:
-                iterator.set_postfix({"loss": f"{loss.item():.4f}"})
+                iterator.set_postfix({"Epoch": f"{epoch}", "Loss": f"{loss.item():.4f}"})
 
         return losses
 

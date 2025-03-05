@@ -20,23 +20,21 @@ class GNN(nn.Module):
         self,
         num_layer,
         hidden_size,
-        num_task,
         drop_ratio=0.5,
         norm_layer="batch_norm",
         encoder_type="gin-virtual",
         readout="max",
         mode="cbow",
-        csize=3,
+        context_size=3,
         neg_samples=1
     ):
         super(GNN, self).__init__()
         gnn_name = encoder_type.split("-")[0]
         self.num_layer = num_layer
-        self.num_task = num_task
         self.hidden_size = hidden_size
         self.mode = mode
         self.neg_samples = neg_samples
-        self.csize = csize
+        self.context_size = context_size
 
         encoder_params_substruct = {
             "num_layer": num_layer,
@@ -49,7 +47,7 @@ class GNN(nn.Module):
         }
         
         encoder_params_context = {
-            "num_layer": csize,
+            "num_layer": context_size,
             "hidden_size": hidden_size,
             "JK": "last", 
             "drop_ratio": drop_ratio,
@@ -96,13 +94,10 @@ class GNN(nn.Module):
         self.apply(reset_parameters)
 
     def compute_loss(self, batched_data):
-        
-        extract_context = ExtractSubstructureContextPair(self.num_layer, self.num_layer - 1, self.num_layer + self.csize - 1)
-        
+        device = batched_data.x.device
+        extract_context = ExtractSubstructureContextPair(self.num_layer, self.num_layer - 1, self.num_layer + self.context_size - 1)
         keys = ["center_substruct_idx", "edge_attr_substruct", "edge_index_substruct", "x_substruct", "overlap_context_substruct_idx", "edge_attr_context", "edge_index_context", "x_context"]
-
         for key in keys:
-            #print(key)
             batched_data[key] = []
 
         #used for pooling the substructure
@@ -121,37 +116,29 @@ class GNN(nn.Module):
         for j in range(len(batched_data)):
             data = batched_data[j]
             data = extract_context(data)
-            #If there is no context, just skip!!
+
             if hasattr(data, "x_context"):
                 num_nodes = data.num_nodes
                 num_nodes_substruct = len(data.x_substruct)
                 num_nodes_context = len(data.x_context)
 
-                #batch.batch.append(torch.full((num_nodes, ), i, dtype=torch.long))
-                batched_data.batch_substruct.append(torch.full((len(data.substruct_node_idxes), ), i, dtype=torch.long))
-                batched_data.batch_context.append(torch.full((len(data.context_node_idxes), ), i, dtype=torch.long))
-                batched_data.batch_overlapped_context.append(torch.full((len(data.overlap_context_substruct_idx), ), i, dtype=torch.long))
+                batched_data.batch_substruct.append(torch.full((len(data.substruct_node_idxes), ), i, dtype=torch.long).to(device))
+                batched_data.batch_context.append(torch.full((len(data.context_node_idxes), ), i, dtype=torch.long).to(device))
+                batched_data.batch_overlapped_context.append(torch.full((len(data.overlap_context_substruct_idx), ), i, dtype=torch.long).to(device))
                 batched_data.overlapped_context_size.append(len(data.overlap_context_substruct_idx))
 
-                ###batching for the main graph
-                #for key in data.keys:
-                #    if not "context" in key and not "substruct" in key:
-                #        item = data[key]
-                #        item = item + cumsum_main if batch.cumsum(key, item) else item
-                #        batch[key].append(item)
-                
                 ###batching for the substructure graph
                 for key in ["center_substruct_idx", "edge_attr_substruct", "edge_index_substruct", "x_substruct"]:
                     item = data[key]
                     item = item + cumsum_substruct if key in ["edge_index", "edge_index_substruct", "edge_index_context", "overlap_context_substruct_idx", "center_substruct_idx"] else item
-                    batched_data[key].append(item)
+                    batched_data[key].append(item.to(device))
                 
 
                 ###batching for the context graph
                 for key in ["overlap_context_substruct_idx", "edge_attr_context", "edge_index_context", "x_context"]:
                     item = data[key]
                     item = item + cumsum_context if key in ["edge_index", "edge_index_substruct", "edge_index_context", "overlap_context_substruct_idx", "center_substruct_idx"] else item
-                    batched_data[key].append(item)
+                    batched_data[key].append(item.to(device))
 
                 cumsum_main += num_nodes
                 cumsum_substruct += num_nodes_substruct   
@@ -165,10 +152,10 @@ class GNN(nn.Module):
                 dim = 0
             batched_data[key] = torch.cat(batched_data[key], dim=dim)
 
-        batched_data.batch_substruct = torch.cat(batched_data.batch_substruct, dim=-1)
-        batched_data.batch_context = torch.cat(batched_data.batch_context, dim=-1)
-        batched_data.batch_overlapped_context = torch.cat(batched_data.batch_overlapped_context, dim=-1)
-        batched_data.overlapped_context_size = torch.LongTensor(batched_data.overlapped_context_size)
+        batched_data.batch_substruct = torch.cat(batched_data.batch_substruct, dim=-1).to(device)
+        batched_data.batch_context = torch.cat(batched_data.batch_context, dim=-1).to(device)
+        batched_data.batch_overlapped_context = torch.cat(batched_data.batch_overlapped_context, dim=-1).to(device)
+        batched_data.overlapped_context_size = torch.LongTensor(batched_data.overlapped_context_size).to(device)
 
         # generate predictions
         substruct_data = Data(x=batched_data.x_substruct, edge_index=batched_data.edge_index_substruct, edge_attr=batched_data.edge_attr_substruct, batch=batched_data.batch_substruct)

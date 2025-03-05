@@ -14,22 +14,19 @@ class GNN(nn.Module):
         self,
         num_layer,
         hidden_size,
-        num_task,
         drop_ratio=0.5,
         norm_layer="batch_norm",
         encoder_type="gin-virtual",
         readout="max",
-        mask_num=0,
         mask_rate=0.15,
-        beta=0.5
+        lw_rec=0.5
     ):
         super(GNN, self).__init__()
         gnn_name = encoder_type.split("-")[0]
-        self.num_task = num_task
+        self.num_atom_type = 119
         self.hidden_size = hidden_size
-        self.mask_num = mask_num
         self.mask_rate = mask_rate
-        self.beta = beta
+        self.lw_rec = lw_rec
 
         encoder_params = {
             "num_layer": num_layer,
@@ -53,8 +50,7 @@ class GNN(nn.Module):
         if self.pool is None:
             raise ValueError(f"Invalid graph pooling type {readout}.")
 
-        self.predictor = GNN_Decoder(hidden_size, num_task)
-        #self.predictor = MLP(hidden_size, hidden_features=2 * hidden_size, out_features=num_task)
+        self.predictor = GNN_Decoder(hidden_size, self.num_atom_type)
     
     def initialize_parameters(self, seed=None):
         """
@@ -81,7 +77,7 @@ class GNN(nn.Module):
 
     def compute_loss(self, batched_data):
         
-        masked_node_indices = get_mask_indices(batched_data, self.mask_rate, self.mask_num)
+        masked_node_indices = get_mask_indices(batched_data, self.mask_rate)
 
         batched_data.masked_node_indices = torch.tensor(masked_node_indices)
 
@@ -89,7 +85,7 @@ class GNN(nn.Module):
 
         # mask nodes' features
         for node_idx in masked_node_indices:
-            batched_data.x[node_idx] = torch.tensor([self.num_task] + [0] * (batched_data.x.shape[1] - 1))
+            batched_data.x[node_idx] = torch.tensor([self.num_atom_type] + [0] * (batched_data.x.shape[1] - 1))
     
         # generate predictions
         h_node, _ = self.graph_encoder(batched_data)
@@ -102,7 +98,7 @@ class GNN(nn.Module):
         
         fingerprint_loss = get_fingerprint_loss(batched_data.smiles, h_rep)
                 
-        loss = self.beta * loss_class + (1 - self.beta) * fingerprint_loss
+        loss = self.lw_rec * loss_class + (1 - self.lw_rec) * fingerprint_loss
 
         return loss
 

@@ -93,15 +93,31 @@ class GNN(nn.Module):
                 h_rep = torch.cat((h_rep, maccs), dim=1)
         return h_rep
 
-    def compute_loss(self, batched_data, criterion):
+    def compute_loss(self, batched_data, criterion, scale=1.0, penalty_weight=1.0):
         h_node, _ = self.graph_encoder(batched_data)
         h_rep = self.pool(h_node, batched_data.batch)
         h_rep = self._augmented_graph_features(batched_data, h_rep)
         prediction = self.predictor(h_rep)
         target = batched_data.y.to(torch.float32)
         is_labeled = batched_data.y == batched_data.y
-        loss = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled]).mean()
-        return loss
+
+        dummy = torch.nn.Parameter(torch.Tensor([scale])).to(prediction.device)
+        losses_erm = criterion(prediction.to(torch.float32)[is_labeled] * dummy, target[is_labeled])
+        
+        environments = batched_data.environment[is_labeled]
+        unique_envs = environments.unique()  
+        env_losses = []
+        for env in unique_envs:
+            env_mask = environments == env
+            env_loss = losses_erm[env_mask].mean()
+            env_grad = torch.autograd.grad(env_loss, dummy, create_graph=True)[0]
+            env_losses.append(torch.sum(env_grad**2))
+        
+        penalty = torch.sum(torch.stack(env_losses))
+        total_loss = losses_erm.mean() + penalty_weight * penalty
+        if penalty_weight > 1.0:
+            total_loss /= penalty_weight
+        return total_loss, losses_erm.mean(), penalty
 
     def forward(self, batched_data):
         h_node, _ = self.graph_encoder(batched_data)

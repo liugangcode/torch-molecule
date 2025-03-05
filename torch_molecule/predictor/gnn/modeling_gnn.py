@@ -523,7 +523,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
 
         for epoch in range(self.epochs):
             # Training phase
-            train_losses = self._train_epoch(train_loader, optimizer)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch)
             self.fitting_loss.append(np.mean(train_losses))
 
             # Validation phase
@@ -645,7 +645,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         # Adjust metric value based on higher/lower better
         return metric_value
 
-    def _train_epoch(self, train_loader, optimizer):
+    def _train_epoch(self, train_loader, optimizer, epoch):
         """Training logic for one epoch.
 
         Args:
@@ -684,6 +684,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
 
             # Update progress bar if using tqdm
             if self.verbose:
-                iterator.set_postfix({"loss": f"{loss.item():.4f}"})
+                iterator.set_postfix({"Epoch": epoch, "Loss": f"{loss.item():.4f}"})
 
         return losses

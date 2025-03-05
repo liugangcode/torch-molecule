@@ -92,11 +92,13 @@ class ClusterContinuousEmbedder(nn.Module):
         self.hidden_size = hidden_size
         self.dropout_prob = dropout_prob
 
-    def forward(self, labels, train, force_drop_ids=None, timestep=None):
+    def forward(self, labels, train, force_drop_ids=None):
         use_dropout = self.dropout_prob > 0
         if force_drop_ids is not None:
             drop_ids = force_drop_ids == 1
         else:
+            drop_ids = None
+        if not use_dropout:
             drop_ids = None
 
         if (train and use_dropout):

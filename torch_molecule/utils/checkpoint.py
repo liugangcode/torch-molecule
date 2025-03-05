@@ -50,9 +50,11 @@ class LocalCheckpointManager:
             raise FileNotFoundError(f"No model file found at '{path}'.")
 
         try:
-            checkpoint = torch.load(path, map_location=model_instance.device)
+            checkpoint = torch.load(path, map_location=model_instance.device, weights_only=False)
         except Exception as e:
             raise ValueError(f"Error loading model from {path}: {str(e)}")
+
+        verbose = model_instance.get_params().get("verbose", False)
 
         required_keys = {"model_state_dict", "hyperparameters", "model_name"}
         if not all(key in checkpoint for key in required_keys):
@@ -73,7 +75,7 @@ class LocalCheckpointManager:
                 if is_changed:
                     setattr(model_instance, key, new_value)
 
-        if parameter_status:
+        if parameter_status and verbose:
             print("\nHyperparameter Status:")
             print("-" * 80)
             print(f"{'Parameter':<20} {'Old Value':<20} {'New Value':<20} {'Status':<10}")
@@ -101,7 +103,6 @@ class LocalCheckpointManager:
         model_instance.is_fitted_ = True
         model_instance.model = model_instance.model.to(model_instance.device)
         print(f"Model successfully loaded from local path: {path}")
-
 
 class HuggingFaceCheckpointManager:
     """Handles saving and loading of models to and from the Hugging Face Hub."""
@@ -133,7 +134,7 @@ class HuggingFaceCheckpointManager:
                 local_dir=os.path.dirname(path),
             )
 
-            checkpoint = torch.load(downloaded_path, map_location=model_instance.device)
+            checkpoint = torch.load(downloaded_path, map_location=model_instance.device, weights_only=False)
 
             required_keys = {"model_state_dict", "hyperparameters", "model_name"}
             if not all(key in checkpoint for key in required_keys):

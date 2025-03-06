@@ -45,8 +45,8 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
     learning_rate: float = 0.0002
     grad_clip_value: Optional[float] = None
     weight_decay: float = 0.0
-    weight_X = 1
-    weight_E = 10
+    lw_X = 1
+    lw_E = 10
     
     # Scheduler parameters
     use_lr_scheduler: bool = False
@@ -87,7 +87,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             "timesteps", "dataset_info",
             # Training Parameters
             "batch_size", "epochs", "learning_rate", "grad_clip_value", 
-            "weight_decay", "weight_X", "weight_E",
+            "weight_decay", "lw_X", "lw_E",
             # Scheduler Parameters
             "use_lr_scheduler", "scheduler_factor", "scheduler_patience",
             # Sampling Parameters
@@ -263,7 +263,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             X, E = dense_data.X, dense_data.E
             noisy_data = self.apply_noise(X, E, batched_data.y, node_mask)
 
-            loss, loss_X, loss_E = self.model.compute_loss(noisy_data, true_X=X, true_E=E, weight_X=self.weight_X, weight_E=self.weight_E)
+            loss, loss_X, loss_E = self.model.compute_loss(noisy_data, true_X=X, true_E=E, lw_X=self.lw_X, lw_E=self.lw_E)
             
             loss.backward()
             optimizer.step()

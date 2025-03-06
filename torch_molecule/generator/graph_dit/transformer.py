@@ -108,7 +108,7 @@ class Transformer(nn.Module):
         X, E, y = self.final_layer(h, X_in, E_in, c, t, node_mask)
         return PlaceHolder(X=X, E=E, y=y).mask(node_mask)
     
-    def compute_loss(self, noisy_data, true_X, true_E, weight_X, weight_E, unconditioned=False):
+    def compute_loss(self, noisy_data, true_X, true_E, lw_X, lw_E, unconditioned=False):
         pred = self.forward(noisy_data, unconditioned=unconditioned)
         
         # Reshape predictions and targets
@@ -129,7 +129,7 @@ class Transformer(nn.Module):
         # Calculate node and edge losses using cross entropy
         loss_X = F.cross_entropy(flat_pred_X, torch.argmax(flat_true_X, dim=-1)) if true_X.numel() > 0 else 0.0
         loss_E = F.cross_entropy(flat_pred_E, torch.argmax(flat_true_E, dim=-1)) if true_E.numel() > 0 else 0.0
-        loss = weight_X * loss_X + weight_E * loss_E
+        loss = lw_X * loss_X + lw_E * loss_E
         return loss, loss_X, loss_E
 
 class AttentionBlock(nn.Module):

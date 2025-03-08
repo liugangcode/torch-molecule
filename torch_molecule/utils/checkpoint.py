@@ -15,7 +15,6 @@ HF_METADATA = {
         "molecular-property-prediction",
     ],
     "library_name": "torch_molecule", 
-    # "pipeline_tag": "graph-ml",
 }
 from ..utils.format import sanitize_config
 
@@ -227,7 +226,7 @@ class HuggingFaceCheckpointManager:
 
                 # Prepare task-specific config
                 task_config = {
-                    "task_type": model_instance.task_type,
+                    **({"task_type": model_instance.task_type} if hasattr(model_instance, "task_type") else {}),
                     "config": sanitize_config(model_instance.get_params(deep=True)),
                     "metrics": metrics or {},
                 }

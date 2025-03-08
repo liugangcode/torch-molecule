@@ -22,7 +22,8 @@ MINIMUM = 1e-10
 @dataclass
 class GraphGAMolecularGenerator(BaseMolecularGenerator):
     """This predictor implements the Graph Genetic Algorithm for molecular generation.
-    Paper: https://pubs.acs.org/doi/full/10.1021/ci034290p
+    Paper: A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of Median Molecules 
+    Link: https://pubs.acs.org/doi/full/10.1021/ci034290p
     Reference code: https://github.com/wenhao-gao/mol_opt/blob/main/main/graph_ga/run.py
 
     Parameters

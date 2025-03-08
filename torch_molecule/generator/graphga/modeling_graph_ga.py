@@ -22,14 +22,31 @@ MINIMUM = 1e-10
 @dataclass
 class GraphGAMolecularGenerator(BaseMolecularGenerator):
     """This predictor implements the Graph Genetic Algorithm for molecular generation.
+    Paper: https://pubs.acs.org/doi/full/10.1021/ci034290p
+    Reference code: https://github.com/wenhao-gao/mol_opt/blob/main/main/graph_ga/run.py
+
+    Parameters
+    ----------
+    num_task : int, default=0
+        Number of properties to condition on. Set to 0 for unconditional generation.
+    population_size : int, default=100
+        Size of the population in each iteration.
+    offspring_size : int, default=50
+        Number of offspring molecules to generate in each iteration.
+    mutation_rate : float, default=0.0067
+        Probability of mutation occurring during reproduction.
+    n_jobs : int, default=1
+        Number of parallel jobs to run. -1 means using all processors.
+    iteration : int, default=5
+        Number of generations to run the genetic algorithm.
     """
 
     # GA parameters
-    num_task: int = 0 # 0 for unconditional generation
+    num_task: int = 0
     population_size: int = 100
     offspring_size: int = 50
     mutation_rate: float = 0.0067
-    n_jobs: int = -1  # Number of parallel jobs
+    n_jobs: int = 1
     iteration: int = 5
     
     # Other parameters

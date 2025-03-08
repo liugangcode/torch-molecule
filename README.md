@@ -2,9 +2,9 @@
 
 `torch-molecule` is a package under active development that facilitates molecular discovery through deep learning, featuring a user-friendly, `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. Currently, the package focuses on three main components:
 
-1. **Predictive Models**: Supports graph-based models (e.g., GREA, SGIR, DCT), RNN-based models (e.g., SMILES-RNN, SMILES-Transformers), and other models based on molecular representations.
-2. **Generative Models**: Includes models such as Graph DiT, DiGress, GDSS, and others.
-3. **Representation Models**: Includes MoAMa, AttrMasking, ContextPred, EdgePred, and more.
+1. **Predictive Models**: Done: GREA, SGIR, IRM, GIN/GCN w/ virtual. TODO: SMILES-based LSTM/Transformers, more
+2. **Generative Models**: Done: Graph DiT, GraphGA. TODO: DiGress, GDSS, more
+3. **Representation Models**: Done: MoAMa, AttrMasking, ContextPred, EdgePred. TODO: checkpoints, more 
 
 > **Note**: This project is in active development, and features may change.
 
@@ -71,14 +71,14 @@ torch_molecule
    ```
 
 3. **Install torch_molecule**:
-
+(Not updated yet)
    ```bash
    pip install -i https://test.pypi.org/simple/ torch-molecule
    ```
 
 ## Usage
 
-Refer to the `examples` folder for detailed use cases.
+Refer to the `tests` folder for more use cases.
 
 ### Python API Example
 

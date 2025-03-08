@@ -20,6 +20,53 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
     """This predictor implements the graph diffusion transformer for molecular generation.
     Paper: Graph Diffusion Transformers for Multi-Conditional Molecular Generation (https://openreview.net/forum?id=cfrDLD1wfO)
     Reference Code: https://github.com/liugangcode/Graph-DiT
+
+    Parameters
+    ----------
+    generator_type : str, default="transformer"
+        Type of generator model to use
+    num_layer : int, default=6
+        Number of transformer layers
+    hidden_size : int, default=1152
+        Dimension of hidden layers
+    dropout : float, default=0.0
+        Dropout rate for transformer layers
+    drop_condition : float, default=0.0
+        Dropout rate for condition embedding
+    num_head : int, default=16
+        Number of attention heads in transformer
+    mlp_ratio : float, default=4
+        Ratio of MLP hidden dimension to transformer hidden dimension
+    max_node : int, default=50
+        Maximum number of nodes in generated graphs, it could be updated during training
+    X_dim : int, default=118
+        Dimension of node features (number of atom types): it could be updated during training
+    E_dim : int, default=5
+        Dimension of edge features (number of bond types): it could be updated during training
+    y_dim : int, default=1
+        Dimension of condition labels, i.e., the number of tasks
+    task_type : List[str], default=[]
+        List specifying type of each task ('regression' or 'classification')
+    timesteps : int, default=500
+        Number of diffusion timesteps
+    dataset_info : Dict[str, Any]
+        Information about the training dataset
+    batch_size : int, default=128
+        Batch size for training
+    epochs : int, default=10000
+        Number of training epochs
+    learning_rate : float, default=0.0002
+        Learning rate for optimization
+    grad_clip_value : Optional[float], default=None
+        Value for gradient clipping (None = no clipping)
+    weight_decay : float, default=0.0
+        Weight decay for optimization
+    lw_X : float, default=1
+        Loss weight for node reconstruction
+    lw_E : float, default=10
+        Loss weight for edge reconstruction
+    guide_scale : float, default=2.0
+        Scale factor for classifier-free guidance during sampling
     """
     # Model parameters
     generator_type: str = "transformer"
@@ -33,7 +80,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
     X_dim: int = 118
     E_dim: int = 5
     y_dim: int = 1
-    task_type: List[str] = field(default_factory=list) # a list of 'regression' or 'classification'
+    task_type: List[str] = field(default_factory=list)
 
     # Diffusion parameters
     timesteps: int = 500
@@ -47,14 +94,13 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
     weight_decay: float = 0.0
     lw_X = 1
     lw_E = 10
-    
+    # Sampling parameters
+    guide_scale: float = 2.
     # Scheduler parameters
     use_lr_scheduler: bool = False
     scheduler_factor: float = 0.5
     scheduler_patience: int = 5
     
-    # Sampling parameters
-    guide_scale: float = 2.
 
     # Other parameters
     verbose: bool = False
@@ -142,7 +188,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             pyg_graph_list.append(g)
 
         return pyg_graph_list
-    
+
     def _setup_diffusion_params(self, X: Union[List, Dict]) -> None:
         # Extract dataset info from X if it's a dict, otherwise use defaults
         if isinstance(X, dict):

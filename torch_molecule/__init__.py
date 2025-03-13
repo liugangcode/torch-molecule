@@ -7,7 +7,9 @@ from torch_molecule.predictor.grea import GREAMolecularPredictor
 from torch_molecule.predictor.gnn import GNNMolecularPredictor
 from torch_molecule.predictor.sgir import SGIRMolecularPredictor
 from torch_molecule.predictor.irm import IRMMolecularPredictor
-
+from torch_molecule.predictor.ssr import SSRMolecularPredictor
+from torch_molecule.predictor.rpgnn import RPGNNMolecularPredictor
+from torch_molecule.predictor.lstm import LSTMMolecularPredictor
 """
 torch_molecule.encoder module
 """
@@ -30,6 +32,9 @@ __all__ = [
     'GREAMolecularPredictor',
     'GNNMolecularPredictor',
     'IRMMolecularPredictor',
+    'SSRMolecularPredictor',
+    'RPGNNMolecularPredictor',
+    'LSTMMolecularPredictor',
     # encoders
     'SupervisedMolecularEncoder',
     'AttrMaskMolecularEncoder',

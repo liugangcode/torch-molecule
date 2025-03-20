@@ -75,8 +75,7 @@ Editable
    ```bash
    pip install -e .
    ```
-
-(Legacy)
+   (Legacy)
    ```bash
    pip install -i https://test.pypi.org/simple/ torch-molecule
    ```

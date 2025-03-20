@@ -107,7 +107,7 @@ class MolecularInputChecker:
                     f"Second dimension of y ({y.shape[1]}) must match num_task ({num_task - num_pretask})."
                 )
 
-            inf_mask = ~np.isfinite(y)
+            inf_mask = np.isinf(y)
             if np.any(inf_mask):
                 inf_indices = np.where(inf_mask)
                 warnings.warn(
@@ -118,20 +118,20 @@ class MolecularInputChecker:
                 y = y.astype(float)
                 y[inf_mask] = np.nan
 
-            nan_mask = np.isnan(y)
-            if np.any(nan_mask):
-                nan_counts = np.sum(nan_mask, axis=0)
-                nan_percentages = (nan_counts / len(X)) * 100
-                task_warnings = []
-                for task_idx, (count, percentage) in enumerate(zip(nan_counts, nan_percentages)):
-                    if count > 0:
-                        task_warnings.append(f"Task {task_idx}: {count} NaNs ({percentage:.1f}%)")
+            # nan_mask = np.isnan(y)
+            # if np.any(nan_mask):
+            #     nan_counts = np.sum(nan_mask, axis=0)
+            #     nan_percentages = (nan_counts / len(X)) * 100
+            #     task_warnings = []
+            #     for task_idx, (count, percentage) in enumerate(zip(nan_counts, nan_percentages)):
+            #         if count > 0:
+            #             task_warnings.append(f"Task {task_idx}: {count} NaNs ({percentage:.1f}%)")
 
-                warnings.warn(
-                    "NaN values present in y:\n"
-                    + "\n".join(task_warnings)
-                    + "\nSamples with NaN will be ignored or cause issues unless handled.",
-                    RuntimeWarning,
-                )
+            #     warnings.warn(
+            #         "NaN values present in y:\n"
+            #         + "\n".join(task_warnings)
+            #         + "\nSamples with NaN will be ignored or cause issues unless handled.",
+            #         RuntimeWarning,
+            #     )
 
         return rdkit_mols if return_rdkit_mol else X, y

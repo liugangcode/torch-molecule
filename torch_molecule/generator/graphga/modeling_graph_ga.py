@@ -111,9 +111,10 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
                 self.oracles = [RandomForestRegressor() for _ in range(self.num_task)]
                 for i in range(self.num_task):
                     X_train_fp = self._convert_to_fingerprint(X_train)
+                    nan_mask = ~np.isnan(y_train[:, i])
                     y_train_ = y_train[:, i]
-                    y_train_ = y_train_[~np.isnan(y_train_)]
-                    X_train_fp = X_train_fp[~np.isnan(y_train_)]
+                    y_train_ = y_train_[nan_mask]
+                    X_train_fp = X_train_fp[nan_mask]
                     self.oracles[i].fit(X_train_fp, y_train_)
             else:
                 self.oracles = oracles

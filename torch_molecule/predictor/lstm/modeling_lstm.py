@@ -11,7 +11,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
 from .model import LSTM
-from .token import create_tensor_dataset
+from .token_from_smiles import create_tensor_dataset
 from ...base import BaseMolecularPredictor
 from ...utils.search import (
     suggest_parameter,

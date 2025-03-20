@@ -47,9 +47,9 @@ class RPGNNMolecularPredictor(GNNMolecularPredictor):
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
         base_params = super()._get_model_params(checkpoint)
         if checkpoint and "hyperparameters" in checkpoint:
-            base_params["num_perm"] = checkpoint["hyperparameters"].get("num_perm", self.num_perm)
-            base_params["fixed_size"] = checkpoint["hyperparameters"].get("fixed_size", self.fixed_size)    
-            base_params["num_node_feature"] = checkpoint["hyperparameters"].get("num_node_feature", self.num_node_feature)
+            base_params["num_perm"] = checkpoint["hyperparameters"]["num_perm"]
+            base_params["fixed_size"] = checkpoint["hyperparameters"]["fixed_size"]
+            base_params["num_node_feature"] = checkpoint["hyperparameters"]["num_node_feature"]
         else:
             base_params["num_perm"] = self.num_perm
             base_params["fixed_size"] = self.fixed_size

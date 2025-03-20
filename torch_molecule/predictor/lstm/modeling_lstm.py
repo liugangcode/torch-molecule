@@ -33,7 +33,7 @@ DEFAULT_LSTM_SEARCH_SPACES: Dict[str, ParameterSpec] = {
 @dataclass
 class LSTMMolecularPredictor(BaseMolecularPredictor):
     """This predictor implements a LSTM model for molecular property prediction tasks.
-    Paper: Predicting Polymers’ Glass Transition Temperature by a Chemical Language Processing Model (https://www.semanticscholar.org/reader/f43ed533b2520567be2d8c24f6396f4e63e96430)
+    Paper: Predicting Polymers' Glass Transition Temperature by a Chemical Language Processing Model (https://www.semanticscholar.org/reader/f43ed533b2520567be2d8c24f6396f4e63e96430)
     Reference Code: https://github.com/figotj/RNN-Tg
     """
     # Model parameters
@@ -152,16 +152,12 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         return TensorDataset(torch.tensor(tokenized_X, dtype=torch.long),
                                     torch.zeros(len(tokenized_X), dtype=torch.float32))
 
-
-
-    
     def fit(
         self,
         X_train: List[str],
         y_train: Optional[Union[List, np.ndarray]],
         X_val: Optional[List[str]] = None,
         y_val: Optional[Union[List, np.ndarray]] = None,
-        X_unlbl: Optional[List[str]] = None,
     ) -> "LSTMMolecularPredictor":
         """Fit the model to the training data with optional validation set.
 
@@ -176,9 +172,6 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
             If None, training data will be used for validation
         y_val : Union[List, np.ndarray], optional
             Validation set target values. Required if X_val is provided
-        X_unlbl : List[str], optional
-            Unlabeled set input molecular structures as SMILES strings.
-            
         """
         if (X_val is None) != (y_val is None):
             raise ValueError(

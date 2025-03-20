@@ -30,7 +30,8 @@ torch_molecule
 │   ├── moama
 │   └── supervised
 ├── generator
-│   └── graph_dit
+│   ├── graph_dit
+│   └── graphga
 ├── __init__.py
 ├── nn
 │   ├── attention.py
@@ -41,9 +42,11 @@ torch_molecule
 ├── predictor
 │   ├── gnn
 │   ├── grea
-│   ├── __init__.py
 │   ├── irm
-│   └── sgir
+│   ├── lstm
+│   ├── rpgnn
+│   ├── sgir
+│   └── ssr
 └── utils
     ├── checker.py
     ├── checkpoint.py

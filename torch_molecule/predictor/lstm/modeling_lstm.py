@@ -11,8 +11,8 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
 from .model import LSTM
+from .token import create_tensor_dataset
 from ...base import BaseMolecularPredictor
-from ...utils import token_from_smiles
 from ...utils.search import (
     suggest_parameter,
     ParameterSpec,
@@ -143,7 +143,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
             iterator = tqdm(enumerate(X), desc="Converting lists of data to tensordataset", total=len(X))
         else:
             iterator = enumerate(X)
-        tokenized_X = token_from_smiles.create_tensor_dataset(X, self.max_input_len)
+        tokenized_X = create_tensor_dataset(X, self.max_input_len)
         if y is not None and y.size > 0:
             if len(y) != len(X):
                 raise ValueError(f"The number of smiles {len(X)} is incompatible with the number of labels {len(y)}!")

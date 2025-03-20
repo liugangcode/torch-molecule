@@ -164,3 +164,4 @@ private/
 scripts/*
 !scripts/run_examples.sh
 **/old*
+examples/temp*

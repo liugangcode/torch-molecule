@@ -170,17 +170,44 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             graph = graph_from_smiles(smiles_or_mol, property)
             g = Data()
             
-            node_type = torch.from_numpy(graph['node_feat'][:, 0] - 2) # No H
-            node_type[node_type == 118] = 117 # "*" is encoded as "misc" which is 120 - 2, and should be 117
+            # No H, first heavy atom has type 0
+            node_type = torch.from_numpy(graph['node_feat'][:, 0] - 1)
+            
+            # Filter out invalid node types (< 0)
+            valid_mask = node_type >= 0
+            if not valid_mask.all():
+                # Get valid nodes and adjust edge indices
+                valid_indices = torch.where(valid_mask)[0]
+                index_map = -torch.ones(node_type.size(0), dtype=torch.long)
+                index_map[valid_indices] = torch.arange(valid_indices.size(0))
+                
+                # Filter edges that connect to invalid nodes
+                edge_index = torch.from_numpy(graph["edge_index"])
+                valid_edges_mask = valid_mask[edge_index[0]] & valid_mask[edge_index[1]]
+                valid_edge_index = edge_index[:, valid_edges_mask]
+                
+                # Remap edge indices to account for removed nodes
+                remapped_edge_index = index_map[valid_edge_index]
+                
+                # Filter edge attributes
+                edge_attr = torch.from_numpy(graph["edge_feat"])[:, 0] + 1
+                valid_edge_attr = edge_attr[valid_edges_mask]
+                
+                # Update node and edge data
+                node_type = node_type[valid_mask]
+                g.edge_index = remapped_edge_index
+                g.edge_attr = valid_edge_attr.long().squeeze(-1)
+            else:
+                # No invalid nodes, proceed normally
+                g.edge_index = torch.from_numpy(graph["edge_index"])
+                edge_attr = torch.from_numpy(graph["edge_feat"])[:, 0] + 1
+                g.edge_attr = edge_attr.long().squeeze(-1)
+            
+            # * is encoded as "misc" which is 119 - 1 and should be 117
+            node_type[node_type == 118] = 117
             g.x = node_type.long().squeeze(-1)
             del graph["node_feat"]
-
-            g.edge_index = torch.from_numpy(graph["edge_index"])
             del graph["edge_index"]
-
-            # Single -> 1, Double -> 2, Triple -> 3, Aromatic -> 4
-            edge_attr = torch.from_numpy(graph["edge_feat"])[:, 0] + 1
-            g.edge_attr = edge_attr.long().squeeze(-1)
             del graph["edge_feat"]
 
             g.y = torch.from_numpy(graph["y"])
@@ -191,7 +218,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         return pyg_graph_list
 
     def _setup_diffusion_params(self, X: Union[List, Dict]) -> None:
-        # Extract dataset info from X if it's a dict, otherwise use defaults
+        # Extract dataset info from X if it's a dict (from checkpoint), otherwise compute it
         if isinstance(X, dict):
             dataset_info = X["hyperparameters"]["dataset_info"]
             timesteps = X["hyperparameters"]["timesteps"] 
@@ -231,7 +258,6 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             self._setup_diffusion_params(checkpoint)
             self.model.load_state_dict(checkpoint["model_state_dict"])
         return self.model
-
 
     def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:
         """Setup optimization components including optimizer and learning rate scheduler.

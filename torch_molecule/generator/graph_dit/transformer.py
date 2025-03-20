@@ -100,7 +100,7 @@ class Transformer(nn.Module):
         c = self.t_embedder(t)
         if self.y_embedder_list is not None:
             for i in range(self.y_dim):
-                c = c + self.y_embedder_list[i](y[:, i:i+1], self.training, force_drop_id, t)
+                c = c + self.y_embedder_list[i](y[:, i:i+1], self.training, force_drop_id)
         
         for i, block in enumerate(self.blocks):
             h = block(h, c, node_mask)

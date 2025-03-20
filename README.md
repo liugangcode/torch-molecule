@@ -71,7 +71,12 @@ torch_molecule
    ```
 
 3. **Install torch_molecule**:
-(Not updated yet)
+Editable
+   ```bash
+   pip install -e .
+   ```
+
+(Legacy)
    ```bash
    pip install -i https://test.pypi.org/simple/ torch-molecule
    ```

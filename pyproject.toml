@@ -18,6 +18,7 @@ classifiers = [
 dependencies = [
     "torch>=2.2.0",
     "torch-geometric>=2.6.1",
+    "torch-scatter>=2.1.2",
     "numpy",
     "pandas>=2.2.3",
     "click",

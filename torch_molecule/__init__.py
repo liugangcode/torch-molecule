@@ -1,29 +1,29 @@
 __version__ = "1.0.0.dev0"
 
 """
-torch_molecule.predictor module
+predictor module
 """
-from torch_molecule.predictor.grea import GREAMolecularPredictor
-from torch_molecule.predictor.gnn import GNNMolecularPredictor
-from torch_molecule.predictor.sgir import SGIRMolecularPredictor
-from torch_molecule.predictor.irm import IRMMolecularPredictor
-from torch_molecule.predictor.ssr import SSRMolecularPredictor
-from torch_molecule.predictor.rpgnn import RPGNNMolecularPredictor
-from torch_molecule.predictor.lstm import LSTMMolecularPredictor
+from .predictor.grea import GREAMolecularPredictor
+from .predictor.gnn import GNNMolecularPredictor
+from .predictor.sgir import SGIRMolecularPredictor
+from .predictor.irm import IRMMolecularPredictor
+from .predictor.ssr import SSRMolecularPredictor
+from .predictor.rpgnn import RPGNNMolecularPredictor
+from .predictor.lstm import LSTMMolecularPredictor
 """
-torch_molecule.encoder module
+encoder module
 """
-from torch_molecule.encoder.supervised import SupervisedMolecularEncoder
-from torch_molecule.encoder.attrmask import AttrMaskMolecularEncoder
-from torch_molecule.encoder.contextpred import ContextPredMolecularEncoder
-from torch_molecule.encoder.edgepred import EdgePredMolecularEncoder
-from torch_molecule.encoder.moama import MoamaMolecularEncoder
+from .encoder.supervised import SupervisedMolecularEncoder
+from .encoder.attrmask import AttrMaskMolecularEncoder
+from .encoder.contextpred import ContextPredMolecularEncoder
+from .encoder.edgepred import EdgePredMolecularEncoder
+from .encoder.moama import MoamaMolecularEncoder
 
 """
-torch_molecule.generator module
+generator module
 """
-from torch_molecule.generator.graph_dit import GraphDITMolecularGenerator
-from torch_molecule.generator.graphga import GraphGAMolecularGenerator
+from .generator.graph_dit import GraphDITMolecularGenerator
+from .generator.graphga import GraphGAMolecularGenerator
 
 __all__ = [
     # 'BaseMolecularPredictor',

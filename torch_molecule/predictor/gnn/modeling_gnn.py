@@ -262,11 +262,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
     
     def _get_default_search_space(self):
         """Get the default hyperparameter search space.
-        
-        Returns
-        -------
-        Dict[str, ParameterSpec]
-            Dictionary mapping parameter names to their search space specifications
         """
         return DEFAULT_GNN_SEARCH_SPACES
 
@@ -341,7 +336,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                     print(f"Error suggesting parameter {param_name}: {str(e)}")
                     return float('inf')
             
-            # try:
             # Update model parameters and train
             if "augmented_feature" in params:
                 params['augmented_feature'] = parse_list_params(params['augmented_feature'])
@@ -381,10 +375,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             
             # Return score (negated if higher is better, since Optuna minimizes)
             return -score if self.evaluate_higher_better else score
-                
-            # except Exception as e:
-            #     print(f"Trial {trial.number} failed with error: {str(e)}")
-            #     return float('inf')
         
         # Create study with optional output control
         optuna.logging.set_verbosity(
@@ -397,7 +387,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             study_name=f"{self.model_name}_optimization"
         )
         
-        # try:
         study.optimize(
             objective,
             n_trials=n_trials,
@@ -434,17 +423,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 print(f"  Number of completed trials: {len(study.trials)}")
                 print(f"  Number of pruned trials: {len(study.get_trials(states=[optuna.trial.TrialState.PRUNED]))}")
                 print(f"  Number of failed trials: {len(study.get_trials(states=[optuna.trial.TrialState.FAIL]))}")
-                
-        # except KeyboardInterrupt:
-        #     print("\nOptimization interrupted by user. Saving best results so far...")
-        #     if best_state_dict is not None:
-        #         self.set_params(**best_trial_params)
-        #         # CHANGE: Use same restoration logic here
-        #         self._initialize_model(self.model_class)
-        #         self.model.load_state_dict(best_state_dict['model'])
-        #         self.fitting_loss = best_loss
-        #         self.fitting_epoch = best_epoch
-        #         self.is_fitted_ = True
         
         return self
     

@@ -143,13 +143,14 @@ class BaseModel(ABC):
         if not self.is_fitted_:
             raise AttributeError("This model is not fitted yet. Call 'fit' before using it.")
 
-    def __repr__(self, N_CHAR_MAX: int = 700) -> str:
+    def __str__(self, N_CHAR_MAX: int = 700) -> str:
         """Unified string representation for all models."""
         attributes = {
             name: value
             for name, value in sorted(self.__dict__.items())
             if not name.startswith("_") and not callable(value)
         }
+        attributes = {k: v for k, v in attributes.items() if k != "fitting_loss"}
 
         def format_value(v):
             """Helper to format values for representation."""

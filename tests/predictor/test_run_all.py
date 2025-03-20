@@ -38,6 +38,7 @@ BASE_SEARCH_PARAMETERS = {
 
 def test_gnn_predictor():
     print("\n=== Testing GNN Model ===")
+
     model = GNNMolecularPredictor(
         num_task=1,
         task_type="classification",

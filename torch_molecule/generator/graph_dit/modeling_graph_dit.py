@@ -170,7 +170,8 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             graph = graph_from_smiles(smiles_or_mol, property)
             g = Data()
             
-            node_type = torch.from_numpy(graph['node_feat'][:, 0] - 2) # 117 for * (misc)
+            node_type = torch.from_numpy(graph['node_feat'][:, 0] - 2) # No H
+            node_type[node_type == 118] = 117 # "*" is encoded as "misc" which is 120 - 2, and should be 117
             g.x = node_type.long().squeeze(-1)
             del graph["node_feat"]
 

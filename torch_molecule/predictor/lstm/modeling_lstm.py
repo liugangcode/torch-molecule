@@ -69,6 +69,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
     model_class: Type[LSTM] = field(default=LSTM, init=False)
 
     def __post_init__(self):
+        super().__post_init__()
         # Setup loss criterion and evaluation
         if self.loss_criterion is None:
             self.loss_criterion = nn.MSELoss()

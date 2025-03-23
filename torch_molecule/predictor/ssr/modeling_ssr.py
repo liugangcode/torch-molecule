@@ -56,7 +56,7 @@ class SSRMolecularPredictor(GNNMolecularPredictor):
         ]
 
     def _get_default_search_space(self):
-        search_space = super()._get_default_search_space()
+        search_space = super()._get_default_search_space().copy()
         search_space["cmd_coeff"] = ParameterSpec(ParameterType.FLOAT, (0.01, 1.0))
         search_space["n_moments"] = ParameterSpec(ParameterType.INTEGER, (1, 10))
         return search_space

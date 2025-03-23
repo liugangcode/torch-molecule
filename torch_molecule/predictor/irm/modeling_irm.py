@@ -45,7 +45,7 @@ class IRMMolecularPredictor(GNNMolecularPredictor):
         ]
 
     def _get_default_search_space(self):
-        search_space = super()._get_default_search_space()
+        search_space = super()._get_default_search_space().copy()
         search_space["penalty_weight"] = ParameterSpec(ParameterType.LOG_FLOAT, (1e-10, 1))
         search_space["penalty_anneal_iters"] = ParameterSpec(ParameterType.INTEGER, (10, 100))
         return search_space

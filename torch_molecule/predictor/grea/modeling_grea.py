@@ -37,7 +37,7 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
         return ["gamma"] + GNNMolecularPredictor._get_param_names()
 
     def _get_default_search_space(self):
-        search_space = super()._get_default_search_space()
+        search_space = super()._get_default_search_space().copy()
         search_space["gamma"] = ParameterSpec(ParameterType.FLOAT, (0.1, 0.9))
         return search_space
 

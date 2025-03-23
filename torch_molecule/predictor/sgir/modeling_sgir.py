@@ -68,7 +68,7 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
         return grea_params + GREAMolecularPredictor._get_param_names()
 
     def _get_default_search_space(self):
-        search_space = super()._get_default_search_space()
+        search_space = super()._get_default_search_space().copy()
         search_space["num_anchor"] = ParameterSpec(ParameterType.INTEGER, (10, 100))
         search_space["labeling_interval"] = ParameterSpec(ParameterType.INTEGER, (10, 20))
         search_space["augmentation_interval"] = ParameterSpec(ParameterType.INTEGER, (10, 20))

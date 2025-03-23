@@ -39,7 +39,7 @@ class RPGNNMolecularPredictor(GNNMolecularPredictor):
         return ["num_perm", "fixed_size", "num_node_feature"] + GNNMolecularPredictor._get_param_names()
 
     def _get_default_search_space(self):
-        search_space = super()._get_default_search_space()
+        search_space = super()._get_default_search_space().copy()
         search_space["num_perm"] = ParameterSpec(ParameterType.INTEGER, (1, 10))
         search_space["fixed_size"] = ParameterSpec(ParameterType.INTEGER, (1, 10))
         return search_space

@@ -165,3 +165,6 @@ scripts/*
 !scripts/run_examples.sh
 **/old*
 examples/temp*
+examples/prediction/predict_GREA_for_gas.py
+examples/prediction/train_GNN_for_any.py
+examples/prediction/train_GREA_for_gas.py

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 
-from ...nn import GNN_node, GNN_node_Virtualnode, GNN_Decoder
+from ...nn import GNN_node, GNN_node_Virtualnode, GCNConv, GINConv
 from ...utils import init_weights
 
 from .utils import get_mask_indices, get_fingerprint_loss
@@ -106,3 +106,29 @@ class GNN(nn.Module):
         h_node, _ = self.graph_encoder(batched_data)
         h_rep = self.pool(h_node, batched_data.batch)
         return {"graph": h_rep, "node": h_node}
+    
+class GNN_Decoder(torch.nn.Module):
+    def __init__(self, hidden_size, out_dim, JK = "last", drop_ratio = 0, gnn_name = "gin", error_func="bce", to_predict="atom_type"):
+        super().__init__()
+        if gnn_name == 'gin':
+            self.conv = GINConv(hidden_size)
+        elif gnn_name == 'gcn':
+            self.conv = GCNConv(hidden_size)
+        else:
+            raise ValueError('Undefined GNN type called {}'.format(gnn_name))
+        self.dec_token = torch.nn.Parameter(torch.zeros([1, hidden_size]))
+        self.enc_to_dec = torch.nn.Linear(hidden_size, hidden_size, bias=False)    
+        self.activation = torch.nn.PReLU()
+        self.out = torch.nn.Linear(hidden_size, out_dim) 
+
+    def forward(self, batched_data):
+        x, edge_index, edge_attr, batch = batched_data.x, batched_data.edge_index, batched_data.edge_attr, batched_data.batch
+        masked_node_indices = batched_data.masked_node_indices
+
+        x = self.activation(x)
+        x = self.enc_to_dec(x)
+        x[masked_node_indices] = self.dec_token.detach().expand(len(masked_node_indices), -1)
+
+        x = self.conv(x, edge_index, edge_attr)
+        out = self.out(x)
+        return out

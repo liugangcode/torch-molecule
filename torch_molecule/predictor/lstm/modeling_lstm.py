@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal, Type
+from typing import Optional, Union, Dict, Any, List, Callable, Type
 import warnings
 from dataclasses import dataclass, field
 
@@ -14,10 +14,8 @@ from .model import LSTM
 from .token_from_smiles import create_tensor_dataset
 from ...base import BaseMolecularPredictor
 from ...utils.search import (
-    suggest_parameter,
     ParameterSpec,
     ParameterType,
-    parse_list_params,
 )
 
 # Dictionary mapping parameter names to their types and ranges

@@ -8,6 +8,7 @@ from .predictor.gnn import GNNMolecularPredictor
 from .predictor.sgir import SGIRMolecularPredictor
 from .predictor.irm import IRMMolecularPredictor
 from .predictor.ssr import SSRMolecularPredictor
+from .predictor.dir import DIRMolecularPredictor
 from .predictor.rpgnn import RPGNNMolecularPredictor
 from .predictor.lstm import LSTMMolecularPredictor
 """
@@ -33,6 +34,7 @@ __all__ = [
     'GNNMolecularPredictor',
     'IRMMolecularPredictor',
     'SSRMolecularPredictor',
+    'DIRMolecularPredictor',
     'RPGNNMolecularPredictor',
     'LSTMMolecularPredictor',
     # encoders

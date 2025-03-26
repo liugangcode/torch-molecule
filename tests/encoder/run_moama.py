@@ -25,7 +25,12 @@ def test_moama_encoder():
     # Basic self-supervised fitting test
     print("\n=== Testing MoAMa model self-supervised fitting ===")
     model.fit(molecules[:4])
-    
+
+    # test predict
+    print("\n=== Testing MoAMa model prediction ===")
+    vectors = model.encode(molecules[4:])
+    print(f"Representation shape: {vectors.shape}")
+    print(f"Representation for new molecule: {vectors[0]}")
     # Model saving and loading test
     print("\n=== Testing model saving and loading ===")
     save_path = "test_model.pt"

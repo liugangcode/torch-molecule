@@ -110,12 +110,6 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
 
         X_unlbl, _ = self._validate_inputs(X_unlbl, None)
         unlbl_dataset = self._convert_to_pytorch_data(X_unlbl)
-        unlbl_loader = DataLoader(
-            unlbl_dataset,
-            batch_size=self.batch_size,
-            shuffle=False,
-            num_workers=0
-        )
 
         if X_val is None:
             val_loader = train_loader

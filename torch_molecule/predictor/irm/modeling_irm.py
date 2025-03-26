@@ -3,11 +3,10 @@ import numpy as np
 import warnings
 import datetime
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal, Type
+from typing import Optional, Union, Dict, Any, List, Type
 from dataclasses import dataclass, field
 
 import torch
-from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 
 from .model import GNN

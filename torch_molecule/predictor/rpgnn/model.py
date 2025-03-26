@@ -158,7 +158,6 @@ class RPGNN(nn.Module):
 
             fused_h_v = torch.cat([h_v, new_x[:,self.num_node_feature:]], dim=1)
 
-            
             # Pool node representations to graph representations
             h_rep = self.pool(fused_h_v, temp_data.batch)
             
@@ -181,6 +180,6 @@ class RPGNN(nn.Module):
         prediction = out['prediction']
         target = batched_data.y.to(torch.float32)
         is_labeled = batched_data.y == batched_data.y
-        loss = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled])
+        loss = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled]).mean()
         
         return loss

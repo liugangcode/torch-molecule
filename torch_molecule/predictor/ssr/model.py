@@ -241,7 +241,7 @@ class SSR(nn.Module):
         # Compute prediction loss
         target = batched_data.y.to(torch.float32)
         is_labeled = batched_data.y == batched_data.y  # Check for NaN
-        pred_loss = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled])
+        pred_loss = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled]).mean()
         
         # Initialize SSR loss
         ssr_loss = torch.tensor(0.0, device=batched_data.x.device)

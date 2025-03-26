@@ -245,8 +245,9 @@ class SSRMolecularPredictor(GNNMolecularPredictor):
             # Update progress bar if using tqdm
             if self.verbose:
                 iterator.set_postfix({
-                    "total_loss": f"{total_loss.item():.4f}",
-                    "pred_loss": f"{pred_loss.item():.4f}",
+                    "Epoch": epoch,
+                    "Total loss": f"{total_loss.item():.4f}",
+                    "Pred loss": f"{pred_loss.item():.4f}",
                     "ssr_loss": f"{ssr_loss.item():.4f}"
                 })
 

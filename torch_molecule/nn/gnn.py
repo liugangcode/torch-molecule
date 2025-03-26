@@ -106,7 +106,7 @@ class GNN_node(torch.nn.Module):
     Output:
         node representations
     """
-    def __init__(self, num_layer, hidden_size, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm'):
+    def __init__(self, num_layer, hidden_size, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm', encode_atom = True):
         '''
             hidden_size (int): node embedding dimensionality
             num_layer (int): number of GNN message passing layers
@@ -120,6 +120,7 @@ class GNN_node(torch.nn.Module):
         ### add residual connection or not
         self.residual = residual
         self.norm_layer = norm_layer
+        self.encode_atom = encode_atom
 
         if self.num_layer < 2:
             raise ValueError("Number of GNN layers must be greater than 1.")
@@ -161,10 +162,23 @@ class GNN_node(torch.nn.Module):
         if norm_layer.split('_')[1] == 'size':
             self.graph_size_norm = GraphSizeNorm()
 
-    def forward(self, batched_data):
-        x, edge_index, edge_attr, batch = batched_data.x, batched_data.edge_index, batched_data.edge_attr, batched_data.batch
-
-        h_list = [self.atom_encoder(x)]
+    # def forward(self, batched_data):
+    #     x, edge_index, edge_attr, batch = batched_data.x, batched_data.edge_index, batched_data.edge_attr, batched_data.batch
+    def forward(self, *args):
+        if len(args) == 1:
+            # Case 1: batched_data input
+            batched_data = args[0]
+            x, edge_index, edge_attr, batch = batched_data.x, batched_data.edge_index, batched_data.edge_attr, batched_data.batch
+        elif len(args) == 4:
+            # Case 2: separate inputs
+            x, edge_index, edge_attr, batch = args
+        else:
+            raise ValueError("forward expects either 1 batched_data argument or 4 separate arguments (x, edge_index, edge_attr, batch)")
+        
+        if self.encode_atom:
+            h_list = [self.atom_encoder(x)]
+        else:
+            h_list = [x]
         for layer in range(self.num_layer):
 
             h = self.convs[layer](h_list[layer], edge_index, edge_attr)
@@ -202,7 +216,7 @@ class GNN_node_Virtualnode(torch.nn.Module):
     Output:
         node representations
     """
-    def __init__(self, num_layer, hidden_size, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm'):
+    def __init__(self, num_layer, hidden_size, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm', encode_atom = True):
         '''
             hidden_size (int): node embedding dimensionality
         '''
@@ -214,7 +228,7 @@ class GNN_node_Virtualnode(torch.nn.Module):
         ### add residual connection or not
         self.residual = residual
         self.norm_layer = norm_layer
-
+        self.encode_atom = encode_atom
         if self.num_layer < 2:
             raise ValueError("Number of GNN layers must be greater than 1.")
 
@@ -267,12 +281,23 @@ class GNN_node_Virtualnode(torch.nn.Module):
                                                     torch.nn.Linear(2*hidden_size, hidden_size), torch.nn.BatchNorm1d(hidden_size), torch.nn.ReLU()))
 
 
-    def forward(self, batched_data):
-        x, edge_index, edge_attr, batch = batched_data.x, batched_data.edge_index, batched_data.edge_attr, batched_data.batch
+    def forward(self, *args):
+        if len(args) == 1:
+            # Case 1: batched_data input
+            batched_data = args[0]
+            x, edge_index, edge_attr, batch = batched_data.x, batched_data.edge_index, batched_data.edge_attr, batched_data.batch
+        elif len(args) == 4:
+            # Case 2: separate inputs
+            x, edge_index, edge_attr, batch = args
+        else:
+            raise ValueError("forward expects either 1 batched_data argument or 4 separate arguments (x, edge_index, edge_attr, batch)")
         ### virtual node embeddings for graphs
         virtualnode_embedding = self.virtualnode_embedding(torch.zeros(batch[-1].item() + 1).to(edge_index.dtype).to(edge_index.device))
 
-        h_list = [self.atom_encoder(x)]
+        if self.encode_atom:
+            h_list = [self.atom_encoder(x)]
+        else:
+            h_list = [x]
         for layer in range(self.num_layer):
             ### add message from virtual nodes to graph nodes
             h_list[layer] = h_list[layer] + virtualnode_embedding[batch]
@@ -314,31 +339,3 @@ class GNN_node_Virtualnode(torch.nn.Module):
                 node_representation += h_list[layer]
 
         return node_representation, h_list
-    
-class GNN_Decoder(torch.nn.Module):
-    def __init__(self, hidden_size, out_dim, JK = "last", drop_ratio = 0, gnn_name = "gin", error_func="bce", to_predict="atom_type"):
-        super().__init__()
-        if gnn_name == 'gin':
-            self.conv = GINConv(hidden_size)
-        elif gnn_name == 'gcn':
-            self.conv = GCNConv(hidden_size)
-        else:
-            raise ValueError('Undefined GNN type called {}'.format(gnn_name))
-        self.dec_token = torch.nn.Parameter(torch.zeros([1, hidden_size]))
-        self.enc_to_dec = torch.nn.Linear(hidden_size, hidden_size, bias=False)    
-        self.activation = torch.nn.PReLU()
-        self.out = torch.nn.Linear(hidden_size, out_dim) 
-        #self.temp = 0.2
-
-    def forward(self, batched_data):
-        x, edge_index, edge_attr, batch = batched_data.x, batched_data.edge_index, batched_data.edge_attr, batched_data.batch
-        masked_node_indices = batched_data.masked_node_indices
-
-        x = self.activation(x)
-        x = self.enc_to_dec(x)
-        #x[masked_node_indices] = 0
-        x[masked_node_indices] = self.dec_token.detach().expand(len(masked_node_indices), -1)
-
-        x = self.conv(x, edge_index, edge_attr)
-        out = self.out(x)
-        return out

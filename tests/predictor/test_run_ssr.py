@@ -6,7 +6,7 @@ from torch_molecule.utils.search import ParameterType, ParameterSpec
 import os
 
 
-def train_rpgnn_predictor():
+def train_ssr_predictor():
     smiles_list = [
         'CNC[C@H]1OCc2cnnn2CCCC(=O)N([C@H](C)CO)C[C@@H]1C',
         'CNC[C@@H]1OCc2cnnn2CCCC(=O)N([C@H](C)CO)C[C@H]1C',

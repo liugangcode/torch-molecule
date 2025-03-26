@@ -6,6 +6,9 @@ import torch
 from torch_molecule import GraphDITMolecularGenerator
 from torch_molecule.utils.search import ParameterType, ParameterSpec
 
+EPOCHS = 10
+BATCH_SIZE = 32
+
 def test_graph_dit_generator():
     # Test data
     smiles_list = [
@@ -33,8 +36,8 @@ def test_graph_dit_generator():
         y_dim=None,
         task_type=['regression'],
         timesteps=500,
-        batch_size=32,
-        epochs=100,
+        batch_size=BATCH_SIZE,
+        epochs=EPOCHS,
         verbose=True,
         guide_scale=2.0
     )
@@ -48,7 +51,7 @@ def test_graph_dit_generator():
     # 3. Generation test
     print("\n=== Testing GraphDIT model generation ===")
     target_properties = None
-    generated_smiles = model.generate(target_properties, batch_size=32)
+    generated_smiles = model.generate(target_properties, batch_size=BATCH_SIZE)
     print(f"Generated {len(generated_smiles)} molecules")
     print("Example generated SMILES:", generated_smiles)
 

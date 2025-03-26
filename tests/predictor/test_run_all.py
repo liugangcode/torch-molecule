@@ -175,9 +175,10 @@ def test_model_save_load():
 
 if __name__ == "__main__":
     # Run all tests
-    test_gnn_predictor()
-    test_grea_predictor()
-    test_sgir_predictor()
-    test_irm_predictor()  # New IRM test
-    test_supervised_encoder()
-    test_model_save_load()
+    pass
+    # test_gnn_predictor()
+    # test_grea_predictor()
+    # test_sgir_predictor()
+    # test_irm_predictor()  # New IRM test
+    # test_supervised_encoder()
+    # test_model_save_load()

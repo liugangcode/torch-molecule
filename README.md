@@ -2,7 +2,7 @@
 
 `torch-molecule` is a package under active development that facilitates molecular discovery through deep learning, featuring a user-friendly, `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. Currently, the package focuses on three main components:
 
-1. **Predictive Models**: Done: GREA, SGIR, IRM, GIN/GCN w/ virtual. TODO: SMILES-based LSTM/Transformers, more
+1. **Predictive Models**: Done: GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR. TODO: SMILES-based LSTM/Transformers, more
 2. **Generative Models**: Done: Graph DiT, GraphGA. TODO: DiGress, GDSS, more
 3. **Representation Models**: Done: MoAMa, AttrMasking, ContextPred, EdgePred. TODO: checkpoints, more 
 

@@ -9,7 +9,6 @@ from dataclasses import dataclass, field
 from sklearn.ensemble import RandomForestRegressor
 from warnings import warn
 
-
 from .crossover import crossover
 from .mutate import mutate
 
@@ -21,7 +20,7 @@ MINIMUM = 1e-10
 
 @dataclass
 class GraphGAMolecularGenerator(BaseMolecularGenerator):
-    """This predictor implements the Graph Genetic Algorithm for molecular generation.
+    """This generator implements the Graph Genetic Algorithm for molecular generation.
     Paper: A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of Median Molecules 
     Link: https://pubs.acs.org/doi/full/10.1021/ci034290p
     Reference code: https://github.com/wenhao-gao/mol_opt/blob/main/main/graph_ga/run.py

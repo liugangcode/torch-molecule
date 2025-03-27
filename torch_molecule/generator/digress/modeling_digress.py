@@ -17,14 +17,12 @@ from ...utils import graph_from_smiles, graph_to_smiles
 
 @dataclass
 class DigressMolecularGenerator(BaseMolecularGenerator):
-    """This predictor implements the graph diffusion transformer for molecular generation.
+    """This generator implements the DiGress model for unconditional molecular generation.
     Paper: DiGress: Discrete Denoising diffusion for graph generation (https://openreview.net/forum?id=UaAD-Nu86WX)
     Reference Code: https://github.com/cvignac/DiGress
 
     Parameters
     ----------
-    generator_type : str, default="graph_transformer"
-        Type of generator model to use
     hidden_size_X : int, default=256
         Hidden dimension size for node features
     hidden_size_E : int, default=128 
@@ -53,9 +51,14 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
         Loss weight for node reconstruction
     lw_E : float, default=10
         Loss weight for edge reconstruction
+    use_lr_scheduler : bool, default=False
+        Whether to use learning rate scheduler
+    scheduler_factor : float, default=0.5
+        Factor for learning rate scheduler
+    scheduler_patience : int, default=5
+        Patience for learning rate scheduler
     """
     # Model parameters
-    generator_type: str = "graph_transformer"
     hidden_size_X: int = 256
     hidden_size_E: int = 128
     hidden_size_y: int = 128
@@ -74,6 +77,7 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
     weight_decay: float = 1e-12
     lw_X: float = 1
     lw_E: float = 5
+
     # Scheduler parameters
     use_lr_scheduler: bool = False
     scheduler_factor: float = 0.5
@@ -100,7 +104,7 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
     def _get_param_names() -> List[str]:
         return [
             # Model Hyperparameters
-            "generator_type", "hidden_size_X", "hidden_size_E", "hidden_size_y", "num_layer", "n_head", "dropout",
+            "hidden_size_X", "hidden_size_E", "hidden_size_y", "num_layer", "n_head", "dropout",
             "input_dim_X", "input_dim_E", "input_dim_y", "max_node",
             # Diffusion parameters  
             "timesteps", "dataset_info",

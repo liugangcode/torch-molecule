@@ -17,14 +17,12 @@ from ...utils import graph_from_smiles, graph_to_smiles
 
 @dataclass
 class GraphDITMolecularGenerator(BaseMolecularGenerator):
-    """This predictor implements the graph diffusion transformer for molecular generation.
+    """This generator implements the graph diffusion transformer for (multi-conditional and unconditional) molecular generation.
     Paper: Graph Diffusion Transformers for Multi-Conditional Molecular Generation (https://openreview.net/forum?id=cfrDLD1wfO)
     Reference Code: https://github.com/liugangcode/Graph-DiT
 
     Parameters
     ----------
-    generator_type : str, default="transformer"
-        Type of generator model to use
     num_layer : int, default=6
         Number of transformer layers
     hidden_size : int, default=1152
@@ -59,7 +57,6 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         Scale factor for classifier-free guidance during sampling
     """
     # Model parameters
-    generator_type: str = "transformer"
     num_layer: int = 6
     hidden_size: int = 1152
     dropout: float = 0.
@@ -115,7 +112,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         """
         return [
             # Model Hyperparameters
-            "generator_type", "max_node", "hidden_size", "num_layer", "num_head",
+            "max_node", "hidden_size", "num_layer", "num_head",
             "mlp_ratio", "dropout", "drop_condition", "input_dim_X", "input_dim_E", "input_dim_y",
             "task_type",
             # Diffusion parameters  

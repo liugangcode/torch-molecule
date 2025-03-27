@@ -19,20 +19,19 @@ class Transformer(nn.Module):
         mlp_ratio=4.0,
         dropout=0.,
         drop_condition=0.1,
-        X_dim=118,
-        E_dim=5,
-        y_dim=None,
-        task_type=[], # 'regression' or 'classification'
+        input_dim_X=118,
+        input_dim_E=5,
+        input_dim_y=None,
+        task_type=[], # a list of 'regression' or 'classification'
     ):
         super().__init__()
-        self.y_dim = y_dim
-        self.x_embedder = nn.Linear(X_dim + max_node * E_dim, hidden_size, bias=False)
-
+        self.input_dim_y = input_dim_y
+        self.x_embedder = nn.Linear(input_dim_X + max_node * input_dim_E, hidden_size, bias=False)
         self.t_embedder = TimestepEmbedder(hidden_size)
 
-        if y_dim is not None:
+        if input_dim_y > 0 and len(task_type) > 0:
             self.y_embedder_list = torch.nn.ModuleList()
-            for i in range(y_dim):
+            for i in range(input_dim_y):
                 if task_type[i] == 'regression':
                     self.y_embedder_list.append(ClusterContinuousEmbedder(1, hidden_size, drop_condition))
                 else:
@@ -50,8 +49,8 @@ class Transformer(nn.Module):
         self.final_layer = FinalLayer(
             max_node=max_node,
             hidden_size=hidden_size,
-            atom_type=X_dim,
-            bond_type=E_dim,
+            atom_type=input_dim_X,
+            bond_type=input_dim_E,
             mlp_ratio=mlp_ratio,
             num_head=num_head,
         )
@@ -99,7 +98,7 @@ class Transformer(nn.Module):
         h = self.x_embedder(h)
         c = self.t_embedder(t)
         if self.y_embedder_list is not None:
-            for i in range(self.y_dim):
+            for i in range(self.input_dim_y):
                 c = c + self.y_embedder_list[i](y[:, i:i+1], self.training, force_drop_id)
         
         for i, block in enumerate(self.blocks):

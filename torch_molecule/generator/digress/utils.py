@@ -65,14 +65,13 @@ def compute_dataset_info(smiles_or_mol_list, cache_path=None):
         atom_count_list.append(0)
     atom_name_list.append('*')
     atom_count_list.append(0)
-
+    
     bond_count_list = [0, 0, 0, 0, 0]
-    bond_type_to_index =  {Chem.BondType.SINGLE: 1, Chem.BondType.DOUBLE: 2, Chem.BondType.TRIPLE: 3, Chem.BondType.AROMATIC: 4}
+    bond_type_to_index = {Chem.BondType.SINGLE: 1, Chem.BondType.DOUBLE: 2, Chem.BondType.TRIPLE: 3, Chem.BondType.AROMATIC: 4}
     tansition_E = np.zeros((118, 118, 5))
 
     n_atom_list = []
     n_bond_list = []
-
     n_atoms_per_mol_count = {}
     max_node = 0
     for i, sms_or_mol in enumerate(smiles_or_mol_list):
@@ -83,16 +82,17 @@ def compute_dataset_info(smiles_or_mol_list, cache_path=None):
 
         n_atom = mol.GetNumHeavyAtoms()
         n_bond = mol.GetNumBonds()
+        max_node = max(max_node, n_atom)
+        
         n_atom_list.append(n_atom)
         n_bond_list.append(n_bond)
-        max_node = max(max_node, n_atom)
 
         # Count atoms per molecule size
         if n_atom in n_atoms_per_mol_count:
             n_atoms_per_mol_count[n_atom] += 1
         else:
             n_atoms_per_mol_count[n_atom] = 1
-
+            
         cur_atom_count_arr = np.zeros(118)
         for atom in mol.GetAtoms():
             symbol = atom.GetSymbol()
@@ -123,23 +123,12 @@ def compute_dataset_info(smiles_or_mol_list, cache_path=None):
             bond_type = bond.GetBondType()
             bond_index = bond_type_to_index[bond_type]
             bond_count_list[bond_index] += 2
-
-            tansition_E[start_index, end_index, bond_index] += 2
-            tansition_E[end_index, start_index, bond_index] += 2
-            tansition_E_temp[start_index, end_index, bond_index] += 2
-            tansition_E_temp[end_index, start_index, bond_index] += 2
-
-        bond_count_list[0] += n_atom * (n_atom - 1) - n_bond * 2
-        cur_tot_bond = cur_atom_count_arr.reshape(-1,1) * cur_atom_count_arr.reshape(1,-1) * 2 # 118 * 118
-        cur_tot_bond = cur_tot_bond - np.diag(cur_atom_count_arr) * 2 # 118 * 118
-        tansition_E[:, :, 0] += cur_tot_bond - tansition_E_temp.sum(axis=-1)
-        assert (cur_tot_bond > tansition_E_temp.sum(axis=-1)).sum() >= 0, f'i:{i}, sms:{sms}'
     
     # Create n_atoms_per_mol array with proper size
     n_atoms_per_mol = [0] * (max_node + 1)
     for n_atom, count in n_atoms_per_mol_count.items():
         n_atoms_per_mol[n_atom] = count
-
+    
     n_atoms_per_mol = np.array(n_atoms_per_mol) / np.sum(n_atoms_per_mol)
     n_atoms_per_mol = n_atoms_per_mol.tolist()
 
@@ -151,12 +140,7 @@ def compute_dataset_info(smiles_or_mol_list, cache_path=None):
     bond_count_list = np.array(bond_count_list) / np.sum(bond_count_list)
     bond_count_list = bond_count_list.tolist()
 
-    no_edge = np.sum(tansition_E, axis=-1) == 0
-    first_elt = tansition_E[:, :, 0]
-    first_elt[no_edge] = 1
-    tansition_E[:, :, 0] = first_elt
-    tansition_E = tansition_E / np.sum(tansition_E, axis=-1, keepdims=True)
-    
+
     node_types = torch.Tensor(atom_count_list)
     edge_types = torch.Tensor(bond_count_list)
     active_index = (node_types > 0).nonzero().squeeze()
@@ -165,25 +149,17 @@ def compute_dataset_info(smiles_or_mol_list, cache_path=None):
     x_margins = x_margins[active_index]
     e_margins = edge_types.float() / torch.sum(edge_types)
 
-    xe_conditions = torch.Tensor(tansition_E)
-    xe_conditions = xe_conditions[active_index][:, active_index] 
-    
-    xe_conditions = xe_conditions.sum(dim=1)
-    ex_conditions = xe_conditions.t()
-    xe_conditions = xe_conditions / (xe_conditions.sum(dim=-1, keepdim=True) + 1e-10)
-    ex_conditions = ex_conditions / (ex_conditions.sum(dim=-1, keepdim=True) + 1e-10)
     num_nodes_dist = DistributionNodes(torch.Tensor(n_atoms_per_mol))
 
     meta_dict = {
         'active_index': active_index,
         'x_margins': x_margins,
         'e_margins': e_margins,
-        'xe_conditions': xe_conditions,
-        'ex_conditions': ex_conditions,
         'atom_decoder': active_atoms,
         'num_nodes_dist': num_nodes_dist,
         'max_node': max_node, 
         }
+
     if cache_path is not None:
         with open(cache_path, "w") as f:
             json.dump(meta_dict, f)

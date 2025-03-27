@@ -18,64 +18,105 @@ def test_graph_dit_generator():
         'CC1=CC=C(C=C1)C2=CC(=NN2C3=CC=C(C=C3)S(=O)(=O)N)C(F)(F)F'
     ]
     smiles_list = smiles_list * 25  # Create 100 molecules for training
-    properties = None
+    properties = [1.0, 2.0, 3.0, 4.0] * 25  # Create 100 properties for training
 
-    # 1. Basic initialization test
-    print('smiles_list', smiles_list, 'properties', properties)
-    print("\n=== Testing GraphDIT model initialization ===")
-    model = GraphDITMolecularGenerator(
-        # hidden_size=384,
-        # num_layer=6,
-        # num_head=16,
-        # mlp_ratio=4.0,
-        # dropout=0.0,
-        # drop_condition=0.1,
-        max_node=50,
-        # X_dim=118,
-        # E_dim=5,
-        y_dim=None,
+    # 1. Basic initialization test - Conditional Model
+    print('smiles_list', len(smiles_list), smiles_list[:5], 'properties', len(properties), properties[:5])
+    print("\n=== Testing Conditional GraphDIT model initialization ===")
+    conditional_model = GraphDITMolecularGenerator(
         task_type=['regression'],
         timesteps=500,
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
         verbose=True,
-        guide_scale=2.0
+        guide_scale=2.0,
+        lw_X=1,
+        lw_E=5
     )
-    print("GraphDIT Model initialized successfully")
+    print("Conditional GraphDIT Model initialized successfully")
 
-    # 2. Basic fitting test
-    print("\n=== Testing GraphDIT model fitting ===")
-    model.fit(smiles_list, properties)
-    print("GraphDIT Model fitting completed")
+    # 2. Basic fitting test - Conditional Model
+    print("\n=== Testing Conditional GraphDIT model fitting ===")
+    conditional_model.fit(smiles_list, properties)
+    print("Conditional GraphDIT Model fitting completed")
 
-    # 3. Generation test
-    print("\n=== Testing GraphDIT model generation ===")
-    target_properties = None
-    generated_smiles = model.generate(target_properties, batch_size=BATCH_SIZE)
-    print(f"Generated {len(generated_smiles)} molecules")
-    print("Example generated SMILES:", generated_smiles)
+    # 3. Conditional generation test
+    print("\n=== Testing Conditional GraphDIT generation ===")
+    target_properties = [1.0, 2.0, 3.0, 4.0]
+    generated_smiles = conditional_model.generate(target_properties, batch_size=BATCH_SIZE)
+    print(f"Conditionally generated {len(generated_smiles)} molecules")
+    print("Example conditionally generated SMILES:", generated_smiles[:2])
+    
+    # 4. Model saving and loading test - Conditional Model
+    print("\n=== Testing Conditional GraphDIT model saving and loading ===")
+    save_path = "conditional_graph_dit_test_model.pt"
+    conditional_model.save_to_local(save_path)
+    print(f"Conditional GraphDIT Model saved to {save_path}")
 
-    # 5. Model saving and loading test
-    print("\n=== Testing GraphDIT model saving and loading ===")
-    save_path = "graph_dit_test_model.pt"
-    model.save_to_local(save_path)
-    print(f"GraphDIT Model saved to {save_path}")
+    new_conditional_model = GraphDITMolecularGenerator()
+    new_conditional_model.load_from_local(save_path)
+    print("Conditional GraphDIT Model loaded successfully")
 
-    new_model = GraphDITMolecularGenerator()
-    new_model.load_from_local(save_path)
-    print("GraphDIT Model loaded successfully")
-
-    # Test generation with loaded model
-    generated_smiles = new_model.generate(target_properties)
-    print("Generated molecules with loaded model:", len(generated_smiles))
-
-    # 6. Test generation with specific number of nodes
-    print("\n=== Testing generation with specific node counts ===")
+    # Test generation with loaded conditional model
+    generated_smiles = new_conditional_model.generate(target_properties)
+    print("Generated molecules with loaded conditional model:", len(generated_smiles))
+    
+    # 5. Test generation with specific node counts - Conditional Model
+    print("\n=== Testing conditional generation with specific node counts ===")
     num_nodes = np.array([[20], [25], [30], [35]])  # Specify different node counts
-    generated_smiles = model.generate(target_properties, num_nodes=num_nodes)
-    print(f"Generated molecules with specific node counts: {len(generated_smiles)}, {generated_smiles}")
+    
+    # Conditional generation with specific node counts
+    generated_smiles = conditional_model.generate(target_properties, num_nodes=num_nodes)
+    print(f"Conditionally generated molecules with specific node counts: {len(generated_smiles)}")
+    
+    # Clean up conditional model
+    if os.path.exists(save_path):
+        os.remove(save_path)
+        print(f"Cleaned up {save_path}")
+    
+    # 6. Basic initialization test - Unconditional Model
+    print("\n=== Testing Unconditional GraphDIT model initialization ===")
+    unconditional_model = GraphDITMolecularGenerator(
+        timesteps=500,
+        batch_size=BATCH_SIZE,
+        epochs=EPOCHS,
+        verbose=True
+    )
+    print("Unconditional GraphDIT Model initialized successfully")
 
-    # Clean up
+    # 7. Basic fitting test - Unconditional Model
+    print("\n=== Testing Unconditional GraphDIT model fitting ===")
+    unconditional_model.fit(smiles_list)
+    print("Unconditional GraphDIT Model fitting completed")
+
+    # 8. Unconditional generation test
+    print("\n=== Testing Unconditional GraphDIT generation ===")
+    generated_smiles_uncond = unconditional_model.generate(batch_size=BATCH_SIZE)
+    print(f"Unconditionally generated {len(generated_smiles_uncond)} molecules")
+    print("Example unconditionally generated SMILES:", generated_smiles_uncond[:2])
+    
+    # 9. Model saving and loading test - Unconditional Model
+    print("\n=== Testing Unconditional GraphDIT model saving and loading ===")
+    save_path = "unconditional_graph_dit_test_model.pt"
+    unconditional_model.save_to_local(save_path)
+    print(f"Unconditional GraphDIT Model saved to {save_path}")
+
+    new_unconditional_model = GraphDITMolecularGenerator()
+    new_unconditional_model.load_from_local(save_path)
+    print("Unconditional GraphDIT Model loaded successfully")
+
+    # Test generation with loaded unconditional model
+    generated_smiles_uncond = new_unconditional_model.generate()
+    print("Generated molecules with loaded unconditional model:", len(generated_smiles_uncond))
+    
+    # 10. Test generation with specific node counts - Unconditional Model
+    print("\n=== Testing unconditional generation with specific node counts ===")
+    
+    # Unconditional generation with specific node counts
+    generated_smiles_uncond = unconditional_model.generate(num_nodes=num_nodes)
+    print(f"Unconditionally generated molecules with specific node counts: {len(generated_smiles_uncond)}")
+
+    # Clean up unconditional model
     if os.path.exists(save_path):
         os.remove(save_path)
         print(f"Cleaned up {save_path}")

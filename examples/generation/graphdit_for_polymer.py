@@ -72,9 +72,7 @@ train_smiles_list = filtered_train_smiles
 train_property_array = filtered_train_properties
 
 model_cond = GraphDITMolecularGenerator(
-    max_node=50,
     task_type=['regression'] * len(property_names),
-    y_dim=len(property_names),
     batch_size=1024,
     drop_condition=0.1,
     verbose=True,

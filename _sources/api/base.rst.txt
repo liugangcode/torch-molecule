@@ -8,7 +8,7 @@ This section documents base classes in `torch_molecule.base`.
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: torch_molecule.base.encoder
+.. automodule:: torch_molecule.base.predictor
    :members:
    :undoc-members:
    :show-inheritance:
@@ -18,7 +18,7 @@ This section documents base classes in `torch_molecule.base`.
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: torch_molecule.base.predictor
+.. automodule:: torch_molecule.base.encoder
    :members:
    :undoc-members:
    :show-inheritance:

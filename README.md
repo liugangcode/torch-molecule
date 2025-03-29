@@ -1,4 +1,14 @@
-# torch-molecule
+<p align="center">
+  <img src="assets/logo.png" alt="torch-molecule logo" width="180"/>
+</p>
+
+---
+
+<p align="center">
+  <b>Deep learning for molecular discovery with a simple sklearn-style interface</b>
+</p>
+
+---
 
 `torch-molecule` is a package under active development that facilitates molecular discovery through deep learning, featuring a user-friendly, `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. Currently, the package focuses on three main components:
 

@@ -208,7 +208,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/predictor.html">Molecular Property Prediction Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generator.html">Molecular Generation Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/encoder.html">Molecular Encoder Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../api/nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/utils.html">Utility Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/base.html">Base Modules</a></li>
 </ul>
@@ -273,7 +273,7 @@
 <span class="n">MINIMUM</span> <span class="o">=</span> <span class="mf">1e-10</span>
 
 <div class="viewcode-block" id="GraphGAMolecularGenerator">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator">[docs]</a>
+<a class="viewcode-back" href="../../../../api/api.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">GraphGAMolecularGenerator</span><span class="p">(</span><span class="n">BaseMolecularGenerator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This generator implements the Graph Genetic Algorithm for molecular generation.</span>
@@ -324,7 +324,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support getting model parameters&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GraphGAMolecularGenerator.save_to_local">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.save_to_local">[docs]</a>
+<a class="viewcode-back" href="../../../../api/api.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.save_to_local">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">save_to_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oracles</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
@@ -332,7 +332,7 @@
 
 
 <div class="viewcode-block" id="GraphGAMolecularGenerator.load_from_local">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_local">[docs]</a>
+<a class="viewcode-back" href="../../../../api/api.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_local">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_from_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">oracles</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
@@ -346,13 +346,13 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support training epochs&quot;</span><span class="p">)</span>
     
 <div class="viewcode-block" id="GraphGAMolecularGenerator.push_to_huggingface">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.push_to_huggingface">[docs]</a>
+<a class="viewcode-back" href="../../../../api/api.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.push_to_huggingface">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">push_to_huggingface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support pushing to huggingface&quot;</span><span class="p">)</span></div>
 
     
 <div class="viewcode-block" id="GraphGAMolecularGenerator.load_from_huggingface">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_huggingface">[docs]</a>
+<a class="viewcode-back" href="../../../../api/api.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_huggingface">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_from_huggingface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support loading from huggingface&quot;</span><span class="p">)</span></div>
 
@@ -365,7 +365,7 @@
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">getmorganfingerprint</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">X_train</span><span class="p">])</span>
 
 <div class="viewcode-block" id="GraphGAMolecularGenerator.fit">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.fit">[docs]</a>
+<a class="viewcode-back" href="../../../../api/api.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -452,7 +452,7 @@
         <span class="k">return</span> <span class="n">scores_list</span>
 
 <div class="viewcode-block" id="GraphGAMolecularGenerator.generate">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.generate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/api.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.generate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> 
         <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

@@ -1,4 +1,4 @@
-API Reference for Neural Network Components
+Neural Network Components
 ============================================
 
 This section documents the neural network components in `torch_molecule.nn`.

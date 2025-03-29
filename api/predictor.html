@@ -178,7 +178,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -209,7 +209,7 @@
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Molecular Property Prediction Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generator.html">Molecular Generation Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="encoder.html">Molecular Encoder Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html">Neural Network Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utility Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base Modules</a></li>
 </ul>
@@ -252,7 +252,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -262,14 +262,62 @@
 <h1>Molecular Property Prediction Models<a class="headerlink" href="#molecular-property-prediction-models" title="Link to this heading">¶</a></h1>
 <p>This section documents the predictor models in <cite>torch_molecule.predictor</cite>.</p>
 <p class="rubric">Graph Neural Networks</p>
-<p class="rubric" id="module-torch_molecule.predictor.gnn">Graph Rationalization with Environment-based Data Augmentation</p>
-<p class="rubric" id="module-torch_molecule.predictor.grea">Semi-Supervised Graph Imabalanced Regression Models</p>
-<p class="rubric" id="module-torch_molecule.predictor.sgir">Discovering Invariant Rationales</p>
-<p class="rubric" id="module-torch_molecule.predictor.dir">Invariant Risk Minimization Models</p>
-<p class="rubric" id="module-torch_molecule.predictor.irm">LSTM models based on SMILES</p>
-<p class="rubric" id="module-torch_molecule.predictor.lstm">Relational Pooling for Graph Representations with GNNs</p>
-<p class="rubric" id="module-torch_molecule.predictor.rpgnn">SizeShiftReg: a Regularization Method for Improving Size-Generalization in GNNs</p>
-<span class="target" id="module-torch_molecule.predictor.ssr"></span></section>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.</span></span><span class="sig-name descname"><span class="pre">gnn</span></span><a class="headerlink" href="#torch_molecule.predictor.gnn" title="Link to this definition">¶</a></dt>
+<dd><p>alias of &lt;module ‘torch_molecule.predictor.gnn’ from ‘/home/runner/work/torch-molecule/torch-molecule/torch_molecule/predictor/gnn/__init__.py’&gt;</p>
+</dd></dl>
+
+<p class="rubric">Graph Rationalization with Environment-based Data Augmentation</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.</span></span><span class="sig-name descname"><span class="pre">grea</span></span><a class="headerlink" href="#torch_molecule.predictor.grea" title="Link to this definition">¶</a></dt>
+<dd><p>alias of &lt;module ‘torch_molecule.predictor.grea’ from ‘/home/runner/work/torch-molecule/torch-molecule/torch_molecule/predictor/grea/__init__.py’&gt;</p>
+</dd></dl>
+
+<p class="rubric">Semi-Supervised Graph Imabalanced Regression Models</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.</span></span><span class="sig-name descname"><span class="pre">sgir</span></span><a class="headerlink" href="#torch_molecule.predictor.sgir" title="Link to this definition">¶</a></dt>
+<dd><p>alias of &lt;module ‘torch_molecule.predictor.sgir’ from ‘/home/runner/work/torch-molecule/torch-molecule/torch_molecule/predictor/sgir/__init__.py’&gt;</p>
+</dd></dl>
+
+<p class="rubric">Discovering Invariant Rationales</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.dir">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.</span></span><span class="sig-name descname"><span class="pre">dir</span></span><a class="headerlink" href="#torch_molecule.predictor.dir" title="Link to this definition">¶</a></dt>
+<dd><p>alias of &lt;module ‘torch_molecule.predictor.dir’ from ‘/home/runner/work/torch-molecule/torch-molecule/torch_molecule/predictor/dir/__init__.py’&gt;</p>
+</dd></dl>
+
+<p class="rubric">Invariant Risk Minimization Models</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.</span></span><span class="sig-name descname"><span class="pre">irm</span></span><a class="headerlink" href="#torch_molecule.predictor.irm" title="Link to this definition">¶</a></dt>
+<dd><p>alias of &lt;module ‘torch_molecule.predictor.irm’ from ‘/home/runner/work/torch-molecule/torch-molecule/torch_molecule/predictor/irm/__init__.py’&gt;</p>
+</dd></dl>
+
+<p class="rubric">LSTM models based on SMILES</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.</span></span><span class="sig-name descname"><span class="pre">lstm</span></span><a class="headerlink" href="#torch_molecule.predictor.lstm" title="Link to this definition">¶</a></dt>
+<dd><p>alias of &lt;module ‘torch_molecule.predictor.lstm’ from ‘/home/runner/work/torch-molecule/torch-molecule/torch_molecule/predictor/lstm/__init__.py’&gt;</p>
+</dd></dl>
+
+<p class="rubric">Relational Pooling for Graph Representations with GNNs</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.rpgnn">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.</span></span><span class="sig-name descname"><span class="pre">rpgnn</span></span><a class="headerlink" href="#torch_molecule.predictor.rpgnn" title="Link to this definition">¶</a></dt>
+<dd><p>alias of &lt;module ‘torch_molecule.predictor.rpgnn’ from ‘/home/runner/work/torch-molecule/torch-molecule/torch_molecule/predictor/rpgnn/__init__.py’&gt;</p>
+</dd></dl>
+
+<p class="rubric">SizeShiftReg: a Regularization Method for Improving Size-Generalization in GNNs</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.</span></span><span class="sig-name descname"><span class="pre">ssr</span></span><a class="headerlink" href="#torch_molecule.predictor.ssr" title="Link to this definition">¶</a></dt>
+<dd><p>alias of &lt;module ‘torch_molecule.predictor.ssr’ from ‘/home/runner/work/torch-molecule/torch-molecule/torch_molecule/predictor/ssr/__init__.py’&gt;</p>
+</dd></dl>
+
+</section>
 
         </article>
       </div>
@@ -314,8 +362,34 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Molecular Property Prediction Models</a><ul>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn"><code class="docutils literal notranslate"><span class="pre">gnn</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.grea"><code class="docutils literal notranslate"><span class="pre">grea</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir"><code class="docutils literal notranslate"><span class="pre">sgir</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.dir"><code class="docutils literal notranslate"><span class="pre">dir</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm"><code class="docutils literal notranslate"><span class="pre">irm</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm"><code class="docutils literal notranslate"><span class="pre">lstm</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.rpgnn"><code class="docutils literal notranslate"><span class="pre">rpgnn</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr"><code class="docutils literal notranslate"><span class="pre">ssr</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

@@ -17,9 +17,9 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install dependencies
+    - name: Install documentation dependencies
       run: |
-        pip install -r requirements.txt
+        pip install -r docs/requirements.txt
 
     - name: Build docs
       run: |

@@ -260,7 +260,6 @@
         <article role="main" id="furo-main-content">
           <section id="molecular-encoder-models">
 <h1>Molecular Encoder Models<a class="headerlink" href="#molecular-encoder-models" title="Link to this heading">¶</a></h1>
-<p>This section documents the encoder(representation learning) models in <cite>torch_molecule.encoder</cite>.</p>
 <p class="rubric">MoAma for Molecular Representation Learning</p>
 <dl class="py class" id="module-torch_molecule.encoder.moama">
 <dt class="sig sig-object py" id="torch_molecule.encoder.moama.MoamaMolecularEncoder">
@@ -334,16 +333,6 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.moama.MoamaMolecularEncoder.fitting_epoch">
-<span class="sig-name descname"><span class="pre">fitting_epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.fitting_epoch" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.moama.MoamaMolecularEncoder.fitting_loss">
-<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.fitting_loss" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.encoder.moama.MoamaMolecularEncoder.grad_clip_value">
@@ -488,16 +477,6 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.supervised.SupervisedMolecularEncoder.fitting_epoch">
-<span class="sig-name descname"><span class="pre">fitting_epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.fitting_epoch" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.supervised.SupervisedMolecularEncoder.fitting_loss">
-<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.fitting_loss" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.encoder.supervised.SupervisedMolecularEncoder.grad_clip_value">
@@ -646,16 +625,6 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fitting_epoch">
-<span class="sig-name descname"><span class="pre">fitting_epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fitting_epoch" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fitting_loss">
-<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fitting_loss" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.grad_clip_value">
 <span class="sig-name descname"><span class="pre">grad_clip_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.grad_clip_value" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -802,16 +771,6 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.fitting_epoch">
-<span class="sig-name descname"><span class="pre">fitting_epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.fitting_epoch" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.fitting_loss">
-<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.fitting_loss" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.grad_clip_value">
 <span class="sig-name descname"><span class="pre">grad_clip_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.grad_clip_value" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -953,16 +912,6 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.fitting_epoch">
-<span class="sig-name descname"><span class="pre">fitting_epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.fitting_epoch" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.fitting_loss">
-<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.fitting_loss" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.grad_clip_value">
 <span class="sig-name descname"><span class="pre">grad_clip_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.grad_clip_value" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1095,8 +1044,6 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 <li><a class="reference internal" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.encoder_type"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.encoder_type</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.epochs"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.epochs</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.fit()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.fitting_epoch"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.fitting_epoch</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.fitting_loss"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.fitting_loss</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.grad_clip_value</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.hidden_size"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.hidden_size</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.learning_rate"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.learning_rate</span></code></a></li>
@@ -1121,8 +1068,6 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 <li><a class="reference internal" href="#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.encoder_type"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.encoder_type</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.epochs"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.epochs</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.fit()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.fitting_epoch"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.fitting_epoch</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.fitting_loss"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.fitting_loss</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.grad_clip_value</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.hidden_size"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.hidden_size</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.learning_rate"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.learning_rate</span></code></a></li>
@@ -1148,8 +1093,6 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 <li><a class="reference internal" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.encoder_type"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.encoder_type</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.epochs"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.epochs</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.fit()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fitting_epoch"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.fitting_epoch</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fitting_loss"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.fitting_loss</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.grad_clip_value</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.hidden_size"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.hidden_size</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.learning_rate"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.learning_rate</span></code></a></li>
@@ -1175,8 +1118,6 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 <li><a class="reference internal" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.encoder_type"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.encoder_type</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.epochs"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.epochs</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.fit()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.fitting_epoch"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.fitting_epoch</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.fitting_loss"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.fitting_loss</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.grad_clip_value</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.hidden_size"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.hidden_size</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.learning_rate"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.learning_rate</span></code></a></li>
@@ -1201,8 +1142,6 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 <li><a class="reference internal" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.encoder_type"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.encoder_type</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.epochs"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.epochs</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.fit()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.fitting_epoch"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.fitting_epoch</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.fitting_loss"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.fitting_loss</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.grad_clip_value</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.hidden_size"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.hidden_size</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.learning_rate"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.learning_rate</span></code></a></li>

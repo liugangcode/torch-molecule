@@ -1,17 +1,15 @@
 Molecular Generation Models
 =============================
 
-This section documents the generation models in `torch_molecule.generator`.
-
 .. contents::
    :local:
    :depth: 1
-   
+
 .. rubric:: GraphDiT for Un/Multi-conditional Molecular Generation
 
 .. automodule:: torch_molecule.generator.graph_dit
    :members:
-   :exclude-members: fitting_epoch, fitting_loss
+   :exclude-members: fitting_epoch, fitting_loss, model_class, dataset_info, model_name
    :undoc-members:
    :show-inheritance:
 
@@ -20,7 +18,7 @@ This section documents the generation models in `torch_molecule.generator`.
 
 .. automodule:: torch_molecule.generator.digress
    :members:
-   :exclude-members: fitting_epoch, fitting_loss
+   :exclude-members: fitting_epoch, fitting_loss, model_class, dataset_info, model_name
    :undoc-members:
    :show-inheritance:
 
@@ -28,6 +26,6 @@ This section documents the generation models in `torch_molecule.generator`.
 
 .. automodule:: torch_molecule.generator.graphga
    :members:
-   :exclude-members: fitting_epoch, fitting_loss
+   :exclude-members: fitting_epoch, fitting_loss, push_to_huggingface, load_from_huggingface
    :undoc-members:
    :show-inheritance:

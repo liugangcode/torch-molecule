@@ -345,17 +345,11 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support training epochs&quot;</span><span class="p">)</span>
     
-<div class="viewcode-block" id="GraphGAMolecularGenerator.push_to_huggingface">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.push_to_huggingface">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">push_to_huggingface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support pushing to huggingface&quot;</span><span class="p">)</span></div>
-
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support pushing to huggingface&quot;</span><span class="p">)</span>
     
-<div class="viewcode-block" id="GraphGAMolecularGenerator.load_from_huggingface">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_huggingface">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_from_huggingface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support loading from huggingface&quot;</span><span class="p">)</span></div>
-
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support loading from huggingface&quot;</span><span class="p">)</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_convert_to_fingerprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SMILES to fingerprint.&quot;&quot;&quot;</span>

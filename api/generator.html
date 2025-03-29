@@ -260,7 +260,6 @@
         <article role="main" id="furo-main-content">
           <section id="molecular-generation-models">
 <h1>Molecular Generation Models<a class="headerlink" href="#molecular-generation-models" title="Link to this heading">¶</a></h1>
-<p>This section documents the generation models in <cite>torch_molecule.generator</cite>.</p>
 <p class="rubric">GraphDiT for Un/Multi-conditional Molecular Generation</p>
 <dl class="py class" id="module-torch_molecule.generator.graph_dit">
 <dt class="sig sig-object py" id="torch_molecule.generator.graph_dit.GraphDITMolecularGenerator">
@@ -301,11 +300,6 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.batch_size">
 <span class="sig-name descname"><span class="pre">batch_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">128</span></em><a class="headerlink" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.batch_size" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.dataset_info">
-<span class="sig-name descname"><span class="pre">dataset_info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.dataset_info" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -391,17 +385,6 @@ the training distribution. Can be provided as:
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.mlp_ratio">
 <span class="sig-name descname"><span class="pre">mlp_ratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.mlp_ratio" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.model_class">
-<span class="sig-name descname"><span class="pre">model_class</span></span><a class="headerlink" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.model_class" title="Link to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">Transformer</span></code></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.model_name">
-<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GraphDITMolecularGenerator'</span></em><a class="headerlink" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.model_name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -500,11 +483,6 @@ Reference Code: <a class="reference external" href="https://github.com/cvignac/D
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.generator.digress.DigressMolecularGenerator.dataset_info">
-<span class="sig-name descname"><span class="pre">dataset_info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.generator.digress.DigressMolecularGenerator.dataset_info" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.generator.digress.DigressMolecularGenerator.dropout">
 <span class="sig-name descname"><span class="pre">dropout</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.1</span></em><a class="headerlink" href="#torch_molecule.generator.digress.DigressMolecularGenerator.dropout" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -576,17 +554,6 @@ the training distribution. Can be provided as:
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.generator.digress.DigressMolecularGenerator.lw_X">
 <span class="sig-name descname"><span class="pre">lw_X</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#torch_molecule.generator.digress.DigressMolecularGenerator.lw_X" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.generator.digress.DigressMolecularGenerator.model_class">
-<span class="sig-name descname"><span class="pre">model_class</span></span><a class="headerlink" href="#torch_molecule.generator.digress.DigressMolecularGenerator.model_class" title="Link to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">GraphTransformer</span></code></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.generator.digress.DigressMolecularGenerator.model_name">
-<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DigressMolecularGenerator'</span></em><a class="headerlink" href="#torch_molecule.generator.digress.DigressMolecularGenerator.model_name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -675,11 +642,6 @@ if last_step, return the graph prediction as well</p>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_huggingface">
-<span class="sig-name descname"><span class="pre">load_from_huggingface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/generator/graphga/modeling_graph_ga.html#GraphGAMolecularGenerator.load_from_huggingface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_huggingface" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_local">
 <span class="sig-name descname"><span class="pre">load_from_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/generator/graphga/modeling_graph_ga.html#GraphGAMolecularGenerator.load_from_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_local" title="Link to this definition">¶</a></dt>
 <dd><p>Load from local disk.</p>
@@ -718,11 +680,6 @@ if last_step, return the graph prediction as well</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.generator.graphga.GraphGAMolecularGenerator.population_size">
 <span class="sig-name descname"><span class="pre">population_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">100</span></em><a class="headerlink" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.population_size" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_molecule.generator.graphga.GraphGAMolecularGenerator.push_to_huggingface">
-<span class="sig-name descname"><span class="pre">push_to_huggingface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/generator/graphga/modeling_graph_ga.html#GraphGAMolecularGenerator.push_to_huggingface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.push_to_huggingface" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -799,7 +756,6 @@ if last_step, return the graph prediction as well</p>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.apply_noise"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.apply_noise()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.batch_size"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.batch_size</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.dataset_info"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.dataset_info</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.drop_condition"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.drop_condition</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.dropout"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.dropout</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.epochs"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.epochs</span></code></a></li>
@@ -812,8 +768,6 @@ if last_step, return the graph prediction as well</p>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.lw_E"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.lw_E</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.lw_X"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.lw_X</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.mlp_ratio"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.mlp_ratio</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.model_class"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.model_class</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.model_name"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.model_name</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.num_head"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.num_head</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.num_layer"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.num_layer</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.sample_p_zs_given_zt"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.sample_p_zs_given_zt()</span></code></a></li>
@@ -829,7 +783,6 @@ if last_step, return the graph prediction as well</p>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.apply_noise"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.apply_noise()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.batch_size"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.batch_size</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.dataset_info"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.dataset_info</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.dropout"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.dropout</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.epochs"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.epochs</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.fit()</span></code></a></li>
@@ -841,8 +794,6 @@ if last_step, return the graph prediction as well</p>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.learning_rate"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.learning_rate</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.lw_E"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.lw_E</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.lw_X"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.lw_X</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.model_class"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.model_class</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.model_name"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.model_name</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.n_head"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.n_head</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.num_layer"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.num_layer</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.digress.DigressMolecularGenerator.sample_p_zs_given_zt"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator.sample_p_zs_given_zt()</span></code></a></li>
@@ -858,7 +809,6 @@ if last_step, return the graph prediction as well</p>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.fit()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.generate()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.iteration"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.iteration</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_huggingface"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.load_from_huggingface()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.load_from_local"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.load_from_local()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.model_class"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.model_class</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.model_name"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.model_name</span></code></a></li>
@@ -867,7 +817,6 @@ if last_step, return the graph prediction as well</p>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.num_task"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.num_task</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.offspring_size"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.offspring_size</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.population_size"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.population_size</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.push_to_huggingface"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.push_to_huggingface()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.save_to_local"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.save_to_local()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graphga.GraphGAMolecularGenerator.verbose"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.verbose</span></code></a></li>
 </ul>

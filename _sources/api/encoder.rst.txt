@@ -3,10 +3,13 @@ Molecular Encoder Models
 
 This section documents the encoder(representation learning) models in `torch_molecule.encoder`.
 
-.. rubric:: MoAma for Molecular Representation Learning
+.. contents::
+   :local:
+   :depth: 1
 
+.. rubric:: MoAma for Molecular Representation Learning
 .. automodule:: torch_molecule.encoder.moama
-   :members:
+   :members: 
    :undoc-members:
    :show-inheritance:
 

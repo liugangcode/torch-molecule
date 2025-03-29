@@ -3,6 +3,10 @@ Molecular Property Prediction Models
 
 This section documents the predictor models in `torch_molecule.predictor`.
 
+.. contents::
+   :local:
+   :depth: 1
+
 .. (Add predictors here as needed. You might write summaries and link submodules.)
 
 .. rubric:: Graph Neural Networks

@@ -6,10 +6,11 @@
 torch-molecule documentation
 ============================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+Welcome to the Torch-Molecule documentation. Torch-Molecule is an actively developed package designed to facilitate molecular discovery through deep learning. It offers a user-friendly interface similar to `sklearn`, and includes model checkpoints for efficient deployment and benchmarking across various molecular tasks. The package currently focuses on three main components:
 
+- Predictors: Molecular property prediction models that make predictions based on molecular graphs.
+- Generators: Molecular graph generators that generate new molecules.
+- Encoders: Molecular graph encoders that convert molecular graphs into a vector representation.
 
 .. toctree::
    :maxdepth: 2

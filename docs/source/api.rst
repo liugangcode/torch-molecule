@@ -3,29 +3,6 @@ API Reference
 
 This section documents the main modules and classes in `torch_molecule`.
 
-Base Modules
-------------
-
-.. automodule:: torch_molecule.base
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: torch_molecule.base.encoder
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: torch_molecule.base.generator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: torch_molecule.base.predictor
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 
 Predictors
 ----------
@@ -178,6 +155,29 @@ Utilities
    :show-inheritance:
 
 .. automodule:: torch_molecule.utils.search
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Base Modules
+------------
+
+.. automodule:: torch_molecule.base
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: torch_molecule.base.encoder
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: torch_molecule.base.generator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: torch_molecule.base.predictor
    :members:
    :undoc-members:
    :show-inheritance:

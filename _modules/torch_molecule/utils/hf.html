@@ -197,9 +197,26 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/predictor.html">API Reference for Predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generator.html">API Reference for Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/encoder.html">API Reference for Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/utils.html">API Reference for Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/base.html">API Reference for Base Modules</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Additional Information</a></li>
 </ul>
 
 </div>
@@ -242,7 +259,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
 
 <div class="viewcode-block" id="merge_task_configs">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.hf.merge_task_configs">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.hf.merge_task_configs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">merge_task_configs</span><span class="p">(</span>
     <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">existing_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
@@ -306,7 +323,7 @@
 
 
 <div class="viewcode-block" id="get_existing_repo_data">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.hf.get_existing_repo_data">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.hf.get_existing_repo_data">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_existing_repo_data</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get existing repository data from HuggingFace Hub.</span>
 <span class="sd">    </span>
@@ -354,7 +371,7 @@
 
 
 <div class="viewcode-block" id="create_model_card">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.hf.create_model_card">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.hf.create_model_card">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">create_model_card</span><span class="p">(</span>
     <span class="n">model_class</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>

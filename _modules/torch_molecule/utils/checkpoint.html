@@ -197,9 +197,26 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/predictor.html">API Reference for Predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generator.html">API Reference for Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/encoder.html">API Reference for Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/utils.html">API Reference for Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/base.html">API Reference for Base Modules</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Additional Information</a></li>
 </ul>
 
 </div>
@@ -256,12 +273,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..utils.format</span><span class="w"> </span><span class="kn">import</span> <span class="n">sanitize_config</span>
 
 <div class="viewcode-block" id="LocalCheckpointManager">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.checkpoint.LocalCheckpointManager">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.checkpoint.LocalCheckpointManager">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LocalCheckpointManager</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handles saving and loading of models to and from local paths.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="LocalCheckpointManager.save_model_to_local">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.checkpoint.LocalCheckpointManager.save_model_to_local">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.checkpoint.LocalCheckpointManager.save_model_to_local">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">save_model_to_local</span><span class="p">(</span><span class="n">model_instance</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save model weights and configuration to a local file.&quot;&quot;&quot;</span>
@@ -285,7 +302,7 @@
 
 
 <div class="viewcode-block" id="LocalCheckpointManager.load_model_from_local">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.checkpoint.LocalCheckpointManager.load_model_from_local">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.checkpoint.LocalCheckpointManager.load_model_from_local">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_model_from_local</span><span class="p">(</span><span class="n">model_instance</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load model weights and configuration from a local file.&quot;&quot;&quot;</span>
@@ -350,12 +367,12 @@
 
 
 <div class="viewcode-block" id="HuggingFaceCheckpointManager">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">HuggingFaceCheckpointManager</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handles saving and loading of models to and from the Hugging Face Hub.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="HuggingFaceCheckpointManager.load_model_from_hf">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.load_model_from_hf">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.load_model_from_hf">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_model_from_hf</span><span class="p">(</span><span class="n">model_instance</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load model from Hugging Face Hub, saving locally to `path` first.&quot;&quot;&quot;</span>
@@ -438,7 +455,7 @@
 
 
 <div class="viewcode-block" id="HuggingFaceCheckpointManager.push_to_huggingface">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.push_to_huggingface">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.push_to_huggingface">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">push_to_huggingface</span><span class="p">(</span>
         <span class="n">model_instance</span><span class="p">,</span>

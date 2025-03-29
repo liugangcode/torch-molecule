@@ -1,0 +1,1201 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="API Reference for Generators" href="generator.html" /><link rel="prev" title="API Reference" href="index.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>API Reference for Predictors - torch-molecule 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">torch-molecule 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">torch-molecule 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">API Reference for Predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">API Reference for Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html">API Reference for Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">API Reference for Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base.html">API Reference for Base Modules</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../additional.html">Additional Information</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/api/predictor.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="api-reference-for-predictors">
+<h1>API Reference for Predictors<a class="headerlink" href="#api-reference-for-predictors" title="Link to this heading">¶</a></h1>
+<p>This section documents contain the predictor models in <cite>torch_molecule.predictor</cite>.</p>
+<section id="predictors">
+<h2>Predictors<a class="headerlink" href="#predictors" title="Link to this heading">¶</a></h2>
+<dl class="py class" id="module-torch_molecule.predictor.gnn">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.gnn.</span></span><span class="sig-name descname"><span class="pre">GNNMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device:</span> <span class="pre">~torch.device</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'GNNMolecularPredictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'regression'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'gin-virtual'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_pooling:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_feature:</span> <span class="pre">list[~typing.Literal['morgan'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'maccs']]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_criterion:</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_criterion:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_higher_better:</span> <span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/predictor/gnn/modeling_gnn.html#GNNMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="utils.html#torch_molecule.base.predictor.BaseMolecularPredictor" title="torch_molecule.base.predictor.BaseMolecularPredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMolecularPredictor</span></code></a></p>
+<p>This predictor implements a GNN model for molecular property prediction tasks.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.augmented_feature">
+<span class="sig-name descname"><span class="pre">augmented_feature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'morgan'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'maccs'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.augmented_feature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.autofit">
+<span class="sig-name descname"><span class="pre">autofit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_unlbl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="utils.html#torch_molecule.utils.search.ParameterSpec" title="torch_molecule.utils.search.ParameterSpec"><span class="pre">ParameterSpec</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_trials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor" title="torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor"><span class="pre">GNNMolecularPredictor</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/predictor/gnn/modeling_gnn.html#GNNMolecularPredictor.autofit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.autofit" title="Link to this definition">¶</a></dt>
+<dd><p>Automatically find the best hyperparameters using Optuna optimization.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.batch_size">
+<span class="sig-name descname"><span class="pre">batch_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">128</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.batch_size" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.drop_ratio">
+<span class="sig-name descname"><span class="pre">drop_ratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.5</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.drop_ratio" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.epochs">
+<span class="sig-name descname"><span class="pre">epochs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">500</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.epochs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.evaluate_criterion">
+<span class="sig-name descname"><span class="pre">evaluate_criterion</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.evaluate_criterion" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.evaluate_higher_better">
+<span class="sig-name descname"><span class="pre">evaluate_higher_better</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.evaluate_higher_better" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_unlbl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor" title="torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor"><span class="pre">GNNMolecularPredictor</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/predictor/gnn/modeling_gnn.html#GNNMolecularPredictor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fit the model to the training data with optional validation set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – Training set input molecular structures as SMILES strings</p></li>
+<li><p><strong>y_train</strong> (<em>Union</em><em>[</em><em>List</em><em>, </em><em>np.ndarray</em><em>]</em>) – Training set target values for property prediction</p></li>
+<li><p><strong>X_val</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Validation set input molecular structures as SMILES strings.
+If None, training data will be used for validation</p></li>
+<li><p><strong>y_val</strong> (<em>Union</em><em>[</em><em>List</em><em>, </em><em>np.ndarray</em><em>]</em><em>, </em><em>optional</em>) – Validation set target values. Required if X_val is provided</p></li>
+<li><p><strong>X_unlbl</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Unlabeled set input molecular structures as SMILES strings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted estimator</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor" title="torch_molecule.predictor.gnn.GNNMolecularPredictor">GNNMolecularPredictor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.fitting_epoch">
+<span class="sig-name descname"><span class="pre">fitting_epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.fitting_epoch" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.fitting_loss">
+<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.fitting_loss" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.gnn_type">
+<span class="sig-name descname"><span class="pre">gnn_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'gin-virtual'</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.gnn_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.grad_clip_value">
+<span class="sig-name descname"><span class="pre">grad_clip_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.grad_clip_value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.graph_pooling">
+<span class="sig-name descname"><span class="pre">graph_pooling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'sum'</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.graph_pooling" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.hidden_size">
+<span class="sig-name descname"><span class="pre">hidden_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">300</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.hidden_size" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.learning_rate">
+<span class="sig-name descname"><span class="pre">learning_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.001</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.learning_rate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.loss_criterion">
+<span class="sig-name descname"><span class="pre">loss_criterion</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.loss_criterion" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.model_class">
+<span class="sig-name descname"><span class="pre">model_class</span></span><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.model_class" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">GNN</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GNNMolecularPredictor'</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.model_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.norm_layer">
+<span class="sig-name descname"><span class="pre">norm_layer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'batch_norm'</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.norm_layer" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.num_layer">
+<span class="sig-name descname"><span class="pre">num_layer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.num_layer" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.num_task">
+<span class="sig-name descname"><span class="pre">num_task</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.num_task" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.patience">
+<span class="sig-name descname"><span class="pre">patience</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">50</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.patience" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/predictor/gnn/modeling_gnn.html#GNNMolecularPredictor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Make predictions using the fitted model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of SMILES strings to make predictions for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Dictionary containing:</dt><dd><ul class="simple">
+<li><p>’prediction’: Model predictions (shape: [n_samples, n_tasks])</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.scheduler_factor">
+<span class="sig-name descname"><span class="pre">scheduler_factor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.5</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.scheduler_factor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.scheduler_patience">
+<span class="sig-name descname"><span class="pre">scheduler_patience</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.scheduler_patience" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.task_type">
+<span class="sig-name descname"><span class="pre">task_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'regression'</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.task_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.use_lr_scheduler">
+<span class="sig-name descname"><span class="pre">use_lr_scheduler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.use_lr_scheduler" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.verbose" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.gnn.GNNMolecularPredictor.weight_decay">
+<span class="sig-name descname"><span class="pre">weight_decay</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.weight_decay" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-torch_molecule.predictor.dir">
+<dt class="sig sig-object py" id="torch_molecule.predictor.dir.DIRMolecularPredictor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.dir.</span></span><span class="sig-name descname"><span class="pre">DIRMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device:</span> <span class="pre">~torch.device</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'DIRMolecularPredictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'regression'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'gin-virtual'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_pooling:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_feature:</span> <span class="pre">list[~typing.Literal['morgan'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'maccs']]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_criterion:</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_criterion:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_higher_better:</span> <span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">causal_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw_invariant:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/predictor/dir/modeling_dir.html#DIRMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.dir.DIRMolecularPredictor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor" title="torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GNNMolecularPredictor</span></code></a></p>
+<p>This predictor implements the DIR model for discovering the invariant rationales.
+Paper: Discovering Invariant Rationales for Graph Neural Networks (<a class="reference external" href="https://openreview.net/forum?id=hGXij5rfiHw">https://openreview.net/forum?id=hGXij5rfiHw</a>)
+Reference Code: <a class="reference external" href="https://github.com/Wuyxin/DIR-GNN">https://github.com/Wuyxin/DIR-GNN</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>causal_ratio</strong> (<em>float</em><em>, </em><em>default=0.8</em>) – The ratio of causal edges to keep during training. A higher ratio means more edges
+are considered causal/important for the prediction. This controls the sparsity of
+the learned rationales.</p></li>
+<li><p><strong>lw_invariant</strong> (<em>float</em><em>, </em><em>default=1e-4</em>) – The weight of the invariance loss term. This loss encourages the model to learn
+rationales that are invariant across different environments/perturbations. A higher
+value puts more emphasis on learning invariant features.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.dir.DIRMolecularPredictor.augmented_feature">
+<span class="sig-name descname"><span class="pre">augmented_feature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'morgan'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'maccs'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.augmented_feature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.dir.DIRMolecularPredictor.causal_ratio">
+<span class="sig-name descname"><span class="pre">causal_ratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.8</span></em><a class="headerlink" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.causal_ratio" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.dir.DIRMolecularPredictor.fitting_loss">
+<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.fitting_loss" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.dir.DIRMolecularPredictor.lw_invariant">
+<span class="sig-name descname"><span class="pre">lw_invariant</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0001</span></em><a class="headerlink" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.lw_invariant" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.dir.DIRMolecularPredictor.model_class">
+<span class="sig-name descname"><span class="pre">model_class</span></span><a class="headerlink" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.model_class" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">DIR</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.dir.DIRMolecularPredictor.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DIRMolecularPredictor'</span></em><a class="headerlink" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.model_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.dir.DIRMolecularPredictor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/predictor/dir/modeling_dir.html#DIRMolecularPredictor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Make predictions using the fitted model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of SMILES strings to make predictions for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Dictionary containing:</dt><dd><ul class="simple">
+<li><p>’prediction’: Model predictions (shape: [n_samples, n_tasks])</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-torch_molecule.predictor.grea">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.GREAMolecularPredictor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.grea.</span></span><span class="sig-name descname"><span class="pre">GREAMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device:</span> <span class="pre">~torch.device</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'GREAMolecularPredictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'regression'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'gin-virtual'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_pooling:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_feature:</span> <span class="pre">list[~typing.Literal['morgan'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'maccs']]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_criterion:</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_criterion:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_higher_better:</span> <span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/predictor/grea/modeling_grea.html#GREAMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.grea.GREAMolecularPredictor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor" title="torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GNNMolecularPredictor</span></code></a></p>
+<p>This predictor implements a GNN model based on Graph Rationalization.
+Paper: Graph Rationalization with Environment-based Augmentations (<a class="reference external" href="https://dl.acm.org/doi/10.1145/3534678.3539347">https://dl.acm.org/doi/10.1145/3534678.3539347</a>)
+Reference Code: <a class="reference external" href="https://github.com/liugangcode/GREA">https://github.com/liugangcode/GREA</a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.GREAMolecularPredictor.augmented_feature">
+<span class="sig-name descname"><span class="pre">augmented_feature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'morgan'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'maccs'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.augmented_feature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.GREAMolecularPredictor.fitting_loss">
+<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.fitting_loss" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.GREAMolecularPredictor.gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.4</span></em><a class="headerlink" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.gamma" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.GREAMolecularPredictor.model_class">
+<span class="sig-name descname"><span class="pre">model_class</span></span><a class="headerlink" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.model_class" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">GREA</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.GREAMolecularPredictor.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GREAMolecularPredictor'</span></em><a class="headerlink" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.model_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.GREAMolecularPredictor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/predictor/grea/modeling_grea.html#GREAMolecularPredictor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Make predictions using the fitted model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of SMILES strings to make predictions for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Dictionary containing:</dt><dd><ul class="simple">
+<li><p>’prediction’: Model predictions (shape: [n_samples, n_tasks])</p></li>
+<li><p>’variance’: Prediction variances (shape: [n_samples, n_tasks])</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-torch_molecule.predictor.sgir">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.sgir.</span></span><span class="sig-name descname"><span class="pre">SGIRMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device:</span> <span class="pre">~torch.device</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'SGIRMolecularPredictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'regression'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'gin-virtual'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_pooling:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_feature:</span> <span class="pre">list[~typing.Literal['morgan'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'maccs']]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_criterion:</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_criterion:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_higher_better:</span> <span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_anchor:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warmup_epoch:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labeling_interval:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmentation_interval:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_quantile:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_logscale:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw_aug:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/predictor/sgir/modeling_sgir.html#SGIRMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torch_molecule.predictor.grea.GREAMolecularPredictor" title="torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GREAMolecularPredictor</span></code></a></p>
+<p>This predictor trains the GREA model based on pseudo-labeling and data augmentation.
+Paper: Semi-Supervised Graph Imbalanced Regression (<a class="reference external" href="https://dl.acm.org/doi/10.1145/3580305.3599497">https://dl.acm.org/doi/10.1145/3580305.3599497</a>)
+Reference Code: <a class="reference external" href="https://github.com/liugangcode/SGIR">https://github.com/liugangcode/SGIR</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_anchor</strong> (<em>int</em><em>, </em><em>default=10</em>) – Number of anchor points used to split the label space during pseudo-labeling</p></li>
+<li><p><strong>warmup_epoch</strong> (<em>int</em><em>, </em><em>default=20</em>) – Number of epochs to train before starting pseudo-labeling and data augmentation</p></li>
+<li><p><strong>labeling_interval</strong> (<em>int</em><em>, </em><em>default=5</em>) – Interval (in epochs) between pseudo-labeling steps</p></li>
+<li><p><strong>augmentation_interval</strong> (<em>int</em><em>, </em><em>default=5</em>) – Interval (in epochs) between data augmentation steps</p></li>
+<li><p><strong>top_quantile</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Quantile threshold for selecting high confidence predictions during pseudo-labeling</p></li>
+<li><p><strong>label_logscale</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to use log scale for the label space during pseudo-labeling and data augmentation</p></li>
+<li><p><strong>lw_aug</strong> (<em>float</em><em>, </em><em>default=1</em>) – Weight for the data augmentation loss</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.augmentation_interval">
+<span class="sig-name descname"><span class="pre">augmentation_interval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.augmentation_interval" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.augmented_feature">
+<span class="sig-name descname"><span class="pre">augmented_feature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'morgan'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'maccs'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.augmented_feature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_unlbl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor" title="torch_molecule.predictor.sgir.modeling_sgir.SGIRMolecularPredictor"><span class="pre">SGIRMolecularPredictor</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/predictor/sgir/modeling_sgir.html#SGIRMolecularPredictor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fit the model to training data with optional validation set.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.fitting_loss">
+<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.fitting_loss" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.label_logscale">
+<span class="sig-name descname"><span class="pre">label_logscale</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.label_logscale" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.labeling_interval">
+<span class="sig-name descname"><span class="pre">labeling_interval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.labeling_interval" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.lw_aug">
+<span class="sig-name descname"><span class="pre">lw_aug</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.lw_aug" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SGIRMolecularPredictor'</span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.model_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.num_anchor">
+<span class="sig-name descname"><span class="pre">num_anchor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.num_anchor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.task_type">
+<span class="sig-name descname"><span class="pre">task_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'regression'</span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.task_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.top_quantile">
+<span class="sig-name descname"><span class="pre">top_quantile</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.1</span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.top_quantile" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.sgir.SGIRMolecularPredictor.warmup_epoch">
+<span class="sig-name descname"><span class="pre">warmup_epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.warmup_epoch" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-torch_molecule.predictor.irm">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm.IRMMolecularPredictor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.irm.</span></span><span class="sig-name descname"><span class="pre">IRMMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device:</span> <span class="pre">~torch.device</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'IRMMolecularPredictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'regression'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'gin-virtual'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_pooling:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_feature:</span> <span class="pre">list[~typing.Literal['morgan'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'maccs']]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_criterion:</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_criterion:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_higher_better:</span> <span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">IRM_environment:</span> <span class="pre">~torch.Tensor</span> <span class="pre">|</span> <span class="pre">~numpy.ndarray</span> <span class="pre">|</span> <span class="pre">~typing.List</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'random'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty_weight:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty_anneal_iters:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/predictor/irm/modeling_irm.html#IRMMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.irm.IRMMolecularPredictor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor" title="torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GNNMolecularPredictor</span></code></a></p>
+<p>This predictor implements a Invariant Risk Minimization model with the GNN.
+Paper: Invariant Risk Minimization (<a class="reference external" href="https://arxiv.org/abs/1907.02893">https://arxiv.org/abs/1907.02893</a>)
+Reference Code: <a class="reference external" href="https://github.com/facebookresearch/InvariantRiskMinimization">https://github.com/facebookresearch/InvariantRiskMinimization</a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm.IRMMolecularPredictor.IRM_environment">
+<span class="sig-name descname"><span class="pre">IRM_environment</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'random'</span></em><a class="headerlink" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.IRM_environment" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm.IRMMolecularPredictor.augmented_feature">
+<span class="sig-name descname"><span class="pre">augmented_feature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'morgan'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'maccs'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.augmented_feature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm.IRMMolecularPredictor.fitting_loss">
+<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.fitting_loss" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm.IRMMolecularPredictor.model_class">
+<span class="sig-name descname"><span class="pre">model_class</span></span><a class="headerlink" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.model_class" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">GNN</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm.IRMMolecularPredictor.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'IRMMolecularPredictor'</span></em><a class="headerlink" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.model_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm.IRMMolecularPredictor.penalty_anneal_iters">
+<span class="sig-name descname"><span class="pre">penalty_anneal_iters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">100</span></em><a class="headerlink" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.penalty_anneal_iters" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm.IRMMolecularPredictor.penalty_weight">
+<span class="sig-name descname"><span class="pre">penalty_weight</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></em><a class="headerlink" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.penalty_weight" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm.IRMMolecularPredictor.scale">
+<span class="sig-name descname"><span class="pre">scale</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></em><a class="headerlink" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.scale" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.irm.IRMMolecularPredictor.set_IRM_environment">
+<span class="sig-name descname"><span class="pre">set_IRM_environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/predictor/irm/modeling_irm.html#IRMMolecularPredictor.set_IRM_environment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.set_IRM_environment" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-torch_molecule.predictor.lstm">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.lstm.</span></span><span class="sig-name descname"><span class="pre">LSTMMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'LSTMMolecularPredictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'regression'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">53</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LSTMunits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_input_len</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_criterion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_criterion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_higher_better</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/predictor/lstm/modeling_lstm.html#LSTMMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="utils.html#torch_molecule.base.predictor.BaseMolecularPredictor" title="torch_molecule.base.predictor.BaseMolecularPredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMolecularPredictor</span></code></a></p>
+<p>This predictor implements a LSTM model for molecular property prediction tasks.
+Paper: Predicting Polymers’ Glass Transition Temperature by a Chemical Language Processing Model (<a class="reference external" href="https://www.semanticscholar.org/reader/f43ed533b2520567be2d8c24f6396f4e63e96430">https://www.semanticscholar.org/reader/f43ed533b2520567be2d8c24f6396f4e63e96430</a>)
+Reference Code: <a class="reference external" href="https://github.com/figotj/RNN-Tg">https://github.com/figotj/RNN-Tg</a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.LSTMunits">
+<span class="sig-name descname"><span class="pre">LSTMunits</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">60</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.LSTMunits" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.batch_size">
+<span class="sig-name descname"><span class="pre">batch_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">128</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.batch_size" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.epochs">
+<span class="sig-name descname"><span class="pre">epochs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">500</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.epochs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.evaluate_criterion">
+<span class="sig-name descname"><span class="pre">evaluate_criterion</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.evaluate_criterion" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.evaluate_higher_better">
+<span class="sig-name descname"><span class="pre">evaluate_higher_better</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.evaluate_higher_better" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor" title="torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor"><span class="pre">LSTMMolecularPredictor</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/predictor/lstm/modeling_lstm.html#LSTMMolecularPredictor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fit the model to the training data with optional validation set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – Training set input molecular structures as SMILES strings</p></li>
+<li><p><strong>y_train</strong> (<em>Union</em><em>[</em><em>List</em><em>, </em><em>np.ndarray</em><em>]</em>) – Training set target values for property prediction</p></li>
+<li><p><strong>X_val</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Validation set input molecular structures as SMILES strings.
+If None, training data will be used for validation</p></li>
+<li><p><strong>y_val</strong> (<em>Union</em><em>[</em><em>List</em><em>, </em><em>np.ndarray</em><em>]</em><em>, </em><em>optional</em>) – Validation set target values. Required if X_val is provided</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.fitting_epoch">
+<span class="sig-name descname"><span class="pre">fitting_epoch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.fitting_epoch" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.fitting_loss">
+<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.fitting_loss" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.input_dim">
+<span class="sig-name descname"><span class="pre">input_dim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">53</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.input_dim" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.learning_rate">
+<span class="sig-name descname"><span class="pre">learning_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.001</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.learning_rate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.loss_criterion">
+<span class="sig-name descname"><span class="pre">loss_criterion</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.loss_criterion" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.max_input_len">
+<span class="sig-name descname"><span class="pre">max_input_len</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">200</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.max_input_len" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.model_class">
+<span class="sig-name descname"><span class="pre">model_class</span></span><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.model_class" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">LSTM</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LSTMMolecularPredictor'</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.model_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.num_task">
+<span class="sig-name descname"><span class="pre">num_task</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.num_task" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.output_dim">
+<span class="sig-name descname"><span class="pre">output_dim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.output_dim" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.patience">
+<span class="sig-name descname"><span class="pre">patience</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">50</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.patience" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/predictor/lstm/modeling_lstm.html#LSTMMolecularPredictor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Make predictions using the fitted model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of SMILES strings to make predictions for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Dictionary containing:</dt><dd><ul class="simple">
+<li><p>’prediction’: Model predictions (shape: [n_samples, n_tasks])</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.scheduler_factor">
+<span class="sig-name descname"><span class="pre">scheduler_factor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.5</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.scheduler_factor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.scheduler_patience">
+<span class="sig-name descname"><span class="pre">scheduler_patience</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.scheduler_patience" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.task_type">
+<span class="sig-name descname"><span class="pre">task_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'regression'</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.task_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.use_lr_scheduler">
+<span class="sig-name descname"><span class="pre">use_lr_scheduler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.use_lr_scheduler" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.verbose" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.lstm.LSTMMolecularPredictor.weight_decay">
+<span class="sig-name descname"><span class="pre">weight_decay</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.weight_decay" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-torch_molecule.predictor.rpgnn">
+<dt class="sig sig-object py" id="torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.rpgnn.</span></span><span class="sig-name descname"><span class="pre">RPGNNMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device:</span> <span class="pre">~torch.device</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'RPGNNMolecularPredictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'regression'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'gin-virtual'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_pooling:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_feature:</span> <span class="pre">list[~typing.Literal['morgan'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'maccs']]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_criterion:</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_criterion:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_higher_better:</span> <span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_perm:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_node_feature:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">9</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/predictor/rpgnn/modeling_rpgnn.html#RPGNNMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor" title="torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GNNMolecularPredictor</span></code></a></p>
+<p>This predictor implements a GNN model based on Relational pooling.
+Paper: Relational Pooling for Graph Representations (<a class="reference external" href="https://arxiv.org/abs/1903.02541">https://arxiv.org/abs/1903.02541</a>)
+Reference Code: <a class="reference external" href="https://github.com/PurdueMINDS/RelationalPooling/tree/master?tab=readme-ov-file">https://github.com/PurdueMINDS/RelationalPooling/tree/master?tab=readme-ov-file</a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.augmented_feature">
+<span class="sig-name descname"><span class="pre">augmented_feature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'morgan'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'maccs'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.augmented_feature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.fitting_loss">
+<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.fitting_loss" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.fixed_size">
+<span class="sig-name descname"><span class="pre">fixed_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.fixed_size" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.model_class">
+<span class="sig-name descname"><span class="pre">model_class</span></span><a class="headerlink" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.model_class" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">RPGNN</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'RPGNNMolecularPredictor'</span></em><a class="headerlink" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.model_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.num_node_feature">
+<span class="sig-name descname"><span class="pre">num_node_feature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.num_node_feature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.num_perm">
+<span class="sig-name descname"><span class="pre">num_perm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.num_perm" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-torch_molecule.predictor.ssr">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.predictor.ssr.</span></span><span class="sig-name descname"><span class="pre">SSRMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device:</span> <span class="pre">~torch.device</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'SSRMolecularPredictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'regression'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_type:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'gin-virtual'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_pooling:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_feature:</span> <span class="pre">list[~typing.Literal['morgan'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'maccs']]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_criterion:</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_criterion:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_higher_better:</span> <span class="pre">bool</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarse_ratios:</span> <span class="pre">~typing.List[float]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmd_coeff:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fine_grained:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_moments:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarse_pool:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/predictor/ssr/modeling_ssr.html#SSRMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor" title="torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GNNMolecularPredictor</span></code></a></p>
+<p>This predictor implements a SizeShiftReg model with the GNN.
+Paper: SizeShiftReg: a Regularization Method for Improving Size-Generalization in Graph Neural Networks (<a class="reference external" href="https://arxiv.org/abs/2207.07888">https://arxiv.org/abs/2207.07888</a>)
+Reference Code: <a class="reference external" href="https://github.com/DavideBuffelli/SizeShiftReg/tree/main">https://github.com/DavideBuffelli/SizeShiftReg/tree/main</a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor.augmented_feature">
+<span class="sig-name descname"><span class="pre">augmented_feature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'morgan'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'maccs'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.augmented_feature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor.cmd_coeff">
+<span class="sig-name descname"><span class="pre">cmd_coeff</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.1</span></em><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.cmd_coeff" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor.coarse_pool">
+<span class="sig-name descname"><span class="pre">coarse_pool</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'mean'</span></em><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.coarse_pool" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor.coarse_ratios">
+<span class="sig-name descname"><span class="pre">coarse_ratios</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.coarse_ratios" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor.fine_grained">
+<span class="sig-name descname"><span class="pre">fine_grained</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.fine_grained" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor.fitting_loss">
+<span class="sig-name descname"><span class="pre">fitting_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.fitting_loss" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor.model_class">
+<span class="sig-name descname"><span class="pre">model_class</span></span><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.model_class" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">SSR</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SSRMolecularPredictor'</span></em><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.model_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor.n_moments">
+<span class="sig-name descname"><span class="pre">n_moments</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.n_moments" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.ssr.SSRMolecularPredictor.spectral_graph_coarsening">
+<span class="sig-name descname"><span class="pre">spectral_graph_coarsening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_clusters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/predictor/ssr/modeling_ssr.html#SSRMolecularPredictor.spectral_graph_coarsening"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.spectral_graph_coarsening" title="Link to this definition">¶</a></dt>
+<dd><p>Coarsen graph based on spectral clustering while preserving edge attributes</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="generator.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">API Reference for Generators</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">API Reference</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Gang Liu
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">API Reference for Predictors</a><ul>
+<li><a class="reference internal" href="#predictors">Predictors</a><ul>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.augmented_feature"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.augmented_feature</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.autofit"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.autofit()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.batch_size"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.batch_size</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.drop_ratio"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.drop_ratio</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.epochs"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.epochs</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.evaluate_criterion"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.evaluate_criterion</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.evaluate_higher_better"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.evaluate_higher_better</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.fit()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.fitting_epoch"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.fitting_epoch</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.fitting_loss"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.fitting_loss</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.gnn_type"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.gnn_type</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.grad_clip_value</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.graph_pooling"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.graph_pooling</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.hidden_size"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.hidden_size</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.learning_rate"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.learning_rate</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.loss_criterion"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.loss_criterion</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.model_class"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.model_class</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.model_name</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.norm_layer"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.norm_layer</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.num_layer"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.num_layer</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.num_task"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.num_task</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.patience"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.patience</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.predict()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.scheduler_factor"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.scheduler_factor</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.scheduler_patience"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.scheduler_patience</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.task_type"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.task_type</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.use_lr_scheduler"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.use_lr_scheduler</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.verbose"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.verbose</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.gnn.GNNMolecularPredictor.weight_decay"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.weight_decay</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#torch_molecule.predictor.dir.DIRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.augmented_feature"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor.augmented_feature</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.causal_ratio"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor.causal_ratio</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.fitting_loss"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor.fitting_loss</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.lw_invariant"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor.lw_invariant</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.model_class"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor.model_class</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor.model_name</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.dir.DIRMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor.predict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#torch_molecule.predictor.grea.GREAMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.augmented_feature"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor.augmented_feature</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.fitting_loss"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor.fitting_loss</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.gamma"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor.gamma</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.model_class"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor.model_class</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor.model_name</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.grea.GREAMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor.predict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.augmentation_interval"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.augmentation_interval</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.augmented_feature"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.augmented_feature</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.fit()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.fitting_loss"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.fitting_loss</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.label_logscale"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.label_logscale</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.labeling_interval"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.labeling_interval</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.lw_aug"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.lw_aug</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.model_name</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.num_anchor"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.num_anchor</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.task_type"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.task_type</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.top_quantile"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.top_quantile</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.sgir.SGIRMolecularPredictor.warmup_epoch"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.warmup_epoch</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm.IRMMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.IRM_environment"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.IRM_environment</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.augmented_feature"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.augmented_feature</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.fitting_loss"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.fitting_loss</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.model_class"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.model_class</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.model_name</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.penalty_anneal_iters"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.penalty_anneal_iters</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.penalty_weight"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.penalty_weight</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.scale"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.scale</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.irm.IRMMolecularPredictor.set_IRM_environment"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.set_IRM_environment()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.LSTMunits"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.LSTMunits</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.batch_size"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.batch_size</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.epochs"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.epochs</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.evaluate_criterion"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.evaluate_criterion</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.evaluate_higher_better"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.evaluate_higher_better</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.fit()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.fitting_epoch"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.fitting_epoch</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.fitting_loss"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.fitting_loss</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.input_dim"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.input_dim</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.learning_rate"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.learning_rate</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.loss_criterion"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.loss_criterion</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.max_input_len"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.max_input_len</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.model_class"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.model_class</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.model_name</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.num_task"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.num_task</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.output_dim"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.output_dim</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.patience"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.patience</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.predict()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.scheduler_factor"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.scheduler_factor</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.scheduler_patience"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.scheduler_patience</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.task_type"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.task_type</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.use_lr_scheduler"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.use_lr_scheduler</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.verbose"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.verbose</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.lstm.LSTMMolecularPredictor.weight_decay"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.weight_decay</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.augmented_feature"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor.augmented_feature</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.fitting_loss"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor.fitting_loss</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.fixed_size"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor.fixed_size</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.model_class"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor.model_class</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor.model_name</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.num_node_feature"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor.num_node_feature</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor.num_perm"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor.num_perm</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.augmented_feature"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.augmented_feature</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.cmd_coeff"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.cmd_coeff</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.coarse_pool"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.coarse_pool</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.coarse_ratios"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.coarse_ratios</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.fine_grained"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.fine_grained</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.fitting_loss"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.fitting_loss</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.model_class"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.model_class</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.model_name</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.n_moments"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.n_moments</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.predictor.ssr.SSRMolecularPredictor.spectral_graph_coarsening"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.spectral_graph_coarsening()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

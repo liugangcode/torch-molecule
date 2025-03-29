@@ -197,9 +197,26 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../api/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/predictor.html">API Reference for Predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generator.html">API Reference for Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/encoder.html">API Reference for Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/utils.html">API Reference for Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/base.html">API Reference for Base Modules</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html">Additional Information</a></li>
 </ul>
 
 </div>
@@ -255,7 +272,7 @@
 <span class="n">ALLOWABLE_ENCODER_READOUTS</span> <span class="o">=</span> <span class="n">GNN_ENCODER_READOUTS</span>
 
 <div class="viewcode-block" id="AttrMaskMolecularEncoder">
-<a class="viewcode-back" href="../../../../api.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder">[docs]</a>
+<a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">AttrMaskMolecularEncoder</span><span class="p">(</span><span class="n">BaseMolecularEncoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This encoder implements a GNN model for molecular representation learning.</span>
@@ -389,7 +406,7 @@
         <span class="k">return</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span>
     
 <div class="viewcode-block" id="AttrMaskMolecularEncoder.fit">
-<a class="viewcode-back" href="../../../../api.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fit">[docs]</a>
+<a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -459,7 +476,7 @@
         <span class="k">return</span> <span class="n">losses</span>
 
 <div class="viewcode-block" id="AttrMaskMolecularEncoder.encode">
-<a class="viewcode-back" href="../../../../api.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.encode">[docs]</a>
+<a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.encode">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">return_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;np&quot;</span><span class="p">,</span> <span class="s2">&quot;pt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pt&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode molecules into vector representations.</span>
 

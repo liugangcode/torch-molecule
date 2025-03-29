@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Reference" href="api.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation" href="install.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>torch-molecule 0.1 documentation</title>
@@ -198,9 +198,26 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">API Reference for Predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html">API Reference for Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">API Reference for Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/utils.html">API Reference for Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/base.html">API Reference for Base Modules</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="additional.html">Additional Information</a></li>
 </ul>
 
 </div>
@@ -250,17 +267,34 @@
 <li><p>Encoders: Molecular graph encoders that convert molecular graphs into a vector representation.</p></li>
 </ul>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#predictors">Predictors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-torch_molecule.encoder.constant">Encoders</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#generators">Generators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-torch_molecule.nn.attention">Neural Network Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-torch_molecule.utils.checker">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#module-torch_molecule.base">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html#using-pretrained-checkpoints">Using Pretrained Checkpoints</a></li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">API Reference for Predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html">API Reference for Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">API Reference for Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/utils.html">API Reference for Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/base.html">API Reference for Base Modules</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="additional.html">Additional Information</a></li>
 </ul>
 </div>
 </section>
@@ -270,12 +304,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="api.html">
+          <a class="next-page" href="install.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">API Reference</div>
+                <div class="title">Installation</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

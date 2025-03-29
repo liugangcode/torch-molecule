@@ -197,9 +197,26 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/predictor.html">API Reference for Predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generator.html">API Reference for Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/encoder.html">API Reference for Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/utils.html">API Reference for Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/base.html">API Reference for Base Modules</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Additional Information</a></li>
 </ul>
 
 </div>
@@ -240,7 +257,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 <div class="viewcode-block" id="TimestepEmbedder">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.embedder.TimestepEmbedder">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.TimestepEmbedder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TimestepEmbedder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Embeds scalar timesteps into vector representations using a sinusoidal embedding</span>
@@ -264,7 +281,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">frequency_embedding_size</span> <span class="o">=</span> <span class="n">frequency_embedding_size</span>
 
 <div class="viewcode-block" id="TimestepEmbedder.timestep_embedding">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.embedder.TimestepEmbedder.timestep_embedding">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.TimestepEmbedder.timestep_embedding">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">timestep_embedding</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">max_period</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -289,7 +306,7 @@
 
 
 <div class="viewcode-block" id="TimestepEmbedder.forward">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.embedder.TimestepEmbedder.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.TimestepEmbedder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Forward pass for timestep embedding.</span>
@@ -312,7 +329,7 @@
 
 
 <div class="viewcode-block" id="CategoricalEmbedder">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.embedder.CategoricalEmbedder">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.CategoricalEmbedder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CategoricalEmbedder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Embeds categorical conditions (e.g., data source labels) into vector representations.</span>
@@ -335,7 +352,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dropout_prob</span> <span class="o">=</span> <span class="n">dropout_prob</span>
 
 <div class="viewcode-block" id="CategoricalEmbedder.token_drop">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.embedder.CategoricalEmbedder.token_drop">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.CategoricalEmbedder.token_drop">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">token_drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">force_drop_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Drops labels to enable classifier-free guidance.</span>
@@ -361,7 +378,7 @@
 
 
 <div class="viewcode-block" id="CategoricalEmbedder.forward">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.embedder.CategoricalEmbedder.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.CategoricalEmbedder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">force_drop_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Forward pass for categorical embedding with optional label dropout.</span>
@@ -393,7 +410,7 @@
 
     
 <div class="viewcode-block" id="ClusterContinuousEmbedder">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.embedder.ClusterContinuousEmbedder">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.ClusterContinuousEmbedder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ClusterContinuousEmbedder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Embeds continuous input features into vector representations using a multilayer perceptron (MLP).</span>
@@ -425,7 +442,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dropout_prob</span> <span class="o">=</span> <span class="n">dropout_prob</span>
 
 <div class="viewcode-block" id="ClusterContinuousEmbedder.forward">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.embedder.ClusterContinuousEmbedder.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.ClusterContinuousEmbedder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">force_drop_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">use_dropout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout_prob</span> <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">force_drop_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

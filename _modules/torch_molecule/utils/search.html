@@ -197,9 +197,26 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/predictor.html">API Reference for Predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generator.html">API Reference for Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/encoder.html">API Reference for Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/utils.html">API Reference for Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/base.html">API Reference for Base Modules</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Additional Information</a></li>
 </ul>
 
 </div>
@@ -239,7 +256,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">NamedTuple</span>
 
 <div class="viewcode-block" id="ParameterType">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.search.ParameterType">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.search.ParameterType">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParameterType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enum defining types of hyperparameters for optimization.</span>
 
@@ -253,7 +270,7 @@
 
 
 <div class="viewcode-block" id="ParameterSpec">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.search.ParameterSpec">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.search.ParameterSpec">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParameterSpec</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Specification for a hyperparameter including its type and valid range/options.</span>
 
@@ -271,7 +288,7 @@
 
 
 <div class="viewcode-block" id="suggest_parameter">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.search.suggest_parameter">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.search.suggest_parameter">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">suggest_parameter</span><span class="p">(</span><span class="n">trial</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">param_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">param_spec</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Suggest a parameter value using the appropriate Optuna suggest method.</span>
 
@@ -314,7 +331,7 @@
 
     
 <div class="viewcode-block" id="parse_list_params">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.utils.search.parse_list_params">[docs]</a>
+<a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.search.parse_list_params">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_list_params</span><span class="p">(</span><span class="n">params_str</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">params_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>

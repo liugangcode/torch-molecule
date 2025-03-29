@@ -197,9 +197,26 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/predictor.html">API Reference for Predictors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generator.html">API Reference for Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/encoder.html">API Reference for Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/utils.html">API Reference for Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/nn.html">API Reference for Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/base.html">API Reference for Base Modules</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Additional Information</a></li>
 </ul>
 
 </div>
@@ -248,7 +265,7 @@
 <span class="n">full_bond_feature_dims</span> <span class="o">=</span> <span class="n">get_bond_feature_dims</span><span class="p">()</span>
 
 <div class="viewcode-block" id="AtomEncoder">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.AtomEncoder">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.AtomEncoder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AtomEncoder</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">AtomEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -261,7 +278,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">atom_embedding_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">emb</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AtomEncoder.forward">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.AtomEncoder.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.AtomEncoder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">x_embedding</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
@@ -272,7 +289,7 @@
 
 
 <div class="viewcode-block" id="BondEncoder">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.BondEncoder">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.BondEncoder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BondEncoder</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BondEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -285,7 +302,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">bond_embedding_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">emb</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BondEncoder.forward">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.BondEncoder.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.BondEncoder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">):</span>
         <span class="n">bond_embedding</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">edge_attr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
@@ -296,7 +313,7 @@
 
 
 <div class="viewcode-block" id="GINConv">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GINConv">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GINConv">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GINConv</span><span class="p">(</span><span class="n">MessagePassing</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -311,7 +328,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bond_encoder</span> <span class="o">=</span> <span class="n">BondEncoder</span><span class="p">(</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GINConv.forward">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GINConv.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GINConv.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">):</span>
         <span class="n">edge_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bond_encoder</span><span class="p">(</span><span class="n">edge_attr</span><span class="p">)</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span> <span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">edge_index</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_attr</span><span class="o">=</span><span class="n">edge_embedding</span><span class="p">))</span>
@@ -320,20 +337,20 @@
 
 
 <div class="viewcode-block" id="GINConv.message">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GINConv.message">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GINConv.message">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_j</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x_j</span> <span class="o">+</span> <span class="n">edge_attr</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GINConv.update">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GINConv.update">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GINConv.update">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggr_out</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">aggr_out</span></div>
 </div>
 
     
 <div class="viewcode-block" id="GCNConv">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GCNConv">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GCNConv">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GCNConv</span><span class="p">(</span><span class="n">MessagePassing</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GCNConv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggr</span><span class="o">=</span><span class="s1">&#39;add&#39;</span><span class="p">)</span>
@@ -343,7 +360,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bond_encoder</span> <span class="o">=</span> <span class="n">BondEncoder</span><span class="p">(</span><span class="n">hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GCNConv.forward">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GCNConv.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GCNConv.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">edge_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bond_encoder</span><span class="p">(</span><span class="n">edge_attr</span><span class="p">)</span>
@@ -361,13 +378,13 @@
 
 
 <div class="viewcode-block" id="GCNConv.message">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GCNConv.message">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GCNConv.message">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_j</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">,</span> <span class="n">norm</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">norm</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x_j</span> <span class="o">+</span> <span class="n">edge_attr</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GCNConv.update">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GCNConv.update">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GCNConv.update">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggr_out</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">aggr_out</span></div>
 </div>
@@ -375,7 +392,7 @@
 
 <span class="c1">### GNN to generate node embedding</span>
 <div class="viewcode-block" id="GNN_node">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GNN_node">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GNN_node">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GNN_node</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Output:</span>
@@ -440,7 +457,7 @@
     <span class="c1"># def forward(self, batched_data):</span>
     <span class="c1">#     x, edge_index, edge_attr, batch = batched_data.x, batched_data.edge_index, batched_data.edge_attr, batched_data.batch</span>
 <div class="viewcode-block" id="GNN_node.forward">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GNN_node.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GNN_node.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="c1"># Case 1: batched_data input</span>
@@ -491,7 +508,7 @@
 
 <span class="c1">### Virtual GNN to generate node embedding</span>
 <div class="viewcode-block" id="GNN_node_Virtualnode">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GNN_node_Virtualnode">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GNN_node_Virtualnode">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GNN_node_Virtualnode</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Output:</span>
@@ -563,7 +580,7 @@
 
 
 <div class="viewcode-block" id="GNN_node_Virtualnode.forward">
-<a class="viewcode-back" href="../../../api.html#torch_molecule.nn.gnn.GNN_node_Virtualnode.forward">[docs]</a>
+<a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GNN_node_Virtualnode.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="c1"># Case 1: batched_data input</span>

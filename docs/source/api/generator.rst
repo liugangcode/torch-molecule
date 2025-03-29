@@ -6,7 +6,7 @@ This section documents the generation models in `torch_molecule.generator`.
 .. rubric:: GraphDiT for Un/Multi-conditional Molecular Generation
 
 .. automodule:: torch_molecule.generator.graph_dit
-   :members:
+   :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
@@ -14,13 +14,13 @@ This section documents the generation models in `torch_molecule.generator`.
 .. rubric:: DiGress for Unconditional Molecular Generation
 
 .. automodule:: torch_molecule.generator.digress
-   :members:
+   :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
 .. rubric:: Graph Genetic Algorithm for Un/Multi-conditional Molecular Generation
 
 .. automodule:: torch_molecule.generator.graphga
-   :members:
+   :members: fit, generate
    :undoc-members:
    :show-inheritance:

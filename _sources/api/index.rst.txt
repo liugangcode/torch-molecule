@@ -4,16 +4,16 @@ API Reference
 This section documents the main modules and classes in `torch_molecule`.
 
 .. toctree::
-   :maxdepth: 3
-   :caption: API for main components of `torch_molecule`:
+   :maxdepth: 2
+   :caption: Main Components:
 
    predictor
    generator
    encoder
 
 .. toctree::
-   :maxdepth: 3
-   :caption: API for utility functions in `torch_molecule`:
+   :maxdepth: 2
+   :caption: Utility Functions:
 
    nn
    utils

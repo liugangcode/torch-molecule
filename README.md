@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="assets/logo.png" alt="torch-molecule logo" width="400"/>
+  <img src="assets/logo.png" alt="torch-molecule logo" width="800"/>
 </p>
-
----
 
 <p align="center">
   <b>Deep learning for molecular discovery with a simple sklearn-style interface</b>

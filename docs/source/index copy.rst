@@ -10,53 +10,31 @@ Welcome to the torch-molecule documentation. torch-molecule is an actively devel
 - Generators: Molecular graph generators that generate new molecules.
 - Encoders: Molecular graph encoders that convert molecular graphs into a vector representation.
 
-Getting Started
-===============
-
 .. toctree::
    :maxdepth: 2
-   :caption: Getting Started
+   :caption: Getting Started:
 
    install
    example
 
-Main Components
-===============
-
 .. toctree::
-   :maxdepth: 1
-   :caption: Predictors
+   :maxdepth: 3
+   :caption: Main Components:
 
    api/predictor
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Generators
-
    api/generator
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Encoders
-
    api/encoder
 
-Utilities
-=========
-
 .. toctree::
-   :maxdepth: 1
-   :caption: API for Utilities
+   :maxdepth: 2
+   :caption: API for utilities:
 
    api/utils
    api/nn
    api/base
 
-Additional Information
-======================
-
 .. toctree::
    :maxdepth: 2
-   :caption: Additional Information
+   :caption: Additional Information:
 
    additional

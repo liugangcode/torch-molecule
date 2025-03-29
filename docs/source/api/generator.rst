@@ -8,7 +8,7 @@ Molecular Generation Models
 .. rubric:: GraphDiT for Un/Multi-conditional Molecular Generation
 
 .. automodule:: torch_molecule.generator.graph_dit
-   :members:
+   :members: fit, generate
    :exclude-members: fitting_epoch, fitting_loss, model_class, dataset_info, model_name
    :undoc-members:
    :show-inheritance:
@@ -17,7 +17,7 @@ Molecular Generation Models
 .. rubric:: DiGress for Unconditional Molecular Generation
 
 .. automodule:: torch_molecule.generator.digress
-   :members:
+   :members: fit, generate
    :exclude-members: fitting_epoch, fitting_loss, model_class, dataset_info, model_name
    :undoc-members:
    :show-inheritance:
@@ -25,7 +25,7 @@ Molecular Generation Models
 .. rubric:: Graph Genetic Algorithm for Un/Multi-conditional Molecular Generation
 
 .. automodule:: torch_molecule.generator.graphga
-   :members:
+   :members: fit, generate
    :exclude-members: fitting_epoch, fitting_loss, push_to_huggingface, load_from_huggingface
    :undoc-members:
    :show-inheritance:

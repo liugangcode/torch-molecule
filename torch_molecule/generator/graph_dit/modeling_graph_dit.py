@@ -86,11 +86,10 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
     scheduler_factor: float = 0.5
     scheduler_patience: int = 5
 
-    # Other parameters
     verbose: bool = False
-    model_name: str = "GraphDITMolecularGenerator"
 
-    # Non-init fields
+    # Attributes
+    model_name: str = "GraphDITMolecularGenerator"
     fitting_loss: List[float] = field(default_factory=list, init=False)
     fitting_epoch: int = field(default=0, init=False)
     dataset_info: Dict[str, Any] = field(default_factory=dict, init=False)

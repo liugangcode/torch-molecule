@@ -50,38 +50,7 @@ Predictors
    :show-inheritance:
    
 
-Encoders
---------
 
-.. automodule:: torch_molecule.encoder.constant
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: torch_molecule.encoder.attrmask
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: torch_molecule.encoder.contextpred
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: torch_molecule.encoder.edgepred
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: torch_molecule.encoder.moama
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: torch_molecule.encoder.supervised
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 .. (You can repeat this for other encoder modules like `attrmask`, `contextpred` if they are Python files or have `__init__.py` and docstrings inside.)
 

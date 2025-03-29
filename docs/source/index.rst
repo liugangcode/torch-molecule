@@ -14,7 +14,19 @@ Welcome to the Torch-Molecule documentation. Torch-Molecule is an actively devel
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Getting Started:
 
-   api
+   install
+   example
 
+.. toctree::
+   :maxdepth: 2
+   :caption: API Documentation:
+
+   api/index
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Additional Information:
+
+   additional

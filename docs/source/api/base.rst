@@ -1,10 +1,7 @@
-API Reference for Base Modules
-===============================
+Base Modules
+=============
 
 This section documents base classes in `torch_molecule.base`.
-
-Base Modules
-------------
 
 .. automodule:: torch_molecule.base
    :members:

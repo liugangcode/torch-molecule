@@ -202,17 +202,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../example.html">Examples</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/encoder.html">Molecular Encoder Models</a></li>
-</ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/utils.html">Utility Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/nn.html">Neural Network Components</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/base.html">Base Modules</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
@@ -342,11 +334,10 @@
     <span class="n">scheduler_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
     <span class="n">scheduler_patience</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
 
-    <span class="c1"># Other parameters</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;GraphDITMolecularGenerator&quot;</span>
 
-    <span class="c1"># Non-init fields</span>
+    <span class="c1"># Attributes</span>
+    <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;GraphDITMolecularGenerator&quot;</span>
     <span class="n">fitting_loss</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">fitting_epoch</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">dataset_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>

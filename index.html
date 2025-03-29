@@ -198,16 +198,30 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Predictors</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Generators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Encoders</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API for Utilities</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="additional.html">Additional Information</a></li>
 </ul>
@@ -259,8 +273,11 @@
 <li><p>Generators: Molecular graph generators that generate new molecules.</p></li>
 <li><p>Encoders: Molecular graph encoders that convert molecular graphs into a vector representation.</p></li>
 </ul>
+</section>
+<section id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a><ul>
@@ -271,30 +288,43 @@
 </li>
 </ul>
 </div>
+</section>
+<section id="main-components">
+<h1>Main Components<a class="headerlink" href="#main-components" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Predictors</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.checker.MolecularInputChecker"><code class="docutils literal notranslate"><span class="pre">MolecularInputChecker</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager"><code class="docutils literal notranslate"><span class="pre">HuggingFaceCheckpointManager</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.checkpoint.LocalCheckpointManager"><code class="docutils literal notranslate"><span class="pre">LocalCheckpointManager</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.format.sanitize_config"><code class="docutils literal notranslate"><span class="pre">sanitize_config()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.format.serialize_config"><code class="docutils literal notranslate"><span class="pre">serialize_config()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.hf.create_model_card"><code class="docutils literal notranslate"><span class="pre">create_model_card()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.hf.get_existing_repo_data"><code class="docutils literal notranslate"><span class="pre">get_existing_repo_data()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.hf.merge_task_configs"><code class="docutils literal notranslate"><span class="pre">merge_task_configs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.search.ParameterSpec"><code class="docutils literal notranslate"><span class="pre">ParameterSpec</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.search.ParameterType"><code class="docutils literal notranslate"><span class="pre">ParameterType</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.search.parse_list_params"><code class="docutils literal notranslate"><span class="pre">parse_list_params()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.search.suggest_parameter"><code class="docutils literal notranslate"><span class="pre">suggest_parameter()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Generators</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Encoders</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</div>
+</section>
+<section id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API for Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
+</ul>
+</div>
+</section>
+<section id="additional-information">
+<h1>Additional Information<a class="headerlink" href="#additional-information" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="additional.html">Additional Information</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="additional.html#project-overview">Project Overview</a></li>

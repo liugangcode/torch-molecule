@@ -1,8 +1,6 @@
 Molecular Encoder Models
 ====================================================
 
-This section documents the encoder(representation learning) models in `torch_molecule.encoder`.
-
 .. contents::
    :local:
    :depth: 1
@@ -10,6 +8,7 @@ This section documents the encoder(representation learning) models in `torch_mol
 .. rubric:: MoAma for Molecular Representation Learning
 .. automodule:: torch_molecule.encoder.moama
    :members: 
+   :exclude-members: fitting_epoch, fitting_loss
    :undoc-members:
    :show-inheritance:
 
@@ -17,6 +16,7 @@ This section documents the encoder(representation learning) models in `torch_mol
 
 .. automodule:: torch_molecule.encoder.supervised
    :members:
+   :exclude-members: fitting_epoch, fitting_loss
    :undoc-members:
    :show-inheritance:
 
@@ -24,6 +24,7 @@ This section documents the encoder(representation learning) models in `torch_mol
 
 .. automodule:: torch_molecule.encoder.attrmask
    :members:
+   :exclude-members: fitting_epoch, fitting_loss
    :undoc-members:
    :show-inheritance:
 
@@ -31,6 +32,7 @@ This section documents the encoder(representation learning) models in `torch_mol
 
 .. automodule:: torch_molecule.encoder.contextpred
    :members:
+   :exclude-members: fitting_epoch, fitting_loss
    :undoc-members:
    :show-inheritance:
 
@@ -38,5 +40,6 @@ This section documents the encoder(representation learning) models in `torch_mol
 
 .. automodule:: torch_molecule.encoder.edgepred
    :members:
+   :exclude-members: fitting_epoch, fitting_loss
    :undoc-members:
    :show-inheritance:

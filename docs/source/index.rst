@@ -14,6 +14,7 @@ Welcome to the torch-molecule documentation. torch-molecule is an actively devel
    :maxdepth: 2
    :caption: Getting Started:
 
+   index
    install
    example
 

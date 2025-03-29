@@ -34,7 +34,7 @@ To install `torch-molecule`, follow these steps:
 
 **Required Dependencies**:
 
-Dependencies are listed in `https://github.com/liugangcode/torch-molecule/requirements.txt`. Example contents:
+Dependencies are listed in `<https://github.com/liugangcode/torch-molecule/requirements.txt>`_. Example contents:
 
 .. code-block:: text
 

@@ -4,8 +4,17 @@ import math
 
 class TimestepEmbedder(nn.Module):
     """
-    Embeds scalar timesteps into vector representations.
+    Embeds scalar timesteps into vector representations using a sinusoidal embedding
+    followed by a multilayer perceptron (MLP).
+    
+    Parameters
+    ----------
+    hidden_size : int
+        Output dimension of the MLP embedding.
+    frequency_embedding_size : int, optional
+        Size of the input frequency embedding, by default 256.
     """
+
     def __init__(self, hidden_size, frequency_embedding_size=256):
         super().__init__()
         self.mlp = nn.Sequential(
@@ -19,8 +28,9 @@ class TimestepEmbedder(nn.Module):
     def timestep_embedding(t, dim, max_period=10000):
         """
         Create sinusoidal timestep embeddings.
+
         :param t: a 1-D Tensor of N indices, one per batch element.
-                          These may be fractional.
+                  These may be fractional.
         :param dim: the dimension of the output.
         :param max_period: controls the minimum frequency of the embeddings.
         :return: an (N, D) Tensor of positional embeddings.
@@ -37,6 +47,19 @@ class TimestepEmbedder(nn.Module):
         return embedding
 
     def forward(self, t):
+        """
+        Forward pass for timestep embedding.
+
+        Parameters
+        ----------
+        t : torch.Tensor
+            1D tensor of scalar timesteps.
+
+        Returns
+        -------
+        torch.Tensor
+            The final embedded representation of shape (N, hidden_size).
+        """
         t = t.view(-1)
         t_freq = self.timestep_embedding(t, self.frequency_embedding_size)
         t_emb = self.mlp(t_freq)
@@ -44,8 +67,17 @@ class TimestepEmbedder(nn.Module):
 
 class CategoricalEmbedder(nn.Module):
     """
-    Embeds categorical conditions such as data sources into vector representations. 
-    Also handles label dropout for classifier-free guidance.
+    Embeds categorical conditions (e.g., data source labels) into vector representations.
+    Supports label dropout for classifier-free guidance.
+
+    Parameters
+    ----------
+    num_classes : int
+        Number of distinct label categories.
+    hidden_size : int
+        Size of the embedding vectors.
+    dropout_prob : float
+        Probability of label dropout.
     """
     def __init__(self, num_classes, hidden_size, dropout_prob):
         super().__init__()
@@ -57,6 +89,18 @@ class CategoricalEmbedder(nn.Module):
     def token_drop(self, labels, force_drop_ids=None):
         """
         Drops labels to enable classifier-free guidance.
+
+        Parameters
+        ----------
+        labels : torch.Tensor
+            Tensor of integer labels.
+        force_drop_ids : torch.Tensor or None, optional
+            Boolean mask to force specific labels to be dropped.
+
+        Returns
+        -------
+        torch.Tensor
+            Labels with some entries replaced by a dropout token.
         """
         if force_drop_ids is None:
             drop_ids = torch.rand(labels.shape[0], device=labels.device) < self.dropout_prob
@@ -65,7 +109,24 @@ class CategoricalEmbedder(nn.Module):
         labels = torch.where(drop_ids, self.num_classes, labels)
         return labels
 
-    def forward(self, labels, train, force_drop_ids=None, t=None):
+    def forward(self, labels, train, force_drop_ids=None):
+        """
+        Forward pass for categorical embedding with optional label dropout.
+
+        Parameters
+        ----------
+        labels : torch.Tensor
+            Tensor of categorical labels.
+        train : bool
+            Whether the model is in training mode.
+        force_drop_ids : torch.Tensor or None, optional
+            Explicit mask for which labels to drop.
+
+        Returns
+        -------
+        torch.Tensor
+            Embedded label representations, with optional noise added during training.
+        """
         labels = labels.long().view(-1)
         use_dropout = self.dropout_prob > 0
         if (train and use_dropout) or (force_drop_ids is not None):
@@ -77,6 +138,20 @@ class CategoricalEmbedder(nn.Module):
         return embeddings
     
 class ClusterContinuousEmbedder(nn.Module):
+    """
+    Embeds continuous input features into vector representations using a multilayer perceptron (MLP).
+    Supports optional embedding dropout for classifier-free guidance.
+
+    Parameters
+    ----------
+    input_size : int
+        The size of the input features.
+    hidden_size : int
+        The size of the output embedding vectors.
+    dropout_prob : float
+        Probability of embedding dropout, used for classifier-free guidance.
+
+    """
     def __init__(self, input_size, hidden_size, dropout_prob):
         super().__init__()
         use_cfg_embedding = dropout_prob > 0

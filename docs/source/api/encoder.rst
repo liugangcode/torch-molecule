@@ -1,39 +1,39 @@
-Molecular Representation Learning / Encoding Models
+Molecular Encoder Models
 ====================================================
 
-This section documents contain the encoder (representation learning) models in `torch_molecule.encoder`.
+This section documents the encoder(representation learning) models in `torch_molecule.encoder`.
 
-.. rubric:: Pretraining with Attribute Masking
-
-.. automodule:: torch_molecule.encoder.attrmask
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. rubric:: Pretraining with Context Prediction
-
-.. automodule:: torch_molecule.encoder.contextpred
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. rubric:: Pretraining with Edge Prediction
-
-.. automodule:: torch_molecule.encoder.edgepred
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. rubric:: Pretraining with MoAma 
+.. rubric:: MoAma for Molecular Representation Learning
 
 .. automodule:: torch_molecule.encoder.moama
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: Pretraining with Supervised/Pseudolabeled Data
+.. rubric:: Supervised/Pseudolabeled Pretraining for Molecules
 
 .. automodule:: torch_molecule.encoder.supervised
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. rubric:: Attribute Masking for Molecular Representation Learning
+
+.. automodule:: torch_molecule.encoder.attrmask
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. rubric:: Context Prediction for Molecular Representation Learning
+
+.. automodule:: torch_molecule.encoder.contextpred
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. rubric:: Edge Prediction for Molecular Representation Learning
+
+.. automodule:: torch_molecule.encoder.edgepred
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="torch-molecule logo" width="800"/>
+  <img src="assets/logo.png" alt="torch-molecule logo" width="600"/>
 </p>
 
 <p align="center">

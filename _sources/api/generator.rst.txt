@@ -1,23 +1,23 @@
-API Reference for Generators
+Molecular Generation Models
 =============================
 
 This section documents contain the generation models in `torch_molecule.generator`.
 
-
-Generators
-----------
-
-.. (If `digress`, `graph_dit`, etc., are packages with docstrings, add them.)
+.. rubric:: Unconditional Generation with DiGress
 
 .. automodule:: torch_molecule.generator.digress
    :members:
    :undoc-members:
    :show-inheritance:
 
+.. rubric:: Un/Multi-conditional Generation with GraphDiT Model
+
 .. automodule:: torch_molecule.generator.graph_dit
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. rubric:: Un/Multi-conditional Generation with Graph Genetic Algorithm
 
 .. automodule:: torch_molecule.generator.graphga
    :members:

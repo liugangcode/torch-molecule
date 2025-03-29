@@ -206,12 +206,12 @@
 <p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">API Reference for Predictors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/generator.html">API Reference for Generators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">API Reference for Encoders</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html">API Reference for Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">Molecular Representation Learning / Encoding Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/nn.html">API Reference for Neural Network Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/base.html">API Reference for Base Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/base.html">Base Modules</a></li>
 </ul>
 </li>
 </ul>
@@ -260,51 +260,106 @@
         <article role="main" id="furo-main-content">
           <section id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h1>
-<p>This section shows how to use the <cite>torch_molecule</cite> library in practice. More examples are available in the <cite>tests/</cite> folder.</p>
-<section id="basic-usage">
-<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">¶</a></h2>
+<p>This section shows how to use the <cite>torch_molecule</cite> library in practice. More examples are available in the <cite>https://github.com/liugangcode/torch-molecule/tree/main/examples/</cite> folder.</p>
+<section id="molecular-property-prediction-usage">
+<h2>Molecular Property Prediction Usage<a class="headerlink" href="#molecular-property-prediction-usage" title="Link to this heading">¶</a></h2>
 <p>The following example demonstrates how to use the <cite>GREAMolecularPredictor</cite>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GREAMolecularPredictor</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GREAMolecularPredictor</span><span class="p">,</span> <span class="n">GNNMolecularPredictor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.utils.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParameterType</span><span class="p">,</span> <span class="n">ParameterSpec</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
-    <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="c1"># Define search parameters</span>
+<span class="n">search_GNN</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;gnn_type&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;gin-virtual&quot;</span><span class="p">,</span> <span class="s2">&quot;gcn-virtual&quot;</span><span class="p">,</span> <span class="s2">&quot;gin&quot;</span><span class="p">,</span> <span class="s2">&quot;gcn&quot;</span><span class="p">]),</span>
+    <span class="s2">&quot;norm_layer&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;batch_norm&quot;</span><span class="p">,</span> <span class="s2">&quot;layer_norm&quot;</span><span class="p">]),</span>
+    <span class="s2">&quot;graph_pooling&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]),</span>
+    <span class="s2">&quot;augmented_feature&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;maccs,morgan&quot;</span><span class="p">,</span> <span class="s2">&quot;maccs&quot;</span><span class="p">,</span> <span class="s2">&quot;morgan&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]),</span>
+    <span class="s2">&quot;num_layer&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
+    <span class="s2">&quot;hidden_size&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">512</span><span class="p">)),</span>
+    <span class="s2">&quot;drop_ratio&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)),</span>
+    <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)),</span>
+<span class="p">}</span>
+
+<span class="n">search_GREA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)),</span>
+    <span class="o">**</span><span class="n">search_GNN</span>
+<span class="p">}</span>
+
+<span class="c1"># Train GREA model</span>
+<span class="n">grea_model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
+    <span class="n">num_task</span><span class="o">=</span><span class="n">num_task</span><span class="p">,</span>
     <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;regression&quot;</span><span class="p">,</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;GREA_</span><span class="si">{</span><span class="n">task_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
-    <span class="n">epochs</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;GREA_multitask&quot;</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="n">N_epoch</span><span class="p">,</span>
     <span class="n">evaluate_criterion</span><span class="o">=</span><span class="s1">&#39;r2&#39;</span><span class="p">,</span>
     <span class="n">evaluate_higher_better</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
-<span class="c1"># Fit with hyperparameter optimization</span>
-<span class="n">model</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
-    <span class="n">X_train</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+<span class="n">grea_model</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
+    <span class="n">X_train</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
     <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
     <span class="n">X_val</span><span class="o">=</span><span class="n">X_val</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
     <span class="n">y_val</span><span class="o">=</span><span class="n">y_val</span><span class="p">,</span>
-    <span class="n">n_trials</span><span class="o">=</span><span class="mi">100</span>
+    <span class="n">n_trials</span><span class="o">=</span><span class="n">N_trial</span><span class="p">,</span>
+    <span class="n">search_parameters</span><span class="o">=</span><span class="n">search_GREA</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="molecular-generator-usage">
+<h2>Molecular Generator Usage<a class="headerlink" href="#molecular-generator-usage" title="Link to this heading">¶</a></h2>
+<p>The following example demonstrates how to use the <cite>GraphDITMolecularGenerator</cite> for generating molecules with retry logic for invalid molecules:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphDITMolecularGenerator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="c1"># Initialize the generator model</span>
+<span class="n">model_cond</span> <span class="o">=</span> <span class="n">GraphDITMolecularGenerator</span><span class="p">(</span>
+    <span class="n">task_type</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;regression&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">property_names</span><span class="p">),</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">drop_condition</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="c1"># Or fit with manually specified hyperparameters</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
-    <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;regression&quot;</span><span class="p">,</span>
-    <span class="n">num_layer</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;GREA_</span><span class="si">{</span><span class="n">task_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
-    <span class="n">epochs</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-    <span class="n">evaluate_criterion</span><span class="o">=</span><span class="s1">&#39;r2&#39;</span><span class="p">,</span>
-    <span class="n">evaluate_higher_better</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
+<span class="c1"># Fit the model</span>
+<span class="n">model_cond</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_smiles_list</span><span class="p">,</span> <span class="n">train_property_array</span><span class="p">)</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">X_train</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-    <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
-    <span class="n">X_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">y_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="c1"># Generate molecules with retry logic</span>
+<span class="n">max_retries</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">generated_smiles_list</span> <span class="o">=</span> <span class="n">model_cond</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">test_property_array</span><span class="p">)</span>
+
+<span class="c1"># Function to check if SMILES is valid</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_valid_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">smiles</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+<span class="c1"># Retry generation for invalid molecules</span>
+<span class="k">for</span> <span class="n">retry</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_retries</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># Already did first generation</span>
+    <span class="c1"># Find indices of invalid SMILES</span>
+    <span class="n">invalid_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">generated_smiles_list</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">invalid_indices</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;All SMILES valid after </span><span class="si">{</span><span class="n">retry</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> attempts&quot;</span><span class="p">)</span>
+        <span class="k">break</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retry </span><span class="si">{</span><span class="n">retry</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: Regenerating </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">invalid_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> invalid molecules&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Extract properties for invalid molecules</span>
+    <span class="n">invalid_properties</span> <span class="o">=</span> <span class="n">test_property_array</span><span class="p">[</span><span class="n">invalid_indices</span><span class="p">]</span>
+
+    <span class="c1"># Regenerate only for invalid molecules</span>
+    <span class="n">new_smiles</span> <span class="o">=</span> <span class="n">model_cond</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">invalid_properties</span><span class="p">)</span>
+
+    <span class="c1"># Replace invalid molecules with new generations</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">new_idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">invalid_indices</span><span class="p">):</span>
+        <span class="n">generated_smiles_list</span><span class="p">[</span><span class="n">new_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_smiles</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">retry</span> <span class="o">==</span> <span class="n">max_retries</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Last iteration</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reached maximum retries (</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">). </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">invalid_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> molecules still invalid.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -339,6 +394,7 @@
 <span class="p">)</span>
 
 <span class="c1"># Load a pretrained model checkpoint</span>
+<span class="n">model_dir</span> <span class="o">=</span> <span class="s2">&quot;local_model_dir_to_save&quot;</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">()</span>
 <span class="n">model</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_dir</span><span class="si">}</span><span class="s2">/GREA_</span><span class="si">{</span><span class="n">task_name</span><span class="si">}</span><span class="s2">.pt&quot;</span><span class="p">,</span> <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -405,7 +461,8 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Examples</a><ul>
-<li><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
+<li><a class="reference internal" href="#molecular-property-prediction-usage">Molecular Property Prediction Usage</a></li>
+<li><a class="reference internal" href="#molecular-generator-usage">Molecular Generator Usage</a></li>
 <li><a class="reference internal" href="#using-pretrained-checkpoints">Using Pretrained Checkpoints</a></li>
 </ul>
 </li>

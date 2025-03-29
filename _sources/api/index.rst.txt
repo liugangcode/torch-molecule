@@ -10,6 +10,6 @@ This section documents the main modules and classes in `torch_molecule`.
    predictor
    generator
    encoder
-   utils
    nn
+   utils
    base

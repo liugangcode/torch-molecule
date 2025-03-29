@@ -1,39 +1,44 @@
 Additional Information
 ======================
 
-### Project Overview
+Project Overview
+----------------
 
-`torch-molecule` is a package under active development to support molecular discovery using deep learning. It provides a simple, `sklearn`-style interface and model checkpoints for fast deployment and benchmarking.
+``torch-molecule`` is a package under active development to support molecular discovery using deep learning. It provides a simple, ``sklearn``-style interface and model checkpoints for fast deployment and benchmarking.
 
 Main components:
 
 1. **Predictive Models**  
-   ✔ GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR  
-   ⏳ SMILES-based LSTM/Transformers and more
+   - ✔ GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR  
+   - ⏳ SMILES-based LSTM/Transformers and more
 
 2. **Generative Models**  
-   ✔ Graph DiT, GraphGA, DiGress  
-   ⏳ GDSS and more
+   - ✔ Graph DiT, GraphGA, DiGress  
+   - ⏳ GDSS and more
 
 3. **Representation Models**  
-   ✔ MoAMa, AttrMasking, ContextPred, EdgePred  
-   ⏳ more models and pretrained checkpoints
+   - ✔ MoAMa, AttrMasking, ContextPred, EdgePred  
+   - ⏳ more models and pretrained checkpoints
 
-> **Note**: This project is in active development. Interfaces and features may change.
+.. note::
 
-### Project Structure
+   This project is in active development. Interfaces and features may change.
 
-```
-torch_molecule
-├── base
-├── encoder
-├── generator
-├── nn
-├── predictor
-└── utils
-```
+Project Structure
+-----------------
 
-### Acknowledgements
+.. code-block:: text
 
-This project was adapted from [https://github.com/lwaekfjlk/python-project-template](https://github.com/lwaekfjlk/python-project-template).
+   torch_molecule
+   ├── base
+   ├── encoder
+   ├── generator
+   ├── nn
+   ├── predictor
+   └── utils
+
+Acknowledgements
+----------------
+
+This project was adapted from `python-project-template <https://github.com/lwaekfjlk/python-project-template>`_.
 

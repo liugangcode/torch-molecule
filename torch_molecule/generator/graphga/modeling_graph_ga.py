@@ -25,7 +25,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
     Paper: `A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of Median Molecules 
     <https://pubs.acs.org/doi/full/10.1021/ci034290p>`_
 
-    Reference code: `https://github.com/wenhao-gao/mol_opt/blob/main/main/graph_ga/run.py`_
+    Reference code: https://github.com/wenhao-gao/mol_opt/blob/main/main/graph_ga/run.py
 
     :param num_task: Number of properties to condition on. Set to 0 for unconditional generation. Default is 0.
     :type num_task: int

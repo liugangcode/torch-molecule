@@ -13,16 +13,7 @@ class ParameterType(Enum):
     LOG_FLOAT = "log_float"  # Uses suggest_float with log=True for exponential scale
 
 class ParameterSpec(NamedTuple):
-    """Specification for a hyperparameter including its type and valid range/options.
-
-    Attributes
-    ----------
-    param_type : ParameterType
-        The type of parameter (categorical, integer, float, log_float)
-    value_range : Union[Tuple[Any, Any], List[Any]]
-        For numerical parameters: (min_value, max_value)
-        For categorical parameters: list of possible values
-    """
+    """Specification for a hyperparameter including its type and valid range/options."""
 
     param_type: ParameterType
     value_range: Union[Tuple[Any, Any], List[Any]]

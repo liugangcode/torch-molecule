@@ -20,26 +20,26 @@ from ...utils.search import (
 
 @dataclass
 class SGIRMolecularPredictor(GREAMolecularPredictor):
-    """This predictor trains the GREA model based on pseudo-labeling and data augmentation.
-    Paper: Semi-Supervised Graph Imbalanced Regression (https://dl.acm.org/doi/10.1145/3580305.3599497)
-    Reference Code: https://github.com/liugangcode/SGIR
+    """
+    This predictor trains the GREA model based on pseudo-labeling and data augmentation.
 
-    Parameters
-    ----------
-    num_anchor : int, default=10
-        Number of anchor points used to split the label space during pseudo-labeling
-    warmup_epoch : int, default=20 
-        Number of epochs to train before starting pseudo-labeling and data augmentation
-    labeling_interval : int, default=5
-        Interval (in epochs) between pseudo-labeling steps
-    augmentation_interval : int, default=5
-        Interval (in epochs) between data augmentation steps
-    top_quantile : float, default=0.1
-        Quantile threshold for selecting high confidence predictions during pseudo-labeling
-    label_logscale : bool, default=False
-        Whether to use log scale for the label space during pseudo-labeling and data augmentation
-    lw_aug : float, default=1
-        Weight for the data augmentation loss
+    Paper: `Semi-Supervised Graph Imbalanced Regression <https://dl.acm.org/doi/10.1145/3580305.3599497>`_
+    Reference Code: `SGIR GitHub <https://github.com/liugangcode/SGIR>`_
+
+    :param num_anchor: Number of anchor points used to split the label space during pseudo-labeling
+    :type num_anchor: int, default=10
+    :param warmup_epoch: Number of epochs to train before starting pseudo-labeling and data augmentation
+    :type warmup_epoch: int, default=20
+    :param labeling_interval: Interval (in epochs) between pseudo-labeling steps
+    :type labeling_interval: int, default=5
+    :param augmentation_interval: Interval (in epochs) between data augmentation steps
+    :type augmentation_interval: int, default=5
+    :param top_quantile: Quantile threshold for selecting high confidence predictions during pseudo-labeling
+    :type top_quantile: float, default=0.1
+    :param label_logscale: Whether to use log scale for the label space during pseudo-labeling and data augmentation
+    :type label_logscale: bool, default=False
+    :param lw_aug: Weight for the data augmentation loss
+    :type lw_aug: float, default=1
     """
     # SGIR-specific parameters
     num_anchor: int = 10

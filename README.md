@@ -3,6 +3,15 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/liugangcode/torch-molecule">
+    <img src="https://img.shields.io/badge/GitHub-Repository-blue?logo=github" alt="GitHub Repository">
+  </a>
+  <a href="https://liugangcode.github.io/torch-molecule/">
+    <img src="https://img.shields.io/badge/Documentation-Online-brightgreen?logo=readthedocs" alt="Documentation">
+  </a>
+</p>
+
+<p align="center">
   <b>Deep learning for molecular discovery with a simple sklearn-style interface</b>
 </p>
 

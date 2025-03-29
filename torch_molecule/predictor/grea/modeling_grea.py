@@ -23,7 +23,7 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
     Paper: `Graph Rationalization with Environment-based Augmentations 
     <https://dl.acm.org/doi/10.1145/3534678.3539347>`_
 
-    Reference Code: `https://github.com/liugangcode/GREA`_
+    Reference Code: https://github.com/liugangcode/GREA
 
     :param gamma: GREA-specific parameter. Default is 0.4.
     :type gamma: float

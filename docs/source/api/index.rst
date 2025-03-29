@@ -13,7 +13,7 @@ This section documents the main modules and classes in `torch_molecule`.
    encoder
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Utility Functions:
 
    nn

@@ -18,9 +18,15 @@ from ...utils.search import (
 
 @dataclass
 class GREAMolecularPredictor(GNNMolecularPredictor):
-    """This predictor implements a GNN model based on Graph Rationalization.
-    Paper: Graph Rationalization with Environment-based Augmentations (https://dl.acm.org/doi/10.1145/3534678.3539347)
-    Reference Code: https://github.com/liugangcode/GREA 
+    """This predictor implements a Graph Rationalization model.
+
+    Paper: `Graph Rationalization with Environment-based Augmentations 
+    <https://dl.acm.org/doi/10.1145/3534678.3539347>`_
+
+    Reference Code: `https://github.com/liugangcode/GREA`_
+
+    :param gamma: GREA-specific parameter. Default is 0.4.
+    :type gamma: float
     """
     
     # GREA-specific parameter

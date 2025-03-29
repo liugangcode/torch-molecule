@@ -17,46 +17,46 @@ from ...utils import graph_from_smiles, graph_to_smiles
 
 @dataclass
 class DigressMolecularGenerator(BaseMolecularGenerator):
-    """This generator implements the DiGress model for unconditional molecular generation.
-    Paper: DiGress: Discrete Denoising diffusion for graph generation (https://openreview.net/forum?id=UaAD-Nu86WX)
-    Reference Code: https://github.com/cvignac/DiGress
+    """
+    This generator implements the DiGress model for unconditional molecular generation.
 
-    Parameters
-    ----------
-    hidden_size_X : int, default=256
-        Hidden dimension size for node features
-    hidden_size_E : int, default=128 
-        Hidden dimension size for edge features
-    hidden_size_y : int, default=128
-        Hidden dimension size for condition features
-    num_layer : int, default=5
-        Number of transformer layers
-    n_head : int, default=8
-        Number of attention heads
-    dropout : float, default=0.1
-        Dropout rate for transformer layers
-    timesteps : int, default=500
-        Number of diffusion timesteps
-    batch_size : int, default=128
-        Batch size for training
-    epochs : int, default=10000
-        Number of training epochs
-    learning_rate : float, default=0.0002
-        Learning rate for optimization
-    grad_clip_value : Optional[float], default=None
-        Value for gradient clipping (None = no clipping)
-    weight_decay : float, default=0.0
-        Weight decay for optimization
-    lw_X : float, default=1
-        Loss weight for node reconstruction
-    lw_E : float, default=10
-        Loss weight for edge reconstruction
-    use_lr_scheduler : bool, default=False
-        Whether to use learning rate scheduler
-    scheduler_factor : float, default=0.5
-        Factor for learning rate scheduler
-    scheduler_patience : int, default=5
-        Patience for learning rate scheduler
+    Paper: `DiGress: Discrete Denoising diffusion for graph generation <https://openreview.net/forum?id=UaAD-Nu86WX>`_
+    Reference Code: `GitHub Repository <https://github.com/cvignac/DiGress>`_
+
+    :param hidden_size_X: Hidden dimension size for node features, defaults to 256
+    :type hidden_size_X: int, optional
+    :param hidden_size_E: Hidden dimension size for edge features, defaults to 128
+    :type hidden_size_E: int, optional
+    :param hidden_size_y: Hidden dimension size for condition features, defaults to 128
+    :type hidden_size_y: int, optional
+    :param num_layer: Number of transformer layers, defaults to 5
+    :type num_layer: int, optional
+    :param n_head: Number of attention heads, defaults to 8
+    :type n_head: int, optional
+    :param dropout: Dropout rate for transformer layers, defaults to 0.1
+    :type dropout: float, optional
+    :param timesteps: Number of diffusion timesteps, defaults to 500
+    :type timesteps: int, optional
+    :param batch_size: Batch size for training, defaults to 128
+    :type batch_size: int, optional
+    :param epochs: Number of training epochs, defaults to 10000
+    :type epochs: int, optional
+    :param learning_rate: Learning rate for optimization, defaults to 0.0002
+    :type learning_rate: float, optional
+    :param grad_clip_value: Value for gradient clipping (None = no clipping), defaults to None
+    :type grad_clip_value: Optional[float], optional
+    :param weight_decay: Weight decay for optimization, defaults to 0.0
+    :type weight_decay: float, optional
+    :param lw_X: Loss weight for node reconstruction, defaults to 1
+    :type lw_X: float, optional
+    :param lw_E: Loss weight for edge reconstruction, defaults to 10
+    :type lw_E: float, optional
+    :param use_lr_scheduler: Whether to use learning rate scheduler, defaults to False
+    :type use_lr_scheduler: bool, optional
+    :param scheduler_factor: Factor for learning rate scheduler, defaults to 0.5
+    :type scheduler_factor: float, optional
+    :param scheduler_patience: Patience for learning rate scheduler, defaults to 5
+    :type scheduler_patience: int, optional
     """
     # Model parameters
     hidden_size_X: int = 256

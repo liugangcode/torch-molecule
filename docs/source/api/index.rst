@@ -4,8 +4,9 @@ API Reference
 This section documents the main modules and classes in `torch_molecule`.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Main Components:
+   :hidden:
 
    predictor
    generator

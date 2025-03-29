@@ -18,8 +18,9 @@ Welcome to the torch-molecule documentation. torch-molecule is an actively devel
    example
 
 .. toctree::
-   :maxdepth: 2
-   :caption: API for main modules:
+   :maxdepth: 3
+   :caption: Main Components:
+   :hidden:
 
    api/predictor
    api/generator

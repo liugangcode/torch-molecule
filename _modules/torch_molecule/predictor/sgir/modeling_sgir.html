@@ -276,26 +276,26 @@
 <a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.sgir.modeling_sgir.SGIRMolecularPredictor">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">SGIRMolecularPredictor</span><span class="p">(</span><span class="n">GREAMolecularPredictor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor trains the GREA model based on pseudo-labeling and data augmentation.</span>
-<span class="sd">    Paper: Semi-Supervised Graph Imbalanced Regression (https://dl.acm.org/doi/10.1145/3580305.3599497)</span>
-<span class="sd">    Reference Code: https://github.com/liugangcode/SGIR</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This predictor trains the GREA model based on pseudo-labeling and data augmentation.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    num_anchor : int, default=10</span>
-<span class="sd">        Number of anchor points used to split the label space during pseudo-labeling</span>
-<span class="sd">    warmup_epoch : int, default=20 </span>
-<span class="sd">        Number of epochs to train before starting pseudo-labeling and data augmentation</span>
-<span class="sd">    labeling_interval : int, default=5</span>
-<span class="sd">        Interval (in epochs) between pseudo-labeling steps</span>
-<span class="sd">    augmentation_interval : int, default=5</span>
-<span class="sd">        Interval (in epochs) between data augmentation steps</span>
-<span class="sd">    top_quantile : float, default=0.1</span>
-<span class="sd">        Quantile threshold for selecting high confidence predictions during pseudo-labeling</span>
-<span class="sd">    label_logscale : bool, default=False</span>
-<span class="sd">        Whether to use log scale for the label space during pseudo-labeling and data augmentation</span>
-<span class="sd">    lw_aug : float, default=1</span>
-<span class="sd">        Weight for the data augmentation loss</span>
+<span class="sd">    Paper: `Semi-Supervised Graph Imbalanced Regression &lt;https://dl.acm.org/doi/10.1145/3580305.3599497&gt;`_</span>
+<span class="sd">    Reference Code: `SGIR GitHub &lt;https://github.com/liugangcode/SGIR&gt;`_</span>
+
+<span class="sd">    :param num_anchor: Number of anchor points used to split the label space during pseudo-labeling</span>
+<span class="sd">    :type num_anchor: int, default=10</span>
+<span class="sd">    :param warmup_epoch: Number of epochs to train before starting pseudo-labeling and data augmentation</span>
+<span class="sd">    :type warmup_epoch: int, default=20</span>
+<span class="sd">    :param labeling_interval: Interval (in epochs) between pseudo-labeling steps</span>
+<span class="sd">    :type labeling_interval: int, default=5</span>
+<span class="sd">    :param augmentation_interval: Interval (in epochs) between data augmentation steps</span>
+<span class="sd">    :type augmentation_interval: int, default=5</span>
+<span class="sd">    :param top_quantile: Quantile threshold for selecting high confidence predictions during pseudo-labeling</span>
+<span class="sd">    :type top_quantile: float, default=0.1</span>
+<span class="sd">    :param label_logscale: Whether to use log scale for the label space during pseudo-labeling and data augmentation</span>
+<span class="sd">    :type label_logscale: bool, default=False</span>
+<span class="sd">    :param lw_aug: Weight for the data augmentation loss</span>
+<span class="sd">    :type lw_aug: float, default=1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># SGIR-specific parameters</span>
     <span class="n">num_anchor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>

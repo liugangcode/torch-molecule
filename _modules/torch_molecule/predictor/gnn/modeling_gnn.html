@@ -304,7 +304,7 @@
 <span class="p">}</span>
 
 <div class="viewcode-block" id="GNNMolecularPredictor">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">GNNMolecularPredictor</span><span class="p">(</span><span class="n">BaseMolecularPredictor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a GNN model for molecular property prediction tasks.</span>
@@ -523,7 +523,7 @@
         <span class="k">return</span> <span class="n">DEFAULT_GNN_SEARCH_SPACES</span>
 
 <div class="viewcode-block" id="GNNMolecularPredictor.autofit">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor.autofit">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.autofit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">autofit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -687,7 +687,7 @@
 
     
 <div class="viewcode-block" id="GNNMolecularPredictor.fit">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor.fit">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -812,7 +812,7 @@
 
 
 <div class="viewcode-block" id="GNNMolecularPredictor.predict">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor.predict">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Make predictions using the fitted model.</span>
 

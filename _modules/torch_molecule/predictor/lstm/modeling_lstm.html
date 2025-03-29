@@ -283,7 +283,7 @@
 <span class="p">}</span>
 
 <div class="viewcode-block" id="LSTMMolecularPredictor">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">LSTMMolecularPredictor</span><span class="p">(</span><span class="n">BaseMolecularPredictor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a LSTM model for molecular property prediction tasks.</span>
@@ -408,7 +408,7 @@
                                     <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized_X</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
 
 <div class="viewcode-block" id="LSTMMolecularPredictor.fit">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor.fit">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -529,7 +529,7 @@
 
 
 <div class="viewcode-block" id="LSTMMolecularPredictor.predict">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor.predict">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Make predictions using the fitted model.</span>
 

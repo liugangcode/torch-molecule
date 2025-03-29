@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Utility Functions" href="utils.html" /><link rel="prev" title="Molecular Representation Learning / Encoding Models" href="encoder.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Utility Functions" href="utils.html" /><link rel="prev" title="Molecular Encoder Models" href="encoder.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>API Reference for Neural Network Components - torch-molecule 0.1 documentation</title>
@@ -208,7 +208,7 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="predictor.html">Molecular Property Prediction Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="encoder.html">Molecular Representation Learning / Encoding Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html">Molecular Encoder Models</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">API Reference for Neural Network Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utility Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base Modules</a></li>
@@ -261,9 +261,8 @@
           <section id="api-reference-for-neural-network-components">
 <h1>API Reference for Neural Network Components<a class="headerlink" href="#api-reference-for-neural-network-components" title="Link to this heading">¶</a></h1>
 <p>This section documents the neural network components in <cite>torch_molecule.nn</cite>.</p>
-<section id="module-torch_molecule.nn.attention">
-<span id="neural-network-components"></span><h2>Neural Network Components<a class="headerlink" href="#module-torch_molecule.nn.attention" title="Link to this heading">¶</a></h2>
-<dl class="py class">
+<p class="rubric">Multi-Head Attention with Node Masking</p>
+<dl class="py class" id="module-torch_molecule.nn.attention">
 <dt class="sig sig-object py" id="torch_molecule.nn.attention.AttentionWithNodeMask">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.attention.</span></span><span class="sig-name descname"><span class="pre">AttentionWithNodeMask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_head=8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qkv_bias=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qk_norm=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attn_drop=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj_drop=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer=&lt;class</span> <span class="pre">'torch.nn.modules.normalization.LayerNorm'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/attention.html#AttentionWithNodeMask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.attention.AttentionWithNodeMask" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
@@ -293,6 +292,7 @@ registered hooks while the latter silently ignores them.</p>
 
 </dd></dl>
 
+<p class="rubric">Embedding methods for different input features</p>
 <dl class="py class" id="module-torch_molecule.nn.embedder">
 <dt class="sig sig-object py" id="torch_molecule.nn.embedder.CategoricalEmbedder">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.embedder.</span></span><span class="sig-name descname"><span class="pre">CategoricalEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_prob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/embedder.html#CategoricalEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.embedder.CategoricalEmbedder" title="Link to this definition">¶</a></dt>
@@ -434,6 +434,7 @@ These may be fractional.</p></li>
 
 </dd></dl>
 
+<p class="rubric">Layers for Graph Neural Networks</p>
 <dl class="py class" id="module-torch_molecule.nn.gnn">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.AtomEncoder">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">AtomEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#AtomEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.AtomEncoder" title="Link to this definition">¶</a></dt>
@@ -592,6 +593,7 @@ registered hooks while the latter silently ignores them.</p>
 
 </dd></dl>
 
+<p class="rubric">Multi-Layer Perceptron</p>
 <dl class="py class" id="module-torch_molecule.nn.mlp">
 <dt class="sig sig-object py" id="torch_molecule.nn.mlp.MLP">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.mlp.</span></span><span class="sig-name descname"><span class="pre">MLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_features=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_features=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_layer=&lt;class</span> <span class="pre">'torch.nn.modules.activation.GELU'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bn=True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/mlp.html#MLP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.mlp.MLP" title="Link to this definition">¶</a></dt>
@@ -612,7 +614,6 @@ registered hooks while the latter silently ignores them.</p>
 
 </dd></dl>
 
-</section>
 </section>
 
         </article>
@@ -636,7 +637,7 @@ registered hooks while the latter silently ignores them.</p>
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Molecular Representation Learning / Encoding Models</div>
+                <div class="title">Molecular Encoder Models</div>
                 
               </div>
             </a>
@@ -671,7 +672,6 @@ registered hooks while the latter silently ignores them.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">API Reference for Neural Network Components</a><ul>
-<li><a class="reference internal" href="#module-torch_molecule.nn.attention">Neural Network Components</a><ul>
 <li><a class="reference internal" href="#torch_molecule.nn.attention.AttentionWithNodeMask"><code class="docutils literal notranslate"><span class="pre">AttentionWithNodeMask</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.nn.attention.AttentionWithNodeMask.fast_attn"><code class="docutils literal notranslate"><span class="pre">AttentionWithNodeMask.fast_attn</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.nn.attention.AttentionWithNodeMask.forward"><code class="docutils literal notranslate"><span class="pre">AttentionWithNodeMask.forward()</span></code></a></li>
@@ -722,8 +722,6 @@ registered hooks while the latter silently ignores them.</p>
 </li>
 <li><a class="reference internal" href="#torch_molecule.nn.mlp.MLP"><code class="docutils literal notranslate"><span class="pre">MLP</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.nn.mlp.MLP.forward"><code class="docutils literal notranslate"><span class="pre">MLP.forward()</span></code></a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

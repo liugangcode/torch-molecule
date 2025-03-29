@@ -207,7 +207,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../api/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/predictor.html">Molecular Property Prediction Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../api/encoder.html">Molecular Representation Learning / Encoding Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/encoder.html">Molecular Encoder Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/nn.html">API Reference for Neural Network Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/utils.html">Utility Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/base.html">Base Modules</a></li>
@@ -271,7 +271,7 @@
 <span class="p">)</span>
 
 <div class="viewcode-block" id="GREAMolecularPredictor">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.grea.GREAMolecularPredictor">[docs]</a>
+<a class="viewcode-back" href="../../../../api/api.html#torch_molecule.predictor.grea.GREAMolecularPredictor">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">GREAMolecularPredictor</span><span class="p">(</span><span class="n">GNNMolecularPredictor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a GNN model based on Graph Rationalization.</span>
@@ -307,7 +307,7 @@
         <span class="k">return</span> <span class="n">base_params</span>
 
 <div class="viewcode-block" id="GREAMolecularPredictor.predict">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.grea.GREAMolecularPredictor.predict">[docs]</a>
+<a class="viewcode-back" href="../../../../api/api.html#torch_molecule.predictor.grea.GREAMolecularPredictor.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">]]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Make predictions using the fitted model.</span>
 

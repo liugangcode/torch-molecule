@@ -208,7 +208,7 @@
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="predictor.html">Molecular Property Prediction Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="encoder.html">Molecular Representation Learning / Encoding Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html">Molecular Encoder Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nn.html">API Reference for Neural Network Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utils.html">Utility Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base Modules</a></li>
@@ -264,33 +264,33 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="predictor.html">Molecular Property Prediction Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="predictor.html#torch_molecule.predictor.dir.DIRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="predictor.html#torch_molecule.predictor.grea.GREAMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="predictor.html#torch_molecule.predictor.sgir.SGIRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="predictor.html#torch_molecule.predictor.irm.IRMMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="predictor.html#torch_molecule.predictor.rpgnn.RPGNNMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="predictor.html#torch_molecule.predictor.ssr.SSRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="predictor.html">Molecular Property Prediction Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generator.html">Molecular Generation Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="generator.html#torch_molecule.generator.digress.DigressMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="generator.html#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html#torch_molecule.generator.digress.DigressMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="generator.html#torch_molecule.generator.graphga.GraphGAMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="encoder.html">Molecular Representation Learning / Encoding Models</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="encoder.html">Molecular Encoder Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nn.html">API Reference for Neural Network Components</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="nn.html#module-torch_molecule.nn.attention">Neural Network Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.attention.AttentionWithNodeMask"><code class="docutils literal notranslate"><span class="pre">AttentionWithNodeMask</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.embedder.CategoricalEmbedder"><code class="docutils literal notranslate"><span class="pre">CategoricalEmbedder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.embedder.ClusterContinuousEmbedder"><code class="docutils literal notranslate"><span class="pre">ClusterContinuousEmbedder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.embedder.TimestepEmbedder"><code class="docutils literal notranslate"><span class="pre">TimestepEmbedder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.gnn.AtomEncoder"><code class="docutils literal notranslate"><span class="pre">AtomEncoder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.gnn.BondEncoder"><code class="docutils literal notranslate"><span class="pre">BondEncoder</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.gnn.GCNConv"><code class="docutils literal notranslate"><span class="pre">GCNConv</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.gnn.GINConv"><code class="docutils literal notranslate"><span class="pre">GINConv</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.gnn.GNN_node"><code class="docutils literal notranslate"><span class="pre">GNN_node</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.gnn.GNN_node_Virtualnode"><code class="docutils literal notranslate"><span class="pre">GNN_node_Virtualnode</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn.html#torch_molecule.nn.mlp.MLP"><code class="docutils literal notranslate"><span class="pre">MLP</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utility Functions</a><ul>

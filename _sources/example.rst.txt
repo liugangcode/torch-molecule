@@ -44,6 +44,13 @@ The following example demonstrates how to use the `GREAMolecularPredictor`:
        verbose=True
    )
 
+   # Fit the model
+   X_train = ['C1=CC=CC=C1', 'C1=CC=CC=C1']
+   y_train = [[0.5], [1.5]]
+   X_val = ['C1=CC=CC=C1', 'C1=CC=CC=C1']
+   y_val = [[0.5], [1.5]]
+   N_trial = 100
+
    grea_model.autofit(
        X_train=X_train.tolist(),
        y_train=y_train,
@@ -63,6 +70,11 @@ The following example demonstrates how to use the `GraphDITMolecularGenerator` f
 
    from torch_molecule import GraphDITMolecularGenerator
    from rdkit import Chem
+
+   property_names = ['logP']
+   train_smiles_list = ['C1=CC=CC=C1', 'C1=CC=CC=C1']
+   train_property_array = [[1], [2]]
+   test_property_array = [[1.5], [2.5]]
 
    # Initialize the generator model
    model_cond = GraphDITMolecularGenerator(

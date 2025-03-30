@@ -202,6 +202,12 @@
 <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -211,13 +217,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="additional.html">Additional Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -273,13 +281,16 @@ conda<span class="w"> </span>activate<span class="w"> </span>torch_molecule
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/liugangcode/torch-molecule
 </pre></div>
 </div>
+<p>Install the requirements:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
 <p>Editable install:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
 </li>
-<li><p><strong>Install `torch_molecule` from PyPI</strong>:</p>
-<p>Legacy (PyPI test):</p>
+<li><p><strong>Install `torch_molecule` from PyPI</strong> (Legacy):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-i<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span>torch-molecule
 </pre></div>
 </div>
@@ -309,10 +320,6 @@ scipy==1.14.1
 tqdm==4.66.2
 
 optuna
-</pre></div>
-</div>
-<p>Install all dependencies using:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 </pre></div>
 </div>
 </section>

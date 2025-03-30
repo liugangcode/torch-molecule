@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Molecular Property Prediction Models" href="api/predictor.html" /><link rel="prev" title="Installation" href="install.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Model Overview" href="overview.html" /><link rel="prev" title="Installation" href="install.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>Examples - torch-molecule 0.1 documentation</title>
@@ -202,6 +202,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -211,13 +217,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="additional.html">Additional Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -297,6 +305,13 @@
     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
+<span class="c1"># Fit the model</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">,</span> <span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">]</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">]]</span>
+<span class="n">X_val</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">,</span> <span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">]</span>
+<span class="n">y_val</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">]]</span>
+<span class="n">N_trial</span> <span class="o">=</span> <span class="mi">100</span>
+
 <span class="n">grea_model</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
     <span class="n">X_train</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
     <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
@@ -313,6 +328,11 @@
 <p>The following example demonstrates how to use the <cite>GraphDITMolecularGenerator</cite> for generating molecules with retry logic for invalid molecules:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphDITMolecularGenerator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+
+<span class="n">property_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;logP&#39;</span><span class="p">]</span>
+<span class="n">train_smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">,</span> <span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">]</span>
+<span class="n">train_property_array</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+<span class="n">test_property_array</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">]]</span>
 
 <span class="c1"># Initialize the generator model</span>
 <span class="n">model_cond</span> <span class="o">=</span> <span class="n">GraphDITMolecularGenerator</span><span class="p">(</span>
@@ -410,12 +430,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="api/predictor.html">
+          <a class="next-page" href="overview.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Molecular Property Prediction Models</div>
+                <div class="title">Model Overview</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

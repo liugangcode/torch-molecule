@@ -201,6 +201,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../example.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -210,13 +216,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Additional Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -267,6 +275,23 @@
 <div class="viewcode-block" id="AtomEncoder">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.AtomEncoder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AtomEncoder</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encodes atom features into a fixed-size vector representation.</span>
+<span class="sd">    </span>
+<span class="sd">    This module converts categorical atom features into embeddings and combines them</span>
+<span class="sd">    to create a unified atom representation.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hidden_size : int</span>
+<span class="sd">        Dimensionality of the output atom embedding vectors.</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Each atom feature is embedded separately using an Embedding layer, then</span>
+<span class="sd">    these embeddings are summed to produce the final representation.</span>
+<span class="sd">    The embedding weights are initialized using Xavier uniform initialization</span>
+<span class="sd">    with max_norm=1 constraint.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">AtomEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         
@@ -280,6 +305,19 @@
 <div class="viewcode-block" id="AtomEncoder.forward">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.AtomEncoder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform atom features into embeddings.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : torch.Tensor</span>
+<span class="sd">            Tensor of shape [num_atoms, num_features] containing categorical</span>
+<span class="sd">            atom features.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            Atom embeddings of shape [num_atoms, hidden_size].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x_embedding</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">x_embedding</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_embedding_list</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">x</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span>
@@ -291,6 +329,23 @@
 <div class="viewcode-block" id="BondEncoder">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.BondEncoder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BondEncoder</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encodes bond features into a fixed-size vector representation.</span>
+<span class="sd">    </span>
+<span class="sd">    This module converts categorical bond features into embeddings and combines them</span>
+<span class="sd">    to create a unified bond representation.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hidden_size : int</span>
+<span class="sd">        Dimensionality of the output bond embedding vectors.</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Each bond feature is embedded separately using an Embedding layer, then</span>
+<span class="sd">    these embeddings are summed to produce the final representation.</span>
+<span class="sd">    The embedding weights are initialized using Xavier uniform initialization</span>
+<span class="sd">    with max_norm=1 constraint.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BondEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         
@@ -304,6 +359,19 @@
 <div class="viewcode-block" id="BondEncoder.forward">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.BondEncoder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform bond features into embeddings.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge_attr : torch.Tensor</span>
+<span class="sd">            Tensor of shape [num_bonds, num_features] containing categorical</span>
+<span class="sd">            bond features.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            Bond embeddings of shape [num_bonds, hidden_size].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bond_embedding</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">edge_attr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">bond_embedding</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bond_embedding_list</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">edge_attr</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span>

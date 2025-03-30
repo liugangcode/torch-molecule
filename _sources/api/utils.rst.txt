@@ -25,3 +25,15 @@ Utility Functions
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. automodule:: torch_molecule.utils.graph
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: torch_molecule.utils.generic
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   
+   

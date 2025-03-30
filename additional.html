@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Base Modules" href="api/base.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Utility Functions" href="api/utils.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
-        <title>Additional Information - torch-molecule 0.1 documentation</title>
+        <title>Project Overview - torch-molecule 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
@@ -178,7 +178,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -202,6 +202,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -211,13 +217,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Additional Information</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -252,16 +260,14 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="additional-information">
-<h1>Additional Information<a class="headerlink" href="#additional-information" title="Link to this heading">¶</a></h1>
-<section id="project-overview">
-<h2>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading">¶</a></h2>
+          <section id="project-overview">
+<h1>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">torch-molecule</span></code> is a package under active development to support molecular discovery using deep learning. It provides a simple, <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>-style interface and model checkpoints for fast deployment and benchmarking.</p>
 <p>Main components:</p>
 <ol class="arabic simple">
@@ -281,7 +287,7 @@
 </div>
 </section>
 <section id="project-structure">
-<h2>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading">¶</a></h2>
+<h1>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading">¶</a></h1>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>torch_molecule
 ├── base
 ├── encoder
@@ -293,9 +299,8 @@
 </div>
 </section>
 <section id="acknowledgements">
-<h2>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Link to this heading">¶</a></h2>
+<h1>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Link to this heading">¶</a></h1>
 <p>This project was adapted from <a class="reference external" href="https://github.com/lwaekfjlk/python-project-template">python-project-template</a>.</p>
-</section>
 </section>
 
         </article>
@@ -304,14 +309,14 @@
         
         <div class="related-pages">
           
-          <a class="prev-page" href="api/base.html">
+          <a class="prev-page" href="api/utils.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Base Modules</div>
+                <div class="title">Utility Functions</div>
                 
               </div>
             </a>
@@ -333,29 +338,8 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">Additional Information</a><ul>
-<li><a class="reference internal" href="#project-overview">Project Overview</a></li>
-<li><a class="reference internal" href="#project-structure">Project Structure</a></li>
-<li><a class="reference internal" href="#acknowledgements">Acknowledgements</a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>

@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Additional Information" href="../additional.html" /><link rel="prev" title="Neural Network Components" href="nn.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Utility Functions" href="utils.html" /><link rel="prev" title="Neural Network Components" href="nn.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>Base Modules - torch-molecule 0.1 documentation</title>
@@ -202,6 +202,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -211,13 +217,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nn.html">Neural Network Components</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../additional.html">Additional Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../additional.html#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -258,99 +266,185 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-torch_molecule.base">
-<span id="base-modules"></span><h1>Base Modules<a class="headerlink" href="#module-torch_molecule.base" title="Link to this heading">¶</a></h1>
+          <section id="base-modules">
+<h1>Base Modules<a class="headerlink" href="#base-modules" title="Link to this heading">¶</a></h1>
+<section id="base">
+<h2>Base<a class="headerlink" href="#base" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularEncoder">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.base.</span></span><span class="sig-name descname"><span class="pre">BaseMolecularEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BaseMolecularEncoder'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/base/encoder.html#BaseMolecularEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.BaseMolecularEncoder" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Base class for molecular representation learning.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularEncoder.encode">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'np'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'pt'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pt'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span></span></span><a class="reference internal" href="../_modules/torch_molecule/base/encoder.html#BaseMolecularEncoder.encode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.BaseMolecularEncoder.encode" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.base.base.</span></span><span class="sig-name descname"><span class="pre">BaseModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BaseModel'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/base/base.html#BaseModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.base.BaseModel" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Base class for molecular models with shared functionality.</p>
+<p>This abstract class provides common methods and utilities for molecular models,
+including model initialization, saving/loading, and parameter management.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.device">
+<span class="sig-name descname"><span class="pre">device</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.base.base.BaseModel.device" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularEncoder.fit">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.base.encoder.BaseMolecularEncoder" title="torch_molecule.base.encoder.BaseMolecularEncoder"><span class="pre">BaseMolecularEncoder</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/base/encoder.html#BaseMolecularEncoder.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.BaseMolecularEncoder.fit" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/base/base.html#BaseModel.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.base.BaseModel.get_params" title="Link to this definition">¶</a></dt>
+<dd><p>Get parameters for this estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deep</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
+contained subobjects that are estimators.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of parameter names mapped to their values</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.is_fitted_">
+<span class="sig-name descname"><span class="pre">is_fitted_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#torch_molecule.base.base.BaseModel.is_fitted_" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/torch_molecule/base/base.html#BaseModel.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.base.BaseModel.load" title="Link to this definition">¶</a></dt>
+<dd><p>Automatic load from either local disk or Hugging Face Hub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – File path for local loading or path within the repository</p></li>
+<li><p><strong>repo_id</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>default=None</em>) – Hugging Face repository ID for remote loading</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If no local file is found and no repo_id is provided</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.load_from_hf">
+<span class="sig-name descname"><span class="pre">load_from_hf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/torch_molecule/base/base.html#BaseModel.load_from_hf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.base.BaseModel.load_from_hf" title="Link to this definition">¶</a></dt>
+<dd><p>Load model from Hugging Face Hub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>) – Hugging Face repository ID</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – Path within the repository to load the model from</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.load_from_local">
+<span class="sig-name descname"><span class="pre">load_from_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/torch_molecule/base/base.html#BaseModel.load_from_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.base.BaseModel.load_from_local" title="Link to this definition">¶</a></dt>
+<dd><p>Load model from local disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – File path to load the model from</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.model">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Module</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.base.base.BaseModel.model" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularEncoder.model_name">
-<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BaseMolecularEncoder'</span></em><a class="headerlink" href="#torch_molecule.base.BaseMolecularEncoder.model_name" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.model_class">
+<span class="sig-name descname"><span class="pre">model_class</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.base.base.BaseModel.model_class" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BaseModel'</span></em><a class="headerlink" href="#torch_molecule.base.base.BaseModel.model_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/torch_molecule/base/base.html#BaseModel.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.base.BaseModel.save" title="Link to this definition">¶</a></dt>
+<dd><p>Automatic save to either local disk or Hugging Face Hub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>default=None</em>) – File path for local saving (required if repo_id is None)</p></li>
+<li><p><strong>repo_id</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>default=None</em>) – Hugging Face repository ID for remote saving</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments passed to save_to_hf</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If path is None when repo_id is None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.save_to_hf">
+<span class="sig-name descname"><span class="pre">save_to_hf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commit_message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Update</span> <span class="pre">model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/torch_molecule/base/base.html#BaseModel.save_to_hf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.base.BaseModel.save_to_hf" title="Link to this definition">¶</a></dt>
+<dd><p>Save model to Hugging Face Hub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>) – Hugging Face repository ID</p></li>
+<li><p><strong>task_id</strong> (<em>str</em><em>, </em><em>default=&quot;default&quot;</em>) – Task identifier for the model</p></li>
+<li><p><strong>metadata_dict</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>default=None</em>) – Optional metadata to store with the model</p></li>
+<li><p><strong>metrics</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em><em>]</em><em>, </em><em>default=None</em>) – Optional performance metrics to store with the model</p></li>
+<li><p><strong>commit_message</strong> (<em>str</em><em>, </em><em>default=&quot;Update model&quot;</em>) – Git commit message</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>default=None</em>) – Hugging Face authentication token</p></li>
+<li><p><strong>private</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether the repository should be private</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the model is not fitted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.save_to_local">
+<span class="sig-name descname"><span class="pre">save_to_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/torch_molecule/base/base.html#BaseModel.save_to_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.base.BaseModel.save_to_local" title="Link to this definition">¶</a></dt>
+<dd><p>Save model to local disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – File path to save the model</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the model is not fitted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.base.base.BaseModel.set_params">
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.base.base.BaseModel" title="torch_molecule.base.base.BaseModel"><span class="pre">BaseModel</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/base/base.html#BaseModel.set_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.base.BaseModel.set_params" title="Link to this definition">¶</a></dt>
+<dd><p>Set parameters for this estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**params</strong> – Parameter names mapped to their values</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Self instance for method chaining</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_molecule.base.base.BaseModel" title="torch_molecule.base.base.BaseModel">BaseModel</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid parameter is provided</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
+</section>
+<section id="base-predictor">
+<h2>Base Predictor<a class="headerlink" href="#base-predictor" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularGenerator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.base.</span></span><span class="sig-name descname"><span class="pre">BaseMolecularGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BaseMolecularGenerator'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/base/generator.html#BaseMolecularGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.BaseMolecularGenerator" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Base class for molecular generation.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularGenerator.fit">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.base.generator.BaseMolecularGenerator" title="torch_molecule.base.generator.BaseMolecularGenerator"><span class="pre">BaseMolecularGenerator</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/base/generator.html#BaseMolecularGenerator.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.BaseMolecularGenerator.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularGenerator.generate">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/base/generator.html#BaseMolecularGenerator.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.BaseMolecularGenerator.generate" title="Link to this definition">¶</a></dt>
-<dd><p>Generate molecular structures.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularGenerator.model_name">
-<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BaseMolecularGenerator'</span></em><a class="headerlink" href="#torch_molecule.base.BaseMolecularGenerator.model_name" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularPredictor">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.base.</span></span><span class="sig-name descname"><span class="pre">BaseMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BaseMolecularPredictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/base/predictor.html#BaseMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.BaseMolecularPredictor" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Base class for molecular discovery estimators.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularPredictor.DEFAULT_METRICS">
-<span class="sig-name descname"><span class="pre">DEFAULT_METRICS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'classification':</span> <span class="pre">{'default':</span> <span class="pre">('roc_auc',</span> <span class="pre">&lt;function</span> <span class="pre">roc_auc_score&gt;,</span> <span class="pre">True)},</span> <span class="pre">'regression':</span> <span class="pre">{'default':</span> <span class="pre">('mae',</span> <span class="pre">&lt;function</span> <span class="pre">mean_absolute_error&gt;,</span> <span class="pre">False)}}</span></em><a class="headerlink" href="#torch_molecule.base.BaseMolecularPredictor.DEFAULT_METRICS" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularPredictor.autofit">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">autofit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_trials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.base.predictor.BaseMolecularPredictor" title="torch_molecule.base.predictor.BaseMolecularPredictor"><span class="pre">BaseMolecularPredictor</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/base/predictor.html#BaseMolecularPredictor.autofit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.BaseMolecularPredictor.autofit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularPredictor.fit">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_trials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.base.predictor.BaseMolecularPredictor" title="torch_molecule.base.predictor.BaseMolecularPredictor"><span class="pre">BaseMolecularPredictor</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/base/predictor.html#BaseMolecularPredictor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.BaseMolecularPredictor.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularPredictor.model_name">
-<span class="sig-name descname"><span class="pre">model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'BaseMolecularPredictor'</span></em><a class="headerlink" href="#torch_molecule.base.BaseMolecularPredictor.model_name" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularPredictor.num_task">
-<span class="sig-name descname"><span class="pre">num_task</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#torch_molecule.base.BaseMolecularPredictor.num_task" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularPredictor.predict">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/torch_molecule/base/predictor.html#BaseMolecularPredictor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.BaseMolecularPredictor.predict" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.base.BaseMolecularPredictor.task_type">
-<span class="sig-name descname"><span class="pre">task_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#torch_molecule.base.BaseMolecularPredictor.task_type" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class" id="module-torch_molecule.base.predictor">
 <dt class="sig sig-object py" id="torch_molecule.base.predictor.BaseMolecularPredictor">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.base.predictor.</span></span><span class="sig-name descname"><span class="pre">BaseMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BaseMolecularPredictor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/base/predictor.html#BaseMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.predictor.BaseMolecularPredictor" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#torch_molecule.base.base.BaseModel" title="torch_molecule.base.base.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Base class for molecular discovery estimators.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.base.predictor.BaseMolecularPredictor.DEFAULT_METRICS">
@@ -389,10 +483,13 @@
 
 </dd></dl>
 
-<dl class="py class" id="module-torch_molecule.base.generator">
+</section>
+<section id="base-generator">
+<h2>Base Generator<a class="headerlink" href="#base-generator" title="Link to this heading">¶</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.base.generator.BaseMolecularGenerator">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.base.generator.</span></span><span class="sig-name descname"><span class="pre">BaseMolecularGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BaseMolecularGenerator'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/base/generator.html#BaseMolecularGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.generator.BaseMolecularGenerator" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#torch_molecule.base.base.BaseModel" title="torch_molecule.base.base.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Base class for molecular generation.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.base.generator.BaseMolecularGenerator.fit">
@@ -412,10 +509,13 @@
 
 </dd></dl>
 
-<dl class="py class" id="module-torch_molecule.base.encoder">
+</section>
+<section id="base-encoder">
+<h2>Base Encoder<a class="headerlink" href="#base-encoder" title="Link to this heading">¶</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.base.encoder.BaseMolecularEncoder">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.base.encoder.</span></span><span class="sig-name descname"><span class="pre">BaseMolecularEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BaseMolecularEncoder'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/base/encoder.html#BaseMolecularEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.base.encoder.BaseMolecularEncoder" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#torch_molecule.base.base.BaseModel" title="torch_molecule.base.base.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Base class for molecular representation learning.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.base.encoder.BaseMolecularEncoder.encode">
@@ -435,18 +535,19 @@
 </dd></dl>
 
 </section>
+</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../additional.html">
+          <a class="next-page" href="utils.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Additional Information</div>
+                <div class="title">Utility Functions</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -492,28 +593,26 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Base Modules</a><ul>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">BaseMolecularEncoder</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularEncoder.encode"><code class="docutils literal notranslate"><span class="pre">BaseMolecularEncoder.encode()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">BaseMolecularEncoder.fit()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularEncoder.model_name"><code class="docutils literal notranslate"><span class="pre">BaseMolecularEncoder.model_name</span></code></a></li>
+<li><a class="reference internal" href="#base">Base</a><ul>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel"><code class="docutils literal notranslate"><span class="pre">BaseModel</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.device"><code class="docutils literal notranslate"><span class="pre">BaseModel.device</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.get_params"><code class="docutils literal notranslate"><span class="pre">BaseModel.get_params()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.is_fitted_"><code class="docutils literal notranslate"><span class="pre">BaseModel.is_fitted_</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.load"><code class="docutils literal notranslate"><span class="pre">BaseModel.load()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.load_from_hf"><code class="docutils literal notranslate"><span class="pre">BaseModel.load_from_hf()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.load_from_local"><code class="docutils literal notranslate"><span class="pre">BaseModel.load_from_local()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.model"><code class="docutils literal notranslate"><span class="pre">BaseModel.model</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.model_class"><code class="docutils literal notranslate"><span class="pre">BaseModel.model_class</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.model_name"><code class="docutils literal notranslate"><span class="pre">BaseModel.model_name</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.save"><code class="docutils literal notranslate"><span class="pre">BaseModel.save()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.save_to_hf"><code class="docutils literal notranslate"><span class="pre">BaseModel.save_to_hf()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.save_to_local"><code class="docutils literal notranslate"><span class="pre">BaseModel.save_to_local()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.base.base.BaseModel.set_params"><code class="docutils literal notranslate"><span class="pre">BaseModel.set_params()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">BaseMolecularGenerator</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">BaseMolecularGenerator.fit()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">BaseMolecularGenerator.generate()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularGenerator.model_name"><code class="docutils literal notranslate"><span class="pre">BaseMolecularGenerator.model_name</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularPredictor.DEFAULT_METRICS"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor.DEFAULT_METRICS</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularPredictor.autofit"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor.autofit()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor.fit()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor.model_name</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularPredictor.num_task"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor.num_task</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor.predict()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.base.BaseMolecularPredictor.task_type"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor.task_type</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#base-predictor">Base Predictor</a><ul>
 <li><a class="reference internal" href="#torch_molecule.base.predictor.BaseMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.base.predictor.BaseMolecularPredictor.DEFAULT_METRICS"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor.DEFAULT_METRICS</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.base.predictor.BaseMolecularPredictor.autofit"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor.autofit()</span></code></a></li>
@@ -524,16 +623,24 @@
 <li><a class="reference internal" href="#torch_molecule.base.predictor.BaseMolecularPredictor.task_type"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor.task_type</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a class="reference internal" href="#base-generator">Base Generator</a><ul>
 <li><a class="reference internal" href="#torch_molecule.base.generator.BaseMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">BaseMolecularGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.base.generator.BaseMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">BaseMolecularGenerator.fit()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.base.generator.BaseMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">BaseMolecularGenerator.generate()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.base.generator.BaseMolecularGenerator.model_name"><code class="docutils literal notranslate"><span class="pre">BaseMolecularGenerator.model_name</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a class="reference internal" href="#base-encoder">Base Encoder</a><ul>
 <li><a class="reference internal" href="#torch_molecule.base.encoder.BaseMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">BaseMolecularEncoder</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.base.encoder.BaseMolecularEncoder.encode"><code class="docutils literal notranslate"><span class="pre">BaseMolecularEncoder.encode()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.base.encoder.BaseMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">BaseMolecularEncoder.fit()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.base.encoder.BaseMolecularEncoder.model_name"><code class="docutils literal notranslate"><span class="pre">BaseMolecularEncoder.model_name</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

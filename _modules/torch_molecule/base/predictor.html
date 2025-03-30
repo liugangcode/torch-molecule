@@ -201,6 +201,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../example.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -210,13 +216,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Additional Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -269,7 +277,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">..base.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 
 <div class="viewcode-block" id="BaseMolecularPredictor">
-<a class="viewcode-back" href="../../../api/base.html#torch_molecule.base.BaseMolecularPredictor">[docs]</a>
+<a class="viewcode-back" href="../../../api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseMolecularPredictor</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for molecular discovery estimators.&quot;&quot;&quot;</span>
@@ -294,21 +302,21 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;num_task&quot;</span><span class="p">,</span> <span class="s2">&quot;task_type&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="BaseMolecularPredictor.autofit">
-<a class="viewcode-back" href="../../../api/base.html#torch_molecule.base.BaseMolecularPredictor.autofit">[docs]</a>
+<a class="viewcode-back" href="../../../api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor.autofit">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">autofit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">search_parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">n_trials</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseMolecularPredictor&quot;</span><span class="p">:</span> 
         <span class="k">pass</span></div>
 
     
 <div class="viewcode-block" id="BaseMolecularPredictor.fit">
-<a class="viewcode-back" href="../../../api/base.html#torch_molecule.base.BaseMolecularPredictor.fit">[docs]</a>
+<a class="viewcode-back" href="../../../api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor.fit">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">search_parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">n_trials</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseMolecularPredictor&quot;</span><span class="p">:</span> 
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="BaseMolecularPredictor.predict">
-<a class="viewcode-back" href="../../../api/base.html#torch_molecule.base.BaseMolecularPredictor.predict">[docs]</a>
+<a class="viewcode-back" href="../../../api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor.predict">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="k">pass</span></div>

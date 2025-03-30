@@ -200,6 +200,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -209,13 +215,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="additional.html">Additional Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -272,30 +280,6 @@
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="api/base.html#module-torch_molecule.base"><code class="xref">torch_molecule.base</code></a></td><td>
-    <em></em></td>
-  </tr>
-  <tr class="cg-1">
-    <td></td>
-    <td>&#160;&#160;&#160;
-        <a href="api/base.html#module-torch_molecule.base.encoder"><code class="xref">torch_molecule.base.encoder</code></a></td><td>
-    <em></em></td>
-  </tr>
-  <tr class="cg-1">
-    <td></td>
-    <td>&#160;&#160;&#160;
-        <a href="api/base.html#module-torch_molecule.base.generator"><code class="xref">torch_molecule.base.generator</code></a></td><td>
-    <em></em></td>
-  </tr>
-  <tr class="cg-1">
-    <td></td>
-    <td>&#160;&#160;&#160;
-        <a href="api/base.html#module-torch_molecule.base.predictor"><code class="xref">torch_molecule.base.predictor</code></a></td><td>
-    <em></em></td>
-  </tr>
-  <tr class="cg-1">
-    <td></td>
-    <td>&#160;&#160;&#160;
         <a href="api/encoder.html#module-torch_molecule.encoder.attrmask"><code class="xref">torch_molecule.encoder.attrmask</code></a></td><td>
     <em></em></td>
   </tr>
@@ -326,24 +310,6 @@
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="api/generator.html#module-torch_molecule.generator.digress"><code class="xref">torch_molecule.generator.digress</code></a></td><td>
-    <em></em></td>
-  </tr>
-  <tr class="cg-1">
-    <td></td>
-    <td>&#160;&#160;&#160;
-        <a href="api/generator.html#module-torch_molecule.generator.graph_dit"><code class="xref">torch_molecule.generator.graph_dit</code></a></td><td>
-    <em></em></td>
-  </tr>
-  <tr class="cg-1">
-    <td></td>
-    <td>&#160;&#160;&#160;
-        <a href="api/generator.html#module-torch_molecule.generator.graphga"><code class="xref">torch_molecule.generator.graphga</code></a></td><td>
-    <em></em></td>
-  </tr>
-  <tr class="cg-1">
-    <td></td>
-    <td>&#160;&#160;&#160;
         <a href="api/nn.html#module-torch_molecule.nn.attention"><code class="xref">torch_molecule.nn.attention</code></a></td><td>
     <em></em></td>
   </tr>
@@ -368,12 +334,6 @@
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="api/predictor.html#module-torch_molecule.predictor.gnn"><code class="xref">torch_molecule.predictor.gnn</code></a></td><td>
-    <em></em></td>
-  </tr>
-  <tr class="cg-1">
-    <td></td>
-    <td>&#160;&#160;&#160;
         <a href="api/predictor.html#module-torch_molecule.predictor.lstm"><code class="xref">torch_molecule.predictor.lstm</code></a></td><td>
     <em></em></td>
   </tr>
@@ -393,6 +353,18 @@
     <td></td>
     <td>&#160;&#160;&#160;
         <a href="api/utils.html#module-torch_molecule.utils.format"><code class="xref">torch_molecule.utils.format</code></a></td><td>
+    <em></em></td>
+  </tr>
+  <tr class="cg-1">
+    <td></td>
+    <td>&#160;&#160;&#160;
+        <a href="api/utils.html#module-torch_molecule.utils.generic"><code class="xref">torch_molecule.utils.generic</code></a></td><td>
+    <em></em></td>
+  </tr>
+  <tr class="cg-1">
+    <td></td>
+    <td>&#160;&#160;&#160;
+        <a href="api/utils.html#module-torch_molecule.utils.graph"><code class="xref">torch_molecule.utils.graph</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">

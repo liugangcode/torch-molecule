@@ -1,22 +1,30 @@
 Base Modules
 =============
 
-.. automodule:: torch_molecule.base
+Base
+-----------------------------------
+.. autoclass:: torch_molecule.base.base.BaseModel
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: torch_molecule.base.predictor
+Base Predictor
+-----------------------------------
+.. autoclass:: torch_molecule.base.predictor.BaseMolecularPredictor
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: torch_molecule.base.generator
+Base Generator
+-----------------------------------
+.. autoclass:: torch_molecule.base.generator.BaseMolecularGenerator
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: torch_molecule.base.encoder
+Base Encoder
+-----------------------------------
+.. autoclass:: torch_molecule.base.encoder.BaseMolecularEncoder
    :members:
    :undoc-members:
    :show-inheritance:

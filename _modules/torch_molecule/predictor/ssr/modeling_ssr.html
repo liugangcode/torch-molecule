@@ -201,6 +201,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../example.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -210,13 +216,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html">Additional Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -279,14 +287,28 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a SizeShiftReg model with the GNN.</span>
 <span class="sd">    Paper: SizeShiftReg: a Regularization Method for Improving Size-Generalization in Graph Neural Networks (https://arxiv.org/abs/2207.07888)</span>
 <span class="sd">    Reference Code: https://github.com/DavideBuffelli/SizeShiftReg/tree/main</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Args:</span>
-<span class="sd">        coarse_ratios: List of ratios for graph coarsening</span>
-<span class="sd">        cmd_coeff: Weight for CMD loss</span>
-<span class="sd">        fine_grained: Whether to use fine-grained CMD</span>
-<span class="sd">        n_moments: Number of moments to match</span>
-<span class="sd">        coarse_pool: Pooling method for coarsened graphs</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coarse_ratios : List[float], default=[0.8, 0.9]</span>
+<span class="sd">        List of ratios for graph coarsening. Each ratio determines the percentage of </span>
+<span class="sd">        nodes to keep in the coarsened graph.</span>
+<span class="sd">    cmd_coeff : float, default=0.1</span>
+<span class="sd">        Weight for CMD (Central Moment Discrepancy) loss. Controls the strength of </span>
+<span class="sd">        the size-shift regularization.</span>
+<span class="sd">    fine_grained : bool, default=True</span>
+<span class="sd">        Whether to use fine-grained CMD. When True, matches distributions at a more </span>
+<span class="sd">        detailed level.</span>
+<span class="sd">    n_moments : int, default=5</span>
+<span class="sd">        Number of moments to match in the CMD calculation. Higher values capture </span>
+<span class="sd">        more complex distribution characteristics.</span>
+<span class="sd">    coarse_pool : str, default=&#39;mean&#39;</span>
+<span class="sd">        Pooling method for coarsened graphs. Determines how node features are </span>
+<span class="sd">        aggregated during coarsening.</span>
+<span class="sd">    model_name : str, default=&quot;SSRMolecularPredictor&quot;</span>
+<span class="sd">        Name of the model.</span>
+<span class="sd">    model_class : Type[SSR], default=SSR</span>
+<span class="sd">        The model class to use for prediction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># SSR-specific parameters</span>
     <span class="n">coarse_ratios</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
@@ -294,7 +316,8 @@
     <span class="n">fine_grained</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">n_moments</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
     <span class="n">coarse_pool</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
-    <span class="c1"># Override parent defaults</span>
+
+    <span class="c1"># Other Non-init fields</span>
     <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;SSRMolecularPredictor&quot;</span>
     <span class="n">model_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">SSR</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">SSR</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 

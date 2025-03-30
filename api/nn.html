@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Base Modules" href="base.html" /><link rel="prev" title="Utility Functions" href="utils.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Base Modules" href="base.html" /><link rel="prev" title="Molecular Encoder Models" href="encoder.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
         <title>Neural Network Components - torch-molecule 0.1 documentation</title>
@@ -202,6 +202,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -211,13 +217,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="utils.html">Utility Functions</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../additional.html">Additional Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../additional.html#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -433,18 +441,35 @@ These may be fractional.</p></li>
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.AtomEncoder">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">AtomEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#AtomEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.AtomEncoder" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Encodes atom features into a fixed-size vector representation.</p>
+<p>This module converts categorical atom features into embeddings and combines them
+to create a unified atom representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hidden_size</strong> (<em>int</em>) – Dimensionality of the output atom embedding vectors.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Each atom feature is embedded separately using an Embedding layer, then
+these embeddings are summed to produce the final representation.
+The embedding weights are initialized using Xavier uniform initialization
+with max_norm=1 constraint.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.AtomEncoder.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#AtomEncoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.AtomEncoder.forward" title="Link to this definition">¶</a></dt>
-<dd><p>Define the computation performed at every call.</p>
-<p>Should be overridden by all subclasses.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Although the recipe for forward pass needs to be defined within
-this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
-instead of this since the former takes care of running the
-registered hooks while the latter silently ignores them.</p>
-</div>
+<dd><p>Transform atom features into embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>torch.Tensor</em>) – Tensor of shape [num_atoms, num_features] containing categorical
+atom features.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Atom embeddings of shape [num_atoms, hidden_size].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -453,18 +478,35 @@ registered hooks while the latter silently ignores them.</p>
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.BondEncoder">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">BondEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#BondEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.BondEncoder" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Encodes bond features into a fixed-size vector representation.</p>
+<p>This module converts categorical bond features into embeddings and combines them
+to create a unified bond representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hidden_size</strong> (<em>int</em>) – Dimensionality of the output bond embedding vectors.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Each bond feature is embedded separately using an Embedding layer, then
+these embeddings are summed to produce the final representation.
+The embedding weights are initialized using Xavier uniform initialization
+with max_norm=1 constraint.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.BondEncoder.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge_attr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#BondEncoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.BondEncoder.forward" title="Link to this definition">¶</a></dt>
-<dd><p>Define the computation performed at every call.</p>
-<p>Should be overridden by all subclasses.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Although the recipe for forward pass needs to be defined within
-this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
-instead of this since the former takes care of running the
-registered hooks while the latter silently ignores them.</p>
-</div>
+<dd><p>Transform bond features into embeddings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>edge_attr</strong> (<em>torch.Tensor</em>) – Tensor of shape [num_bonds, num_features] containing categorical
+bond features.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Bond embeddings of shape [num_bonds, hidden_size].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -624,14 +666,14 @@ registered hooks while the latter silently ignores them.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="utils.html">
+          <a class="prev-page" href="encoder.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Utility Functions</div>
+                <div class="title">Molecular Encoder Models</div>
                 
               </div>
             </a>

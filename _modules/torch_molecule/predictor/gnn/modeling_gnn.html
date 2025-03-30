@@ -201,6 +201,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../example.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -210,13 +216,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html">Additional Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -304,10 +312,57 @@
 <span class="p">}</span>
 
 <div class="viewcode-block" id="GNNMolecularPredictor">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">GNNMolecularPredictor</span><span class="p">(</span><span class="n">BaseMolecularPredictor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a GNN model for molecular property prediction tasks.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_task : int, default=1</span>
+<span class="sd">        Number of prediction tasks.</span>
+<span class="sd">    task_type : str, default=&quot;regression&quot;</span>
+<span class="sd">        Type of prediction task, either &quot;regression&quot; or &quot;classification&quot;.</span>
+<span class="sd">    num_layer : int, default=5</span>
+<span class="sd">        Number of GNN layers.</span>
+<span class="sd">    hidden_size : int, default=300</span>
+<span class="sd">        Dimension of hidden node features.</span>
+<span class="sd">    gnn_type : str, default=&quot;gin-virtual&quot;</span>
+<span class="sd">        Type of GNN architecture to use.</span>
+<span class="sd">    drop_ratio : float, default=0.5</span>
+<span class="sd">        Dropout probability.</span>
+<span class="sd">    norm_layer : str, default=&quot;batch_norm&quot;</span>
+<span class="sd">        Type of normalization layer to use. One of [&quot;batch_norm&quot;, &quot;layer_norm&quot;, &quot;instance_norm&quot;, &quot;graph_norm&quot;, &quot;size_norm&quot;, &quot;pair_norm&quot;].</span>
+<span class="sd">    graph_pooling : str, default=&quot;sum&quot;</span>
+<span class="sd">        Method for aggregating node features to graph-level representations.</span>
+<span class="sd">    augmented_feature : list, default=[&quot;morgan&quot;, &quot;maccs&quot;]</span>
+<span class="sd">        Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.</span>
+<span class="sd">    batch_size : int, default=128</span>
+<span class="sd">        Number of samples per batch for training.</span>
+<span class="sd">    epochs : int, default=500</span>
+<span class="sd">        Maximum number of training epochs.</span>
+<span class="sd">    loss_criterion : callable, optional</span>
+<span class="sd">        Loss function for training.</span>
+<span class="sd">    evaluate_criterion : str or callable, optional</span>
+<span class="sd">        Metric for model evaluation.</span>
+<span class="sd">    evaluate_higher_better : bool, optional</span>
+<span class="sd">        Whether higher values of the evaluation metric are better.</span>
+<span class="sd">    learning_rate : float, default=0.001</span>
+<span class="sd">        Learning rate for optimizer.</span>
+<span class="sd">    grad_clip_value : float, optional</span>
+<span class="sd">        Maximum norm of gradients for gradient clipping.</span>
+<span class="sd">    weight_decay : float, default=0.0</span>
+<span class="sd">        L2 regularization strength.</span>
+<span class="sd">    patience : int, default=50</span>
+<span class="sd">        Number of epochs to wait for improvement before early stopping.</span>
+<span class="sd">    use_lr_scheduler : bool, default=False</span>
+<span class="sd">        Whether to use learning rate scheduler.</span>
+<span class="sd">    scheduler_factor : float, default=0.5</span>
+<span class="sd">        Factor by which to reduce learning rate when plateau is reached.</span>
+<span class="sd">    scheduler_patience : int, default=5</span>
+<span class="sd">        Number of epochs with no improvement after which learning rate will be reduced.</span>
+<span class="sd">    verbose : bool, default=False</span>
+<span class="sd">        Whether to print progress information during training.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Model parameters</span>
     <span class="n">num_task</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
@@ -340,11 +395,9 @@
     <span class="n">scheduler_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
     <span class="n">scheduler_patience</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
     
-    <span class="c1"># Other parameters</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># Other Non-init fields</span>
     <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;GNNMolecularPredictor&quot;</span>
-    
-    <span class="c1"># Non-init fields</span>
     <span class="n">fitting_loss</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">fitting_epoch</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">model_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">GNN</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">GNN</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -365,6 +418,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_criterion</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">loss_criterion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_default_criterion</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_evaluation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_criterion</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_higher_better</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;batch_norm&quot;</span><span class="p">,</span> <span class="s2">&quot;layer_norm&quot;</span><span class="p">,</span> <span class="s2">&quot;instance_norm&quot;</span><span class="p">,</span> <span class="s2">&quot;graph_norm&quot;</span><span class="p">,</span> <span class="s2">&quot;size_norm&quot;</span><span class="p">,</span> <span class="s2">&quot;pair_norm&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid norm_layer: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="si">}</span><span class="s2">. Valid options are: batch_norm, layer_norm, instance_norm, graph_norm, size_norm, pair_norm&quot;</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -523,7 +579,7 @@
         <span class="k">return</span> <span class="n">DEFAULT_GNN_SEARCH_SPACES</span>
 
 <div class="viewcode-block" id="GNNMolecularPredictor.autofit">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.autofit">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor.autofit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">autofit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -687,7 +743,7 @@
 
     
 <div class="viewcode-block" id="GNNMolecularPredictor.fit">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.fit">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -812,7 +868,7 @@
 
 
 <div class="viewcode-block" id="GNNMolecularPredictor.predict">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.predict">[docs]</a>
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Make predictions using the fitted model.</span>
 

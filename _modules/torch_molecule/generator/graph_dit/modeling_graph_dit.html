@@ -201,6 +201,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../example.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
@@ -210,13 +216,15 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/utils.html">Utility Functions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html">Additional Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../additional.html#acknowledgements">Acknowledgements</a></li>
 </ul>
 
 </div>
@@ -270,7 +278,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">...utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">graph_from_smiles</span><span class="p">,</span> <span class="n">graph_to_smiles</span>
 
 <div class="viewcode-block" id="GraphDITMolecularGenerator">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator">[docs]</a>
+<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">GraphDITMolecularGenerator</span><span class="p">(</span><span class="n">BaseMolecularGenerator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -539,7 +547,7 @@
         <span class="k">return</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span>
 
 <div class="viewcode-block" id="GraphDITMolecularGenerator.fit">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.fit">[docs]</a>
+<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -604,8 +612,6 @@
             
         <span class="k">return</span> <span class="n">losses</span>
 
-<div class="viewcode-block" id="GraphDITMolecularGenerator.apply_noise">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.apply_noise">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">apply_noise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">node_mask</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="n">t_int</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timesteps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>  <span class="c1"># (bs, 1)</span>
         <span class="n">s_int</span> <span class="o">=</span> <span class="n">t_int</span> <span class="o">-</span> <span class="mi">1</span>
@@ -639,11 +645,10 @@
         <span class="n">noisy_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="n">t_float</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timesteps</span><span class="p">,</span> <span class="s1">&#39;beta_t&#39;</span><span class="p">:</span> <span class="n">beta_t</span><span class="p">,</span> <span class="s1">&#39;alpha_s_bar&#39;</span><span class="p">:</span> <span class="n">alpha_s_bar</span><span class="p">,</span>
                       <span class="s1">&#39;alpha_t_bar&#39;</span><span class="p">:</span> <span class="n">alpha_t_bar</span><span class="p">,</span> <span class="s1">&#39;X_t&#39;</span><span class="p">:</span> <span class="n">z_t</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="s1">&#39;E_t&#39;</span><span class="p">:</span> <span class="n">z_t</span><span class="o">.</span><span class="n">E</span><span class="p">,</span> <span class="s1">&#39;y_t&#39;</span><span class="p">:</span> <span class="n">z_t</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;node_mask&#39;</span><span class="p">:</span> <span class="n">node_mask</span><span class="p">}</span>
         
-        <span class="k">return</span> <span class="n">noisy_data</span></div>
-
+        <span class="k">return</span> <span class="n">noisy_data</span>
 
 <div class="viewcode-block" id="GraphDITMolecularGenerator.generate">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.generate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator.generate">[docs]</a>
     <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate molecules with specified properties and optional node counts.</span>
@@ -759,8 +764,6 @@
         <span class="k">return</span> <span class="n">smiles_list</span></div>
 
 
-<div class="viewcode-block" id="GraphDITMolecularGenerator.sample_p_zs_given_zt">
-<a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_dit.GraphDITMolecularGenerator.sample_p_zs_given_zt">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sample_p_zs_given_zt</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">X_t</span><span class="p">,</span> <span class="n">E_t</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">node_mask</span>
     <span class="p">):</span>
@@ -846,7 +849,6 @@
         <span class="n">out_one_hot</span> <span class="o">=</span> <span class="n">PlaceHolder</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_s</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="n">E_s</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">properties</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">out_one_hot</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">node_mask</span><span class="p">)</span></div>
-</div>
 
 </pre></div>
         </article>

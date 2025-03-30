@@ -48,7 +48,7 @@ class MolecularInputChecker:
             X: List of SMILES strings.
             y: Optional target values.
             num_task: Total number of tasks; used to check dimensions of y.
-            num_pretask: Number of tasks that are predefined in the modeling; used to check dimensions of y.
+            num_pretask: Number of (pseudo)-tasks that are predefined in the modeling; used to check dimensions of y. Preliminarily used in supervised pretraining.
             return_rdkit_mol: If True, convert SMILES to RDKit Mol objects.
 
         Returns:

@@ -134,6 +134,7 @@ Using Pretrained Checkpoints
    from torch_molecule import GREAMolecularPredictor
    from sklearn.metrics import mean_absolute_error
 
+   # huggingface repo_id including the user name and repo name
    repo_id = "user/repo_id"
 
    # Train and push a model to Hugging Face

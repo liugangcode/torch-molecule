@@ -13,14 +13,23 @@ class MolecularInputChecker:
         smiles: str, 
         idx: int
     ) -> Tuple[bool, Optional[str], Optional[Chem.Mol]]:
-        """
-        Validate a single SMILES string at a given index.
+        """Validate a single SMILES string at a given index.
 
-        Returns:
+        Parameters
+        ----------
+        smiles : str
+            The SMILES string to validate
+        idx : int
+            The index of the SMILES string in the original list
+
+        Returns
+        -------
+        Tuple[bool, Optional[str], Optional[Chem.Mol]]
             A tuple containing:
-            - A boolean indicating whether the SMILES string is valid.
-            - A string describing the error if the SMILES is invalid, or None if valid.
-            - The RDKit Mol object if valid, or None if invalid.
+            
+            - A boolean indicating whether the SMILES string is valid
+            - A string describing the error if the SMILES is invalid, or None if valid
+            - The RDKit Mol object if valid, or None if invalid
         """
         if not smiles or not smiles.strip():
             return False, f"Empty SMILES at index {idx}", None
@@ -41,23 +50,35 @@ class MolecularInputChecker:
         num_pretask: int = 0,
         return_rdkit_mol: bool = True
     ) -> Tuple[Union[List[str], List["Chem.Mol"]], Optional[np.ndarray]]:
-        """
-        Validate a list of SMILES strings, and optionally validate a target array.
+        """Validate a list of SMILES strings, and optionally validate a target array.
 
-        Args:
-            X: List of SMILES strings.
-            y: Optional target values.
-            num_task: Total number of tasks; used to check dimensions of y.
-            num_pretask: Number of (pseudo)-tasks that are predefined in the modeling; used to check dimensions of y. Preliminarily used in supervised pretraining.
-            return_rdkit_mol: If True, convert SMILES to RDKit Mol objects.
+        Parameters
+        ----------
+        X : List[str]
+            List of SMILES strings
+        y : Optional[Union[List, np.ndarray]], optional
+            Optional target values, by default None
+        num_task : int, optional
+            Total number of tasks; used to check dimensions of y, by default 0
+        num_pretask : int, optional
+            Number of (pseudo)-tasks that are predefined in the modeling; 
+            used to check dimensions of y. Preliminarily used in supervised pretraining,
+            by default 0
+        return_rdkit_mol : bool, optional
+            If True, convert SMILES to RDKit Mol objects, by default True
 
-        Returns:
-            A tuple of:
-            - The original or converted SMILES (RDKit Mol objects if return_rdkit_mol=True).
-            - The target array as a numpy array, or None if y was not provided.
+        Returns
+        -------
+        Tuple[Union[List[str], List["Chem.Mol"]], Optional[np.ndarray]]
+            A tuple containing:
+            
+            - The original or converted SMILES (RDKit Mol objects if return_rdkit_mol=True)
+            - The target array as a numpy array, or None if y was not provided
 
-        Raises:
-            ValueError: If SMILES or target dimensions are invalid.
+        Raises
+        ------
+        ValueError
+            If SMILES or target dimensions are invalid
         """
         if not isinstance(X, list):
             raise ValueError("X must be a list of SMILES strings.")

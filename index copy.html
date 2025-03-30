@@ -198,30 +198,24 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Predictors</span></p>
+<p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Generators</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Encoders</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">API for Utilities</span></p>
+<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information</span></p>
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="additional.html">Additional Information</a></li>
 </ul>
@@ -288,267 +282,17 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.augmented_feature"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.augmented_feature</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.autofit"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.autofit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.batch_size"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.batch_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.drop_ratio"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.drop_ratio</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.epochs"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.epochs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.evaluate_criterion"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.evaluate_criterion</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.evaluate_higher_better"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.evaluate_higher_better</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.gnn_type"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.gnn_type</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.grad_clip_value</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.graph_pooling"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.graph_pooling</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.hidden_size"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.hidden_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.learning_rate"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.learning_rate</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.loss_criterion"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.loss_criterion</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.model_class"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.model_class</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.model_name</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.norm_layer"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.norm_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.num_layer"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.num_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.num_task"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.num_task</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.patience"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.patience</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.predict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.scheduler_factor"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.scheduler_factor</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.scheduler_patience"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.scheduler_patience</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.task_type"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.task_type</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.use_lr_scheduler"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.use_lr_scheduler</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.verbose"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.verbose</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.GNNMolecularPredictor.weight_decay"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor.weight_decay</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.autofit"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor.autofit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor.predict()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.sgir.modeling_sgir.SGIRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.sgir.modeling_sgir.SGIRMolecularPredictor.autofit"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.autofit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.sgir.modeling_sgir.SGIRMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.sgir.modeling_sgir.SGIRMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor.predict()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor.autofit"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor.autofit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor.predict()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor.autofit"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.autofit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor.predict()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.LSTMunits"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.LSTMunits</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.batch_size"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.batch_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.epochs"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.epochs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.evaluate_criterion"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.evaluate_criterion</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.evaluate_higher_better"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.evaluate_higher_better</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.input_dim"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.input_dim</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.learning_rate"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.learning_rate</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.loss_criterion"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.loss_criterion</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.max_input_len"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.max_input_len</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.model_class"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.model_class</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.model_name"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.model_name</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.num_task"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.num_task</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.output_dim"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.output_dim</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.patience"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.patience</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.predict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.scheduler_factor"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.scheduler_factor</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.scheduler_patience"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.scheduler_patience</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.task_type"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.task_type</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.use_lr_scheduler"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.use_lr_scheduler</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.verbose"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.verbose</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.LSTMMolecularPredictor.weight_decay"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor.weight_decay</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.rpgnn.modeling_rpgnn.RPGNNMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.rpgnn.modeling_rpgnn.RPGNNMolecularPredictor.autofit"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor.autofit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.rpgnn.modeling_rpgnn.RPGNNMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.rpgnn.modeling_rpgnn.RPGNNMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor.predict()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.ssr.modeling_ssr.SSRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.ssr.modeling_ssr.SSRMolecularPredictor.autofit"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.autofit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.ssr.modeling_ssr.SSRMolecularPredictor.fit"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.ssr.modeling_ssr.SSRMolecularPredictor.predict"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor.predict()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.batch_size"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.batch_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.drop_ratio"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.drop_ratio</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.encode"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.encode()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.encoder_type"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.encoder_type</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.epochs"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.epochs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.grad_clip_value</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.hidden_size"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.hidden_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.learning_rate"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.learning_rate</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.lw_rec"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.lw_rec</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.mask_rate"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.mask_rate</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.model_class"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.model_class</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.model_name"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.model_name</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.norm_layer"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.norm_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.num_layer"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.num_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.readout"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.readout</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.scheduler_factor"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.scheduler_factor</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.scheduler_patience"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.scheduler_patience</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.use_lr_scheduler"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.use_lr_scheduler</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.verbose"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.verbose</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.weight_decay"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.weight_decay</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.batch_size"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.batch_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.drop_ratio"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.drop_ratio</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.encode"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.encode()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.encoder_type"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.encoder_type</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.epochs"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.epochs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.grad_clip_value</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.hidden_size"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.hidden_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.learning_rate"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.learning_rate</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.model_class"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.model_class</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.model_name"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.model_name</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.norm_layer"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.norm_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.num_layer"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.num_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.num_pretask"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.num_pretask</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.num_task"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.num_task</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.predefined_task"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.predefined_task</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.readout"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.readout</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.scheduler_factor"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.scheduler_factor</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.scheduler_patience"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.scheduler_patience</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.use_lr_scheduler"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.use_lr_scheduler</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.verbose"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.verbose</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.weight_decay"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder.weight_decay</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.batch_size"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.batch_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.drop_ratio"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.drop_ratio</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.encode"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.encode()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.encoder_type"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.encoder_type</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.epochs"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.epochs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.grad_clip_value</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.hidden_size"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.hidden_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.learning_rate"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.learning_rate</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.mask_num"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.mask_num</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.mask_rate"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.mask_rate</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.model_class"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.model_class</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.model_name"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.model_name</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.norm_layer"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.norm_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.num_layer"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.num_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.readout"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.readout</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.scheduler_factor"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.scheduler_factor</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.scheduler_patience"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.scheduler_patience</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.use_lr_scheduler"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.use_lr_scheduler</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.verbose"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.verbose</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.weight_decay"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder.weight_decay</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.batch_size"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.batch_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.context_size"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.context_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.drop_ratio"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.drop_ratio</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.encode"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.encode()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.encoder_type"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.encoder_type</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.epochs"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.epochs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.grad_clip_value</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.hidden_size"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.hidden_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.learning_rate"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.learning_rate</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.mode"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.mode</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.model_class"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.model_class</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.model_name"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.model_name</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.neg_samples"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.neg_samples</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.norm_layer"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.norm_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.num_layer"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.num_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.readout"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.readout</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.scheduler_factor"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.scheduler_factor</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.scheduler_patience"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.scheduler_patience</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.use_lr_scheduler"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.use_lr_scheduler</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.verbose"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.verbose</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.weight_decay"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder.weight_decay</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.batch_size"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.batch_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.drop_ratio"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.drop_ratio</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.encode"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.encode()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.encoder_type"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.encoder_type</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.epochs"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.epochs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.grad_clip_value"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.grad_clip_value</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.hidden_size"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.hidden_size</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.learning_rate"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.learning_rate</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.model_class"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.model_class</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.model_name"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.model_name</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.norm_layer"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.norm_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.num_layer"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.num_layer</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.readout"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.readout</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.scheduler_factor"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.scheduler_factor</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.scheduler_patience"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.scheduler_patience</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.use_lr_scheduler"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.use_lr_scheduler</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.verbose"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.verbose</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.weight_decay"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder.weight_decay</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.checker.MolecularInputChecker"><code class="docutils literal notranslate"><span class="pre">MolecularInputChecker</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager"><code class="docutils literal notranslate"><span class="pre">HuggingFaceCheckpointManager</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.checkpoint.LocalCheckpointManager"><code class="docutils literal notranslate"><span class="pre">LocalCheckpointManager</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.format.sanitize_config"><code class="docutils literal notranslate"><span class="pre">sanitize_config()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.format.serialize_config"><code class="docutils literal notranslate"><span class="pre">serialize_config()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.hf.create_model_card"><code class="docutils literal notranslate"><span class="pre">create_model_card()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.hf.get_existing_repo_data"><code class="docutils literal notranslate"><span class="pre">get_existing_repo_data()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.hf.merge_task_configs"><code class="docutils literal notranslate"><span class="pre">merge_task_configs()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.search.ParameterSpec"><code class="docutils literal notranslate"><span class="pre">ParameterSpec</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.search.ParameterType"><code class="docutils literal notranslate"><span class="pre">ParameterType</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.search.parse_list_params"><code class="docutils literal notranslate"><span class="pre">parse_list_params()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#torch_molecule.utils.search.suggest_parameter"><code class="docutils literal notranslate"><span class="pre">suggest_parameter()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.attention.AttentionWithNodeMask"><code class="docutils literal notranslate"><span class="pre">AttentionWithNodeMask</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.embedder.CategoricalEmbedder"><code class="docutils literal notranslate"><span class="pre">CategoricalEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.embedder.ClusterContinuousEmbedder"><code class="docutils literal notranslate"><span class="pre">ClusterContinuousEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.embedder.TimestepEmbedder"><code class="docutils literal notranslate"><span class="pre">TimestepEmbedder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.gnn.AtomEncoder"><code class="docutils literal notranslate"><span class="pre">AtomEncoder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.gnn.BondEncoder"><code class="docutils literal notranslate"><span class="pre">BondEncoder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.gnn.GCNConv"><code class="docutils literal notranslate"><span class="pre">GCNConv</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.gnn.GINConv"><code class="docutils literal notranslate"><span class="pre">GINConv</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.gnn.GNN_node"><code class="docutils literal notranslate"><span class="pre">GNN_node</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.gnn.GNN_node_Virtualnode"><code class="docutils literal notranslate"><span class="pre">GNN_node_Virtualnode</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/nn.html#torch_molecule.nn.mlp.MLP"><code class="docutils literal notranslate"><span class="pre">MLP</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/base.html#torch_molecule.base.BaseMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">BaseMolecularEncoder</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/base.html#torch_molecule.base.BaseMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">BaseMolecularGenerator</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/base.html#torch_molecule.base.BaseMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">BaseMolecularPredictor</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/base.html#torch_molecule.base.generator.BaseMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">BaseMolecularGenerator</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/base.html#torch_molecule.base.encoder.BaseMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">BaseMolecularEncoder</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">

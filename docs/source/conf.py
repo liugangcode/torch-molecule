@@ -23,7 +23,6 @@ extensions = [
 
 templates_path = ['_templates']
 exclude_patterns = []
-autodoc_typehints = "description"
 
 
 # -- Options for HTML output -------------------------------------------------

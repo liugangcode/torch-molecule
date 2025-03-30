@@ -26,38 +26,48 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
 
     Reference Code: https://github.com/liugangcode/Graph-DiT
 
-    :param num_layer: Number of transformer layers, defaults to 6
-    :type num_layer: int, optional
-    :param hidden_size: Dimension of hidden layers, defaults to 1152
-    :type hidden_size: int, optional
-    :param dropout: Dropout rate for transformer layers, defaults to 0.0
-    :type dropout: float, optional
-    :param drop_condition: Dropout rate for condition embedding, defaults to 0.0
-    :type drop_condition: float, optional
-    :param num_head: Number of attention heads in transformer, defaults to 16
-    :type num_head: int, optional
-    :param mlp_ratio: Ratio of MLP hidden dimension to transformer hidden dimension, defaults to 4
-    :type mlp_ratio: float, optional
-    :param task_type: List specifying type of each task ('regression' or 'classification'), defaults to []
-    :type task_type: List[str], optional
-    :param timesteps: Number of diffusion timesteps, defaults to 500
-    :type timesteps: int, optional
-    :param batch_size: Batch size for training, defaults to 128
-    :type batch_size: int, optional
-    :param epochs: Number of training epochs, defaults to 10000
-    :type epochs: int, optional
-    :param learning_rate: Learning rate for optimization, defaults to 0.0002
-    :type learning_rate: float, optional
-    :param grad_clip_value: Value for gradient clipping (None = no clipping), defaults to None
-    :type grad_clip_value: Optional[float], optional
-    :param weight_decay: Weight decay for optimization, defaults to 0.0
-    :type weight_decay: float, optional
-    :param lw_X: Loss weight for node reconstruction, defaults to 1
-    :type lw_X: float, optional
-    :param lw_E: Loss weight for edge reconstruction, defaults to 10
-    :type lw_E: float, optional
-    :param guide_scale: Scale factor for classifier-free guidance during sampling, defaults to 2.0
-    :type guide_scale: float, optional
+    Parameters
+    ----------
+    num_layer : int, default=6
+        Number of transformer layers
+    hidden_size : int, default=1152
+        Dimension of hidden layers
+    dropout : float, default=0.0
+        Dropout rate for transformer layers
+    drop_condition : float, default=0.0
+        Dropout rate for condition embedding
+    num_head : int, default=16
+        Number of attention heads in transformer
+    mlp_ratio : float, default=4
+        Ratio of MLP hidden dimension to transformer hidden dimension
+    task_type : List[str], default=[]
+        List specifying type of each task ('regression' or 'classification')
+    timesteps : int, default=500
+        Number of diffusion timesteps
+    batch_size : int, default=128
+        Batch size for training
+    epochs : int, default=10000
+        Number of training epochs
+    learning_rate : float, default=0.0002
+        Learning rate for optimization
+    grad_clip_value : Optional[float], default=None
+        Value for gradient clipping (None = no clipping)
+    weight_decay : float, default=0.0
+        Weight decay for optimization
+    lw_X : float, default=1
+        Loss weight for node reconstruction
+    lw_E : float, default=5
+        Loss weight for edge reconstruction
+    guide_scale : float, default=2.0
+        Scale factor for classifier-free guidance during sampling
+    use_lr_scheduler : bool, default=False
+        Whether to use learning rate scheduler
+    scheduler_factor : float, default=0.5
+        Factor by which to reduce learning rate on plateau
+    scheduler_patience : int, default=5
+        Number of epochs with no improvement after which learning rate will be reduced
+    verbose : bool, default=False
+        Whether to display progress bars and logs
     """
     # Model parameters
     num_layer: int = 6

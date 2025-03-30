@@ -19,7 +19,9 @@ from ...utils.search import (
 @dataclass
 class DIRMolecularPredictor(GNNMolecularPredictor):
     """This predictor implements the DIR model for discovering the invariant rationales.
-    Paper: Discovering Invariant Rationales for Graph Neural Networks (https://openreview.net/forum?id=hGXij5rfiHw)
+
+    Paper: `Discovering Invariant Rationales for Graph Neural Networks <https://openreview.net/forum?id=hGXij5rfiHw>`_
+    
     Reference Code: https://github.com/Wuyxin/DIR-GNN
     
     Parameters

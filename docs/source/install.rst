@@ -18,15 +18,19 @@ To install `torch-molecule`, follow these steps:
 
       git clone https://github.com/liugangcode/torch-molecule
 
+   Install the requirements:
+
+   .. code-block:: bash
+
+      pip install -r requirements.txt
+
    Editable install:
    
    .. code-block:: bash
 
       pip install -e .
 
-3. **Install `torch_molecule` from PyPI**:
-
-   Legacy (PyPI test):
+3. **Install `torch_molecule` from PyPI** (Legacy):
    
    .. code-block:: bash
 
@@ -60,9 +64,3 @@ Dependencies are listed in `requirements.txt <https://github.com/liugangcode/tor
    tqdm==4.66.2
 
    optuna
-
-Install all dependencies using:
-
-.. code-block:: bash
-
-   pip install -r requirements.txt

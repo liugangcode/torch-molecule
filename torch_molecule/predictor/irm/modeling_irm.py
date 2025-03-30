@@ -20,14 +20,30 @@ from ...utils.search import (
 @dataclass
 class IRMMolecularPredictor(GNNMolecularPredictor):
     """This predictor implements a Invariant Risk Minimization model with the GNN.
-    Paper: Invariant Risk Minimization (https://arxiv.org/abs/1907.02893)
+    
+    Paper: `Invariant Risk Minimization <https://arxiv.org/abs/1907.02893>`_
+
     Reference Code: https://github.com/facebookresearch/InvariantRiskMinimization
+    
+    Parameters
+    ----------
+    IRM_environment : Union[torch.Tensor, np.ndarray, List, str], default="random"
+        Environment assignments for IRM. Can be a list of integers (one per sample),
+        or "random" to assign environments randomly.
+    scale : float, default=1.0
+        Scaling factor for the IRM penalty term.
+    penalty_weight : float, default=1.0
+        Weight of the IRM penalty in the loss function.
+    penalty_anneal_iters : int, default=100
+        Number of iterations for annealing the penalty weight.
     """
     
     IRM_environment: Union[torch.Tensor, np.ndarray, List, str] = "random"
     scale: float = 1.0
     penalty_weight: float = 1.0
     penalty_anneal_iters: int = 100
+
+    # Other Non-init fields
     model_name: str = "IRMMolecularPredictor"
     model_class: Type[GNN] = field(default=GNN, init=False)
     

@@ -23,14 +23,28 @@ class SSRMolecularPredictor(GNNMolecularPredictor):
     """This predictor implements a SizeShiftReg model with the GNN.
     Paper: SizeShiftReg: a Regularization Method for Improving Size-Generalization in Graph Neural Networks (https://arxiv.org/abs/2207.07888)
     Reference Code: https://github.com/DavideBuffelli/SizeShiftReg/tree/main
-    """
-    """
-    Args:
-        coarse_ratios: List of ratios for graph coarsening
-        cmd_coeff: Weight for CMD loss
-        fine_grained: Whether to use fine-grained CMD
-        n_moments: Number of moments to match
-        coarse_pool: Pooling method for coarsened graphs
+    
+    Parameters
+    ----------
+    coarse_ratios : List[float], default=[0.8, 0.9]
+        List of ratios for graph coarsening. Each ratio determines the percentage of 
+        nodes to keep in the coarsened graph.
+    cmd_coeff : float, default=0.1
+        Weight for CMD (Central Moment Discrepancy) loss. Controls the strength of 
+        the size-shift regularization.
+    fine_grained : bool, default=True
+        Whether to use fine-grained CMD. When True, matches distributions at a more 
+        detailed level.
+    n_moments : int, default=5
+        Number of moments to match in the CMD calculation. Higher values capture 
+        more complex distribution characteristics.
+    coarse_pool : str, default='mean'
+        Pooling method for coarsened graphs. Determines how node features are 
+        aggregated during coarsening.
+    model_name : str, default="SSRMolecularPredictor"
+        Name of the model.
+    model_class : Type[SSR], default=SSR
+        The model class to use for prediction.
     """
     # SSR-specific parameters
     coarse_ratios: List[float] = field(default_factory=lambda: [0.8, 0.9])
@@ -38,7 +52,8 @@ class SSRMolecularPredictor(GNNMolecularPredictor):
     fine_grained: bool = field(default=True)
     n_moments: int = field(default=5)
     coarse_pool: str = field(default='mean')
-    # Override parent defaults
+
+    # Other Non-init fields
     model_name: str = "SSRMolecularPredictor"
     model_class: Type[SSR] = field(default=SSR, init=False)
 

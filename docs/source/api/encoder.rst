@@ -1,21 +1,12 @@
 Molecular Encoder Models
 ====================================================
 
-.. contents::
-   :local:
-   :depth: 1
+Self-supervised Molecular Representation Learning
+-------------------------------------------------
 
 .. rubric:: MoAma for Molecular Representation Learning
 .. automodule:: torch_molecule.encoder.moama
    :members: 
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :undoc-members:
-   :show-inheritance:
-
-.. rubric:: Supervised/Pseudolabeled Pretraining for Molecules
-
-.. automodule:: torch_molecule.encoder.supervised
-   :members:
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :undoc-members:
    :show-inheritance:
@@ -39,6 +30,16 @@ Molecular Encoder Models
 .. rubric:: Edge Prediction for Molecular Representation Learning
 
 .. automodule:: torch_molecule.encoder.edgepred
+   :members:
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   :undoc-members:
+   :show-inheritance:
+
+Supervised Pretraining for Molecules
+------------------------------------
+
+.. rubric:: Supervised/Pseudolabeled Pretraining for Molecules
+.. automodule:: torch_molecule.encoder.supervised
    :members:
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :undoc-members:

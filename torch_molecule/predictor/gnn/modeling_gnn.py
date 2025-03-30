@@ -52,6 +52,53 @@ DEFAULT_GNN_SEARCH_SPACES: Dict[str, ParameterSpec] = {
 @dataclass
 class GNNMolecularPredictor(BaseMolecularPredictor):
     """This predictor implements a GNN model for molecular property prediction tasks.
+    
+    Parameters
+    ----------
+    num_task : int, default=1
+        Number of prediction tasks.
+    task_type : str, default="regression"
+        Type of prediction task, either "regression" or "classification".
+    num_layer : int, default=5
+        Number of GNN layers.
+    hidden_size : int, default=300
+        Dimension of hidden node features.
+    gnn_type : str, default="gin-virtual"
+        Type of GNN architecture to use.
+    drop_ratio : float, default=0.5
+        Dropout probability.
+    norm_layer : str, default="batch_norm"
+        Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
+    graph_pooling : str, default="sum"
+        Method for aggregating node features to graph-level representations.
+    augmented_feature : list, default=["morgan", "maccs"]
+        Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.
+    batch_size : int, default=128
+        Number of samples per batch for training.
+    epochs : int, default=500
+        Maximum number of training epochs.
+    loss_criterion : callable, optional
+        Loss function for training.
+    evaluate_criterion : str or callable, optional
+        Metric for model evaluation.
+    evaluate_higher_better : bool, optional
+        Whether higher values of the evaluation metric are better.
+    learning_rate : float, default=0.001
+        Learning rate for optimizer.
+    grad_clip_value : float, optional
+        Maximum norm of gradients for gradient clipping.
+    weight_decay : float, default=0.0
+        L2 regularization strength.
+    patience : int, default=50
+        Number of epochs to wait for improvement before early stopping.
+    use_lr_scheduler : bool, default=False
+        Whether to use learning rate scheduler.
+    scheduler_factor : float, default=0.5
+        Factor by which to reduce learning rate when plateau is reached.
+    scheduler_patience : int, default=5
+        Number of epochs with no improvement after which learning rate will be reduced.
+    verbose : bool, default=False
+        Whether to print progress information during training.
     """
     # Model parameters
     num_task: int = 1
@@ -84,11 +131,9 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
     scheduler_factor: float = 0.5
     scheduler_patience: int = 5
     
-    # Other parameters
     verbose: bool = False
+    # Other Non-init fields
     model_name: str = "GNNMolecularPredictor"
-    
-    # Non-init fields
     fitting_loss: List[float] = field(default_factory=list, init=False)
     fitting_epoch: int = field(default=0, init=False)
     model_class: Type[GNN] = field(default=GNN, init=False)
@@ -109,6 +154,9 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         if self.loss_criterion is None:
             self.loss_criterion = self._load_default_criterion()
         self._setup_evaluation(self.evaluate_criterion, self.evaluate_higher_better)
+
+        if self.norm_layer not in ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"]:
+            raise ValueError(f"Invalid norm_layer: {self.norm_layer}. Valid options are: batch_norm, layer_norm, instance_norm, graph_norm, size_norm, pair_norm")
 
     @staticmethod
     def _get_param_names() -> List[str]:

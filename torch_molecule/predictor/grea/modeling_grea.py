@@ -70,7 +70,7 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
             Dictionary containing:
                 - 'prediction': Model predictions (shape: [n_samples, n_tasks])
                 - 'variance': Prediction variances (shape: [n_samples, n_tasks])
-
+                - 'node_importance': A nested list where the outer list has length n_samples and each inner list has length n_nodes for that molecule
         """
         self._check_is_fitted()
 

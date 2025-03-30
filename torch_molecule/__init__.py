@@ -24,7 +24,7 @@ from .encoder.moama import MoamaMolecularEncoder
 generator module
 """
 from .generator.graph_dit import GraphDITMolecularGenerator
-from .generator.graphga import GraphGAMolecularGenerator
+from .generator.graph_ga import GraphGAMolecularGenerator
 from .generator.digress import DigressMolecularGenerator
 __all__ = [
     # 'BaseMolecularPredictor',

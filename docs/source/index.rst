@@ -13,30 +13,35 @@ It offers a user-friendly interface similar to `sklearn`, and includes model che
 - Encoders: Molecular graph encoders that convert molecular graphs into a vector representation.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Getting Started:
+   :hidden:
 
    install
    example
+   overview
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Main Components:
+   :hidden:
 
    api/predictor
    api/generator
    api/encoder
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: API for utilities:
+   :hidden:
 
-   api/utils
    api/nn
    api/base
+   api/utils
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Additional Information:
+   :hidden:
 
    additional

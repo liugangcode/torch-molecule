@@ -82,11 +82,10 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
     use_lr_scheduler: bool = False
     scheduler_factor: float = 0.5
     scheduler_patience: int = 5
-
-    # Other parameters
     verbose: bool = False
+
+    # attributes
     model_name: str = "DigressMolecularGenerator"
-    # Non-init fields
     fitting_loss: List[float] = field(default_factory=list, init=False)
     fitting_epoch: int = field(default=0, init=False)
     model_class: Type[GraphTransformer] = field(default=GraphTransformer, init=False)

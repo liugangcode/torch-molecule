@@ -37,7 +37,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
     :type mutation_rate: float
     :param n_jobs: Number of parallel jobs to run. -1 means using all processors. Default is 1.
     :type n_jobs: int
-    :param iteration: Number of generations to run the genetic algorithm. Default is 5.
+    :param iteration: Number of iterations for each target label (or random sample) to run the genetic algorithm. Default is 5.
     :type iteration: int
     """
 

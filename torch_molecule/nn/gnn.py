@@ -11,6 +11,23 @@ full_atom_feature_dims = get_atom_feature_dims()
 full_bond_feature_dims = get_bond_feature_dims()
 
 class AtomEncoder(torch.nn.Module):
+    """Encodes atom features into a fixed-size vector representation.
+    
+    This module converts categorical atom features into embeddings and combines them
+    to create a unified atom representation.
+    
+    Parameters
+    ----------
+    hidden_size : int
+        Dimensionality of the output atom embedding vectors.
+        
+    Notes
+    -----
+    Each atom feature is embedded separately using an Embedding layer, then
+    these embeddings are summed to produce the final representation.
+    The embedding weights are initialized using Xavier uniform initialization
+    with max_norm=1 constraint.
+    """
     def __init__(self, hidden_size):
         super(AtomEncoder, self).__init__()
         
@@ -22,6 +39,19 @@ class AtomEncoder(torch.nn.Module):
             self.atom_embedding_list.append(emb)
 
     def forward(self, x):
+        """Transform atom features into embeddings.
+        
+        Parameters
+        ----------
+        x : torch.Tensor
+            Tensor of shape [num_atoms, num_features] containing categorical
+            atom features.
+            
+        Returns
+        -------
+        torch.Tensor
+            Atom embeddings of shape [num_atoms, hidden_size].
+        """
         x_embedding = 0
         for i in range(x.shape[1]):
             x_embedding += self.atom_embedding_list[i](x[:,i])
@@ -29,6 +59,23 @@ class AtomEncoder(torch.nn.Module):
         return x_embedding
 
 class BondEncoder(torch.nn.Module):
+    """Encodes bond features into a fixed-size vector representation.
+    
+    This module converts categorical bond features into embeddings and combines them
+    to create a unified bond representation.
+    
+    Parameters
+    ----------
+    hidden_size : int
+        Dimensionality of the output bond embedding vectors.
+        
+    Notes
+    -----
+    Each bond feature is embedded separately using an Embedding layer, then
+    these embeddings are summed to produce the final representation.
+    The embedding weights are initialized using Xavier uniform initialization
+    with max_norm=1 constraint.
+    """
     def __init__(self, hidden_size):
         super(BondEncoder, self).__init__()
         
@@ -40,6 +87,19 @@ class BondEncoder(torch.nn.Module):
             self.bond_embedding_list.append(emb)
 
     def forward(self, edge_attr):
+        """Transform bond features into embeddings.
+        
+        Parameters
+        ----------
+        edge_attr : torch.Tensor
+            Tensor of shape [num_bonds, num_features] containing categorical
+            bond features.
+            
+        Returns
+        -------
+        torch.Tensor
+            Bond embeddings of shape [num_bonds, hidden_size].
+        """
         bond_embedding = 0
         for i in range(edge_attr.shape[1]):
             bond_embedding += self.bond_embedding_list[i](edge_attr[:,i])

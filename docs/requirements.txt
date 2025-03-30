@@ -1,5 +1,7 @@
 torch==2.2.0
 torch_geometric==2.6.1
+torch_cluster
+torch_scatter
 
 # Other dependencies
 huggingface_hub

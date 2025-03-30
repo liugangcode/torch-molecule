@@ -279,14 +279,23 @@
         <span class="n">smiles</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
         <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Chem</span><span class="o">.</span><span class="n">Mol</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Validate a single SMILES string at a given index.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate a single SMILES string at a given index.</span>
 
-<span class="sd">        Returns:</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        smiles : str</span>
+<span class="sd">            The SMILES string to validate</span>
+<span class="sd">        idx : int</span>
+<span class="sd">            The index of the SMILES string in the original list</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Tuple[bool, Optional[str], Optional[Chem.Mol]]</span>
 <span class="sd">            A tuple containing:</span>
-<span class="sd">            - A boolean indicating whether the SMILES string is valid.</span>
-<span class="sd">            - A string describing the error if the SMILES is invalid, or None if valid.</span>
-<span class="sd">            - The RDKit Mol object if valid, or None if invalid.</span>
+<span class="sd">            </span>
+<span class="sd">            - A boolean indicating whether the SMILES string is valid</span>
+<span class="sd">            - A string describing the error if the SMILES is invalid, or None if valid</span>
+<span class="sd">            - The RDKit Mol object if valid, or None if invalid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">smiles</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">smiles</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Empty SMILES at index </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span>
@@ -310,23 +319,35 @@
         <span class="n">num_pretask</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">return_rdkit_mol</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;Chem.Mol&quot;</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Validate a list of SMILES strings, and optionally validate a target array.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate a list of SMILES strings, and optionally validate a target array.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            X: List of SMILES strings.</span>
-<span class="sd">            y: Optional target values.</span>
-<span class="sd">            num_task: Total number of tasks; used to check dimensions of y.</span>
-<span class="sd">            num_pretask: Number of (pseudo)-tasks that are predefined in the modeling; used to check dimensions of y. Preliminarily used in supervised pretraining.</span>
-<span class="sd">            return_rdkit_mol: If True, convert SMILES to RDKit Mol objects.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : List[str]</span>
+<span class="sd">            List of SMILES strings</span>
+<span class="sd">        y : Optional[Union[List, np.ndarray]], optional</span>
+<span class="sd">            Optional target values, by default None</span>
+<span class="sd">        num_task : int, optional</span>
+<span class="sd">            Total number of tasks; used to check dimensions of y, by default 0</span>
+<span class="sd">        num_pretask : int, optional</span>
+<span class="sd">            Number of (pseudo)-tasks that are predefined in the modeling; </span>
+<span class="sd">            used to check dimensions of y. Preliminarily used in supervised pretraining,</span>
+<span class="sd">            by default 0</span>
+<span class="sd">        return_rdkit_mol : bool, optional</span>
+<span class="sd">            If True, convert SMILES to RDKit Mol objects, by default True</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            A tuple of:</span>
-<span class="sd">            - The original or converted SMILES (RDKit Mol objects if return_rdkit_mol=True).</span>
-<span class="sd">            - The target array as a numpy array, or None if y was not provided.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Tuple[Union[List[str], List[&quot;Chem.Mol&quot;]], Optional[np.ndarray]]</span>
+<span class="sd">            A tuple containing:</span>
+<span class="sd">            </span>
+<span class="sd">            - The original or converted SMILES (RDKit Mol objects if return_rdkit_mol=True)</span>
+<span class="sd">            - The target array as a numpy array, or None if y was not provided</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            ValueError: If SMILES or target dimensions are invalid.</span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If SMILES or target dimensions are invalid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;X must be a list of SMILES strings.&quot;</span><span class="p">)</span>

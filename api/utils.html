@@ -280,25 +280,28 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> – List of SMILES strings.</p></li>
-<li><p><strong>y</strong> – Optional target values.</p></li>
-<li><p><strong>num_task</strong> – Total number of tasks; used to check dimensions of y.</p></li>
-<li><p><strong>num_pretask</strong> – Number of (pseudo)-tasks that are predefined in the modeling; used to check dimensions of y. Preliminarily used in supervised pretraining.</p></li>
-<li><p><strong>return_rdkit_mol</strong> – If True, convert SMILES to RDKit Mol objects.</p></li>
+<li><p><strong>X</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of SMILES strings</p></li>
+<li><p><strong>y</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>List</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Optional target values, by default None</p></li>
+<li><p><strong>num_task</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of tasks; used to check dimensions of y, by default 0</p></li>
+<li><p><strong>num_pretask</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of (pseudo)-tasks that are predefined in the modeling;
+used to check dimensions of y. Preliminarily used in supervised pretraining,
+by default 0</p></li>
+<li><p><strong>return_rdkit_mol</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, convert SMILES to RDKit Mol objects, by default True</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>The original or converted SMILES (RDKit Mol objects if return_rdkit_mol=True).</p></li>
-<li><p>The target array as a numpy array, or None if y was not provided.</p></li>
+<dd class="field-even"><p><p>A tuple containing:</p>
+<ul class="simple">
+<li><p>The original or converted SMILES (RDKit Mol objects if return_rdkit_mol=True)</p></li>
+<li><p>The target array as a numpy array, or None if y was not provided</p></li>
 </ul>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A tuple of</p>
+<dd class="field-odd"><p>Tuple[Union[List[str], List[“Chem.Mol”]], Optional[np.ndarray]]</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If SMILES or target dimensions are invalid.</p>
+<dd class="field-even"><p><strong>ValueError</strong> – If SMILES or target dimensions are invalid</p>
 </dd>
 </dl>
 </dd></dl>
@@ -308,16 +311,23 @@
 <em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Mol</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checker.html#MolecularInputChecker.validate_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checker.MolecularInputChecker.validate_smiles" title="Link to this definition">¶</a></dt>
 <dd><p>Validate a single SMILES string at a given index.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p>A boolean indicating whether the SMILES string is valid.</p></li>
-<li><p>A string describing the error if the SMILES is invalid, or None if valid.</p></li>
-<li><p>The RDKit Mol object if valid, or None if invalid.</p></li>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smiles</strong> (<em>str</em>) – The SMILES string to validate</p></li>
+<li><p><strong>idx</strong> (<em>int</em>) – The index of the SMILES string in the original list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>A tuple containing:</p>
+<ul class="simple">
+<li><p>A boolean indicating whether the SMILES string is valid</p></li>
+<li><p>A string describing the error if the SMILES is invalid, or None if valid</p></li>
+<li><p>The RDKit Mol object if valid, or None if invalid</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple containing</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[bool, Optional[str], Optional[Chem.Mol]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -365,8 +375,8 @@
 <dl class="py function" id="module-torch_molecule.utils.format">
 <dt class="sig sig-object py" id="torch_molecule.utils.format.sanitize_config">
 <span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.format.</span></span><span class="sig-name descname"><span class="pre">sanitize_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/format.html#sanitize_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.format.sanitize_config" title="Link to this definition">¶</a></dt>
-<dd><p>Recursively sanitize config dictionary for JSON serialization.
-Handles nested structures and special cases.</p>
+<dd><p>Recursively sanitize config dictionary for JSON serialization.</p>
+<p>Handles nested structures and special cases.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>config_dict</strong> (<em>dict</em>) – Configuration dictionary to sanitize</p>
@@ -383,8 +393,19 @@ Handles nested structures and special cases.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.format.serialize_config">
 <span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.format.</span></span><span class="sig-name descname"><span class="pre">serialize_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/format.html#serialize_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.format.serialize_config" title="Link to this definition">¶</a></dt>
-<dd><p>Helper function to make config JSON serializable.
-Handles special cases like lambda functions, torch modules, and numpy arrays.</p>
+<dd><p>Helper function to make config JSON serializable.</p>
+<p>Handles special cases like lambda functions, torch modules, and numpy arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj</strong> (<em>Any</em>) – The object to serialize</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>JSON serializable representation of the object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function" id="module-torch_molecule.utils.hf">

@@ -268,101 +268,103 @@
 <div class="viewcode-block" id="serialize_config">
 <a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.format.serialize_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">serialize_config</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Helper function to make config JSON serializable.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to make config JSON serializable.</span>
+<span class="sd">    </span>
 <span class="sd">    Handles special cases like lambda functions, torch modules, and numpy arrays.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : Any</span>
+<span class="sd">        The object to serialize</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Any</span>
+<span class="sd">        JSON serializable representation of the object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># Handle None</span>
-        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-            
-        <span class="c1"># Handle lambda and regular functions</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">LambdaType</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">MethodType</span><span class="p">)):</span>
-            <span class="c1"># For lambda functions, try to get the source code</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">LambdaType</span><span class="p">):</span>
-                    <span class="n">source</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lambda&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">}</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
-            <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
-                <span class="c1"># Fallback for built-in functions or when source isn&#39;t available</span>
-                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)}</span>
+    <span class="c1"># Handle None</span>
+    <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
         
-        <span class="c1"># Handle PyTorch modules and optimizers</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">)):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;torch_class&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;class_name&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                <span class="s2">&quot;module&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span>
-            <span class="p">}</span>
-            
-        <span class="c1"># Handle PyTorch tensors</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">{</span>
-                    <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;torch_tensor&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                    <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-                <span class="p">}</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;torch_tensor&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-            <span class="p">}</span>
-            
-        <span class="c1"># Handle numpy arrays</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">generic</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">{</span>
-                    <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;numpy_array&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                    <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-                <span class="p">}</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;numpy_array&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-            <span class="p">}</span>
-            
-        <span class="c1"># Handle sets and frozensets</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">)):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;set&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-            <span class="p">}</span>
-            
-        <span class="c1"># Handle custom objects with __dict__</span>
-        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;custom_class&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;class_name&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                <span class="s2">&quot;module&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span>
-            <span class="p">}</span>
-            
-        <span class="c1"># Handle basic types that are JSON serializable</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)):</span>
-            <span class="k">return</span> <span class="n">obj</span>
-            
-        <span class="c1"># Handle any other types by converting to string</span>
+    <span class="c1"># Handle lambda and regular functions</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">LambdaType</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">MethodType</span><span class="p">)):</span>
+        <span class="c1"># For lambda functions, try to get the source code</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">LambdaType</span><span class="p">):</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lambda&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="c1"># Fallback for built-in functions or when source isn&#39;t available</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)}</span>
+    
+    <span class="c1"># Handle PyTorch modules and optimizers</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">)):</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;unknown&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;repr&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;torch_class&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;class_name&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">&quot;module&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span>
         <span class="p">}</span>
         
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="c1"># Fallback for any unexpected errors during serialization</span>
+    <span class="c1"># Handle PyTorch tensors</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;torch_tensor&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="p">}</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;error_msg&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Serialization failed: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;original_type&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
-        <span class="p">}</span></div>
+            <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;torch_tensor&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+    <span class="c1"># Handle numpy arrays</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">generic</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;numpy_array&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;numpy_array&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+    <span class="c1"># Handle sets and frozensets</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;set&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+    <span class="c1"># Handle custom objects with __dict__</span>
+    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;custom_class&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;class_name&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">&quot;module&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span>
+        <span class="p">}</span>
+        
+    <span class="c1"># Handle basic types that are JSON serializable</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">obj</span>
+        
+    <span class="c1"># Handle any other types by converting to string</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;unknown&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repr&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="p">}</span></div>
 
+        
 
 <div class="viewcode-block" id="sanitize_config">
 <a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.format.sanitize_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sanitize_config</span><span class="p">(</span><span class="n">config_dict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Recursively sanitize config dictionary for JSON serialization.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively sanitize config dictionary for JSON serialization.</span>
+<span class="sd">    </span>
 <span class="sd">    Handles nested structures and special cases.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>

@@ -1,8 +1,6 @@
 Base Modules
 =============
 
-This section documents base classes in `torch_molecule.base`.
-
 .. automodule:: torch_molecule.base
    :members:
    :undoc-members:

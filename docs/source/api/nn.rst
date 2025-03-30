@@ -1,8 +1,6 @@
 Neural Network Components
 ============================================
 
-This section documents the neural network components in `torch_molecule.nn`.
-
 .. rubric:: Multi-Head Attention with Node Masking
 .. automodule:: torch_molecule.nn.attention
    :members:

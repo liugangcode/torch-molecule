@@ -8,7 +8,7 @@ Molecular Encoder Models
 .. rubric:: MoAma for Molecular Representation Learning
 .. automodule:: torch_molecule.encoder.moama
    :members: 
-   :exclude-members: fitting_epoch, fitting_loss
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :undoc-members:
    :show-inheritance:
 
@@ -16,7 +16,7 @@ Molecular Encoder Models
 
 .. automodule:: torch_molecule.encoder.supervised
    :members:
-   :exclude-members: fitting_epoch, fitting_loss
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :undoc-members:
    :show-inheritance:
 
@@ -24,7 +24,7 @@ Molecular Encoder Models
 
 .. automodule:: torch_molecule.encoder.attrmask
    :members:
-   :exclude-members: fitting_epoch, fitting_loss
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :undoc-members:
    :show-inheritance:
 
@@ -32,7 +32,7 @@ Molecular Encoder Models
 
 .. automodule:: torch_molecule.encoder.contextpred
    :members:
-   :exclude-members: fitting_epoch, fitting_loss
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :undoc-members:
    :show-inheritance:
 
@@ -40,6 +40,6 @@ Molecular Encoder Models
 
 .. automodule:: torch_molecule.encoder.edgepred
    :members:
-   :exclude-members: fitting_epoch, fitting_loss
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :undoc-members:
    :show-inheritance:

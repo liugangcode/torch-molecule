@@ -20,7 +20,8 @@ def test_lstm_predictor():
         LSTMunits=60,
         batch_size=2,
         epochs=2,
-        device="cpu"
+        device="cpu",
+        verbose=True
     )
     print("Model initialized successfully")
 
@@ -49,7 +50,7 @@ def test_lstm_predictor():
         task_type="regression",
         epochs=3,  # Small number for testing
         # verbose=True
-        verbose=False
+        verbose=True
     )
     
     model_auto.autofit(
@@ -67,8 +68,12 @@ def test_lstm_predictor():
     print(f"Model saved to {save_path}")
 
     new_model = LSTMMolecularPredictor(
-        num_task=1,
-        task_type="regression"
+        task_type="regression",
+        output_dim=15,
+        LSTMunits=60,
+        batch_size=2,
+        epochs=2,
+        device="cpu"
     )
     new_model.load_from_local(save_path)
     print("Model loaded successfully")

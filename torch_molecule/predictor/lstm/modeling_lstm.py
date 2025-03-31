@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, List, Callable, Type
+from typing import Optional, Union, Dict, Any, List, Callable, Type, Tuple
 import warnings
 from dataclasses import dataclass, field
 
@@ -14,6 +14,7 @@ from .model import LSTM
 from .token_from_smiles import create_tensor_dataset
 from ...base import BaseMolecularPredictor
 from ...utils.search import (
+    suggest_parameter,
     ParameterSpec,
     ParameterType,
 )
@@ -26,18 +27,65 @@ DEFAULT_LSTM_SEARCH_SPACES: Dict[str, ParameterSpec] = {
     # Float-valued parameters with log scale
     "learning_rate": ParameterSpec(ParameterType.LOG_FLOAT, (1e-4, 1e-2)),
     "weight_decay": ParameterSpec(ParameterType.LOG_FLOAT, (1e-8, 1e-3)),
+    "scheduler_factor": ParameterSpec(ParameterType.FLOAT, (0.1, 0.5)),
 }
 
 @dataclass
 class LSTMMolecularPredictor(BaseMolecularPredictor):
     """This predictor implements a LSTM model for molecular property prediction tasks.
-    Paper: Predicting Polymers' Glass Transition Temperature by a Chemical Language Processing Model (https://www.semanticscholar.org/reader/f43ed533b2520567be2d8c24f6396f4e63e96430)
-    Reference Code: https://github.com/figotj/RNN-Tg
+
+    Parameters
+    ----------
+    num_task : int, default=1
+        Number of prediction tasks.
+    task_type : str, default="regression"
+        Type of prediction task, either "regression" or "classification".
+    input_dim : int, default=54
+        Size of vocabulary for SMILES tokenization.
+    output_dim : int, default=15
+        Dimension of embedding vectors.
+    LSTMunits : int, default=60
+        Number of hidden units in LSTM layers.
+    max_input_len : int, default=200
+        Maximum length of input sequences. Longer sequences will be truncated.
+    batch_size : int, default=128
+        Number of samples per batch for training.
+    epochs : int, default=500
+        Maximum number of training epochs.
+    loss_criterion : callable, optional
+        Loss function for training. Defaults to MSELoss for regression.
+    evaluate_criterion : str or callable, optional
+        Metric for model evaluation.
+    evaluate_higher_better : bool, optional
+        Whether higher values of the evaluation metric are better.
+    learning_rate : float, default=0.001
+        Learning rate for optimizer.
+    weight_decay : float, default=0.0
+        L2 regularization strength.
+    patience : int, default=50
+        Number of epochs to wait for improvement before early stopping.
+    use_lr_scheduler : bool, default=False
+        Whether to use learning rate scheduler.
+    scheduler_factor : float, default=0.5
+        Factor by which to reduce learning rate when plateau is reached.
+    scheduler_patience : int, default=5
+        Number of epochs with no improvement after which learning rate will be reduced.
+    verbose : bool, default=False
+        Whether to print progress information during training.
+
+    Notes
+    -----
+    This implementation is based on the paper "Predicting Polymers' Glass Transition 
+    Temperature by a Chemical Language Processing Model".
+
+    References
+    ----------
+    .. [1] https://www.semanticscholar.org/reader/f43ed533b2520567be2d8c24f6396f4e63e96430
     """
     # Model parameters
     num_task: int = 1
     task_type: str = "regression"
-    input_dim: int = 53 # vocabulary size
+    input_dim: int = 54 # vocabulary size
     output_dim: int = 15
     LSTMunits: int = 60
     max_input_len: int = 200 # max token length
@@ -124,7 +172,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
                 "input_dim": hyperparameters.get("input_dim", self.input_dim),
                 "output_dim": hyperparameters.get("output_dim", self.output_dim),
                 "LSTMunits": hyperparameters.get("LSTMunits", self.LSTMunits),
-                "max_input_len": hyperparameters.get("LSTMunits", self.max_input_len),
+                "max_input_len": hyperparameters.get("max_input_len", self.max_input_len),
             }
         else:
             return {
@@ -151,6 +199,195 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         return TensorDataset(torch.tensor(tokenized_X, dtype=torch.long),
                                     torch.zeros(len(tokenized_X), dtype=torch.float32))
 
+
+    def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:
+        """Setup optimization components including optimizer and learning rate scheduler.
+
+        Returns
+        -------
+        Tuple[optim.Optimizer, Optional[Any]]
+            A tuple containing:
+            - The configured optimizer
+            - The learning rate scheduler (if enabled, else None)
+        """
+        optimizer = torch.optim.Adam(
+            self.model.parameters(),
+            lr=self.learning_rate,
+            weight_decay=self.weight_decay
+        )
+        
+        scheduler = None
+        if self.use_lr_scheduler:
+            scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+                optimizer,
+                mode='min' if not self.evaluate_higher_better else 'max',
+                factor=self.scheduler_factor,
+                patience=self.scheduler_patience,
+                verbose=self.verbose
+            )
+        
+        return optimizer, scheduler
+
+    def _get_default_search_space(self):
+        """Get the default hyperparameter search space.
+        """
+        return DEFAULT_LSTM_SEARCH_SPACES
+
+    def autofit(
+        self,
+        X_train: List[str],
+        y_train: Optional[Union[List, np.ndarray]],
+        X_val: Optional[List[str]] = None,
+        y_val: Optional[Union[List, np.ndarray]] = None,
+        search_parameters: Optional[Dict[str, ParameterSpec]] = None,
+        n_trials: int = 10,
+    ) -> "LSTMMolecularPredictor":
+        import optuna
+        # Default search parameters
+        default_search_parameters = self._get_default_search_space()
+        if search_parameters is None:
+            search_parameters = default_search_parameters
+        else:
+            # Validate search parameter keys
+            invalid_params = set(search_parameters.keys()) - set(default_search_parameters.keys())
+            if invalid_params:
+                raise ValueError(
+                    f"Invalid search parameters: {invalid_params}. "
+                    f"Valid parameters are: {list(default_search_parameters.keys())}"
+                )
+            
+        if self.verbose:
+            all_params = set(self._get_param_names())
+            searched_params = set(search_parameters.keys())
+            non_searched_params = all_params - searched_params
+            
+            print("\nParameter Search Configuration:")
+            print("-" * 50)
+            
+            print("\n Parameters being searched:")
+            for param in sorted(searched_params):
+                spec = search_parameters[param]
+                if spec.param_type == ParameterType.CATEGORICAL:
+                    print(f"  • {param}: {spec.value_range}")
+                else:
+                    print(f"  • {param}: [{spec.value_range[0]}, {spec.value_range[1]}]")
+            
+            print("\n Fixed parameters (not being searched):")
+            for param in sorted(non_searched_params):
+                value = getattr(self, param, "N/A")
+                print(f"  • {param}: {value}")
+            
+            print("\n" + "-" * 50)
+
+            print(f"\nStarting hyperparameter optimization using {self.evaluate_name} metric")
+            print(f"Direction: {'maximize' if self.evaluate_higher_better else 'minimize'}")
+            print(f"Number of trials: {n_trials}")
+        
+        # Variables to track best state
+        best_score = float('-inf') if self.evaluate_higher_better else float('inf')
+        best_state_dict = None
+        best_trial_params = None
+        best_loss = None
+        best_epoch = None
+        
+        def objective(trial):
+            nonlocal best_score, best_state_dict, best_trial_params, best_loss, best_epoch
+
+            # Define hyperparameters to optimize using the parameter specifications
+            params = {}
+            for param_name, param_spec in search_parameters.items():
+                try:
+                    params[param_name] = suggest_parameter(trial, param_name, param_spec)
+                except Exception as e:
+                    print(f"Error suggesting parameter {param_name}: {str(e)}")
+                    return float('inf')
+                
+                
+            self.set_params(**params)
+            self.fit(X_train, y_train, X_val, y_val)
+
+            # Get evaluation score
+            eval_data = (X_val if X_val is not None else X_train)
+            eval_labels = (y_val if y_val is not None else y_train)
+            eval_results = self.predict(eval_data)
+            score = float(self.evaluate_criterion(eval_labels, eval_results['prediction']))
+
+            # Update best state if current score is better
+            is_better = (
+                score > best_score if self.evaluate_higher_better
+                else score < best_score
+            )
+
+            if is_better:
+                best_score = score
+                best_state_dict = {
+                    'model': self.model.state_dict(),
+                    'architecture': self._get_model_params()
+                }
+                best_trial_params = params.copy()
+                best_loss = self.fitting_loss.copy()
+                best_epoch = self.fitting_epoch
+
+            if self.verbose:
+                print(
+                    f"Trial {trial.number}: {self.evaluate_name} = {score:.4f} "
+                    f"({'better' if is_better else 'worse'} than best = {best_score:.4f})"
+                )
+                print("Current parameters:")
+                for param_name, value in params.items():
+                    print(f"  {param_name}: {value}")
+                    
+            # Return score (negated if higher is better, since Optuna minimizes)
+            return -score if self.evaluate_higher_better else score
+        
+        # Create study with optional output control
+        optuna.logging.set_verbosity(
+            optuna.logging.INFO if self.verbose else optuna.logging.WARNING
+        )
+
+        # Create study with optional output control
+        study = optuna.create_study(
+            direction="minimize",
+            study_name=f"{self.model_name}_optimization"
+        )
+        
+        study.optimize(
+            objective,
+            n_trials=n_trials,
+            catch=(Exception,),
+            show_progress_bar=self.verbose
+        )
+        
+        if best_state_dict is not None:
+            self.set_params(**best_trial_params)
+            self._initialize_model(self.model_class)
+            self.model.load_state_dict(best_state_dict['model'])
+            self.fitting_loss = best_loss
+            self.fitting_epoch = best_epoch
+            self.is_fitted_ = True
+            
+            if self.verbose:    
+                print(f"\nOptimization completed successfully:")
+                print(f"Best {self.evaluate_name}: {best_score:.4f}")
+                
+                eval_data = (X_val if X_val is not None else X_train)
+                eval_labels = (y_val if y_val is not None else y_train)
+                eval_results = self.predict(eval_data)
+                score = float(self.evaluate_criterion(eval_labels, eval_results['prediction']))
+                print('post score is: ', score)
+
+                print("\nBest parameters:")
+                for param, value in best_trial_params.items():
+                    param_spec = search_parameters[param]
+                    print(f"  {param}: {value} (type: {param_spec.param_type.value})")
+                
+                print("\nOptimization statistics:")
+                print(f"  Number of completed trials: {len(study.trials)}")
+                print(f"  Number of pruned trials: {len(study.get_trials(states=[optuna.trial.TrialState.PRUNED]))}")
+                print(f"  Number of failed trials: {len(study.get_trials(states=[optuna.trial.TrialState.FAIL]))}")
+        
+        return self
+    
     def fit(
         self,
         X_train: List[str],

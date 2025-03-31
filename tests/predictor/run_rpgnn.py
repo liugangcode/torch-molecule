@@ -29,7 +29,7 @@ def train_rpgnn_predictor():
         fixed_size=10,
         hidden_size=300,
         batch_size=128,
-        epochs=300,
+        epochs=2,
         verbose=True
     )
     print("RPGNN model initialized successfully")   

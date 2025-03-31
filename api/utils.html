@@ -550,7 +550,325 @@ by default 0</p></li>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-torch_molecule.utils.generic"><span id="module-torch_molecule.utils.graph"></span></span></section>
+<dl class="py function" id="module-torch_molecule.utils.graph.features">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.features.atom_feature_vector_to_dict">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">atom_feature_vector_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_feature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#atom_feature_vector_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.atom_feature_vector_to_dict" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.features.atom_to_feature_vector">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">atom_to_feature_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#atom_to_feature_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.atom_to_feature_vector" title="Link to this definition">¶</a></dt>
+<dd><p>Converts rdkit atom object to feature list of indices
+:param mol: rdkit atom object
+:return: list</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.features.bond_feature_vector_to_dict">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">bond_feature_vector_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bond_feature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#bond_feature_vector_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.bond_feature_vector_to_dict" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.features.bond_to_feature_vector">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">bond_to_feature_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bond</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#bond_to_feature_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.bond_to_feature_vector" title="Link to this definition">¶</a></dt>
+<dd><p>Converts rdkit bond object to feature list of indices
+:param mol: rdkit bond object
+:return: list</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.features.get_atom_feature_dims">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">get_atom_feature_dims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#get_atom_feature_dims"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.get_atom_feature_dims" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.features.get_bond_feature_dims">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">get_bond_feature_dims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#get_bond_feature_dims"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.get_bond_feature_dims" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.features.getmaccsfingerprint">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">getmaccsfingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#getmaccsfingerprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.getmaccsfingerprint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.features.getmorganfingerprint">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">getmorganfingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#getmorganfingerprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.getmorganfingerprint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.features.safe_index">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">safe_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#safe_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.safe_index" title="Link to this definition">¶</a></dt>
+<dd><p>Return index of element e in list l. If e is not present, return the last index</p>
+</dd></dl>
+
+<dl class="py function" id="module-torch_molecule.utils.graph.graph_from_smiles">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_from_smiles.add_fingerprint_feature">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_from_smiles.</span></span><span class="sig-name descname"><span class="pre">add_fingerprint_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_fingerprint_fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_from_smiles.html#add_fingerprint_feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_from_smiles.add_fingerprint_feature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_from_smiles.get_augmented_property">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_from_smiles.</span></span><span class="sig-name descname"><span class="pre">get_augmented_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_from_smiles.html#get_augmented_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_from_smiles.get_augmented_property" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_from_smiles.graph_from_smiles">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_from_smiles.</span></span><span class="sig-name descname"><span class="pre">graph_from_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles_or_mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_properties</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_from_smiles.html#graph_from_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_from_smiles.graph_from_smiles" title="Link to this definition">¶</a></dt>
+<dd><p>Converts SMILES string or RDKit molecule to graph Data object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smiles_or_mol</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>rdkit.Chem.rdchem.Mol</em><em>]</em>) – SMILES string or RDKit molecule object</p></li>
+<li><p><strong>properties</strong> (<em>Any</em>) – Properties to include in the graph</p></li>
+<li><p><strong>augmented_features</strong> (<em>list</em>) – List of augmented features to include</p></li>
+<li><p><strong>augmented_properties</strong> (<em>list</em><em>, </em><em>optional</em>) – List of augmented properties to include</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Graph object dictionary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function" id="module-torch_molecule.utils.graph.graph_to_smiles">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.build_molecule_with_partial_charges">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">build_molecule_with_partial_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_decoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#build_molecule_with_partial_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.build_molecule_with_partial_charges" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.check_valency">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">check_valency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#check_valency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.check_valency" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.check_valid">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">check_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#check_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.check_valid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.connect_fragments">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">connect_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#connect_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.connect_fragments" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.correct_mol">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">correct_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#correct_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.correct_mol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.get_mol">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">get_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles_or_mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#get_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.get_mol" title="Link to this definition">¶</a></dt>
+<dd><p>Loads SMILES/molecule into RDKit’s object</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.graph_to_smiles">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">graph_to_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_decoder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#graph_to_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.graph_to_smiles" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.mol2smiles">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">mol2smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#mol2smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.mol2smiles" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.select_atom_with_available_valency">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">select_atom_with_available_valency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#select_atom_with_available_valency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.select_atom_with_available_valency" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.select_atoms_with_available_valency">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">select_atoms_with_available_valency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#select_atoms_with_available_valency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.select_atoms_with_available_valency" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.try_to_connect_fragments">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">try_to_connect_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">combined_mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#try_to_connect_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.try_to_connect_fragments" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function" id="module-torch_molecule.utils.generic.metrics">
+<dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.accuracy_score">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">accuracy_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avergae</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#accuracy_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.accuracy_score" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate accuracy for multiple tasks from prediction logits.</p>
+<section id="parameters">
+<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>y_true<span class="classifier">numpy.ndarray</span></dt><dd><p>Ground truth labels with shape (n_samples, n_tasks)</p>
+</dd>
+<dt>logits<span class="classifier">numpy.ndarray</span></dt><dd><p>Prediction logits with shape (n_samples, n_tasks)</p>
+</dd>
+<dt>task_types<span class="classifier">list or None, optional</span></dt><dd><p>List of task types (‘binary’ or ‘multiclass’) for each task
+If None, assumes all tasks are binary</p>
+</dd>
+<dt>thresholds<span class="classifier">numpy.ndarray or None, optional</span></dt><dd><p>Classification thresholds for binary tasks with shape (n_tasks,)
+If None, uses 0.5 for all binary tasks</p>
+</dd>
+<dt>task_weights<span class="classifier">numpy.ndarray or None, optional</span></dt><dd><p>Weights for each task with shape (n_tasks,)
+If None, all tasks are weighted equally</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>dict</dt><dd><p>A dictionary containing:
+- ‘task_accuracies’: Accuracy for each individual task
+- ‘weighted_accuracy’: Overall weighted accuracy across all tasks
+- ‘macro_accuracy’: Simple average of all task accuracies
+- ‘predictions’: Binary predictions after applying activation and thresholds</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h2>Raises:<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If input shapes don’t match or dimensions are incorrect</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.mean_absolute_error">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">mean_absolute_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#mean_absolute_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.mean_absolute_error" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate Mean Absolute Error for multi-task regression, handling NaN values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>Union</em><em>[</em><em>np.ndarray</em><em>, </em><em>list</em><em>]</em>) – Ground truth values. Shape should be (n_samples, n_tasks)</p></li>
+<li><p><strong>y_pred</strong> (<em>Union</em><em>[</em><em>np.ndarray</em><em>, </em><em>list</em><em>]</em>) – Predicted values. Shape should be (n_samples, n_tasks)</p></li>
+<li><p><strong>average</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, return the average MAE across all valid tasks.
+If False, return individual MAE for each task (NaN for invalid tasks).</p></li>
+<li><p><strong>sample_weight</strong> (<em>Optional</em><em>[</em><em>np.ndarray</em><em>]</em><em>, </em><em>default=None</em>) – Sample weights. Shape should be (n_samples,)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If average=True, returns mean MAE across all valid tasks.
+If average=False, returns array of MAE scores with NaN for invalid tasks.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[float, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.mean_squared_error">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">mean_squared_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">squared</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#mean_squared_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.mean_squared_error" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate Mean Squared Error for multi-task regression, handling NaN values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>Union</em><em>[</em><em>np.ndarray</em><em>, </em><em>list</em><em>]</em>) – Ground truth values. Shape should be (n_samples, n_tasks)</p></li>
+<li><p><strong>y_pred</strong> (<em>Union</em><em>[</em><em>np.ndarray</em><em>, </em><em>list</em><em>]</em>) – Predicted values. Shape should be (n_samples, n_tasks)</p></li>
+<li><p><strong>average</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, return the average MSE across all valid tasks.
+If False, return individual MSE for each task (NaN for invalid tasks).</p></li>
+<li><p><strong>sample_weight</strong> (<em>Optional</em><em>[</em><em>np.ndarray</em><em>]</em><em>, </em><em>default=None</em>) – Sample weights. Shape should be (n_samples,)</p></li>
+<li><p><strong>squared</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, returns MSE value.
+If False, returns RMSE value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If average=True, returns mean MSE/RMSE across all valid tasks.
+If average=False, returns array of MSE/RMSE scores with NaN for invalid tasks.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[float, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.r2_score">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">r2_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#r2_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.r2_score" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate R² Score for multi-task regression, handling NaN values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>Union</em><em>[</em><em>np.ndarray</em><em>, </em><em>list</em><em>]</em>) – Ground truth values. Shape should be (n_samples, n_tasks)</p></li>
+<li><p><strong>y_pred</strong> (<em>Union</em><em>[</em><em>np.ndarray</em><em>, </em><em>list</em><em>]</em>) – Predicted values. Shape should be (n_samples, n_tasks)</p></li>
+<li><p><strong>average</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, return the average R² across all valid tasks.
+If False, return individual R² for each task (NaN for invalid tasks).</p></li>
+<li><p><strong>sample_weight</strong> (<em>Optional</em><em>[</em><em>np.ndarray</em><em>]</em><em>, </em><em>default=None</em>) – Sample weights. Shape should be (n_samples,)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If average=True, returns mean R² across all valid tasks.
+If average=False, returns array of R² scores with NaN for invalid tasks.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[float, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.roc_auc_score">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">roc_auc_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#roc_auc_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.roc_auc_score" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate ROC AUC scores for multi-task binary classification, handling NaN values.</p>
+<p>For each task dimension, computes AUC score using only the non-NaN samples.
+Tasks with insufficient valid samples or unique labels are masked in the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>Union</em><em>[</em><em>np.ndarray</em><em>, </em><em>list</em><em>]</em>) – True binary labels. Shape should be (n_samples, n_tasks)</p></li>
+<li><p><strong>y_pred</strong> (<em>Union</em><em>[</em><em>np.ndarray</em><em>, </em><em>list</em><em>]</em>) – Predicted probabilities. Shape should be (n_samples, n_tasks)</p></li>
+<li><p><strong>average</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, return the average ROC AUC score across all valid tasks.
+If False, return individual scores for each task (NaN for invalid tasks).</p></li>
+<li><p><strong>sample_weight</strong> (<em>Optional</em><em>[</em><em>np.ndarray</em><em>]</em><em>, </em><em>default=None</em>) – Sample weights for each instance. Shape should be (n_samples,)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If average=True, returns mean ROC AUC score across all valid tasks.
+If average=False, returns array of ROC AUC scores with NaN for invalid tasks.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[float, np.ndarray]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input shapes don’t match or no valid tasks are found</p></li>
+<li><p><strong>TypeError</strong> – If inputs are not of correct type</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average ROC AUC across valid tasks: </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.root_mean_squared_error">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">root_mean_squared_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#root_mean_squared_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.root_mean_squared_error" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.sigmoid">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">sigmoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#sigmoid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.sigmoid" title="Link to this definition">¶</a></dt>
+<dd><p>Numerically stable sigmoid function.</p>
+</dd></dl>
+
+<dl class="py function" id="module-torch_molecule.utils.generic.weights">
+<span id="module-torch_molecule.utils.generic.pseudo_tasks"></span><dt class="sig sig-object py" id="torch_molecule.utils.generic.weights.init_weights">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.weights.</span></span><span class="sig-name descname"><span class="pre">init_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xavier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_gain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/weights.html#init_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.weights.init_weights" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize network weights.
+:param net:
+:type net: network
+:param init_type: normal | xavier | kaiming | orthogonal
+:type init_type: str
+:param init_gain:
+:type init_gain: float</p>
+</dd></dl>
+
+</section>
 
         </article>
       </div>
@@ -642,6 +960,37 @@ by default 0</p></li>
 </li>
 <li><a class="reference internal" href="#torch_molecule.utils.search.parse_list_params"><code class="docutils literal notranslate"><span class="pre">parse_list_params()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.utils.search.suggest_parameter"><code class="docutils literal notranslate"><span class="pre">suggest_parameter()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.features.atom_feature_vector_to_dict"><code class="docutils literal notranslate"><span class="pre">atom_feature_vector_to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.features.atom_to_feature_vector"><code class="docutils literal notranslate"><span class="pre">atom_to_feature_vector()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.features.bond_feature_vector_to_dict"><code class="docutils literal notranslate"><span class="pre">bond_feature_vector_to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.features.bond_to_feature_vector"><code class="docutils literal notranslate"><span class="pre">bond_to_feature_vector()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.features.get_atom_feature_dims"><code class="docutils literal notranslate"><span class="pre">get_atom_feature_dims()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.features.get_bond_feature_dims"><code class="docutils literal notranslate"><span class="pre">get_bond_feature_dims()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.features.getmaccsfingerprint"><code class="docutils literal notranslate"><span class="pre">getmaccsfingerprint()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.features.getmorganfingerprint"><code class="docutils literal notranslate"><span class="pre">getmorganfingerprint()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.features.safe_index"><code class="docutils literal notranslate"><span class="pre">safe_index()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_from_smiles.add_fingerprint_feature"><code class="docutils literal notranslate"><span class="pre">add_fingerprint_feature()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_from_smiles.get_augmented_property"><code class="docutils literal notranslate"><span class="pre">get_augmented_property()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_from_smiles.graph_from_smiles"><code class="docutils literal notranslate"><span class="pre">graph_from_smiles()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.build_molecule_with_partial_charges"><code class="docutils literal notranslate"><span class="pre">build_molecule_with_partial_charges()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.check_valency"><code class="docutils literal notranslate"><span class="pre">check_valency()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.check_valid"><code class="docutils literal notranslate"><span class="pre">check_valid()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.connect_fragments"><code class="docutils literal notranslate"><span class="pre">connect_fragments()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.correct_mol"><code class="docutils literal notranslate"><span class="pre">correct_mol()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.get_mol"><code class="docutils literal notranslate"><span class="pre">get_mol()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.graph_to_smiles"><code class="docutils literal notranslate"><span class="pre">graph_to_smiles()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.mol2smiles"><code class="docutils literal notranslate"><span class="pre">mol2smiles()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.select_atom_with_available_valency"><code class="docutils literal notranslate"><span class="pre">select_atom_with_available_valency()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.select_atoms_with_available_valency"><code class="docutils literal notranslate"><span class="pre">select_atoms_with_available_valency()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.try_to_connect_fragments"><code class="docutils literal notranslate"><span class="pre">try_to_connect_fragments()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.accuracy_score"><code class="docutils literal notranslate"><span class="pre">accuracy_score()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.mean_absolute_error"><code class="docutils literal notranslate"><span class="pre">mean_absolute_error()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.mean_squared_error"><code class="docutils literal notranslate"><span class="pre">mean_squared_error()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.r2_score"><code class="docutils literal notranslate"><span class="pre">r2_score()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.roc_auc_score"><code class="docutils literal notranslate"><span class="pre">roc_auc_score()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.root_mean_squared_error"><code class="docutils literal notranslate"><span class="pre">root_mean_squared_error()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.sigmoid"><code class="docutils literal notranslate"><span class="pre">sigmoid()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.utils.generic.weights.init_weights"><code class="docutils literal notranslate"><span class="pre">init_weights()</span></code></a></li>
 </ul>
 </li>
 </ul>

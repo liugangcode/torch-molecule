@@ -1,7 +1,7 @@
 import numpy as np
 from torch_molecule import LSTMMolecularPredictor
 from torch_molecule.utils.search import ParameterType, ParameterSpec
-
+import torch
 def test_lstm_predictor():
     # Test data
     smiles_list = [
@@ -67,13 +67,15 @@ def test_lstm_predictor():
     model.save_to_local(save_path)
     print(f"Model saved to {save_path}")
 
+    print(f"Device: {torch.device('cuda' if torch.cuda.is_available() else 'cpu')}")
     new_model = LSTMMolecularPredictor(
         task_type="regression",
         output_dim=15,
         LSTMunits=60,
         batch_size=2,
         epochs=2,
-        device="cpu"
+        # device="cpu"
+        device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
     )
     new_model.load_from_local(save_path)
     print("Model loaded successfully")

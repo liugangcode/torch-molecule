@@ -1,0 +1,346 @@
+import numpy as np
+from tqdm import tqdm
+from typing import Optional, Union, Dict, Any, Tuple, List, Type
+from dataclasses import dataclass, field
+
+import torch
+import torch.nn.functional as F
+from torch_geometric.loader import DataLoader
+from torch_geometric.data import Data
+
+from .gpt import GPT
+from .dataset import SmilesDataset
+
+from ...base import BaseMolecularGenerator
+# from ...utils import graph_from_smiles, graph_to_smiles
+
+@dataclass
+class MolGPTMolecularGenerator(BaseMolecularGenerator):
+    """
+    This generator implements the molecular GPT
+    """
+
+    # Model parameters
+    n_layer: int = 8
+    n_head: int = 8
+    n_embd: int = 256
+    max_len: int = 128
+    dropout: float = 0.1
+    
+    # Conditioning parameters
+    num_props: int = 0
+    scaffold: bool = False
+    lstm: bool = False
+    lstm_layers: int = 0
+    
+    # Training parameters
+    batch_size: int = 64
+    epochs: int = 10
+    learning_rate: float = 3e-4
+    weight_decay: float = 0.1
+    grad_norm_clip: float = 1.0
+    
+    # Sampling parameters
+    temperature: float = 1.0
+    top_k: int = 40
+
+    verbose: bool = False
+    # Attributes
+    model_name: str = "MolGPTMolecularGenerator"
+    fitting_loss: List[float] = field(default_factory=list, init=False)
+    fitting_epoch: int = field(default=0, init=False)
+    model_class: Type[GPT] = field(default=GPT, init=False)
+
+    def __post_init__(self):
+        """Initialize the model after dataclass initialization."""
+        super().__post_init__()
+        self.input_dim_y = len(self.task_type)
+        self.vocab_size = 0  # Will be set during training
+        self.token_to_id = None  # String to index mapping
+        self.id_to_token = None  # Index to string mapping
+        self.scaffold_maxlen = 0  # Will be set during training if scaffold is True
+        self.pattern = "(\[[^\]]+]|<|Br?|Cl?|N|O|S|P|F|I|b|c|n|o|s|p|\(|\)|\.|=|#|-|\+|\\\\|\/|:|~|@|\?|>|\*|\$|\%[0-9]{2}|[0-9])"
+        self.regex = re.compile(self.pattern)
+
+    @staticmethod
+    def _get_param_names() -> List[str]:
+        """Get parameter names for the estimator.
+
+        Returns
+        -------
+        List[str]
+            List of parameter names that can be used for model configuration.
+        """
+        return [
+            # Model Hyperparameters
+            "n_layer", "n_head", "n_embd", "max_len", "dropout",
+            # Conditioning parameters
+            "num_props", "scaffold", "lstm", "lstm_layers",
+            # Training Parameters
+            "batch_size", "epochs", "learning_rate", "weight_decay", "grad_norm_clip",
+            # Sampling Parameters
+            "temperature", "top_k",
+            # Other Parameters
+            "verbose", "model_name", "fitting_epoch", "fitting_loss", "device"
+        ]
+    
+    def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
+        params = []
+        
+        if checkpoint is not None:
+            if "hyperparameters" not in checkpoint:
+                raise ValueError("Checkpoint missing 'hyperparameters' key")
+            return {k: checkpoint["hyperparameters"][k] for k in params}
+        
+        return {k: getattr(self, k) for k in params}
+
+    def _setup_optimizers(self) -> torch.optim.Optimizer:
+        """Setup optimization components including optimizer and learning rate scheduler.
+        """
+        optimizer = torch.optim.Adam(
+            self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay
+        )
+        if self.grad_clip_value is not None:
+            for group in optimizer.param_groups:
+                group.setdefault("max_norm", self.grad_clip_value)
+                group.setdefault("norm_type", 2.0)
+
+        return optimizer
+
+    def fit(self, X_train, y_train=None):
+        """
+        Train the MolGPT model on SMILES strings.
+        
+        Parameters
+        ----------
+        X_train : List[str]
+            List of SMILES strings for training
+        y_train : Optional[List[float]]
+            Optional list of property values for conditional generation
+            
+        Returns
+        -------
+        self : MolGPTGenerator
+            The fitted model
+        """
+        
+        # Calculate max length for padding
+        lens = [len(self.regex.findall(i.strip())) for i in X_train]
+        max_len = max(lens)
+        self.max_len = min(self.max_len, max_len + 1)  # +1 for prediction target
+        
+        # Set scaffold max length if using scaffolds
+        if self.scaffold:
+            self.scaffold_maxlen = max_len
+        
+        # Prepare properties if provided
+        if y_train is not None:
+            properties = y_train
+        else:
+            properties = [[0.0]] * len(X_train)
+            self.num_task = 0
+        
+        # Create dataset
+        train_dataset = SmilesDataset(
+            X_train, 
+            self.max_len, 
+            properties=properties,
+            scaffolds=X_train if self.scaffold else None,
+            scaffold_maxlen=self.scaffold_maxlen if self.scaffold else None,
+            regex=self.regex
+        )
+        
+        # Save vocabulary
+        self.vocab_size = train_dataset.vocab_size
+        self.token_to_id = train_dataset.stoi
+        self.id_to_token = train_dataset.itos
+        
+        # Initialize model
+        model = self._initialize_model(train_dataset)
+        optimizer = self._setup_optimizers(model)
+        
+        # Create data loader
+        train_loader = DataLoader(
+            train_dataset,
+            batch_size=self.batch_size,
+            shuffle=True,
+            num_workers=0
+        )
+        
+        # Training loop
+        self.fitting_loss = []
+        self.fitting_epoch = 0
+        
+        for epoch in range(self.epochs):
+            train_losses = self._train_epoch(train_loader, optimizer, epoch)
+            self.fitting_loss.append(np.mean(train_losses))
+
+        self.fitting_epoch = epoch
+        self.is_fitted_ = True
+        return self
+
+    def _train_epoch(self, train_loader, optimizer, epoch):
+        self.model.train()
+        losses = []
+        
+        iterator = tqdm(train_loader, desc=f"Epoch {epoch+1}/{self.epochs}") if self.verbose else train_loader
+        
+        for step, (x, y, prop, scaffold) in enumerate(iterator):
+            x = x.to(self.device)
+            y = y.to(self.device)
+            prop = prop.to(self.device) if prop.numel() > 0 else None
+            scaffold = scaffold.to(self.device) if scaffold.numel() > 0 else None
+            
+            optimizer.zero_grad()
+            loss = self.model.compute_loss(x, targets=y, prop=prop, scaffold=scaffold)
+            
+            loss.backward()
+            optimizer.step()
+            losses.append(loss.item())
+
+            if self.verbose:
+                iterator.set_postfix({"Epoch": epoch, "Loss": f"{loss.item():.4f}"})
+        
+        return losses
+        
+    @torch.no_grad()
+    def sample(self, x, steps, temperature=1.0, top_k=None, prop=None, scaffold=None):
+        """
+        Sample from the model given a context.
+        
+        Parameters
+        ----------
+        x : torch.Tensor
+            Context tensor of shape (batch_size, seq_len)
+        steps : int
+            Number of steps to sample
+        temperature : float
+            Sampling temperature
+        top_k : int
+            Top-k sampling parameter
+        prop : torch.Tensor
+            Property conditioning tensor
+        scaffold : torch.Tensor
+            Scaffold conditioning tensor
+            
+        Returns
+        -------
+        torch.Tensor
+            Generated sequences
+        """
+        model = self.model
+        model.eval()
+        
+        for k in range(steps):
+            # Get block size from model
+            max_len = model.get_block_size()
+            
+            # Crop context if needed
+            x_cond = x if x.size(1) <= max_len else x[:, -max_len:]
+            
+            # Forward pass
+            logits, _, _ = model(x_cond, prop=prop, scaffold=scaffold)
+            
+            # Get logits for the next token and apply temperature
+            logits = logits[:, -1, :] / temperature
+            
+            # Apply top-k sampling if specified
+            if top_k is not None:
+                v, _ = torch.topk(logits, top_k)
+                logits[logits < v[:, [-1]]] = -float('Inf')
+            
+            # Apply softmax to get probabilities
+            probs = F.softmax(logits, dim=-1)
+            
+            # Sample from the distribution
+            next_token = torch.multinomial(probs, num_samples=1)
+            
+            # Append to the sequence
+            x = torch.cat((x, next_token), dim=1)
+        
+        return x
+    
+    def generate(self, n_samples=10, properties=None, scaffolds=None, max_len=None):
+        """
+        Generate molecules using the trained model.
+        
+        Parameters
+        ----------
+        n_samples : int, default=10
+            Number of molecules to generate
+        properties : Optional[List[List[float]]]
+            Property values for conditional generation
+        scaffolds : Optional[List[str]]
+            Scaffold SMILES for conditional generation
+        max_len : Optional[int]
+            Maximum length of generated SMILES
+            
+        Returns
+        -------
+        List[str]
+            List of generated SMILES strings
+        """
+        if not self.is_fitted_:
+            raise ValueError("Model must be fitted before generating molecules")
+        
+        if max_len is None:
+            max_len = self.max_len
+        
+        # Prepare property conditioning if provided
+        if properties is not None:
+            if len(properties) != n_samples:
+                raise ValueError(f"Number of property values ({len(properties)}) must match n_samples ({n_samples})")
+            prop_tensor = torch.tensor(properties, dtype=torch.float).to(self.device)
+        else:
+            prop_tensor = None
+        
+        # Prepare scaffold conditioning if provided
+        if scaffolds is not None:
+            if len(scaffolds) != n_samples:
+                raise ValueError(f"Number of scaffolds ({len(scaffolds)}) must match n_samples ({n_samples})")
+            
+            # Tokenize scaffolds
+            regex = re.compile(pattern)
+            
+            scaffold_tokens = []
+            for scaffold in scaffolds:
+                tokens = regex.findall(scaffold.strip())
+                # Pad with '<' if needed
+                tokens += ['<'] * (self.scaffold_maxlen - len(tokens))
+                # Convert to indices
+                scaffold_tokens.append([self.token_to_id.get(t, 0) for t in tokens])
+            
+            scaffold_tensor = torch.tensor(scaffold_tokens, dtype=torch.long).to(self.device)
+        else:
+            scaffold_tensor = None
+        
+        # Start with a common token (e.g., 'C')
+        if 'C' in self.token_to_id:
+            start_token = self.token_to_id['C']
+        else:
+            # Use the first token in the vocabulary
+            start_token = 0
+        
+        context = torch.tensor([[start_token]] * n_samples, dtype=torch.long).to(self.device)
+        
+        # Sample from the model
+        generated = self.sample(
+            context, 
+            steps=max_len-1,  # -1 because we already have one token
+            temperature=self.temperature,
+            top_k=self.top_k,
+            prop=prop_tensor,
+            scaffold=scaffold_tensor
+        )
+        
+        # Convert to SMILES strings
+        smiles_list = []
+        for i in range(n_samples):
+            # Convert indices to tokens
+            tokens = [self.id_to_token[idx.item()] for idx in generated[i]]
+            # Join tokens and remove padding
+            smiles = ''.join(tokens).replace('<', '')
+            smiles_list.append(smiles)
+        
+        return smiles_list
+    

@@ -55,8 +55,8 @@ Modeling Molecules as Sequences with RNNs
 -----------------------------------------
 
 .. rubric:: LSTM models based on SMILES
-.. automodule:: torch_molecule.predictor.lstm
-   :members:
+.. autoclass:: torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor
+   :members: fit, autofit, predict
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :undoc-members:
    :show-inheritance:

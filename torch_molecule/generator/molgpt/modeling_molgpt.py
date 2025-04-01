@@ -41,16 +41,16 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
     max_len : int, default=128
         Maximum length of SMILES strings.
     num_task : int, default=0
-        Number of property prediction tasks for conditional generation.
+        Number of property prediction tasks for conditional generation. O for unconditional generation.
     use_scaffold : bool, default=False
         Whether to use scaffold conditioning.
     use_lstm : bool, default=False
-        Whether to use LSTM for encoding.
+        Whether to use LSTM for encoding scaffold.
     lstm_layers : int, default=0
         Number of LSTM layers if use_lstm is True.
     batch_size : int, default=64
         Batch size for training.
-    epochs : int, default=10
+    epochs : int, default=1000
         Number of training epochs.
     learning_rate : float, default=3e-4
         Learning rate for optimizer.
@@ -78,7 +78,7 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
     
     # Training parameters
     batch_size: int = 64
-    epochs: int = 10
+    epochs: int = 1000
     learning_rate: float = 3e-4
     adamw_betas: Tuple[float, float] = (0.9, 0.95)
     weight_decay: float = 0.1

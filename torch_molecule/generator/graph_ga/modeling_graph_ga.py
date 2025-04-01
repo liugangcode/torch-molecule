@@ -41,6 +41,8 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
     :type n_jobs: int
     :param iteration: Number of iterations for each target label (or random sample) to run the genetic algorithm. Default is 5.
     :type iteration: int
+    :param verbose: Whether to display progress bars and logs. Default is False.
+    :type verbose: bool
     """
 
     # GA parameters

@@ -1,5 +1,5 @@
 import numpy as np
-from torch_molecule import TransformerMolecularPredictor
+from torch_molecule import SMILESTransformerMolecularPredictor
 from torch_molecule.utils.search import ParameterType, ParameterSpec
 
 def test_transformer_predictor():
@@ -14,7 +14,7 @@ def test_transformer_predictor():
 
     # 1. Basic initialization test
     print("\n=== Testing model initialization ===")
-    model = TransformerMolecularPredictor(
+    model = SMILESTransformerMolecularPredictor(
         task_type="regression",
         hidden_size=128,
         n_heads=4,
@@ -48,7 +48,7 @@ def test_transformer_predictor():
         "learning_rate": ParameterSpec(ParameterType.LOG_FLOAT, (1e-4, 1e-2)),
         "dropout": ParameterSpec(ParameterType.FLOAT, (0.0, 0.3))
     }
-    model_auto = TransformerMolecularPredictor(
+    model_auto = SMILESTransformerMolecularPredictor(
         num_task=1,
         task_type="regression",
         epochs=3,  # Small number for testing
@@ -69,7 +69,7 @@ def test_transformer_predictor():
     model.save_to_local(save_path)
     print(f"Model saved to {save_path}")
 
-    new_model = TransformerMolecularPredictor(
+    new_model = SMILESTransformerMolecularPredictor(
         task_type="regression",
         hidden_size=128,
         n_heads=4,

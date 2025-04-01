@@ -54,11 +54,14 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
     :type lw_E: float, optional
     :param use_lr_scheduler: Whether to use learning rate scheduler, defaults to False
     :type use_lr_scheduler: bool, optional
-    :param scheduler_factor: Factor for learning rate scheduler, defaults to 0.5
+    :param scheduler_factor: Factor for learning rate scheduler (if use_lr_scheduler is True), defaults to 0.5 
     :type scheduler_factor: float, optional
-    :param scheduler_patience: Patience for learning rate scheduler, defaults to 5
+    :param scheduler_patience: Patience for learning rate scheduler (if use_lr_scheduler is True), defaults to 5
     :type scheduler_patience: int, optional
+    :param verbose: Whether to display progress bars and logs. Default is False.
+    :type verbose: bool
     """
+    
     # Model parameters
     hidden_size_X: int = 256
     hidden_size_E: int = 128

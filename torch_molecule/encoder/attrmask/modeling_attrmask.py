@@ -232,6 +232,15 @@ class AttrMaskMolecularEncoder(BaseMolecularEncoder):
         return self
 
     def _train_epoch(self, train_loader, optimizer, epoch):
+        """Training logic for one epoch.
+
+        Args:
+            train_loader: DataLoader containing training data
+            optimizer: Optimizer instance for model parameter updates
+
+        Returns:
+            list: List of loss values for each training step
+        """
         self.model.train()
         losses = []
 

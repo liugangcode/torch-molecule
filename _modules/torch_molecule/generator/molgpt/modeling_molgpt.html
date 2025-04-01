@@ -305,16 +305,16 @@
 <span class="sd">    max_len : int, default=128</span>
 <span class="sd">        Maximum length of SMILES strings.</span>
 <span class="sd">    num_task : int, default=0</span>
-<span class="sd">        Number of property prediction tasks for conditional generation.</span>
+<span class="sd">        Number of property prediction tasks for conditional generation. O for unconditional generation.</span>
 <span class="sd">    use_scaffold : bool, default=False</span>
 <span class="sd">        Whether to use scaffold conditioning.</span>
 <span class="sd">    use_lstm : bool, default=False</span>
-<span class="sd">        Whether to use LSTM for encoding.</span>
+<span class="sd">        Whether to use LSTM for encoding scaffold.</span>
 <span class="sd">    lstm_layers : int, default=0</span>
 <span class="sd">        Number of LSTM layers if use_lstm is True.</span>
 <span class="sd">    batch_size : int, default=64</span>
 <span class="sd">        Batch size for training.</span>
-<span class="sd">    epochs : int, default=10</span>
+<span class="sd">    epochs : int, default=1000</span>
 <span class="sd">        Number of training epochs.</span>
 <span class="sd">    learning_rate : float, default=3e-4</span>
 <span class="sd">        Learning rate for optimizer.</span>
@@ -342,7 +342,7 @@
     
     <span class="c1"># Training parameters</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span>
-    <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>
     <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3e-4</span>
     <span class="n">adamw_betas</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)</span>
     <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>

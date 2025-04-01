@@ -285,11 +285,13 @@
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">GraphGAMolecularGenerator</span><span class="p">(</span><span class="n">BaseMolecularGenerator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This generator implements the Graph Genetic Algorithm for molecular generation.</span>
-
-<span class="sd">    Paper: `A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of Median Molecules </span>
-<span class="sd">    &lt;https://pubs.acs.org/doi/full/10.1021/ci034290p&gt;`_</span>
-
-<span class="sd">    Reference code: https://github.com/wenhao-gao/mol_opt/blob/main/main/graph_ga/run.py</span>
+<span class="sd">    </span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] A Graph-BasedGenetic Algorithm and Its Application to the Multiobjective Evolution of </span>
+<span class="sd">           Median Molecules. Journal of Chemical Information and Computer Sciences.</span>
+<span class="sd">           https://pubs.acs.org/doi/10.1021/ci034290p</span>
+<span class="sd">    .. [2] Implementation adapted from: https://github.com/wenhao-gao/mol_opt</span>
 
 <span class="sd">    :param num_task: Number of properties to condition on. Set to 0 for unconditional generation. Default is 0.</span>
 <span class="sd">    :type num_task: int</span>
@@ -303,6 +305,8 @@
 <span class="sd">    :type n_jobs: int</span>
 <span class="sd">    :param iteration: Number of iterations for each target label (or random sample) to run the genetic algorithm. Default is 5.</span>
 <span class="sd">    :type iteration: int</span>
+<span class="sd">    :param verbose: Whether to display progress bars and logs. Default is False.</span>
+<span class="sd">    :type verbose: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># GA parameters</span>

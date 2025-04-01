@@ -284,15 +284,16 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This generator implements the DiGress model for unconditional molecular generation.</span>
 
-<span class="sd">    Paper: `DiGress: Discrete Denoising diffusion for graph generation &lt;https://openreview.net/forum?id=UaAD-Nu86WX&gt;`_</span>
-<span class="sd">    Reference Code: `GitHub Repository &lt;https://github.com/cvignac/DiGress&gt;`_</span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] DiGress: Discrete Denoising diffusion for graph generation. International Conference on </span>
+<span class="sd">           Learning Representations (ICLR) 2023. https://openreview.net/forum?id=UaAD-Nu86WX</span>
+<span class="sd">    .. [2] Adapted from: https://github.com/cvignac/DiGress</span>
 
 <span class="sd">    :param hidden_size_X: Hidden dimension size for node features, defaults to 256</span>
 <span class="sd">    :type hidden_size_X: int, optional</span>
 <span class="sd">    :param hidden_size_E: Hidden dimension size for edge features, defaults to 128</span>
 <span class="sd">    :type hidden_size_E: int, optional</span>
-<span class="sd">    :param hidden_size_y: Hidden dimension size for condition features, defaults to 128</span>
-<span class="sd">    :type hidden_size_y: int, optional</span>
 <span class="sd">    :param num_layer: Number of transformer layers, defaults to 5</span>
 <span class="sd">    :type num_layer: int, optional</span>
 <span class="sd">    :param n_head: Number of attention heads, defaults to 8</span>
@@ -317,15 +318,17 @@
 <span class="sd">    :type lw_E: float, optional</span>
 <span class="sd">    :param use_lr_scheduler: Whether to use learning rate scheduler, defaults to False</span>
 <span class="sd">    :type use_lr_scheduler: bool, optional</span>
-<span class="sd">    :param scheduler_factor: Factor for learning rate scheduler, defaults to 0.5</span>
+<span class="sd">    :param scheduler_factor: Factor for learning rate scheduler (if use_lr_scheduler is True), defaults to 0.5 </span>
 <span class="sd">    :type scheduler_factor: float, optional</span>
-<span class="sd">    :param scheduler_patience: Patience for learning rate scheduler, defaults to 5</span>
+<span class="sd">    :param scheduler_patience: Patience for learning rate scheduler (if use_lr_scheduler is True), defaults to 5</span>
 <span class="sd">    :type scheduler_patience: int, optional</span>
+<span class="sd">    :param verbose: Whether to display progress bars and logs. Default is False.</span>
+<span class="sd">    :type verbose: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="c1"># Model parameters</span>
     <span class="n">hidden_size_X</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span>
     <span class="n">hidden_size_E</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span>
-    <span class="n">hidden_size_y</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span>
     <span class="n">num_layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="n">n_head</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span>
     <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>
@@ -361,7 +364,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">input_dim_X</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_dim_E</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_dim_y</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_node</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size_y</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_node</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -383,7 +387,6 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;num_layer&quot;</span><span class="p">,</span>  <span class="s2">&quot;input_dim_X&quot;</span><span class="p">,</span> <span class="s2">&quot;input_dim_E&quot;</span><span class="p">,</span> <span class="s2">&quot;input_dim_y&quot;</span><span class="p">,</span> 
                   <span class="s2">&quot;hidden_size_X&quot;</span><span class="p">,</span> <span class="s2">&quot;hidden_size_E&quot;</span><span class="p">,</span> <span class="s2">&quot;hidden_size_y&quot;</span><span class="p">,</span> <span class="s2">&quot;n_head&quot;</span><span class="p">,</span> <span class="s2">&quot;dropout&quot;</span><span class="p">]</span>
-        <span class="c1"># def __init__(self, num_layer: int, input_dim_X: int, input_dim_E: int, input_dim_y: int, hidden_dim_X: int, hidden_dim_E: int, hidden_dim_y: int, dropout: float):</span>
 
         <span class="k">if</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;hyperparameters&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">checkpoint</span><span class="p">:</span>

@@ -268,6 +268,31 @@
         <article role="main" id="furo-main-content">
           <section id="molecular-encoder-models">
 <h1>Molecular Encoder Models<a class="headerlink" href="#molecular-encoder-models" title="Link to this heading">¶</a></h1>
+<p>The encoder models inherit from the <a class="reference internal" href="base.html#torch_molecule.base.encoder.BaseMolecularEncoder" title="torch_molecule.base.encoder.BaseMolecularEncoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_molecule.base.encoder.BaseMolecularEncoder</span></code></a> class and share common methods for model pretraining and encoding, as well as model persistence.</p>
+<section id="common-methods">
+<h2>Common Methods<a class="headerlink" href="#common-methods" title="Link to this heading">¶</a></h2>
+<section id="training-and-encoding">
+<h3>Training and Encoding<a class="headerlink" href="#training-and-encoding" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">**kwargs)</span></code>: Pretrain the model on given data, where X contains SMILES strings</p>
+<p>Not implemented for:
+- N/A</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">encode(X,</span> <span class="pre">**kwargs)</span></code>: Encode new SMILES strings and return a dictionary containing encoded representations</p></li>
+</ul>
+</section>
+<section id="model-persistence">
+<h3>Model Persistence<a class="headerlink" href="#model-persistence" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">save_to_local(path)</span></code>: Save the trained model to a local file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load_from_local(path)</span></code>: Load a trained model from a local file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">push_to_huggingface(repo_id)</span></code>: Push the model to Hugging Face Hub</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load_from_huggingface(repo_id)</span></code>: Load a model from Hugging Face Hub</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">save</span></code>: Save the model to either local storage or Hugging Face</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load</span></code>: Load a model from either local storage or Hugging Face</p></li>
+</ul>
+</section>
+</section>
 <section id="self-supervised-molecular-representation-learning">
 <h2>Self-supervised Molecular Representation Learning<a class="headerlink" href="#self-supervised-molecular-representation-learning" title="Link to this heading">¶</a></h2>
 <p class="rubric">MoAma for Molecular Representation Learning</p>
@@ -996,6 +1021,11 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Molecular Encoder Models</a><ul>
+<li><a class="reference internal" href="#common-methods">Common Methods</a><ul>
+<li><a class="reference internal" href="#training-and-encoding">Training and Encoding</a></li>
+<li><a class="reference internal" href="#model-persistence">Model Persistence</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#self-supervised-molecular-representation-learning">Self-supervised Molecular Representation Learning</a><ul>
 <li><a class="reference internal" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.encoder.moama.MoamaMolecularEncoder.batch_size"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder.batch_size</span></code></a></li>

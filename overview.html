@@ -178,7 +178,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -260,7 +260,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -268,10 +268,27 @@
         <article role="main" id="furo-main-content">
           <section id="model-overview">
 <h1>Model Overview<a class="headerlink" href="#model-overview" title="Link to this heading">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">torch-molecule</span></code> library provides a unified interface for molecular property prediction, generation and encoding. All models inherit from the <a class="reference internal" href="api/base.html#torch_molecule.base.base.BaseModel" title="torch_molecule.base.base.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_molecule.base.base.BaseModel</span></code></a> class and share common methods for model training, evaluation and persistence.</p>
+<section id="model-persistence">
+<h2>Model Persistence<a class="headerlink" href="#model-persistence" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">load_from_local</span></code>: Load a saved model from a local file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">save_to_local</span></code>: Save the current model to a local file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load_from_huggingface</span></code>: Load a model from a Hugging Face repository</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">push_to_huggingface</span></code>: Push the current model to a Hugging Face repository</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load</span></code>: Load a model from either local storage or Hugging Face</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">save</span></code>: Save the model to either local storage or Hugging Face</p></li>
+</ul>
+<p>(For detailed API documentation of the base class, please refer to <a class="reference internal" href="api/base.html"><span class="doc">Base Modules</span></a>.)</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Molecular Predictor Models</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#common-methods">Common Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#training-and-prediction">Training and Prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#model-persistence">Model Persistence</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="api/predictor.html#modeling-molecules-as-graphs-with-graph-neural-networks">Modeling Molecules as Graphs with Graph Neural Networks</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor</span></code></a></li>
@@ -284,6 +301,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/predictor.html#modeling-molecules-as-sequences-with-rnns">Modeling Molecules as Sequences with RNNs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.smiles_transformer.modeling_transformer.SMILESTransformerMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">SMILESTransformerMolecularPredictor</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -294,13 +312,22 @@
 <p class="caption" role="heading"><span class="caption-text">Molecular Generator Models</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-as-graphs-with-graph-neural-networks">Modeling Molecules as Graphs with Graph Neural Networks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html#common-methods">Common Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/generator.html#training-and-generation">Training and Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generator.html#model-persistence">Model Persistence</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-as-graphs-with-gnn-transformer-based-generators">Modeling Molecules as Graphs with GNN / Transformer-based Generators</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/generator.html#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/generator.html#torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-with-heuristic-based-generators">Modeling Molecules with Heuristic-based Generators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-as-graphs-with-heuristic-based-generators">Modeling Molecules as Graphs with Heuristic-based Generators</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/generator.html#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-as-sequences-with-transformer-based-generators">Modeling Molecules as Sequences with Transformer-based Generators</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/generator.html#torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">MolGPTMolecularGenerator</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -311,6 +338,11 @@
 <p class="caption" role="heading"><span class="caption-text">Molecular Encoder Models</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#common-methods">Common Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#training-and-encoding">Training and Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#model-persistence">Model Persistence</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="api/encoder.html#self-supervised-molecular-representation-learning">Self-supervised Molecular Representation Learning</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder</span></code></a></li>
@@ -326,6 +358,7 @@
 </li>
 </ul>
 </div>
+</section>
 </section>
 
         </article>
@@ -371,8 +404,29 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Model Overview</a><ul>
+<li><a class="reference internal" href="#model-persistence">Model Persistence</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

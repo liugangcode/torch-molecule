@@ -33,8 +33,8 @@ DEFAULT_TRANSFORMER_SEARCH_SPACES: Dict[str, ParameterSpec] = {
 }
 
 @dataclass
-class TransformerMolecularPredictor(LSTMMolecularPredictor):
-    """This predictor implements a Transformer model for molecular property prediction tasks.
+class SMILESTransformerMolecularPredictor(LSTMMolecularPredictor):
+    """This predictor implements a Transformer model for SMILES-based molecular property predictions.
     
     Parameters
     ----------
@@ -114,7 +114,7 @@ class TransformerMolecularPredictor(LSTMMolecularPredictor):
 
     # Other parameters
     verbose: bool = False
-    model_name: str = "TransformerMolecularPredictor"
+    model_name: str = "SMILESTransformerMolecularPredictor"
     
     # Non-init fields
     fitting_loss: List[float] = field(default_factory=list, init=False)

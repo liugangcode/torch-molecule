@@ -1,4 +1,4 @@
-__version__ = "1.0.0.dev0"
+__version__ = "0.1.0.dev0"
 
 """
 predictor module
@@ -11,7 +11,7 @@ from .predictor.ssr import SSRMolecularPredictor
 from .predictor.dir import DIRMolecularPredictor
 from .predictor.rpgnn import RPGNNMolecularPredictor
 from .predictor.lstm import LSTMMolecularPredictor
-from .predictor.transformer import TransformerMolecularPredictor
+from .predictor.smiles_transformer import SMILESTransformerMolecularPredictor
 """
 encoder module
 """
@@ -38,7 +38,7 @@ __all__ = [
     'DIRMolecularPredictor',
     'RPGNNMolecularPredictor',
     'LSTMMolecularPredictor',
-    'TransformerMolecularPredictor',
+    'SMILESTransformerMolecularPredictor',
     # encoders
     'SupervisedMolecularEncoder',
     'AttrMaskMolecularEncoder',

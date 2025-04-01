@@ -283,8 +283,23 @@
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">RPGNNMolecularPredictor</span><span class="p">(</span><span class="n">GNNMolecularPredictor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a GNN model based on Relational pooling.</span>
-<span class="sd">    Paper: Relational Pooling for Graph Representations (https://arxiv.org/abs/1903.02541)</span>
-<span class="sd">    Reference Code: https://github.com/PurdueMINDS/RelationalPooling/tree/master?tab=readme-ov-file</span>
+
+<span class="sd">    The full name of RPGNN is Relational Pooling for Graph Representations.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    - Relational Pooling for Graph Representations.</span>
+<span class="sd">      https://arxiv.org/abs/1903.02541</span>
+<span class="sd">    - Reference Code: https://github.com/PurdueMINDS/RelationalPooling/tree/master?tab=readme-ov-file</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_perm : int, default=3</span>
+<span class="sd">        TODO: Add description</span>
+<span class="sd">    fixed_size : int, default=10 </span>
+<span class="sd">        TODO: Add description</span>
+<span class="sd">    num_node_feature : int, default=9</span>
+<span class="sd">        TODO: Add description</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="c1"># RPGNN-specific parameter</span>

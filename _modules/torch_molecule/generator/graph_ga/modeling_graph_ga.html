@@ -288,25 +288,27 @@
 <span class="sd">    </span>
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    .. [1] A Graph-BasedGenetic Algorithm and Its Application to the Multiobjective Evolution of </span>
+<span class="sd">    - A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of </span>
 <span class="sd">           Median Molecules. Journal of Chemical Information and Computer Sciences.</span>
 <span class="sd">           https://pubs.acs.org/doi/10.1021/ci034290p</span>
-<span class="sd">    .. [2] Implementation adapted from: https://github.com/wenhao-gao/mol_opt</span>
+<span class="sd">    - Implementation: https://github.com/wenhao-gao/mol_opt</span>
 
-<span class="sd">    :param num_task: Number of properties to condition on. Set to 0 for unconditional generation. Default is 0.</span>
-<span class="sd">    :type num_task: int</span>
-<span class="sd">    :param population_size: Size of the population in each iteration. Default is 100.</span>
-<span class="sd">    :type population_size: int</span>
-<span class="sd">    :param offspring_size: Number of offspring molecules to generate in each iteration. Default is 50.</span>
-<span class="sd">    :type offspring_size: int</span>
-<span class="sd">    :param mutation_rate: Probability of mutation occurring during reproduction. Default is 0.0067.</span>
-<span class="sd">    :type mutation_rate: float</span>
-<span class="sd">    :param n_jobs: Number of parallel jobs to run. -1 means using all processors. Default is 1.</span>
-<span class="sd">    :type n_jobs: int</span>
-<span class="sd">    :param iteration: Number of iterations for each target label (or random sample) to run the genetic algorithm. Default is 5.</span>
-<span class="sd">    :type iteration: int</span>
-<span class="sd">    :param verbose: Whether to display progress bars and logs. Default is False.</span>
-<span class="sd">    :type verbose: bool</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_task : int, default=0</span>
+<span class="sd">        Number of properties to condition on. Set to 0 for unconditional generation.</span>
+<span class="sd">    population_size : int, default=100</span>
+<span class="sd">        Size of the population in each iteration.</span>
+<span class="sd">    offspring_size : int, default=50</span>
+<span class="sd">        Number of offspring molecules to generate in each iteration.</span>
+<span class="sd">    mutation_rate : float, default=0.0067</span>
+<span class="sd">        Probability of mutation occurring during reproduction.</span>
+<span class="sd">    n_jobs : int, default=1</span>
+<span class="sd">        Number of parallel jobs to run. -1 means using all processors.</span>
+<span class="sd">    iteration : int, default=5</span>
+<span class="sd">        Number of iterations for each target label (or random sample) to run the genetic algorithm.</span>
+<span class="sd">    verbose : bool, default=False</span>
+<span class="sd">        Whether to display progress bars and logs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># GA parameters</span>

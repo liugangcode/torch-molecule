@@ -298,6 +298,11 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">LSTMMolecularPredictor</span><span class="p">(</span><span class="n">BaseMolecularPredictor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a LSTM model for molecular property prediction tasks.</span>
 
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    - Predicting Polymers&#39; Glass Transition Temperature by a Chemical Language Processing Model.</span>
+<span class="sd">      https://www.semanticscholar.org/reader/f43ed533b2520567be2d8c24f6396f4e63e96430</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    num_task : int, default=1</span>
@@ -337,14 +342,6 @@
 <span class="sd">    verbose : bool, default=False</span>
 <span class="sd">        Whether to print progress information during training.</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    This implementation is based on the paper &quot;Predicting Polymers&#39; Glass Transition </span>
-<span class="sd">    Temperature by a Chemical Language Processing Model&quot;.</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. [1] https://www.semanticscholar.org/reader/f43ed533b2520567be2d8c24f6396f4e63e96430</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Model parameters</span>
     <span class="n">num_task</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>

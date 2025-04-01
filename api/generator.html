@@ -269,33 +269,27 @@
           <section id="molecular-generation-models">
 <h1>Molecular Generation Models<a class="headerlink" href="#molecular-generation-models" title="Link to this heading">¶</a></h1>
 <p>The generator models inherit from the <a class="reference internal" href="base.html#torch_molecule.base.generator.BaseMolecularGenerator" title="torch_molecule.base.generator.BaseMolecularGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_molecule.base.generator.BaseMolecularGenerator</span></code></a> class and share common methods for model training, generation and persistence.</p>
-<section id="common-methods">
-<h2>Common Methods<a class="headerlink" href="#common-methods" title="Link to this heading">¶</a></h2>
-<section id="training-and-generation">
-<h3>Training and Generation<a class="headerlink" href="#training-and-generation" title="Link to this heading">¶</a></h3>
+<p class="rubric">Training and Generation</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">**kwargs)</span></code>: Train the model on given data, where X contains SMILES strings (y should be provided for conditional generation)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">generate(n_samples,</span> <span class="pre">**kwargs)</span></code>: Generate new molecules and return a list of SMILES strings (y should be provided for conditional generation)</p></li>
 </ul>
-</section>
-<section id="model-persistence">
-<h3>Model Persistence<a class="headerlink" href="#model-persistence" title="Link to this heading">¶</a></h3>
+<p class="rubric">Model Persistence</p>
+<p>inherited from <a class="reference internal" href="base.html#torch_molecule.base.base.BaseModel" title="torch_molecule.base.base.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_molecule.base.base.BaseModel</span></code></a></p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">save_to_local(path)</span></code>: Save the trained model to a local file</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">load_from_local(path)</span></code>: Load a trained model from a local file</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">push_to_huggingface(repo_id)</span></code>: Push the model to Hugging Face Hub</p>
 <p>Not implemented for:
-- <code class="xref py py-class docutils literal notranslate"><span class="pre">torch_molecule.generator.graph_ga.GraphGAMolecularGenerator</span></code></p>
+- <a class="reference internal" href="#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator" title="torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator</span></code></a></p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">load_from_huggingface(repo_id)</span></code>: Load a model from Hugging Face Hub</p>
 <p>Not implemented for:
-- <code class="xref py py-class docutils literal notranslate"><span class="pre">torch_molecule.generator.graph_ga.GraphGAMolecularGenerator</span></code></p>
+- <a class="reference internal" href="#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator" title="torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator</span></code></a></p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">save</span></code>: Save the model to either local storage or Hugging Face</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">load</span></code>: Load a model from either local storage or Hugging Face</p></li>
 </ul>
-</section>
-</section>
 <section id="modeling-molecules-as-graphs-with-gnn-transformer-based-generators">
 <h2>Modeling Molecules as Graphs with GNN / Transformer-based Generators<a class="headerlink" href="#modeling-molecules-as-graphs-with-gnn-transformer-based-generators" title="Link to this heading">¶</a></h2>
 <p class="rubric">GraphDiT for Un/Multi-conditional Molecular Generation</p>
@@ -303,21 +297,14 @@
 <dt class="sig sig-object py" id="torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.generator.graph_dit.modeling_graph_dit.</span></span><span class="sig-name descname"><span class="pre">GraphDITMolecularGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device:</span> <span class="pre">~torch.device</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'GraphDITMolecularGenerator'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">1152</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_condition:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_head:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlp_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type:</span> <span class="pre">~typing.List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timesteps:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0002</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw_X:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw_E:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guide_scale:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/generator/graph_dit/modeling_graph_dit.html#GraphDITMolecularGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#torch_molecule.base.generator.BaseMolecularGenerator" title="torch_molecule.base.generator.BaseMolecularGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMolecularGenerator</span></code></a></p>
-<p>This generator implements the graph diffusion transformer for
-(multi-conditional and unconditional) molecular generation.</p>
+<p>This generator implements the graph diffusion transformer for (multi-conditional and unconditional) molecular generation.</p>
 <p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>Graph Diffusion Transformers for Multi-Conditional Molecular Generation.
+<ul class="simple">
+<li><p>Graph Diffusion Transformers for Multi-Conditional Molecular Generation.
 International Conference on Learning Representations (ICLR) 2024.
-<a class="reference external" href="https://openreview.net/forum?id=cfrDLD1wfO">https://openreview.net/forum?id=cfrDLD1wfO</a></p>
-</aside>
-<aside class="footnote brackets" id="id2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<p>Implementation: <a class="reference external" href="https://github.com/liugangcode/Graph-DiT">https://github.com/liugangcode/Graph-DiT</a></p>
-</aside>
-</aside>
+<a class="reference external" href="https://openreview.net/forum?id=cfrDLD1wfO">https://openreview.net/forum?id=cfrDLD1wfO</a></p></li>
+<li><p>Implementation: <a class="reference external" href="https://github.com/liugangcode/Graph-DiT">https://github.com/liugangcode/Graph-DiT</a></p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -386,19 +373,13 @@ the training distribution. Can be provided as:
 <dt class="sig sig-object py" id="torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.generator.digress.modeling_digress.</span></span><span class="sig-name descname"><span class="pre">DigressMolecularGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'DigressMolecularGenerator'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size_X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size_E</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_head</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timesteps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0002</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw_X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw_E</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/generator/digress/modeling_digress.html#DigressMolecularGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#torch_molecule.base.generator.BaseMolecularGenerator" title="torch_molecule.base.generator.BaseMolecularGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMolecularGenerator</span></code></a></p>
-<p>This generator implements the DiGress model for unconditional molecular generation.</p>
+<p>This generator implements the DiGress for unconditional molecular generation.</p>
 <p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id3" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>DiGress: Discrete Denoising diffusion for graph generation. International Conference on
-Learning Representations (ICLR) 2023. <a class="reference external" href="https://openreview.net/forum?id=UaAD-Nu86WX">https://openreview.net/forum?id=UaAD-Nu86WX</a></p>
-</aside>
-<aside class="footnote brackets" id="id4" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<p>Adapted from: <a class="reference external" href="https://github.com/cvignac/DiGress">https://github.com/cvignac/DiGress</a></p>
-</aside>
-</aside>
+<ul class="simple">
+<li><p>DiGress: Discrete Denoising diffusion for graph generation. International Conference on
+Learning Representations (ICLR) 2023. <a class="reference external" href="https://openreview.net/forum?id=UaAD-Nu86WX">https://openreview.net/forum?id=UaAD-Nu86WX</a></p></li>
+<li><p>Code: <a class="reference external" href="https://github.com/cvignac/DiGress">https://github.com/cvignac/DiGress</a></p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -463,28 +444,25 @@ the training distribution. Can be provided as:
 <dd><p>Bases: <a class="reference internal" href="base.html#torch_molecule.base.generator.BaseMolecularGenerator" title="torch_molecule.base.generator.BaseMolecularGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMolecularGenerator</span></code></a></p>
 <p>This generator implements the Graph Genetic Algorithm for molecular generation.</p>
 <p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id5" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>A Graph-BasedGenetic Algorithm and Its Application to the Multiobjective Evolution of
-Median Molecules. Journal of Chemical Information and Computer Sciences.
+<ul class="simple">
+<li><dl class="simple">
+<dt>A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of</dt><dd><p>Median Molecules. Journal of Chemical Information and Computer Sciences.
 <a class="reference external" href="https://pubs.acs.org/doi/10.1021/ci034290p">https://pubs.acs.org/doi/10.1021/ci034290p</a></p>
-</aside>
-<aside class="footnote brackets" id="id6" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<p>Implementation adapted from: <a class="reference external" href="https://github.com/wenhao-gao/mol_opt">https://github.com/wenhao-gao/mol_opt</a></p>
-</aside>
-</aside>
+</dd>
+</dl>
+</li>
+<li><p>Implementation: <a class="reference external" href="https://github.com/wenhao-gao/mol_opt">https://github.com/wenhao-gao/mol_opt</a></p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>num_task</strong> (<em>int</em>) – Number of properties to condition on. Set to 0 for unconditional generation. Default is 0.</p></li>
-<li><p><strong>population_size</strong> (<em>int</em>) – Size of the population in each iteration. Default is 100.</p></li>
-<li><p><strong>offspring_size</strong> (<em>int</em>) – Number of offspring molecules to generate in each iteration. Default is 50.</p></li>
-<li><p><strong>mutation_rate</strong> (<em>float</em>) – Probability of mutation occurring during reproduction. Default is 0.0067.</p></li>
-<li><p><strong>n_jobs</strong> (<em>int</em>) – Number of parallel jobs to run. -1 means using all processors. Default is 1.</p></li>
-<li><p><strong>iteration</strong> (<em>int</em>) – Number of iterations for each target label (or random sample) to run the genetic algorithm. Default is 5.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to display progress bars and logs. Default is False.</p></li>
+<li><p><strong>num_task</strong> (<em>int</em><em>, </em><em>default=0</em>) – Number of properties to condition on. Set to 0 for unconditional generation.</p></li>
+<li><p><strong>population_size</strong> (<em>int</em><em>, </em><em>default=100</em>) – Size of the population in each iteration.</p></li>
+<li><p><strong>offspring_size</strong> (<em>int</em><em>, </em><em>default=50</em>) – Number of offspring molecules to generate in each iteration.</p></li>
+<li><p><strong>mutation_rate</strong> (<em>float</em><em>, </em><em>default=0.0067</em>) – Probability of mutation occurring during reproduction.</p></li>
+<li><p><strong>n_jobs</strong> (<em>int</em><em>, </em><em>default=1</em>) – Number of parallel jobs to run. -1 means using all processors.</p></li>
+<li><p><strong>iteration</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of iterations for each target label (or random sample) to run the genetic algorithm.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to display progress bars and logs.</p></li>
 </ul>
 </dd>
 </dl>
@@ -514,17 +492,11 @@ Median Molecules. Journal of Chemical Information and Computer Sciences.
 and generate new molecules. It supports conditional generation based on properties
 and/or molecular scaffolds.</p>
 <p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id7" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>MolGPT:Molecular Generation Using a Transformer-Decoder Model. Journal of Chemical
-Information and Modeling. https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600</p>
-</aside>
-<aside class="footnote brackets" id="id8" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<p>Adapted from: <a class="reference external" href="https://github.com/devalab/molgpt">https://github.com/devalab/molgpt</a></p>
-</aside>
-</aside>
+<ul class="simple">
+<li><p>MolGPT: Molecular Generation Using a Transformer-Decoder Model. Journal of Chemical
+Information and Modeling. <a class="reference external" href="https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600">https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600</a></p></li>
+<li><p>Code: <a class="reference external" href="https://github.com/devalab/molgpt">https://github.com/devalab/molgpt</a></p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -653,11 +625,6 @@ Information and Modeling. https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Molecular Generation Models</a><ul>
-<li><a class="reference internal" href="#common-methods">Common Methods</a><ul>
-<li><a class="reference internal" href="#training-and-generation">Training and Generation</a></li>
-<li><a class="reference internal" href="#model-persistence">Model Persistence</a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#modeling-molecules-as-graphs-with-gnn-transformer-based-generators">Modeling Molecules as Graphs with GNN / Transformer-based Generators</a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.fit()</span></code></a></li>

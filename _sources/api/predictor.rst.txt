@@ -3,17 +3,16 @@ Molecular Property Prediction Models
 
 The predictor models inherit from the :class:`torch_molecule.base.predictor.BaseMolecularPredictor` class and share common methods for model training, evaluation, prediction and persistence.
 
-Common Methods
---------------
+.. rubric:: Training and Prediction
 
-Training and Prediction
-^^^^^^^^^^^^^^^^^^^^^^^
 - ``fit(X, y, **kwargs)``: Train the model on given data, where X contains SMILES strings and y contains target values
 - ``autofit(X, y, search_parameters, n_trials=50, **kwargs)``: Automatically search for optimal hyperparameters using Optuna and train the model
 - ``predict(X, **kwargs)``: Make predictions on new SMILES strings and return a dictionary containing predictions and optional uncertainty estimates
 
-Model Persistence
-^^^^^^^^^^^^^^^^^
+.. rubric:: Model Persistence
+
+inherited from :class:`torch_molecule.base.base.BaseModel`
+
 - ``save_to_local(path)``: Save the trained model to a local file
 - ``load_from_local(path)``: Load a trained model from a local file
 - ``push_to_huggingface(repo_id)``: Push the model to Hugging Face Hub

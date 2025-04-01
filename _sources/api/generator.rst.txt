@@ -3,27 +3,26 @@ Molecular Generation Models
 
 The generator models inherit from the :class:`torch_molecule.base.generator.BaseMolecularGenerator` class and share common methods for model training, generation and persistence.
 
-Common Methods
--------------
+.. rubric:: Training and Generation
 
-Training and Generation
-^^^^^^^^^^^^^^^^^^^^^^^
 - ``fit(X, **kwargs)``: Train the model on given data, where X contains SMILES strings (y should be provided for conditional generation)
 - ``generate(n_samples, **kwargs)``: Generate new molecules and return a list of SMILES strings (y should be provided for conditional generation)
 
-Model Persistence
-^^^^^^^^^^^^^^^^^
+.. rubric:: Model Persistence
+
+inherited from :class:`torch_molecule.base.base.BaseModel`
+
 - ``save_to_local(path)``: Save the trained model to a local file
 - ``load_from_local(path)``: Load a trained model from a local file
 - ``push_to_huggingface(repo_id)``: Push the model to Hugging Face Hub
 
   Not implemented for:
-  - :class:`torch_molecule.generator.graph_ga.GraphGAMolecularGenerator`
+  - :class:`torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator`
 
 - ``load_from_huggingface(repo_id)``: Load a model from Hugging Face Hub 
 
   Not implemented for:
-  - :class:`torch_molecule.generator.graph_ga.GraphGAMolecularGenerator`
+  - :class:`torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator`
 
 - ``save``: Save the model to either local storage or Hugging Face
 - ``load``: Load a model from either local storage or Hugging Face

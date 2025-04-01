@@ -282,12 +282,15 @@
 <a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">GREAMolecularPredictor</span><span class="p">(</span><span class="n">GNNMolecularPredictor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a Graph Rationalization model.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a Graph Rationalization model called GREA.</span>
 
-<span class="sd">    Paper: `Graph Rationalization with Environment-based Augmentations </span>
-<span class="sd">    &lt;https://dl.acm.org/doi/10.1145/3534678.3539347&gt;`_</span>
+<span class="sd">    The full name of GREA is Graph Rationalization with Environment-based Augmentations. During model training, it learns the rationales (explainable subgraphs) and use them for molecular property prediction tasks.</span>
 
-<span class="sd">    Reference Code: https://github.com/liugangcode/GREA</span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    - Graph Rationalization with Environment-based Augmentations.</span>
+<span class="sd">      https://dl.acm.org/doi/10.1145/3534678.3539347</span>
+<span class="sd">    - Code: https://github.com/liugangcode/GREA</span>
 
 <span class="sd">    :param gamma: GREA-specific parameter. Default is 0.4.</span>
 <span class="sd">    :type gamma: float</span>

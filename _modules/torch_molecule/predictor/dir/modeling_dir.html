@@ -282,12 +282,16 @@
 <a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">DIRMolecularPredictor</span><span class="p">(</span><span class="n">GNNMolecularPredictor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements the DIR model for discovering the invariant rationales.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements the DIR for molecular property prediction tasks.</span>
 
-<span class="sd">    Paper: `Discovering Invariant Rationales for Graph Neural Networks &lt;https://openreview.net/forum?id=hGXij5rfiHw&gt;`_</span>
-<span class="sd">    </span>
-<span class="sd">    Reference Code: https://github.com/Wuyxin/DIR-GNN</span>
-<span class="sd">    </span>
+<span class="sd">    The full name of DIR is Discovering Invariant Rationales.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    - Discovering Invariant Rationales for Graph Neural Networks.</span>
+<span class="sd">      https://openreview.net/forum?id=hGXij5rfiHw</span>
+<span class="sd">    - Code: https://github.com/Wuyxin/DIR-GNN</span>
+<span class="sd">        </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    causal_ratio : float, default=0.8</span>

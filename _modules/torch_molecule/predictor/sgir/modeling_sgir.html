@@ -285,10 +285,15 @@
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">SGIRMolecularPredictor</span><span class="p">(</span><span class="n">GREAMolecularPredictor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This predictor trains the GREA model based on pseudo-labeling and data augmentation.</span>
+<span class="sd">    This predictor implements SGIR for semi-supervised graph imbalanced regression.</span>
 
-<span class="sd">    Paper: `Semi-Supervised Graph Imbalanced Regression &lt;https://dl.acm.org/doi/10.1145/3580305.3599497&gt;`_</span>
-<span class="sd">    Reference Code: `SGIR GitHub &lt;https://github.com/liugangcode/SGIR&gt;`_</span>
+<span class="sd">    It trains the GREA model based on pseudo-labeling and data augmentation.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    - Semi-Supervised Graph Imbalanced Regression.</span>
+<span class="sd">      https://dl.acm.org/doi/10.1145/3580305.3599497</span>
+<span class="sd">    - Code: https://github.com/liugangcode/SGIR</span>
 
 <span class="sd">    :param num_anchor: Number of anchor points used to split the label space during pseudo-labeling</span>
 <span class="sd">    :type num_anchor: int, default=10</span>

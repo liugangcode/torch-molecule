@@ -15,10 +15,10 @@ inherited from :class:`torch_molecule.base.base.BaseModel`
 
 - ``save_to_local(path)``: Save the trained model to a local file
 - ``load_from_local(path)``: Load a trained model from a local file
-- ``push_to_huggingface(repo_id)``: Push the model to Hugging Face Hub
-- ``load_from_huggingface(repo_id)``: Load a model from Hugging Face Hub
-- ``save``: Save the model to either local storage or Hugging Face
-- ``load``: Load a model from either local storage or Hugging Face
+- ``save_to_hf(repo_id)``: Push the model to Hugging Face Hub
+- ``load_from_hf(repo_id, local_cache)``: Load a model from Hugging Face Hub and save it to a local file
+- ``save(path, repo_id)``: Save the model to either local storage or Hugging Face
+- ``load(path, repo_id)``: Load a model from either local storage or Hugging Face
 
 Modeling Molecules as Graphs with Graph Neural Networks 
 -------------------------------------------------------

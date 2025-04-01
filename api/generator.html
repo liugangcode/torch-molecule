@@ -279,16 +279,16 @@
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">save_to_local(path)</span></code>: Save the trained model to a local file</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">load_from_local(path)</span></code>: Load a trained model from a local file</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">push_to_huggingface(repo_id)</span></code>: Push the model to Hugging Face Hub</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">save_to_hf(repo_id)</span></code>: Push the model to Hugging Face Hub</p>
 <p>Not implemented for:
 - <a class="reference internal" href="#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator" title="torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator</span></code></a></p>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">load_from_huggingface(repo_id)</span></code>: Load a model from Hugging Face Hub</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">load_from_hf(repo_id,</span> <span class="pre">local_cache)</span></code>: Load a model from Hugging Face Hub and save it to a local file</p>
 <p>Not implemented for:
 - <a class="reference internal" href="#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator" title="torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator</span></code></a></p>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">save</span></code>: Save the model to either local storage or Hugging Face</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">load</span></code>: Load a model from either local storage or Hugging Face</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">save(path,</span> <span class="pre">repo_id)</span></code>: Save the model to either local storage or Hugging Face</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load(path,</span> <span class="pre">repo_id)</span></code>: Load a model from either local storage or Hugging Face</p></li>
 </ul>
 <section id="modeling-molecules-as-graphs-with-gnn-transformer-based-generators">
 <h2>Modeling Molecules as Graphs with GNN / Transformer-based Generators<a class="headerlink" href="#modeling-molecules-as-graphs-with-gnn-transformer-based-generators" title="Link to this heading">¶</a></h2>

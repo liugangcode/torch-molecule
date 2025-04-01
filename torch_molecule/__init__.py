@@ -11,6 +11,7 @@ from .predictor.ssr import SSRMolecularPredictor
 from .predictor.dir import DIRMolecularPredictor
 from .predictor.rpgnn import RPGNNMolecularPredictor
 from .predictor.lstm import LSTMMolecularPredictor
+from .predictor.transformer import TransformerMolecularPredictor
 """
 encoder module
 """
@@ -37,6 +38,7 @@ __all__ = [
     'DIRMolecularPredictor',
     'RPGNNMolecularPredictor',
     'LSTMMolecularPredictor',
+    'TransformerMolecularPredictor',
     # encoders
     'SupervisedMolecularEncoder',
     'AttrMaskMolecularEncoder',

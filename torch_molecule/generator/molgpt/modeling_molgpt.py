@@ -358,6 +358,7 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
             Top-k sampling parameter
         starting_token : Optional[str]
             Starting token for generation (default is 'C')
+            
         Returns
         -------
         List[str]

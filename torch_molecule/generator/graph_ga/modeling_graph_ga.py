@@ -21,24 +21,30 @@ MINIMUM = 1e-10
 @dataclass
 class GraphGAMolecularGenerator(BaseMolecularGenerator):
     """This generator implements the Graph Genetic Algorithm for molecular generation.
+    
+    References
+    ----------
+    - A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of 
+           Median Molecules. Journal of Chemical Information and Computer Sciences.
+           https://pubs.acs.org/doi/10.1021/ci034290p
+    - Implementation: https://github.com/wenhao-gao/mol_opt
 
-    Paper: `A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of Median Molecules 
-    <https://pubs.acs.org/doi/full/10.1021/ci034290p>`_
-
-    Reference code: https://github.com/wenhao-gao/mol_opt/blob/main/main/graph_ga/run.py
-
-    :param num_task: Number of properties to condition on. Set to 0 for unconditional generation. Default is 0.
-    :type num_task: int
-    :param population_size: Size of the population in each iteration. Default is 100.
-    :type population_size: int
-    :param offspring_size: Number of offspring molecules to generate in each iteration. Default is 50.
-    :type offspring_size: int
-    :param mutation_rate: Probability of mutation occurring during reproduction. Default is 0.0067.
-    :type mutation_rate: float
-    :param n_jobs: Number of parallel jobs to run. -1 means using all processors. Default is 1.
-    :type n_jobs: int
-    :param iteration: Number of iterations for each target label (or random sample) to run the genetic algorithm. Default is 5.
-    :type iteration: int
+    Parameters
+    ----------
+    num_task : int, default=0
+        Number of properties to condition on. Set to 0 for unconditional generation.
+    population_size : int, default=100
+        Size of the population in each iteration.
+    offspring_size : int, default=50
+        Number of offspring molecules to generate in each iteration.
+    mutation_rate : float, default=0.0067
+        Probability of mutation occurring during reproduction.
+    n_jobs : int, default=1
+        Number of parallel jobs to run. -1 means using all processors.
+    iteration : int, default=5
+        Number of iterations for each target label (or random sample) to run the genetic algorithm.
+    verbose : bool, default=False
+        Whether to display progress bars and logs.
     """
 
     # GA parameters

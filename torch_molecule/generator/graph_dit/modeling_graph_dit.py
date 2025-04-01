@@ -18,13 +18,14 @@ from ...utils import graph_from_smiles, graph_to_smiles
 @dataclass
 class GraphDITMolecularGenerator(BaseMolecularGenerator):
     """
-    This generator implements the graph diffusion transformer for 
-    (multi-conditional and unconditional) molecular generation.
+    This generator implements the graph diffusion transformer for (multi-conditional and unconditional) molecular generation.
 
-    Paper: Graph Diffusion Transformers for Multi-Conditional Molecular Generation 
-    (https://openreview.net/forum?id=cfrDLD1wfO)
-
-    Reference Code: https://github.com/liugangcode/Graph-DiT
+    References
+    ----------
+    - Graph Diffusion Transformers for Multi-Conditional Molecular Generation.
+      International Conference on Learning Representations (ICLR) 2024.
+      https://openreview.net/forum?id=cfrDLD1wfO
+    - Implementation: https://github.com/liugangcode/Graph-DiT
 
     Parameters
     ----------
@@ -69,6 +70,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
     verbose : bool, default=False
         Whether to display progress bars and logs
     """
+    
     # Model parameters
     num_layer: int = 6
     hidden_size: int = 1152

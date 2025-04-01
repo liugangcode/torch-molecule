@@ -14,25 +14,6 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-logger = logging.getLogger(__name__)
-
-class GPTConfig:
-    """ base GPT config, params common to all GPT versions """
-    embd_pdrop = 0.1
-    resid_pdrop = 0.1
-    attn_pdrop = 0.1
-
-    def __init__(self, vocab_size, block_size, **kwargs):
-        self.vocab_size = vocab_size
-        self.block_size = block_size
-        for k,v in kwargs.items():
-            setattr(self, k, v)
-
-class GPT1Config(GPTConfig):
-    """ GPT-1 like network roughly 125M params """
-    n_layer = 12
-    n_head = 12
-    n_embd = 768
 
 class CausalSelfAttention(nn.Module):
     """
@@ -43,23 +24,23 @@ class CausalSelfAttention(nn.Module):
 
     def __init__(self, config):
         super().__init__()
-        assert config.n_embd % config.n_head == 0
+        assert config.hidden_size % config.num_head == 0
         # key, query, value projections for all heads
-        self.key = nn.Linear(config.n_embd, config.n_embd)
-        self.query = nn.Linear(config.n_embd, config.n_embd)
-        self.value = nn.Linear(config.n_embd, config.n_embd)
+        self.key = nn.Linear(config.hidden_size, config.hidden_size)
+        self.query = nn.Linear(config.hidden_size, config.hidden_size)
+        self.value = nn.Linear(config.hidden_size, config.hidden_size)
         # regularization
         self.attn_drop = nn.Dropout(config.attn_pdrop)
         self.resid_drop = nn.Dropout(config.resid_pdrop)
         # output projection
-        self.proj = nn.Linear(config.n_embd, config.n_embd)
+        self.proj = nn.Linear(config.hidden_size, config.hidden_size)
         # causal mask to ensure that attention is only applied to the left in the input sequence
-        num = int(bool(config.num_props)) + int(config.scaffold_maxlen)   #int(config.lstm_layers)    #  int(config.scaffold) 
+        num = int(bool(config.num_task)) + int(config.scaffold_maxlen)   #int(config.lstm_layers)    #  int(config.use_scaffold) 
         # num = 1
-        self.register_buffer("mask", torch.tril(torch.ones(config.block_size + num, config.block_size + num))
-                                     .view(1, 1, config.block_size + num, config.block_size + num))
+        self.register_buffer("mask", torch.tril(torch.ones(config.max_len + num, config.max_len + num))
+                                     .view(1, 1, config.max_len + num, config.max_len + num))
 
-        self.n_head = config.n_head
+        self.n_head = config.num_head
 
     def forward(self, x, layer_past=None):
         B, T, C = x.size()
@@ -87,13 +68,13 @@ class Block(nn.Module):
 
     def __init__(self, config):
         super().__init__()
-        self.ln1 = nn.LayerNorm(config.n_embd)
-        self.ln2 = nn.LayerNorm(config.n_embd)
+        self.ln1 = nn.LayerNorm(config.hidden_size)
+        self.ln2 = nn.LayerNorm(config.hidden_size)
         self.attn = CausalSelfAttention(config)
         self.mlp = nn.Sequential(
-            nn.Linear(config.n_embd, 4 * config.n_embd),
+            nn.Linear(config.hidden_size, 4 * config.hidden_size),
             nn.GELU(),
-            nn.Linear(4 * config.n_embd, config.n_embd),
+            nn.Linear(4 * config.hidden_size, config.hidden_size),
             nn.Dropout(config.resid_pdrop),
         )
 
@@ -103,37 +84,52 @@ class Block(nn.Module):
         x = x + self.mlp(self.ln2(x))
         return x, attn
 
-class GPT(nn.Module):
-    """  the full GPT language model, with a context size of block_size """
+class GPTConfig:
+    """ base GPT config, params common to all GPT versions """
+    embd_pdrop = 0.1
+    resid_pdrop = 0.1
+    attn_pdrop = 0.1
 
-    def __init__(self, config):
+    def __init__(self, vocab_size, max_len, **kwargs):
+        self.vocab_size = vocab_size
+        self.max_len = max_len
+        for k,v in kwargs.items():
+            setattr(self, k, v)
+
+class GPT(nn.Module):
+    """  the full GPT language model, with a context size of max_len """
+
+    def __init__(self, vocab_size, max_len, num_task, num_layer, num_head, hidden_size, use_scaffold, scaffold_maxlen, use_lstm, lstm_layers):
         super().__init__()
+        config = GPTConfig(vocab_size, max_len, num_task = num_task, num_layer = num_layer, num_head = num_head, hidden_size = hidden_size, use_scaffold = use_scaffold, scaffold_maxlen = scaffold_maxlen, use_lstm = use_lstm, lstm_layers = lstm_layers)
 
         # input embedding stem
         self.config = config
-        self.tok_emb = nn.Embedding(config.vocab_size, config.n_embd)
-        self.type_emb = nn.Embedding(2, config.n_embd)
-        if config.num_props:
-            self.prop_nn = nn.Linear(config.num_props, config.n_embd)
+        self.tok_emb = nn.Embedding(config.vocab_size, config.hidden_size)
+        self.type_emb = nn.Embedding(2, config.hidden_size)
+        if config.num_task:
+            self.prop_nn = nn.Linear(config.num_task, config.hidden_size)
      
-        self.pos_emb = nn.Parameter(torch.zeros(1, config.block_size, config.n_embd))
+        self.pos_emb = nn.Parameter(torch.zeros(1, config.max_len, config.hidden_size))
         self.drop = nn.Dropout(config.embd_pdrop)
         # transformer
-        self.blocks = nn.Sequential(*[Block(config) for _ in range(config.n_layer)])
+        self.blocks = nn.Sequential(*[Block(config) for _ in range(config.num_layer)])
         # decoder head
-        self.ln_f = nn.LayerNorm(config.n_embd)
-        self.head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
+        self.ln_f = nn.LayerNorm(config.hidden_size)
+        self.head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
-        self.block_size = config.block_size
+        self.max_len = config.max_len
 
-        if config.lstm:
-            self.lstm = nn.LSTM(input_size = config.n_embd, hidden_size = config.n_embd, num_layers = config.lstm_layers, dropout = 0.3, bidirectional = False)
+        if config.use_lstm:
+            self.lstm = nn.LSTM(input_size = config.hidden_size, hidden_size = config.hidden_size, num_layers = config.lstm_layers, dropout = 0.3, bidirectional = False)
+    
+    def get_max_len(self):
+        return self.max_len
+
+    def initialize_parameters(self, seed=None):
+        if seed is not None:
+            torch.manual_seed(seed)
         self.apply(self._init_weights)
-
-        logger.info("number of parameters: %e", sum(p.numel() for p in self.parameters()))
-
-    def get_block_size(self):
-        return self.block_size
 
     def _init_weights(self, module):
         if isinstance(module, (nn.Linear, nn.Embedding)):
@@ -184,18 +180,23 @@ class GPT(nn.Module):
 
         # create the pytorch optimizer object
         optim_groups = [
-            {"params": [param_dict[pn] for pn in sorted(list(decay))], "weight_decay": train_config.weight_decay},
+            {"params": [param_dict[pn] for pn in sorted(list(decay))], "weight_decay": train_config["weight_decay"]},
             {"params": [param_dict[pn] for pn in sorted(list(no_decay))], "weight_decay": 0.0},
         ]
-        optimizer = torch.optim.AdamW(optim_groups, lr=train_config.learning_rate, betas=train_config.betas)
+        optimizer = torch.optim.AdamW(optim_groups, lr=train_config["learning_rate"], betas=train_config["betas"])
         return optimizer
+
+    def compute_loss(self, x, targets, prop = None, scaffold = None):
+        logits, attn_maps = self.forward(x, targets, prop, scaffold)
+        loss = F.cross_entropy(logits.reshape(-1, logits.size(-1)), targets.view(-1))
+        return loss
 
     def forward(self, idx, targets=None, prop = None, scaffold = None):
         b, t = idx.size()
-        assert t <= self.block_size, "Cannot forward, model block size is exhausted."
+        assert t <= self.max_len, "Cannot forward, model max_len is exhausted."
 
-        if self.config.num_props:
-            assert prop.size(-1) == self.config.num_props, "Num_props should be equal to last dim of property vector"           
+        if self.config.num_task:
+            assert prop.size(-1) == self.config.num_task, "num_task should be equal to last dim of property vector"           
 
         # forward the GPT model
         token_embeddings = self.tok_emb(idx) # each index maps to a (learnable) vector
@@ -203,7 +204,7 @@ class GPT(nn.Module):
         type_embeddings = self.type_emb(torch.ones((b,t), dtype = torch.long, device = idx.device))
         x = self.drop(token_embeddings + position_embeddings + type_embeddings)
 
-        if self.config.num_props:
+        if self.config.num_task:
             type_embd = self.type_emb(torch.zeros((b, 1), dtype = torch.long, device = idx.device))
             if prop.ndim == 2:
                 p = self.prop_nn(prop.unsqueeze(1))    # for single property
@@ -212,16 +213,16 @@ class GPT(nn.Module):
             p += type_embd
             x = torch.cat([p, x], 1)
 
-        if self.config.scaffold:
+        if self.config.use_scaffold:
             type_embd = self.type_emb(torch.zeros((b, 1), dtype = torch.long, device = idx.device))
 
             scaffold_embeds = self.tok_emb(scaffold)     # .mean(1, keepdim = True)
-            if self.config.lstm:
+            if self.config.use_lstm:
                 scaffold_embeds = self.lstm(scaffold_embeds.permute(1,0,2))[1][0]
-                # scaffold_embeds = scaffold_embeds.reshape(scaffold_embeds.shape[1], scaffold_embeds.shape[0], 2, self.config.n_embd).mean(2)
+                # scaffold_embeds = scaffold_embeds.reshape(scaffold_embeds.shape[1], scaffold_embeds.shape[0], 2, self.config.hidden_size).mean(2)
                 scaffold_embeds = scaffold_embeds.permute(1,0,2)   # mean(0, keepdim = True)
-                # scaffold_embeds = scaffold_embeds.reshape(self.config.lstm_layers, 1, -1, self.config.n_embd)[-1].permute(1,0,2)
-                # scaffold_embeds = scaffold_embeds.reshape(scaffold_embeds.shape[1], scaffold_embeds.shape[0], self.config.n_embd)
+                # scaffold_embeds = scaffold_embeds.reshape(self.config.lstm_layers, 1, -1, self.config.hidden_size)[-1].permute(1,0,2)
+                # scaffold_embeds = scaffold_embeds.reshape(scaffold_embeds.shape[1], scaffold_embeds.shape[0], self.config.hidden_size)
             scaffold_embeds += type_embd
             x = torch.cat([scaffold_embeds, x], 1)
 
@@ -236,28 +237,15 @@ class GPT(nn.Module):
         logits = self.head(x)
 
         # print(logits.shape)
-        if self.config.num_props and self.config.scaffold:
-            num = int(bool(self.config.num_props)) + int(self.config.scaffold_maxlen)
-        elif self.config.num_props:
-            num = int(bool(self.config.num_props))
-        elif self.config.scaffold:
+        if self.config.num_task and self.config.use_scaffold:
+            num = int(bool(self.config.num_task)) + int(self.config.scaffold_maxlen)
+        elif self.config.num_task:
+            num = int(bool(self.config.num_task))
+        elif self.config.use_scaffold:
             num = int(self.config.scaffold_maxlen) 
         else:
             num = 0
 
         logits = logits[:, num:, :]
 
-
-        # if self.config.num_props or self.config.scaffold:
-
-        #     num = int(bool(self.config.num_props)) + int(self.config.scaffold_maxlen)  #int(self.config.lstm_layers)   # int(self.config.scaffold)      # int(self.config.scaffold)
-            
-
-        # print(logits.shape)
-
-        # if we are given some desired targets also calculate the loss
-        loss = None
-        if targets is not None:
-            loss = F.cross_entropy(logits.reshape(-1, logits.size(-1)), targets.view(-1))
-
-        return logits, loss, attn_maps # (num_layers, batch_size, num_heads, max_seq_len, max_seq_len)
+        return logits, attn_maps # (num_layers, batch_size, num_heads, max_seq_len, max_seq_len)

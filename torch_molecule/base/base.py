@@ -225,6 +225,7 @@ class BaseModel(ABC):
         commit_message: str = "Update model",
         hf_token: Optional[str] = None,
         private: bool = False,
+        config_filename: Optional[str] = 'config.json',
     ) -> None:
         """Save model to Hugging Face Hub.
         
@@ -244,7 +245,8 @@ class BaseModel(ABC):
             Hugging Face authentication token
         private : bool, default=False
             Whether the repository should be private
-            
+        config_filename : Optional[str], default='config.json'
+            Name of the configuration file to save to the repository
         Raises
         ------
         ValueError
@@ -261,19 +263,24 @@ class BaseModel(ABC):
             commit_message=commit_message,
             token=hf_token,
             private=private,
+            config_filename=config_filename,
         )
 
-    def load_from_hf(self, repo_id: str, path: str) -> None:
+    def load_from_hf(self, repo_id: str, local_cache: Optional[str] = None, config_filename: Optional[str] = 'config.json') -> None:
         """Load model from Hugging Face Hub.
         
         Parameters
         ----------
         repo_id : str
             Hugging Face repository ID
-        path : str
-            Path within the repository to load the model from
+        local_cache : str, default=None
+            Local path to save the model
+        config_filename : str, default='config.json'
+            Name of the configuration file to load from the repository
         """
-        HuggingFaceCheckpointManager.load_model_from_hf(self, repo_id, path)
+        if local_cache is None:
+            local_cache = 'model.pt'
+        HuggingFaceCheckpointManager.load_model_from_hf(self, repo_id, local_cache, config_filename)
 
     def save(self, path: Optional[str] = None, repo_id: Optional[str] = None, **kwargs) -> None:
         """Automatic save to either local disk or Hugging Face Hub.
@@ -292,34 +299,42 @@ class BaseModel(ABC):
         ValueError
             If path is None when repo_id is None
         """
+        # if both path and repo_id are None, raise an error
+        if path is None and repo_id is None:
+            raise ValueError("path must be provided if repo_id is not given.")
+        
         if repo_id is not None:
             self.save_to_hf(repo_id=repo_id, **kwargs)
-        else:
-            if path is None:
-                raise ValueError("path must be provided if repo_id is not given.")
+
+        if path is not None:
             self.save_to_local(path)
 
-    def load(self, path: str, repo_id: Optional[str] = None) -> None:
+    def load(self, path: Optional[str] = None, repo_id: Optional[str] = None, **kwargs) -> None:
         """Automatic load from either local disk or Hugging Face Hub.
         
         Parameters
         ----------
-        path : str
-            File path for local loading or path within the repository
+        path : Optional[str], default=None
+            File path for local loading.
         repo_id : Optional[str], default=None
-            Hugging Face repository ID for remote loading
+            Hugging Face repository ID for remote loading. If path is provided, repo_id is ignored.
+        **kwargs
+            Additional arguments passed to load_from_hf
             
         Raises
         ------
         FileNotFoundError
             If no local file is found and no repo_id is provided
         """
-        if os.path.exists(path):
-            self.load_from_local(path)
+        if path is not None:
+            if os.path.exists(path):
+                self.load_from_local(path)
+            else:
+                raise FileNotFoundError(f"No local file found at '{path}'.")
         else:
             if repo_id is None:
-                raise FileNotFoundError(f"No local file found at '{path}' and no repo_id provided.")
-            self.load_from_hf(repo_id, path)
+                raise ValueError("repo_id must be provided if path is not given.")
+            self.load_from_hf(repo_id, **kwargs)
 
     def _check_is_fitted(self) -> None:
         """Check if the model is fitted.

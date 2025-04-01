@@ -107,7 +107,7 @@ class HuggingFaceCheckpointManager:
     """Handles saving and loading of models to and from the Hugging Face Hub."""
 
     @staticmethod
-    def load_model_from_hf(model_instance, repo_id: str, path: str) -> None:
+    def load_model_from_hf(model_instance, repo_id: str, path: str, config_filename: str = "config.json") -> None:
         """Load model from Hugging Face Hub, saving locally to `path` first."""
         try:
             from huggingface_hub import hf_hub_download
@@ -129,7 +129,7 @@ class HuggingFaceCheckpointManager:
 
             hf_hub_download(
                 repo_id=repo_id,
-                filename="config.json",
+                filename=config_filename,
                 local_dir=os.path.dirname(path),
             )
 
@@ -196,6 +196,7 @@ class HuggingFaceCheckpointManager:
         commit_message: str = "Update model",
         token: Optional[str] = None,
         private: bool = False,
+        config_filename: str = "config.json",
     ) -> None:
         """Push a task-specific model checkpoint to Hugging Face Hub."""
         try:
@@ -252,8 +253,8 @@ class HuggingFaceCheckpointManager:
                     num_params=num_params,
                 )
 
-                # Save config.json
-                config_path = os.path.join(tmp_dir, "config.json")
+                # Save config file
+                config_path = os.path.join(tmp_dir, config_filename)
                 with open(config_path, "w") as f:
                     json.dump(final_config, f, indent=2)
 

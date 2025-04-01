@@ -21,8 +21,10 @@ ALLOWABLE_ENCODER_READOUTS = GNN_ENCODER_READOUTS
 class MoamaMolecularEncoder(BaseMolecularEncoder):
     """This encoder implements Motif-aware Attribute Masking for Molecular Graph Pre-training.
 
-    Paper: https://openreview.net/forum?id=uqPnesiGGi
-    Code: https://github.com/einae-nd/MoAMa-dev
+    References
+    ----------
+    - Paper: https://openreview.net/forum?id=uqPnesiGGi
+    - Code: https://github.com/einae-nd/MoAMa-dev
 
     Parameters
     ----------

@@ -1,58 +1,59 @@
 #Dictionary mapping each character to a corresponding token (integer).
 char_dic = {
-    '#': 0,  # Triple bond
-    '%': 1,  # Two-digit ring closure (e.g., "%10")
-    '(': 2,  # Branch opening
-    ')': 3,  # Branch closing
-    '*': 4,  # Wildcard atom (used in BigSMILES for polymer repeating units)
-    '+': 5,  # Positive charge
-    '-': 6,  # Negative charge
-    '0': 7,  # Ring closure digit
-    '1': 8, 
-    '2': 9, 
-    '3': 10, 
-    '4': 11, 
-    '5': 12, 
-    '6': 13, 
-    '7': 14, 
-    '8': 15, 
-    '9': 16, 
-    '=': 17,  # Double bond
-    'B': 18,  # Boron
-    'C': 19,  # Carbon
-    'F': 20,  # Fluorine
-    'G': 21,  
-    'H': 22,  # Hydrogen
-    'I': 23,  # Iodine
-    'K': 24,  
-    'L': 25,  
-    'N': 26,  # Nitrogen
-    'O': 27,  # Oxygen
-    'P': 28,  # Phosphorus
-    'S': 29,  # Sulfur
-    'T': 30,  
-    'Z': 31,  
-    '[': 32,  # Open bracket for isotopes, charges, or explicit atoms
-    ']': 33,  # Close bracket
-    'a': 34,  # Aromatic atoms
-    'b': 35,  
-    'c': 36,  # Aromatic carbon
-    'd': 37,  
-    'e': 38,  
-    'i': 39,  
-    'l': 40,  
-    'n': 41,  # Aromatic nitrogen
-    'o': 42,  # Aromatic oxygen
-    'r': 43,  
-    's': 44,  # Aromatic sulfur
-    '/': 45,  # Cis/trans stereochemistry
-    '\\': 46, # Cis/trans stereochemistry
-    '@': 47,  # Chirality
-    '.': 48,  # Disconnected structures
-    '{': 49,  # BigSMILES / CurlySMILES polymer notation
-    '}': 50,  # BigSMILES / CurlySMILES polymer notation
-    '<': 51,  # CurlySMILES syntax for polymer representations
-    '>': 52   # CurlySMILES syntax for polymer representations
+    '<pad>':0,
+    '#': 1,  # Triple bond
+    '%': 2,  # Two-digit ring closure (e.g., "%10")
+    '(': 3,  # Branch opening
+    ')': 4,  # Branch closing
+    '*': 5,  # Wildcard atom (used in BigSMILES for polymer repeating units)
+    '+': 6,  # Positive charge
+    '-': 7,  # Negative charge
+    '0': 8,  # Ring closure digit
+    '1': 9, 
+    '2': 10, 
+    '3': 11, 
+    '4': 12, 
+    '5': 13, 
+    '6': 14, 
+    '7': 15, 
+    '8': 16, 
+    '9': 17, 
+    '=': 18,  # Double bond
+    'B': 19,  # Boron
+    'C': 20,  # Carbon
+    'F': 21,  # Fluorine
+    'G': 22,  
+    'H': 23,  # Hydrogen
+    'I': 24,  # Iodine
+    'K': 25,  
+    'L': 26,  
+    'N': 27,  # Nitrogen
+    'O': 28,  # Oxygen
+    'P': 29,  # Phosphorus
+    'S': 30,  # Sulfur
+    'T': 31,  
+    'Z': 32,  
+    '[': 33,  # Open bracket for isotopes, charges, or explicit atoms
+    ']': 34,  # Close bracket
+    'a': 35,  # Aromatic atoms
+    'b': 36,  
+    'c': 37,  # Aromatic carbon
+    'd': 38,  
+    'e': 39,  
+    'i': 40,  
+    'l': 41,  
+    'n': 42,  # Aromatic nitrogen
+    'o': 43,  # Aromatic oxygen
+    'r': 44,  
+    's': 45,  # Aromatic sulfur
+    '/': 46,  # Cis/trans stereochemistry
+    '\\': 47, # Cis/trans stereochemistry
+    '@': 48,  # Chirality
+    '.': 49,  # Disconnected structures
+    '{': 50,  # BigSMILES / CurlySMILES polymer notation
+    '}': 51,  # BigSMILES / CurlySMILES polymer notation
+    '<': 52,  # CurlySMILES syntax for polymer representations
+    '>': 53   # CurlySMILES syntax for polymer representations
 }
 
 def create_tensor_dataset(string_list, input_len, pad_token=0):
@@ -69,6 +70,7 @@ def create_tensor_dataset(string_list, input_len, pad_token=0):
         List of tokens.
     """
     tokenized_list = []
+
     for s in string_list:
         # Convert each character in the string to a token
         tokens = [char_dic[char] for char in s]
@@ -77,6 +79,7 @@ def create_tensor_dataset(string_list, input_len, pad_token=0):
             tokens = tokens + [pad_token] * (input_len - len(tokens))
         else:
             tokens = tokens[:input_len]
+
         tokenized_list.append(tokens)
 
     return tokenized_list

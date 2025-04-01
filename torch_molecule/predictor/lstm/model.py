@@ -6,6 +6,45 @@ from ...utils import init_weights
 
 # Define the PyTorch-based LSTM model
 class LSTM(nn.Module):
+    """LSTM-based model for molecular property prediction.
+    
+    Parameters
+    ----------
+    num_task : int
+        Number of prediction tasks.
+    input_dim : int
+        Size of vocabulary for SMILES tokenization.
+    output_dim : int
+        Dimension of embedding vectors.
+    LSTMunits : int
+        Number of hidden units in LSTM layers.
+    max_input_len : int
+        Maximum length of input sequences.
+
+    Attributes
+    ----------
+    embedding : nn.Embedding
+        Embedding layer that converts token indices to dense vectors.
+    lstm1 : nn.LSTM
+        First bidirectional LSTM layer.
+    lstm2 : nn.LSTM
+        Second bidirectional LSTM layer.
+    timedist_dense : nn.Linear
+        Time-distributed dense layer for feature transformation.
+    relu : nn.ReLU
+        ReLU activation function.
+    fc : nn.Linear
+        Final fully connected layer for prediction.
+
+    Notes
+    -----
+    The model architecture consists of:
+    1. An embedding layer to convert tokens to vectors
+    2. Two stacked bidirectional LSTM layers
+    3. A time-distributed dense layer with ReLU activation
+    4. A final fully connected layer for prediction
+    """
+
     def __init__(self, num_task, input_dim, output_dim, LSTMunits, max_input_len):
         """
         input_dim: Vocabulary size
@@ -23,12 +62,14 @@ class LSTM(nn.Module):
         self.relu = nn.ReLU()
         self.fc = nn.Linear(hidden_dim * max_input_len, 1)
 
+
     def initialize_parameters(self, seed=None):
-        """
-        Randomly initialize all model parameters using the init_weights function.
+        """Initialize model parameters randomly.
         
-        Args:
-            seed (int, optional): Random seed for reproducibility. Defaults to None.
+        Parameters
+        ----------
+        seed : int, optional
+            Random seed for reproducibility.
         """
         if seed is not None:
             torch.manual_seed(seed)
@@ -51,6 +92,22 @@ class LSTM(nn.Module):
         self.apply(reset_parameters) 
 
     def compute_loss(self, batched_input, batched_label, criterion):
+        """Compute the loss for a batch of data.
+        
+        Parameters
+        ----------
+        batched_input : torch.Tensor
+            Batch of input sequences, shape (batch_size, seq_len).
+        batched_label : torch.Tensor
+            Batch of target values, shape (batch_size, 1).
+        criterion : callable
+            Loss function to use.
+
+        Returns
+        -------
+        torch.Tensor
+            Scalar loss value.
+        """
         emb = self.embedding(batched_input)                
         emb, _ = self.lstm1(emb)              
         emb, _ = self.lstm2(emb)              
@@ -63,6 +120,19 @@ class LSTM(nn.Module):
         return loss                 
     
     def forward(self, batched_input):
+        """Forward pass of the model.
+        
+        Parameters
+        ----------
+        batched_input : torch.Tensor
+            Batch of input sequences, shape (batch_size, seq_len).
+
+        Returns
+        -------
+        dict
+            Dictionary containing:
+                - prediction: Model predictions (shape: [batch_size, 1])
+        """
         # batched_data: (batch_size, seq_len)
         emb = self.embedding(batched_input)                   # -> (batch, seq_len, output_dim)
         emb, _ = self.lstm1(emb)                    # -> (batch, seq_len, 2*LSTMunits)

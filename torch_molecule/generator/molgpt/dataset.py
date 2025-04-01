@@ -4,7 +4,7 @@ import torch
 class SmilesDataset(Dataset):
     """Dataset for SMILES strings for MolGPT training"""
     
-    def __init__(self, data, regex, max_len , properties=None, 
+    def __init__(self, data, regex, max_len, properties=None, 
                  scaffolds=None, scaffold_maxlen=None):
         """
         Initialize the dataset.

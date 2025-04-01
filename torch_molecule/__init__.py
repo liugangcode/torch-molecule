@@ -1,4 +1,4 @@
-__version__ = "1.0.0.dev0"
+__version__ = "0.1.0.dev0"
 
 """
 predictor module
@@ -11,6 +11,7 @@ from .predictor.ssr import SSRMolecularPredictor
 from .predictor.dir import DIRMolecularPredictor
 from .predictor.rpgnn import RPGNNMolecularPredictor
 from .predictor.lstm import LSTMMolecularPredictor
+from .predictor.smiles_transformer import SMILESTransformerMolecularPredictor
 """
 encoder module
 """
@@ -26,6 +27,8 @@ generator module
 from .generator.graph_dit import GraphDITMolecularGenerator
 from .generator.graph_ga import GraphGAMolecularGenerator
 from .generator.digress import DigressMolecularGenerator
+from .generator.molgpt import MolGPTMolecularGenerator
+
 __all__ = [
     # 'BaseMolecularPredictor',
     # predictors
@@ -37,6 +40,7 @@ __all__ = [
     'DIRMolecularPredictor',
     'RPGNNMolecularPredictor',
     'LSTMMolecularPredictor',
+    'SMILESTransformerMolecularPredictor',
     # encoders
     'SupervisedMolecularEncoder',
     'AttrMaskMolecularEncoder',
@@ -47,4 +51,5 @@ __all__ = [
     'GraphDITMolecularGenerator',
     'GraphGAMolecularGenerator',
     'DigressMolecularGenerator',
+    'MolGPTMolecularGenerator',
 ]

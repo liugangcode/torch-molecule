@@ -1,8 +1,8 @@
 import numpy as np
-from torch_molecule import LSTMMolecularPredictor
+from torch_molecule import SMILESTransformerMolecularPredictor
 from torch_molecule.utils.search import ParameterType, ParameterSpec
-import torch
-def test_lstm_predictor():
+
+def test_transformer_predictor():
     # Test data
     smiles_list = [
         'CNC[C@H]1OCc2cnnn2CCCC(=O)N([C@H](C)CO)C[C@@H]1C',
@@ -14,10 +14,11 @@ def test_lstm_predictor():
 
     # 1. Basic initialization test
     print("\n=== Testing model initialization ===")
-    model = LSTMMolecularPredictor(
+    model = SMILESTransformerMolecularPredictor(
         task_type="regression",
-        output_dim=15,
-        LSTMunits=60,
+        hidden_size=128,
+        n_heads=4,
+        num_layers=2,
         batch_size=2,
         epochs=2,
         device="cpu",
@@ -40,16 +41,17 @@ def test_lstm_predictor():
     print("\n=== Testing model auto-fitting ===")
 
     search_parameters = {
-        "output_dim": ParameterSpec(ParameterType.INTEGER, (8, 32)),
-        "LSTMunits": ParameterSpec(ParameterType.INTEGER, (30, 120)),
-        # Float-valued parameters with log scale
+        "hidden_size": ParameterSpec(ParameterType.INTEGER, (64, 128)),
+        "n_heads": ParameterSpec(ParameterType.INTEGER, (2, 4)),
+        "num_layers": ParameterSpec(ParameterType.INTEGER, (1, 3)),
+        # Float-valued parameters
         "learning_rate": ParameterSpec(ParameterType.LOG_FLOAT, (1e-4, 1e-2)),
+        "dropout": ParameterSpec(ParameterType.FLOAT, (0.0, 0.3))
     }
-    model_auto = LSTMMolecularPredictor(
+    model_auto = SMILESTransformerMolecularPredictor(
         num_task=1,
         task_type="regression",
         epochs=3,  # Small number for testing
-        # verbose=True
         verbose=True
     )
     
@@ -63,22 +65,32 @@ def test_lstm_predictor():
 
     # 5. Model saving and loading test
     print("\n=== Testing model saving and loading ===")
-    save_path = "test_model.pt"
+    save_path = "test_transformer_model.pt"
     model.save_to_local(save_path)
     print(f"Model saved to {save_path}")
 
-    print(f"Device: {torch.device('cuda' if torch.cuda.is_available() else 'cpu')}")
-    new_model = LSTMMolecularPredictor(
+    new_model = SMILESTransformerMolecularPredictor(
         task_type="regression",
-        output_dim=15,
-        LSTMunits=60,
+        hidden_size=128,
+        n_heads=4,
+        num_layers=2,
         batch_size=2,
         epochs=2,
-        # device="cpu"
-        device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        device="cpu"
     )
     new_model.load_from_local(save_path)
     print("Model loaded successfully")
+
+    # 6. Test model prediction after loading
+    print("\n=== Testing model prediction after loading ===")
+    predictions = new_model.predict(smiles_list[3:])
+    print(f"Prediction shape: {predictions['prediction'].shape}")
+    print(f"Prediction for new molecule: {predictions['prediction']}")
+
+    # 7. Compare model performance with original LSTM
+    print("\n=== Comparing Transformer with LSTM ===")
+    # This section would be expanded with actual comparison metrics in a real-world scenario
+    print("Performance comparison would be implemented here")
 
     # Clean up
     import os
@@ -87,6 +99,6 @@ def test_lstm_predictor():
         print(f"Cleaned up {save_path}")
 
 if __name__ == "__main__":
-    test_lstm_predictor()
+    test_transformer_predictor()
 
 

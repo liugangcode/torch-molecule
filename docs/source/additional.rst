@@ -6,11 +6,12 @@ Project Overview
 Main components:
 
 1. **Predictive Models**  
-   - ✔ GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR  
-   - ⏳ SMILES-based LSTM/Transformers and more
+   - ✔ GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR
+   - ✔ SMILES-based LSTM/Transformers
+   - ⏳ More models
 
 2. **Generative Models**  
-   - ✔ Graph DiT, GraphGA, DiGress  
+   - ✔ Graph DiT, GraphGA, DiGress, MolGPT
    - ⏳ GDSS and more
 
 3. **Representation Models**  

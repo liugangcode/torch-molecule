@@ -58,7 +58,10 @@ def serialize_config(obj):
         
     # Handle numpy arrays
     elif isinstance(obj, (np.ndarray, np.generic)):
-        if obj.size < 1000:
+        # If it's a single number wrapped in a numpy array, just return the number
+        if obj.size == 1:
+            return obj.item()
+        elif obj.size < 1000:
             return {
                 "_type": "numpy_array",
                 "data": obj.tolist(),

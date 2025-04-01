@@ -45,7 +45,10 @@ def serialize_config(obj):
         
     # Handle PyTorch tensors
     elif isinstance(obj, torch.Tensor):
-        if obj.numel() < 1000:
+        # If it's a single number wrapped in a torch tensor, just return the number
+        if obj.numel() == 1:
+            return obj.item()
+        elif obj.numel() < 1000:
             return {
                 "_type": "torch_tensor",
                 "data": obj.detach().cpu().tolist(),

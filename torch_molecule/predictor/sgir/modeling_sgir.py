@@ -21,10 +21,15 @@ from ...utils.search import (
 @dataclass
 class SGIRMolecularPredictor(GREAMolecularPredictor):
     """
-    This predictor trains the GREA model based on pseudo-labeling and data augmentation.
+    This predictor implements SGIR for semi-supervised graph imbalanced regression.
 
-    Paper: `Semi-Supervised Graph Imbalanced Regression <https://dl.acm.org/doi/10.1145/3580305.3599497>`_
-    Reference Code: `SGIR GitHub <https://github.com/liugangcode/SGIR>`_
+    It trains the GREA model based on pseudo-labeling and data augmentation.
+
+    References
+    ----------
+    - Semi-Supervised Graph Imbalanced Regression.
+      https://dl.acm.org/doi/10.1145/3580305.3599497
+    - Code: https://github.com/liugangcode/SGIR
 
     :param num_anchor: Number of anchor points used to split the label space during pseudo-labeling
     :type num_anchor: int, default=10

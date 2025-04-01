@@ -19,8 +19,23 @@ from ...utils.search import (
 @dataclass
 class RPGNNMolecularPredictor(GNNMolecularPredictor):
     """This predictor implements a GNN model based on Relational pooling.
-    Paper: Relational Pooling for Graph Representations (https://arxiv.org/abs/1903.02541)
-    Reference Code: https://github.com/PurdueMINDS/RelationalPooling/tree/master?tab=readme-ov-file
+
+    The full name of RPGNN is Relational Pooling for Graph Representations.
+
+    References
+    ----------
+    - Relational Pooling for Graph Representations.
+      https://arxiv.org/abs/1903.02541
+    - Reference Code: https://github.com/PurdueMINDS/RelationalPooling/tree/master?tab=readme-ov-file
+
+    Parameters
+    ----------
+    num_perm : int, default=3
+        TODO: Add description
+    fixed_size : int, default=10 
+        TODO: Add description
+    num_node_feature : int, default=9
+        TODO: Add description
     """
     
     # RPGNN-specific parameter

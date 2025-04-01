@@ -3,11 +3,8 @@ Molecular Encoder Models
 
 The encoder models inherit from the :class:`torch_molecule.base.encoder.BaseMolecularEncoder` class and share common methods for model pretraining and encoding, as well as model persistence.
 
-Common Methods
---------------
+.. rubric:: Training and Encoding
 
-Training and Encoding
-^^^^^^^^^^^^^^^^^^^^^^^
 - ``fit(X, **kwargs)``: Pretrain the model on given data, where X contains SMILES strings
 
   Not implemented for:
@@ -15,8 +12,10 @@ Training and Encoding
 
 - ``encode(X, **kwargs)``: Encode new SMILES strings and return a dictionary containing encoded representations
 
-Model Persistence
-^^^^^^^^^^^^^^^^^
+.. rubric:: Model Persistence
+
+inherited from :class:`torch_molecule.base.base.BaseModel`
+
 - ``save_to_local(path)``: Save the trained model to a local file
 - ``load_from_local(path)``: Load a trained model from a local file
 - ``push_to_huggingface(repo_id)``: Push the model to Hugging Face Hub

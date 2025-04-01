@@ -34,6 +34,11 @@ DEFAULT_LSTM_SEARCH_SPACES: Dict[str, ParameterSpec] = {
 class LSTMMolecularPredictor(BaseMolecularPredictor):
     """This predictor implements a LSTM model for molecular property prediction tasks.
 
+    References
+    ----------
+    - Predicting Polymers' Glass Transition Temperature by a Chemical Language Processing Model.
+      https://www.semanticscholar.org/reader/f43ed533b2520567be2d8c24f6396f4e63e96430
+
     Parameters
     ----------
     num_task : int, default=1
@@ -73,14 +78,6 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
     verbose : bool, default=False
         Whether to print progress information during training.
 
-    Notes
-    -----
-    This implementation is based on the paper "Predicting Polymers' Glass Transition 
-    Temperature by a Chemical Language Processing Model".
-
-    References
-    ----------
-    .. [1] https://www.semanticscholar.org/reader/f43ed533b2520567be2d8c24f6396f4e63e96430
     """
     # Model parameters
     num_task: int = 1

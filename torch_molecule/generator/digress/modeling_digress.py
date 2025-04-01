@@ -18,13 +18,13 @@ from ...utils import graph_from_smiles, graph_to_smiles
 @dataclass
 class DigressMolecularGenerator(BaseMolecularGenerator):
     """
-    This generator implements the DiGress model for unconditional molecular generation.
+    This generator implements the DiGress for unconditional molecular generation.
 
     References
     ----------
-    .. [1] DiGress: Discrete Denoising diffusion for graph generation. International Conference on 
-           Learning Representations (ICLR) 2023. https://openreview.net/forum?id=UaAD-Nu86WX
-    .. [2] Adapted from: https://github.com/cvignac/DiGress
+    - DiGress: Discrete Denoising diffusion for graph generation. International Conference on 
+      Learning Representations (ICLR) 2023. https://openreview.net/forum?id=UaAD-Nu86WX
+    - Code: https://github.com/cvignac/DiGress
 
     :param hidden_size_X: Hidden dimension size for node features, defaults to 256
     :type hidden_size_X: int, optional

@@ -18,15 +18,14 @@ from ...utils import graph_from_smiles, graph_to_smiles
 @dataclass
 class GraphDITMolecularGenerator(BaseMolecularGenerator):
     """
-    This generator implements the graph diffusion transformer for 
-    (multi-conditional and unconditional) molecular generation.
+    This generator implements the graph diffusion transformer for (multi-conditional and unconditional) molecular generation.
 
     References
     ----------
-    .. [1] Graph Diffusion Transformers for Multi-Conditional Molecular Generation.
-           International Conference on Learning Representations (ICLR) 2024.
-           https://openreview.net/forum?id=cfrDLD1wfO
-    .. [2] Implementation: https://github.com/liugangcode/Graph-DiT
+    - Graph Diffusion Transformers for Multi-Conditional Molecular Generation.
+      International Conference on Learning Representations (ICLR) 2024.
+      https://openreview.net/forum?id=cfrDLD1wfO
+    - Implementation: https://github.com/liugangcode/Graph-DiT
 
     Parameters
     ----------

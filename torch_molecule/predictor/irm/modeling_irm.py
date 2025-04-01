@@ -21,9 +21,14 @@ from ...utils.search import (
 class IRMMolecularPredictor(GNNMolecularPredictor):
     """This predictor implements a Invariant Risk Minimization model with the GNN.
     
-    Paper: `Invariant Risk Minimization <https://arxiv.org/abs/1907.02893>`_
+    The full name of IRM is Invariant Risk Minimization.
 
-    Reference Code: https://github.com/facebookresearch/InvariantRiskMinimization
+    References
+    ----------
+    - Invariant Risk Minimization.
+      https://arxiv.org/abs/1907.02893
+
+    - Reference Code: https://github.com/facebookresearch/InvariantRiskMinimization
     
     Parameters
     ----------

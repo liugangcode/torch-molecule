@@ -36,6 +36,11 @@ DEFAULT_TRANSFORMER_SEARCH_SPACES: Dict[str, ParameterSpec] = {
 class SMILESTransformerMolecularPredictor(LSTMMolecularPredictor):
     """This predictor implements a Transformer model for SMILES-based molecular property predictions.
     
+    Notes
+    -----
+    This implementation uses a transformer encoder architecture to learn
+    representations of molecular structures from SMILES strings.
+
     Parameters
     ----------
     num_task : int, default=1
@@ -80,11 +85,6 @@ class SMILESTransformerMolecularPredictor(LSTMMolecularPredictor):
         Number of epochs with no improvement after which learning rate will be reduced.
     verbose : bool, default=False
         Whether to print progress information during training.
-
-    Notes
-    -----
-    This implementation uses a transformer encoder architecture to learn
-    representations of molecular structures from SMILES strings.
     """
     # Model parameters
     num_task: int = 1

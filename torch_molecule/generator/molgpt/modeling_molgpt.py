@@ -26,9 +26,9 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
     
     References
     ----------
-    .. [1] MolGPT:Molecular Generation Using a Transformer-Decoder Model. Journal of Chemical 
-           Information and Modeling. https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600
-    .. [2] Adapted from: https://github.com/devalab/molgpt
+    - MolGPT: Molecular Generation Using a Transformer-Decoder Model. Journal of Chemical 
+      Information and Modeling. https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600
+    - Code: https://github.com/devalab/molgpt
 
     Parameters
     ----------

@@ -21,8 +21,12 @@ from ...utils.search import (
 @dataclass
 class SSRMolecularPredictor(GNNMolecularPredictor):
     """This predictor implements a SizeShiftReg model with the GNN.
-    Paper: SizeShiftReg: a Regularization Method for Improving Size-Generalization in Graph Neural Networks (https://arxiv.org/abs/2207.07888)
-    Reference Code: https://github.com/DavideBuffelli/SizeShiftReg/tree/main
+    
+    References
+    ----------
+    - Paper: SizeShiftReg: a Regularization Method for Improving Size-Generalization in Graph Neural Networks.
+      https://arxiv.org/abs/2207.07888
+    - Reference Code: https://github.com/DavideBuffelli/SizeShiftReg/tree/main
     
     Parameters
     ----------

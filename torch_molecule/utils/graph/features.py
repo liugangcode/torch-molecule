@@ -1,6 +1,6 @@
 # allowable multiple choice node and edge features 
 allowable_features = {
-    'possible_atomic_num_list' : list(range(1, 120)) + ['misc'],
+    'possible_atomic_num_list' : list(range(1, 119)) + ['misc'],
     'possible_chirality_list' : [
         'CHI_UNSPECIFIED',
         'CHI_TETRAHEDRAL_CW',

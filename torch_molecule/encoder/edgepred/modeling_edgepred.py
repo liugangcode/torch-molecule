@@ -19,7 +19,43 @@ ALLOWABLE_ENCODER_READOUTS = GNN_ENCODER_READOUTS
 
 @dataclass
 class EdgePredMolecularEncoder(BaseMolecularEncoder):
-    """This encoder implements a GNN model for molecular representation learning.
+    """This encoder implements a GNN-based model for molecular representation learning
+    using the attribute masking pretraining strategy.
+
+    Parameters
+    ----------
+    num_layer : int, default=5
+        Number of GNN layers.
+    hidden_size : int, default=300
+        Dimension of hidden node features.
+    drop_ratio : float, default=0.5
+        Dropout probability.
+    norm_layer : str, default="batch_norm"
+        Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
+    encoder_type : str, default="gin-virtual"
+        Type of GNN architecture to use.
+    readout : str, default="sum"
+        Method for aggregating node features to obtain graph-level representations.
+    batch_size : int, default=128
+        Number of samples per batch for training.
+    epochs : int, default=500
+        Maximum number of training epochs.
+    learning_rate : float, default=0.001
+        Learning rate for optimizer.
+    grad_clip_value : float, optional
+        Maximum norm of gradients for gradient clipping.
+    weight_decay : float, default=0.0
+        L2 regularization strength.
+    use_lr_scheduler : bool, default=False
+        Whether to use learning rate scheduler.
+    scheduler_factor : float, default=0.5
+        Factor by which to reduce learning rate when plateau is reached.
+    scheduler_patience : int, default=5
+        Number of epochs with no improvement after which learning rate will be reduced.
+    verbose : bool, default=False
+        Whether to print progress information during training.
+    model_name : str, default="EdgePredMolecularEncoder"
+        Name of the encoder model.
     """
     # Model parameters
     num_layer: int = 5

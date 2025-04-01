@@ -31,6 +31,38 @@ class MoamaMolecularEncoder(BaseMolecularEncoder):
     lw_rec : float, default=0.5
         Weight balancing between reconstruction loss and fingerprint loss.
         Higher values emphasize reconstruction, lower values emphasize fingerprint matching.
+    num_layer : int, default=5
+        Number of GNN layers.
+    hidden_size : int, default=300
+        Dimension of hidden node features.
+    drop_ratio : float, default=0.5
+        Dropout probability.
+    norm_layer : str, default="batch_norm"
+        Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
+    encoder_type : str, default="gin-virtual"
+        Type of GNN architecture to use.
+    readout : str, default="sum"
+        Method for aggregating node features to obtain graph-level representations.
+    batch_size : int, default=128
+        Number of samples per batch for training.
+    epochs : int, default=500
+        Maximum number of training epochs.
+    learning_rate : float, default=0.001
+        Learning rate for optimizer.
+    grad_clip_value : float, optional
+        Maximum norm of gradients for gradient clipping.
+    weight_decay : float, default=0.0
+        L2 regularization strength.
+    use_lr_scheduler : bool, default=False
+        Whether to use a learning rate scheduler.
+    scheduler_factor : float, default=0.5
+        Factor by which to reduce the learning rate when plateau is detected.
+    scheduler_patience : int, default=5
+        Number of epochs with no improvement after which learning rate will be reduced.
+    verbose : bool, default=False
+        Whether to print progress information during training.
+    model_name : str, default="MoamaMolecularEncoder"
+        Name of the encoder model.
     """
     # Pretraining task parameters
     mask_rate: float = 0.15

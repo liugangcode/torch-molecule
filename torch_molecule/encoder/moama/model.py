@@ -23,7 +23,7 @@ class GNN(nn.Module):
     ):
         super(GNN, self).__init__()
         gnn_name = encoder_type.split("-")[0]
-        self.num_atom_type = 119
+        self.num_atom_type = 118
         self.hidden_size = hidden_size
         self.mask_rate = mask_rate
         self.lw_rec = lw_rec

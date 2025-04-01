@@ -14,18 +14,18 @@ inherited from :class:`torch_molecule.base.base.BaseModel`
 
 - ``save_to_local(path)``: Save the trained model to a local file
 - ``load_from_local(path)``: Load a trained model from a local file
-- ``push_to_huggingface(repo_id)``: Push the model to Hugging Face Hub
+- ``save_to_hf(repo_id)``: Push the model to Hugging Face Hub
 
   Not implemented for:
   - :class:`torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator`
 
-- ``load_from_huggingface(repo_id)``: Load a model from Hugging Face Hub 
+- ``load_from_hf(repo_id, local_cache)``: Load a model from Hugging Face Hub and save it to a local file
 
   Not implemented for:
   - :class:`torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator`
 
-- ``save``: Save the model to either local storage or Hugging Face
-- ``load``: Load a model from either local storage or Hugging Face
+- ``save(path, repo_id)``: Save the model to either local storage or Hugging Face
+- ``load(path, repo_id)``: Load a model from either local storage or Hugging Face
 
 Modeling Molecules as Graphs with GNN / Transformer-based Generators
 ---------------------------------------------------------------------

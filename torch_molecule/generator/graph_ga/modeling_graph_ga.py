@@ -21,11 +21,13 @@ MINIMUM = 1e-10
 @dataclass
 class GraphGAMolecularGenerator(BaseMolecularGenerator):
     """This generator implements the Graph Genetic Algorithm for molecular generation.
-
-    Paper: `A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of Median Molecules 
-    <https://pubs.acs.org/doi/full/10.1021/ci034290p>`_
-
-    Reference code: https://github.com/wenhao-gao/mol_opt/blob/main/main/graph_ga/run.py
+    
+    References
+    ----------
+    .. [1] A Graph-BasedGenetic Algorithm and Its Application to the Multiobjective Evolution of 
+           Median Molecules. Journal of Chemical Information and Computer Sciences.
+           https://pubs.acs.org/doi/10.1021/ci034290p
+    .. [2] Implementation adapted from: https://github.com/wenhao-gao/mol_opt
 
     :param num_task: Number of properties to condition on. Set to 0 for unconditional generation. Default is 0.
     :type num_task: int

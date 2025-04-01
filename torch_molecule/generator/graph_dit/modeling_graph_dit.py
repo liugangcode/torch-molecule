@@ -21,10 +21,13 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
     This generator implements the graph diffusion transformer for 
     (multi-conditional and unconditional) molecular generation.
 
-    Paper: Graph Diffusion Transformers for Multi-Conditional Molecular Generation 
-    (https://openreview.net/forum?id=cfrDLD1wfO)
-
-    Reference Code: https://github.com/liugangcode/Graph-DiT
+    References
+    ----------
+    .. [1] Graph Diffusion Transformers for Multi-Conditional Molecular Generation.
+           International Conference on Learning Representations (ICLR) 2024.
+           https://openreview.net/forum?id=cfrDLD1wfO
+    .. [2] Adapted from: https://github.com/liugangcode/Graph-DiT
+    """
 
     Parameters
     ----------

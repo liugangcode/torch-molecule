@@ -20,15 +20,16 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
     """
     This generator implements the DiGress model for unconditional molecular generation.
 
-    Paper: `DiGress: Discrete Denoising diffusion for graph generation <https://openreview.net/forum?id=UaAD-Nu86WX>`_
-    Reference Code: `GitHub Repository <https://github.com/cvignac/DiGress>`_
+    References
+    ----------
+    .. [1] DiGress: Discrete Denoising diffusion for graph generation. International Conference on 
+           Learning Representations (ICLR) 2023. https://openreview.net/forum?id=UaAD-Nu86WX
+    .. [2] Adapted from: https://github.com/cvignac/DiGress
 
     :param hidden_size_X: Hidden dimension size for node features, defaults to 256
     :type hidden_size_X: int, optional
     :param hidden_size_E: Hidden dimension size for edge features, defaults to 128
     :type hidden_size_E: int, optional
-    :param hidden_size_y: Hidden dimension size for condition features, defaults to 128
-    :type hidden_size_y: int, optional
     :param num_layer: Number of transformer layers, defaults to 5
     :type num_layer: int, optional
     :param n_head: Number of attention heads, defaults to 8
@@ -61,7 +62,6 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
     # Model parameters
     hidden_size_X: int = 256
     hidden_size_E: int = 128
-    hidden_size_y: int = 128
     num_layer: int = 5
     n_head: int = 8
     dropout: float = 0.1
@@ -97,7 +97,8 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
         self.input_dim_X = None
         self.input_dim_E = None
         self.input_dim_y = 1
-        self.max_node = None
+        self.hidden_size_y: int = 128
+        self.max_node: int = None
 
     @staticmethod
     def _get_param_names() -> List[str]:
@@ -119,7 +120,6 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
         params = ["num_layer",  "input_dim_X", "input_dim_E", "input_dim_y", 
                   "hidden_size_X", "hidden_size_E", "hidden_size_y", "n_head", "dropout"]
-        # def __init__(self, num_layer: int, input_dim_X: int, input_dim_E: int, input_dim_y: int, hidden_dim_X: int, hidden_dim_E: int, hidden_dim_y: int, dropout: float):
 
         if checkpoint is not None:
             if "hyperparameters" not in checkpoint:

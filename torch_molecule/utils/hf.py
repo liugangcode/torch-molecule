@@ -182,11 +182,11 @@ model.load(
     repo="{repo_id}"
 )
 
-# Make predictions
+# For predictor: Make predictions
 # predictions = model.predict(smiles_list)
-# Make generations
+# For generator: Make generations
 # generations = model.generate(n_samples)
-# Make encodings
+# For encoder: Make encodings
 # encodings = model.encode(smiles_list)
 ```
 

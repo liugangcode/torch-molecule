@@ -283,7 +283,47 @@
 <a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">AttrMaskMolecularEncoder</span><span class="p">(</span><span class="n">BaseMolecularEncoder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This encoder implements a GNN model for molecular representation learning.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This encoder implements a GNN-based model for molecular representation learning</span>
+<span class="sd">    using the attribute masking pretraining strategy.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mask_num : int, default=0</span>
+<span class="sd">        Number of atom features to mask during pretraining. If set to 0, masking is determined by `mask_rate`.</span>
+<span class="sd">    mask_rate : float, default=0.15</span>
+<span class="sd">        Proportion of atoms to mask randomly. Ignored if `mask_num` is set.</span>
+<span class="sd">    num_layer : int, default=5</span>
+<span class="sd">        Number of GNN layers.</span>
+<span class="sd">    hidden_size : int, default=300</span>
+<span class="sd">        Dimension of hidden node features.</span>
+<span class="sd">    drop_ratio : float, default=0.5</span>
+<span class="sd">        Dropout probability.</span>
+<span class="sd">    norm_layer : str, default=&quot;batch_norm&quot;</span>
+<span class="sd">        Type of normalization layer to use. One of [&quot;batch_norm&quot;, &quot;layer_norm&quot;, &quot;instance_norm&quot;, &quot;graph_norm&quot;, &quot;size_norm&quot;, &quot;pair_norm&quot;].</span>
+<span class="sd">    encoder_type : str, default=&quot;gin-virtual&quot;</span>
+<span class="sd">        Type of GNN architecture to use.</span>
+<span class="sd">    readout : str, default=&quot;sum&quot;</span>
+<span class="sd">        Method for aggregating node features to obtain graph-level representations.</span>
+<span class="sd">    batch_size : int, default=128</span>
+<span class="sd">        Number of samples per batch for training.</span>
+<span class="sd">    epochs : int, default=500</span>
+<span class="sd">        Maximum number of training epochs.</span>
+<span class="sd">    learning_rate : float, default=0.001</span>
+<span class="sd">        Learning rate for optimizer.</span>
+<span class="sd">    grad_clip_value : float, optional</span>
+<span class="sd">        Maximum norm of gradients for gradient clipping.</span>
+<span class="sd">    weight_decay : float, default=0.0</span>
+<span class="sd">        L2 regularization strength.</span>
+<span class="sd">    use_lr_scheduler : bool, default=False</span>
+<span class="sd">        Whether to use a learning rate scheduler.</span>
+<span class="sd">    scheduler_factor : float, default=0.5</span>
+<span class="sd">        Factor by which to reduce the learning rate when plateau is detected.</span>
+<span class="sd">    scheduler_patience : int, default=5</span>
+<span class="sd">        Number of epochs with no improvement after which learning rate will be reduced.</span>
+<span class="sd">    verbose : bool, default=False</span>
+<span class="sd">        Whether to print progress information during training.</span>
+<span class="sd">    model_name : str, default=&quot;AttrMaskMolecularEncoder&quot;</span>
+<span class="sd">        Name of the encoder model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Task related parameters</span>
     <span class="n">mask_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
@@ -459,6 +499,15 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Training logic for one epoch.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            train_loader: DataLoader containing training data</span>
+<span class="sd">            optimizer: Optimizer instance for model parameter updates</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: List of loss values for each training step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
         <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
 

@@ -280,7 +280,7 @@
 <span class="n">ALLOWABLE_ENCODER_READOUTS</span> <span class="o">=</span> <span class="n">GNN_ENCODER_READOUTS</span>
 
 <div class="viewcode-block" id="AttrMaskMolecularEncoder">
-<a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder">[docs]</a>
+<a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">AttrMaskMolecularEncoder</span><span class="p">(</span><span class="n">BaseMolecularEncoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This encoder implements a GNN-based model for molecular representation learning</span>
@@ -454,7 +454,7 @@
         <span class="k">return</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span>
     
 <div class="viewcode-block" id="AttrMaskMolecularEncoder.fit">
-<a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fit">[docs]</a>
+<a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -533,7 +533,7 @@
         <span class="k">return</span> <span class="n">losses</span>
 
 <div class="viewcode-block" id="AttrMaskMolecularEncoder.encode">
-<a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.encode">[docs]</a>
+<a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder.encode">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">return_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;np&quot;</span><span class="p">,</span> <span class="s2">&quot;pt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pt&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode molecules into vector representations.</span>
 

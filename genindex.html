@@ -261,7 +261,7 @@
           
 <section class="genindex-section">
   <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#W"><strong>W</strong></a></div>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a></div>
 </section>
 <section id="A" class="genindex-section">
   <h2>A</h2>
@@ -279,7 +279,7 @@
 </li>
         <li><a href="api/nn.html#torch_molecule.nn.attention.AttentionWithNodeMask">AttentionWithNodeMask (class in torch_molecule.nn.attention)</a>
 </li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder">AttrMaskMolecularEncoder (class in torch_molecule.encoder.attrmask)</a>
+        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder">AttrMaskMolecularEncoder (class in torch_molecule.encoder.attrmask.modeling_attrmask)</a>
 </li>
         <li><a href="api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor.autofit">autofit() (torch_molecule.base.predictor.BaseMolecularPredictor method)</a>
 
@@ -319,18 +319,6 @@
 </li>
         <li><a href="api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor">BaseMolecularPredictor (class in torch_molecule.base.predictor)</a>
 </li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.batch_size">batch_size (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.batch_size">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.batch_size">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.batch_size">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.batch_size">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils.html#torch_molecule.utils.graph.features.bond_feature_vector_to_dict">bond_feature_vector_to_dict() (in module torch_molecule.utils.graph.features)</a>
@@ -357,15 +345,13 @@
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.graph_to_smiles.check_valid">check_valid() (in module torch_molecule.utils.graph.graph_to_smiles)</a>
 </li>
-        <li><a href="api/nn.html#torch_molecule.nn.embedder.ClusterContinuousEmbedder">ClusterContinuousEmbedder (class in torch_molecule.nn.embedder)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/nn.html#torch_molecule.nn.embedder.ClusterContinuousEmbedder">ClusterContinuousEmbedder (class in torch_molecule.nn.embedder)</a>
+</li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.graph_to_smiles.connect_fragments">connect_fragments() (in module torch_molecule.utils.graph.graph_to_smiles)</a>
 </li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.context_size">context_size (torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder">ContextPredMolecularEncoder (class in torch_molecule.encoder.contextpred)</a>
+        <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder">ContextPredMolecularEncoder (class in torch_molecule.encoder.contextpred.modeling_contextpred)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.graph_to_smiles.correct_mol">correct_mol() (in module torch_molecule.utils.graph.graph_to_smiles)</a>
 </li>
@@ -383,24 +369,12 @@
 </li>
         <li><a href="api/base.html#torch_molecule.base.base.BaseModel.device">device (torch_molecule.base.base.BaseModel attribute)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/generator.html#torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator">DigressMolecularGenerator (class in torch_molecule.generator.digress.modeling_digress)</a>
 </li>
         <li><a href="api/predictor.html#torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor">DIRMolecularPredictor (class in torch_molecule.predictor.dir.modeling_dir)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.drop_ratio">drop_ratio (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.drop_ratio">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.drop_ratio">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.drop_ratio">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.drop_ratio">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -409,46 +383,20 @@
   <h2>E</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder">EdgePredMolecularEncoder (class in torch_molecule.encoder.edgepred)</a>
+        <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder">EdgePredMolecularEncoder (class in torch_molecule.encoder.edgepred.modeling_edgepred)</a>
 </li>
         <li><a href="api/base.html#torch_molecule.base.encoder.BaseMolecularEncoder.encode">encode() (torch_molecule.base.encoder.BaseMolecularEncoder method)</a>
 
         <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.encode">(torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder method)</a>
+          <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder.encode">(torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder method)</a>
 </li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.encode">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder method)</a>
+          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder.encode">(torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder method)</a>
 </li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.encode">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder method)</a>
+          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder.encode">(torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder method)</a>
 </li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.encode">(torch_molecule.encoder.moama.MoamaMolecularEncoder method)</a>
+          <li><a href="api/encoder.html#torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder.encode">(torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder method)</a>
 </li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.encode">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder method)</a>
-</li>
-        </ul></li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.encoder_type">encoder_type (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.encoder_type">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.encoder_type">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.encoder_type">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.encoder_type">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.epochs">epochs (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.epochs">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.epochs">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.epochs">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.epochs">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
+          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder.encode">(torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder method)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -468,15 +416,15 @@
 </li>
           <li><a href="api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor.fit">(torch_molecule.base.predictor.BaseMolecularPredictor method)</a>
 </li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.fit">(torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder method)</a>
+          <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder.fit">(torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder method)</a>
 </li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.fit">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder method)</a>
+          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder.fit">(torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder method)</a>
 </li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.fit">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder method)</a>
+          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder.fit">(torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder method)</a>
 </li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.fit">(torch_molecule.encoder.moama.MoamaMolecularEncoder method)</a>
+          <li><a href="api/encoder.html#torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder.fit">(torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder method)</a>
 </li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.fit">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder method)</a>
+          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder.fit">(torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder method)</a>
 </li>
           <li><a href="api/generator.html#torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator.fit">(torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator method)</a>
 </li>
@@ -565,14 +513,14 @@
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.graph_to_smiles.get_mol">get_mol() (in module torch_molecule.utils.graph.graph_to_smiles)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/base.html#torch_molecule.base.base.BaseModel.get_params">get_params() (torch_molecule.base.base.BaseModel method)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.features.getmaccsfingerprint">getmaccsfingerprint() (in module torch_molecule.utils.graph.features)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.features.getmorganfingerprint">getmorganfingerprint() (in module torch_molecule.utils.graph.features)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv">GINConv (class in torch_molecule.nn.gnn)</a>
 </li>
         <li><a href="api/nn.html#torch_molecule.nn.gnn.GNN_node">GNN_node (class in torch_molecule.nn.gnn)</a>
@@ -581,18 +529,6 @@
 </li>
         <li><a href="api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor">GNNMolecularPredictor (class in torch_molecule.predictor.gnn.modeling_gnn)</a>
 </li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.grad_clip_value">grad_clip_value (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.grad_clip_value">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.grad_clip_value">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.grad_clip_value">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.grad_clip_value">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.graph_from_smiles.graph_from_smiles">graph_from_smiles() (in module torch_molecule.utils.graph.graph_from_smiles)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.graph_to_smiles.graph_to_smiles">graph_to_smiles() (in module torch_molecule.utils.graph.graph_to_smiles)</a>
@@ -610,20 +546,6 @@
 <section id="H" class="genindex-section">
   <h2>H</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.hidden_size">hidden_size (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.hidden_size">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.hidden_size">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.hidden_size">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.hidden_size">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
-    </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils.html#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager">HuggingFaceCheckpointManager (class in torch_molecule.utils.checkpoint)</a>
 </li>
@@ -653,28 +575,16 @@
   <h2>L</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.learning_rate">learning_rate (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.learning_rate">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.learning_rate">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.learning_rate">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.learning_rate">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
         <li><a href="api/base.html#torch_molecule.base.base.BaseModel.load">load() (torch_molecule.base.base.BaseModel method)</a>
 </li>
         <li><a href="api/base.html#torch_molecule.base.base.BaseModel.load_from_hf">load_from_hf() (torch_molecule.base.base.BaseModel method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/base.html#torch_molecule.base.base.BaseModel.load_from_local">load_from_local() (torch_molecule.base.base.BaseModel method)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.load_model_from_hf">load_model_from_hf() (torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager static method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils.html#torch_molecule.utils.checkpoint.LocalCheckpointManager.load_model_from_local">load_model_from_local() (torch_molecule.utils.checkpoint.LocalCheckpointManager static method)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.checkpoint.LocalCheckpointManager">LocalCheckpointManager (class in torch_molecule.utils.checkpoint)</a>
@@ -682,8 +592,6 @@
         <li><a href="api/utils.html#torch_molecule.utils.search.ParameterType.LOG_FLOAT">LOG_FLOAT (torch_molecule.utils.search.ParameterType attribute)</a>
 </li>
         <li><a href="api/predictor.html#torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor">LSTMMolecularPredictor (class in torch_molecule.predictor.lstm.modeling_lstm)</a>
-</li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.lw_rec">lw_rec (torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -693,14 +601,6 @@
   <h2>M</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.mask_num">mask_num (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-</li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.mask_rate">mask_rate (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.mask_rate">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
         <li><a href="api/utils.html#torch_molecule.utils.generic.metrics.mean_absolute_error">mean_absolute_error() (in module torch_molecule.utils.generic.metrics)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.generic.metrics.mean_squared_error">mean_squared_error() (in module torch_molecule.utils.generic.metrics)</a>
@@ -715,9 +615,7 @@
         </ul></li>
         <li><a href="api/nn.html#torch_molecule.nn.mlp.MLP">MLP (class in torch_molecule.nn.mlp)</a>
 </li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder">MoamaMolecularEncoder (class in torch_molecule.encoder.moama)</a>
-</li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.mode">mode (torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
+        <li><a href="api/encoder.html#torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder">MoamaMolecularEncoder (class in torch_molecule.encoder.moama.modeling_moama)</a>
 </li>
         <li><a href="api/base.html#torch_molecule.base.base.BaseModel.model">model (torch_molecule.base.base.BaseModel attribute)</a>
 </li>
@@ -737,16 +635,6 @@
     module
 
         <ul>
-          <li><a href="api/encoder.html#module-torch_molecule.encoder.attrmask">torch_molecule.encoder.attrmask</a>
-</li>
-          <li><a href="api/encoder.html#module-torch_molecule.encoder.contextpred">torch_molecule.encoder.contextpred</a>
-</li>
-          <li><a href="api/encoder.html#module-torch_molecule.encoder.edgepred">torch_molecule.encoder.edgepred</a>
-</li>
-          <li><a href="api/encoder.html#module-torch_molecule.encoder.moama">torch_molecule.encoder.moama</a>
-</li>
-          <li><a href="api/encoder.html#module-torch_molecule.encoder.supervised">torch_molecule.encoder.supervised</a>
-</li>
           <li><a href="api/nn.html#module-torch_molecule.nn.attention">torch_molecule.nn.attention</a>
 </li>
           <li><a href="api/nn.html#module-torch_molecule.nn.embedder">torch_molecule.nn.embedder</a>
@@ -794,42 +682,8 @@
   <h2>N</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.neg_samples">neg_samples (torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.norm_layer">norm_layer (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.norm_layer">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.norm_layer">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.norm_layer">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.norm_layer">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.num_layer">num_layer (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.num_layer">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.num_layer">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.num_layer">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.num_layer">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.num_pretask">num_pretask (torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
         <li><a href="api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor.num_task">num_task (torch_molecule.base.predictor.BaseMolecularPredictor attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.num_task">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
 </li>
-        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -845,8 +699,6 @@
         <li><a href="api/utils.html#torch_molecule.utils.search.ParameterType">ParameterType (class in torch_molecule.utils.search)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.search.parse_list_params">parse_list_params() (in module torch_molecule.utils.search)</a>
-</li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.predefined_task">predefined_task (torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
 </li>
         <li><a href="api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor.predict">predict() (torch_molecule.base.predictor.BaseMolecularPredictor method)</a>
 
@@ -884,22 +736,10 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils.html#torch_molecule.utils.generic.metrics.r2_score">r2_score() (in module torch_molecule.utils.generic.metrics)</a>
 </li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.readout">readout (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.readout">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.readout">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.readout">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.readout">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils.html#torch_molecule.utils.generic.metrics.roc_auc_score">roc_auc_score() (in module torch_molecule.utils.generic.metrics)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils.html#torch_molecule.utils.generic.metrics.root_mean_squared_error">root_mean_squared_error() (in module torch_molecule.utils.generic.metrics)</a>
 </li>
         <li><a href="api/predictor.html#torch_molecule.predictor.rpgnn.modeling_rpgnn.RPGNNMolecularPredictor">RPGNNMolecularPredictor (class in torch_molecule.predictor.rpgnn.modeling_rpgnn)</a>
@@ -924,36 +764,12 @@
 </li>
         <li><a href="api/base.html#torch_molecule.base.base.BaseModel.save_to_local">save_to_local() (torch_molecule.base.base.BaseModel method)</a>
 </li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.scheduler_factor">scheduler_factor (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.scheduler_factor">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.scheduler_factor">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.scheduler_factor">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.scheduler_factor">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.scheduler_patience">scheduler_patience (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.scheduler_patience">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.scheduler_patience">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.scheduler_patience">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.scheduler_patience">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils.html#torch_molecule.utils.graph.graph_to_smiles.select_atom_with_available_valency">select_atom_with_available_valency() (in module torch_molecule.utils.graph.graph_to_smiles)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.graph_to_smiles.select_atoms_with_available_valency">select_atoms_with_available_valency() (in module torch_molecule.utils.graph.graph_to_smiles)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils.html#torch_molecule.utils.format.serialize_config">serialize_config() (in module torch_molecule.utils.format)</a>
 </li>
         <li><a href="api/base.html#torch_molecule.base.base.BaseModel.set_params">set_params() (torch_molecule.base.base.BaseModel method)</a>
@@ -968,7 +784,7 @@
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.search.suggest_parameter">suggest_parameter() (in module torch_molecule.utils.search)</a>
 </li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder">SupervisedMolecularEncoder (class in torch_molecule.encoder.supervised)</a>
+        <li><a href="api/encoder.html#torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder">SupervisedMolecularEncoder (class in torch_molecule.encoder.supervised.modeling_supervised)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -986,41 +802,6 @@
 </li>
         <li><a href="api/nn.html#torch_molecule.nn.embedder.CategoricalEmbedder.token_drop">token_drop() (torch_molecule.nn.embedder.CategoricalEmbedder method)</a>
 </li>
-        <li>
-    torch_molecule.encoder.attrmask
-
-        <ul>
-          <li><a href="api/encoder.html#module-torch_molecule.encoder.attrmask">module</a>
-</li>
-        </ul></li>
-        <li>
-    torch_molecule.encoder.contextpred
-
-        <ul>
-          <li><a href="api/encoder.html#module-torch_molecule.encoder.contextpred">module</a>
-</li>
-        </ul></li>
-        <li>
-    torch_molecule.encoder.edgepred
-
-        <ul>
-          <li><a href="api/encoder.html#module-torch_molecule.encoder.edgepred">module</a>
-</li>
-        </ul></li>
-        <li>
-    torch_molecule.encoder.moama
-
-        <ul>
-          <li><a href="api/encoder.html#module-torch_molecule.encoder.moama">module</a>
-</li>
-        </ul></li>
-        <li>
-    torch_molecule.encoder.supervised
-
-        <ul>
-          <li><a href="api/encoder.html#module-torch_molecule.encoder.supervised">module</a>
-</li>
-        </ul></li>
         <li>
     torch_molecule.nn.attention
 
@@ -1049,8 +830,6 @@
           <li><a href="api/nn.html#module-torch_molecule.nn.mlp">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     torch_molecule.utils.checker
 
@@ -1072,6 +851,8 @@
           <li><a href="api/utils.html#module-torch_molecule.utils.format">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     torch_molecule.utils.generic.metrics
 
@@ -1144,18 +925,6 @@
           <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv.update">(torch_molecule.nn.gnn.GINConv method)</a>
 </li>
         </ul></li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.use_lr_scheduler">use_lr_scheduler (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.use_lr_scheduler">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.use_lr_scheduler">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.use_lr_scheduler">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.use_lr_scheduler">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -1166,42 +935,12 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils.html#torch_molecule.utils.checker.MolecularInputChecker.validate_inputs">validate_inputs() (torch_molecule.utils.checker.MolecularInputChecker static method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils.html#torch_molecule.utils.checker.MolecularInputChecker.validate_smiles">validate_smiles() (torch_molecule.utils.checker.MolecularInputChecker static method)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.search.ParameterSpec.value_range">value_range (torch_molecule.utils.search.ParameterSpec attribute)</a>
 </li>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.verbose">verbose (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.verbose">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.verbose">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.verbose">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.verbose">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
-    </ul></td>
-  </tr></table>
-</section>
-
-<section id="W" class="genindex-section">
-  <h2>W</h2>
-  <table style="width: 100%" class="indextable genindextable"><tr>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder.weight_decay">weight_decay (torch_molecule.encoder.attrmask.AttrMaskMolecularEncoder attribute)</a>
-
-        <ul>
-          <li><a href="api/encoder.html#torch_molecule.encoder.contextpred.ContextPredMolecularEncoder.weight_decay">(torch_molecule.encoder.contextpred.ContextPredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.edgepred.EdgePredMolecularEncoder.weight_decay">(torch_molecule.encoder.edgepred.EdgePredMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.moama.MoamaMolecularEncoder.weight_decay">(torch_molecule.encoder.moama.MoamaMolecularEncoder attribute)</a>
-</li>
-          <li><a href="api/encoder.html#torch_molecule.encoder.supervised.SupervisedMolecularEncoder.weight_decay">(torch_molecule.encoder.supervised.SupervisedMolecularEncoder attribute)</a>
-</li>
-        </ul></li>
     </ul></td>
   </tr></table>
 </section>

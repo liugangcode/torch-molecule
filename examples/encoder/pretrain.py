@@ -53,10 +53,10 @@ def train_model(model_type='attrmask'):
     train_smiles_list = train_data['smiles'].tolist()
     
     # Uncomment the following line if you want to verify training on a small subset
-    train_smiles_list = train_smiles_list[:100]
+    train_smiles_list = train_smiles_list[:2]
     
     # Create output directory
-    output_dir = f"output/{model_type}"
+    output_dir = f"model/{model_type}"
     os.makedirs(output_dir, exist_ok=True)
     
     # Train the specified model
@@ -75,7 +75,7 @@ def train_model(model_type='attrmask'):
     model.fit(train_smiles_list)
     
     # Save the trained model
-    model.save_to_local(os.path.join(output_dir, f"{model_type}_model.pth"))
+    model.save_to_local(os.path.join(output_dir, f"{model_type}_model.pt"))
     
     print(f"Trained {model_type} model saved to {output_dir}.")
     
@@ -90,22 +90,28 @@ def load_model(model_type='attrmask'):
     # Load the specified model
     if model_type == 'attrmask':
         model = AttrMaskMolecularEncoder()
-        repo_id=args.repo_id
-        file_name='AttrMaskMolecularEncoder.pt'
+        if args.repo_id is None: repo_id = 'Einae/AttrMask'
+        else: repo_id = args.repo_id
+        file_name='model/attrmask/AttrMaskMolecularEncoder.pt'
     elif model_type == 'contextpred':
         model = ContextPredMolecularEncoder()
-        repo_id=repo_id=args.repo_id
-        file_name='ContextPredMolecularEncoder.pt'
+        if args.repo_id is None: repo_id = 'Einae/ContextPred'
+        else: repo_id = args.repo_id
+        file_name='model/contextpred/ContextPredMolecularEncoder.pt'
     elif model_type == 'edgepred':
         model = EdgePredMolecularEncoder()
-        repo_id=repo_id=args.repo_id
-        file_name='EdgePredMolecularEncoder.pt'
+        if args.repo_id is None: repo_id = 'Einae/EdgePred'
+        else: repo_id = args.repo_id
+        file_name='model/edgepred/EdgePredMolecularEncoder.pt'
     elif model_type == 'moama':
         model = MoamaMolecularEncoder()
-        repo_id=repo_id=args.repo_id
-        file_name='MoamaMolecularEncoder.pt'
+        if args.repo_id is None: repo_id = 'Einae/Moama'
+        else: repo_id = args.repo_id
+        file_name='model/moama/MoamaMolecularEncoder.pt'
     else:
         raise ValueError("Invalid model type. Choose from 'attrmask', 'contextpred', 'edgepred', or 'moama'.")
+    
+    print(repo_id)
     
     model.load_from_hf(repo_id=repo_id,
                        local_cache=file_name,)

@@ -21,10 +21,46 @@ ALLOWABLE_ENCODER_READOUTS = GNN_ENCODER_READOUTS
 @dataclass
 class SupervisedMolecularEncoder(BaseMolecularEncoder):
     """This encoder implements a GNN model for supervised molecular representation learning with user-defined or predefined fingerprint/calculated property tasks.
+
+    Parameters
+    ----------
+    num_task : int, optional
+        Number of user-defined tasks for supervised pretraining. If it is specified, user must provide y_train in the fit function.
+    predefined_task : List[str], optional
+        List of predefined tasks to use. Must be from the supported task list ["morgan", "maccs", "logP"]. If None and num_task is None, all predefined tasks will be used.
+    encoder_type : str, default="gin-virtual"
+        Type of GNN architecture to use. Must be one of the supported encoder types.
+    readout : str, default="sum" 
+        Method for aggregating node features to obtain graph-level representations. One of ["sum", "mean", "max"].
+    num_layer : int, default=5
+        Number of GNN layers.
+    hidden_size : int, default=300
+        Dimension of hidden node features.
+    drop_ratio : float, default=0.5
+        Dropout probability.
+    norm_layer : str, default="batch_norm"
+        Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
+    batch_size : int, default=128
+        Number of samples per batch for training.
+    epochs : int, default=500
+        Maximum number of training epochs.
+    learning_rate : float, default=0.001
+        Learning rate for optimizer.
+    grad_clip_value : float, optional
+        Maximum norm of gradients for gradient clipping.
+    weight_decay : float, default=0.0
+        L2 regularization strength.
+    use_lr_scheduler : bool, default=False
+        Whether to use a learning rate scheduler.
+    scheduler_factor : float, default=0.5
+        Factor by which to reduce the learning rate when plateau is detected.
+    scheduler_patience : int, default=5
+        Number of epochs with no improvement after which learning rate will be reduced.
+    verbose : bool, default=False
+        Whether to print progress information during training.
     """
     # pretraiing task
     num_task: Optional[int] = None
-    num_pretask: Optional[int] = None
     predefined_task: Optional[List[str]] = None
     # Model parameters    
     encoder_type: str = "gin-virtual"
@@ -58,6 +94,8 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     def __post_init__(self):
         """Initialize the model after dataclass initialization."""
         super().__post_init__()
+        self.num_pretask = None
+
         if self.encoder_type not in ALLOWABLE_ENCODER_MODELS:
             raise ValueError(f"Invalid encoder: {self.encoder_type}. Currently only {ALLOWABLE_ENCODER_MODELS} are supported.")
         if self.readout not in ALLOWABLE_ENCODER_READOUTS:

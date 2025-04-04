@@ -138,7 +138,11 @@ class GREA(nn.Module):
         h_rep = (h_r.unsqueeze(1) + h_env.unsqueeze(0)).view(-1, self.hidden_size)
         h_r, h_rep = self._augment_graph_features(batched_data, h_r, h_rep)
         prediction = self.predictor(h_r)
-        variance = self.predictor(h_rep).view(h_r.size(0), -1).var(dim=-1, keepdim=True)
+        pred_rep = self.predictor(h_rep).view(h_r.size(0), -1)
+        if pred_rep.size(1) > 1:
+            variance = pred_rep.var(dim=-1, keepdim=True)
+        else:
+            variance = torch.zeros_like(pred_rep)
         num_graphs = batched_data.batch.max().item() + 1
         score_by_graph = [node_score[batched_data.batch == i].view(-1).tolist() for i in range(num_graphs)]
         return {"prediction": prediction, "variance": variance, "score": score_by_graph, "representation": h_r}

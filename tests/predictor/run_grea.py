@@ -10,8 +10,8 @@ def test_grea_predictor():
         'CNC[C@@H]1OCc2cnnn2CCCC(=O)N([C@H](C)CO)C[C@H]1C',
         'C[C@H]1CN([C@@H](C)CO)C(=O)CCCn2cc(nn2)CO[C@@H]1CN(C)C(=O)CCC(F)(F)F',
         'CC1=CC=C(C=C1)C2=CC(=NN2C3=CC=C(C=C3)S(=O)(=O)N)C(F)(F)F'
-    ]
-    properties = np.array([0, 0, 1, 1])  # Binary classification
+    ] * 10
+    properties = np.array([0, 0, 1, 1] * 10)  # Binary classification
 
     # 1. Basic initialization test
     print("\n=== Testing GREA model initialization ===")
@@ -29,7 +29,7 @@ def test_grea_predictor():
 
     # 2. Basic fitting test
     print("\n=== Testing GREA model fitting ===")
-    model.fit(smiles_list[:3], properties[:3])
+    model.fit(smiles_list, properties, X_val=smiles_list[3:], y_val=properties[3:])
     print("GREA model fitting completed")
 
     # 3. Prediction test
@@ -70,13 +70,15 @@ def test_grea_predictor():
     model_auto = GREAMolecularPredictor(
         num_task=1,
         task_type="classification",
-        epochs=3,
+        epochs=50,
         verbose=True
     )
     
     model_auto.autofit(
         smiles_list,
         properties,
+        X_val=smiles_list[3:],
+        y_val=properties[3:],
         search_parameters=search_parameters,
         n_trials=2
     )
@@ -92,13 +94,15 @@ def test_grea_predictor():
     model_partial = GREAMolecularPredictor(
         num_task=1,
         task_type="classification",
-        epochs=3,
+        epochs=50,
         verbose=True
     )
     
     model_partial.autofit(
         smiles_list,
         properties,
+        X_val=smiles_list[3:],
+        y_val=properties[3:],
         search_parameters=partial_search,
         n_trials=2
     )
@@ -109,7 +113,7 @@ def test_grea_predictor():
     model_default = GREAMolecularPredictor(
         num_task=1,
         task_type="classification",
-        epochs=3,
+        epochs=50,
         verbose=True
     )
     
@@ -202,7 +206,7 @@ def test_grea_upload():
     )
     
     # Fit the model with sample data
-    model_for_upload.autofit(smiles_list[:3], properties[:3])
+    model_for_upload.autofit(smiles_list, properties, X_val=smiles_list[3:], y_val=properties[3:])
     
     # Push to Hugging Face Hub
     # Note: HF_TOKEN should be set in environment variables
@@ -242,5 +246,5 @@ def test_grea_upload():
         print("Cleaned up test_grea_model.pt")
 
 if __name__ == "__main__":
-    # test_grea_predictor()
+    test_grea_predictor()
     test_grea_upload()

@@ -1,11 +1,11 @@
-# the code is torch_scatter: https://github.com/rusty1s/pytorch_scatter/blob/1.3.0/torch_scatter/add.py
+# The code is from torch_scatter: https://github.com/rusty1s/pytorch_scatter/blob/1.3.0/torch_scatter/add.py
+
 from itertools import repeat
 
 def maybe_dim_size(index, dim_size=None):
     if dim_size is not None:
         return dim_size
     return index.max().item() + 1 if index.numel() > 0 else 0
-
 
 def gen(src, index, dim=-1, out=None, dim_size=None, fill_value=0):
     dim = range(src.dim())[dim]  # Get real dim value.

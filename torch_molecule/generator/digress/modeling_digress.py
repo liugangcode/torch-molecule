@@ -240,11 +240,6 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
         optimizer = torch.optim.Adam(
             self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay
         )
-        if self.grad_clip_value is not None:
-            for group in optimizer.param_groups:
-                group.setdefault("max_norm", self.grad_clip_value)
-                group.setdefault("norm_type", 2.0)
-
         scheduler = None
         if self.use_lr_scheduler:
             scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
@@ -308,7 +303,8 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
             noisy_data = self.apply_noise(X, E, batched_data.y, node_mask)
 
             loss, loss_X, loss_E = self.model.compute_loss(noisy_data, true_X=X, true_E=E, lw_X=self.lw_X, lw_E=self.lw_E)
-            
+            if self.grad_clip_value is not None:
+                torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip_value)
             loss.backward()
             optimizer.step()
             losses.append(loss.item())

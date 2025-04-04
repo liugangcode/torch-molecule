@@ -42,9 +42,9 @@ class MoamaMolecularEncoder(BaseMolecularEncoder):
     norm_layer : str, default="batch_norm"
         Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
     encoder_type : str, default="gin-virtual"
-        Type of GNN architecture to use.
+        Type of GNN architecture to use. One of ["gin-virtual", "gcn-virtual", "gin", "gcn"].
     readout : str, default="sum"
-        Method for aggregating node features to obtain graph-level representations.
+        Method for aggregating node features to obtain graph-level representations. One of ["sum", "mean", "max"].
     batch_size : int, default=128
         Number of samples per batch for training.
     epochs : int, default=500
@@ -117,7 +117,7 @@ class MoamaMolecularEncoder(BaseMolecularEncoder):
         List[str]
             List of parameter names that can be used for model configuration.
         """
-        return ["mask_rate", "lw_rec"] + GNN_ENCODER_PARAMS
+        return ["mask_rate", "lw_rec"] + GNN_ENCODER_PARAMS.copy()
     
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
         params = {
@@ -173,12 +173,6 @@ class MoamaMolecularEncoder(BaseMolecularEncoder):
         """
 
         optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay)
-        
-        if self.grad_clip_value is not None:
-            for group in optimizer.param_groups:
-                group.setdefault("max_norm", self.grad_clip_value)
-                group.setdefault("norm_type", 2.0)
-
         scheduler = None
         if self.use_lr_scheduler:
             scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(

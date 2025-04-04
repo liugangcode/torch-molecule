@@ -64,13 +64,13 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
     hidden_size : int, default=300
         Dimension of hidden node features.
     gnn_type : str, default="gin-virtual"
-        Type of GNN architecture to use.
+        Type of GNN architecture to use. One of ["gin-virtual", "gcn-virtual", "gin", "gcn"].
     drop_ratio : float, default=0.5
         Dropout probability.
     norm_layer : str, default="batch_norm"
         Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
     graph_pooling : str, default="sum"
-        Method for aggregating node features to graph-level representations.
+        Method for aggregating node features to graph-level representations. One of ["sum", "mean", "max"].
     augmented_feature : list, default=["morgan", "maccs"]
         Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.
     batch_size : int, default=128
@@ -290,11 +290,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         optimizer = torch.optim.Adam(
             self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay
         )
-        if self.grad_clip_value is not None:
-            for group in optimizer.param_groups:
-                group.setdefault("max_norm", self.grad_clip_value)
-                group.setdefault("norm_type", 2.0)
-
         scheduler = None
         if self.use_lr_scheduler:
             scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
@@ -697,16 +692,11 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
 
             # Forward pass and loss computation
             loss = self.model.compute_loss(batch, self.loss_criterion)
-
-            # Backward pass
             loss.backward()
-
             # Compute gradient norm if gradient clipping is enabled
             if self.grad_clip_value is not None:
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip_value)
-
             optimizer.step()
-
             losses.append(loss.item())
 
             # Update progress bar if using tqdm

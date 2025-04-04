@@ -20,6 +20,7 @@ from .encoder.attrmask import AttrMaskMolecularEncoder
 from .encoder.contextpred import ContextPredMolecularEncoder
 from .encoder.edgepred import EdgePredMolecularEncoder
 from .encoder.moama import MoamaMolecularEncoder
+from .encoder.infograph import InfographMolecularEncoder
 
 """
 generator module
@@ -47,6 +48,7 @@ __all__ = [
     'ContextPredMolecularEncoder',
     'EdgePredMolecularEncoder',
     'MoamaMolecularEncoder',
+    'InfographMolecularEncoder',
     # generators
     'GraphDITMolecularGenerator',
     'GraphGAMolecularGenerator',

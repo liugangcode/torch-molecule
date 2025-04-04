@@ -22,6 +22,11 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
     """This encoder implements a GNN-based model for molecular representation learning
     using the context prediction pretraining strategy.
 
+    References
+    ----------
+    - Paper: Strategies for Pre-training Graph Neural Networks (ICLR 2020) https://arxiv.org/abs/1905.12265
+    - Code: https://github.com/snap-stanford/pretrain-gnns/tree/master/chem
+    
     Parameters
     ----------
     mode : str, default="cbow"
@@ -39,9 +44,9 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
     norm_layer : str, default="batch_norm"
         Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
     encoder_type : str, default="gin-virtual"
-        Type of GNN architecture to use.
+        Type of GNN architecture to use. One of ["gin-virtual", "gcn-virtual", "gin", "gcn"].
     readout : str, default="sum"
-        Method for aggregating node features to obtain graph-level representations.
+        Method for aggregating node features to obtain graph-level representations. One of ["sum", "mean", "max"].
     batch_size : int, default=128
         Number of samples per batch for training.
     epochs : int, default=500
@@ -60,8 +65,6 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
         Number of epochs with no improvement after which learning rate will be reduced.
     verbose : bool, default=False
         Whether to print progress information during training.
-    model_name : str, default="ContextPredMolecularEncoder"
-        Name of the encoder model.
     """
     # Task related parameters
     mode: str = "cbow" # cbow or skipgram
@@ -108,7 +111,7 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
 
     @staticmethod
     def _get_param_names() -> List[str]:
-        return ["mode", "context_size", "neg_samples"] + GNN_ENCODER_PARAMS
+        return ["mode", "context_size", "neg_samples"] + GNN_ENCODER_PARAMS.copy()
 
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
         params = {
@@ -165,12 +168,6 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
         """
 
         optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay)
-        
-        if self.grad_clip_value is not None:
-            for group in optimizer.param_groups:
-                group.setdefault("max_norm", self.grad_clip_value)
-                group.setdefault("norm_type", 2.0)
-
         scheduler = None
         if self.use_lr_scheduler:
             scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(

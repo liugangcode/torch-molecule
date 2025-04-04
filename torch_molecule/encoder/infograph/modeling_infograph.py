@@ -1,6 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 from typing import Optional, Union, Dict, Any, Tuple, List, Literal, Type
+
 from dataclasses import dataclass, field
 
 import torch
@@ -11,33 +12,37 @@ from .model import GNN
 from ..constant import GNN_ENCODER_MODELS, GNN_ENCODER_READOUTS, GNN_ENCODER_PARAMS
 from ...base import BaseMolecularEncoder
 from ...utils import graph_from_smiles
-from ...utils import PSEUDOTASK
 
 ALLOWABLE_ENCODER_MODELS = GNN_ENCODER_MODELS
 ALLOWABLE_ENCODER_READOUTS = GNN_ENCODER_READOUTS
 
 @dataclass
-class SupervisedMolecularEncoder(BaseMolecularEncoder):
-    """This encoder implements a GNN model for supervised molecular representation learning with user-defined or predefined fingerprint/calculated property tasks.
+class InfographMolecularEncoder(BaseMolecularEncoder):
+    """This encoder implements a Infograph for molecular representation learning.
+
+    InfoGraph: Unsupervised and Semi-supervised Graph-Level Representation Learning via Mutual Information Maximization (ICLR 2020)
+
+    References
+    ----------
+    - Paper: https://arxiv.org/abs/1908.01000 
+    - Code: https://github.com/sunfanyunn/InfoGraph/tree/master/unsupervised
 
     Parameters
     ----------
-    num_task : int, optional
-        Number of user-defined tasks for supervised pretraining. If it is specified, user must provide y_train in the fit function.
-    predefined_task : List[str], optional
-        List of predefined tasks to use. Must be from the supported task list ["morgan", "maccs", "logP"]. If None and num_task is None, all predefined tasks will be used.
-    encoder_type : str, default="gin-virtual" 
-        Type of GNN architecture to use. One of ["gin-virtual", "gcn-virtual", "gin", "gcn"].
-    readout : str, default="sum" 
-        Method for aggregating node features to obtain graph-level representations. One of ["sum", "mean", "max"].
+    lw_prior : float, default=0.
+        Weight for prior loss term.
+    embedding_dim : int, default=160
+        Dimension of final graph embedding. Must be divisible by num_layer.
     num_layer : int, default=5
         Number of GNN layers.
-    hidden_size : int, default=300
-        Dimension of hidden node features.
     drop_ratio : float, default=0.5
         Dropout probability.
     norm_layer : str, default="batch_norm"
         Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
+    encoder_type : str, default="gin-virtual"
+        Type of GNN architecture to use. One of ["gin-virtual", "gcn-virtual", "gin", "gcn"].
+    readout : str, default="sum"
+        Method for aggregating node features to obtain graph-level representations. One of ["sum", "mean", "max"].
     batch_size : int, default=128
         Number of samples per batch for training.
     epochs : int, default=500
@@ -56,17 +61,19 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         Number of epochs with no improvement after which learning rate will be reduced.
     verbose : bool, default=False
         Whether to print progress information during training.
+    model_name : str, default="InfographMolecularEncoder"
+        Name of the encoder model.
     """
-    # pretraining task
-    num_task: Optional[int] = None
-    predefined_task: Optional[List[str]] = None
-    # Model parameters    
-    encoder_type: str = "gin-virtual"
-    readout: str = "sum"
+    # Task related parameters
+    lw_prior : float = 0.
+    embedding_dim: int = 160
+
+    # Model parameters
     num_layer: int = 5
-    hidden_size: int = 300
     drop_ratio: float = 0.5
     norm_layer: str = "batch_norm"
+    encoder_type: str = "gin-virtual"
+    readout: str = "sum"
     
     # Training parameters
     batch_size: int = 128
@@ -82,7 +89,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     
     # Other parameters
     verbose: bool = False
-    model_name: str = "SupervisedMolecularEncoder"
+    model_name: str = "InfographMolecularEncoder"
     
     # Non-init fields
     fitting_loss: List[float] = field(default_factory=list, init=False)
@@ -92,36 +99,17 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     def __post_init__(self):
         """Initialize the model after dataclass initialization."""
         super().__post_init__()
-        self.num_pretask = None
-
         if self.encoder_type not in ALLOWABLE_ENCODER_MODELS:
-            raise ValueError(f"Invalid encoder: {self.encoder_type}. Currently only {ALLOWABLE_ENCODER_MODELS} are supported.")
+            raise ValueError(f"Invalid encoder_model: {self.encoder_type}. Currently only {ALLOWABLE_ENCODER_MODELS} are supported.")
         if self.readout not in ALLOWABLE_ENCODER_READOUTS:
-            raise ValueError(f"Invalid readout: {self.readout}. Currently only {ALLOWABLE_ENCODER_READOUTS} are supported.")
-        if self.predefined_task is not None:
-            for task in self.predefined_task:
-                if task not in PSEUDOTASK.keys():
-                    raise ValueError(f"Invalid predefined_task: {task}. Currently only {PSEUDOTASK.keys()} are supported.")
+            raise ValueError(f"Invalid encoder_readout: {self.readout}. Currently only {ALLOWABLE_ENCODER_READOUTS} are supported.")
+
+        if self.lw_prior == 0:
+            self.use_prior = False
+        else:
+            self.use_prior = True
         
-        # Calculate number of predefined tasks if any are specified
-        num_pretask = 0
-        if self.predefined_task is not None:
-            num_pretask = sum(PSEUDOTASK[task][0] for task in self.predefined_task)
-        elif self.predefined_task is None and self.num_task is None:
-            # Use all predefined tasks if none specified
-            self.predefined_task = list(PSEUDOTASK.keys())
-            num_pretask = sum(task[0] for task in PSEUDOTASK.values())
-
-        self.num_pretask = num_pretask
-        self.num_task = (self.num_task or 0) + num_pretask
-
-        if self.verbose:
-            if self.predefined_task is None:
-                print(f"Using {self.num_task} user-defined tasks.")
-            elif self.num_task == num_pretask:
-                print(f"Using {num_pretask} predefined tasks from: {self.predefined_task}")
-            else:
-                print(f"Using {num_pretask} predefined tasks and {self.num_task - num_pretask} user-defined tasks.")
+        assert self.embedding_dim % self.num_layer == 0, "embedding_dim must be divisible by num_layer for InfographMolecularEncoder"
 
     @staticmethod
     def _get_param_names() -> List[str]:
@@ -132,27 +120,24 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         List[str]
             List of parameter names that can be used for model configuration.
         """
-        return ["num_task", "predefined_task", "num_pretask"] + GNN_ENCODER_PARAMS.copy()
+        params = GNN_ENCODER_PARAMS.copy()
+        params.remove("hidden_size")
+        params = params + ["embedding_dim", 'use_prior', 'lw_prior']
+        return params
     
+
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
-        params = {
-            "num_layer": self.num_layer,
-            "hidden_size": self.hidden_size, 
-            "num_task": self.num_task,
-            "encoder_type": self.encoder_type,
-            "drop_ratio": self.drop_ratio,
-            "norm_layer": self.norm_layer,
-            "readout": self.readout,
-        }
-        
+        params = [
+            "num_layer", "embedding_dim", "drop_ratio", "norm_layer", "encoder_type", "readout", "use_prior",
+        ]        
         if checkpoint is not None:
             if "hyperparameters" not in checkpoint:
                 raise ValueError("Checkpoint missing 'hyperparameters' key")
-            hyperparameters = checkpoint["hyperparameters"]
-            params = {k: hyperparameters.get(k, v) for k, v in params.items()}
-            
-        return params
-    def _convert_to_pytorch_data(self, X, y=None):
+            return {k: checkpoint["hyperparameters"][k] for k in params}
+    
+        return {k: getattr(self, k) for k in params}
+    
+    def _convert_to_pytorch_data(self, X):
         """Convert numpy arrays to PyTorch Geometric data format.
         """
         if self.verbose:
@@ -162,11 +147,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
 
         pyg_graph_list = []
         for idx, smiles_or_mol in iterator:
-            if y is not None:
-                properties = y[idx]
-            else: 
-                properties = None
-            graph = graph_from_smiles(smiles_or_mol, properties, augmented_properties = self.predefined_task)
+            graph = graph_from_smiles(smiles_or_mol, None)
             g = Data()
             g.num_nodes = graph["num_nodes"]
             g.edge_index = torch.from_numpy(graph["edge_index"])
@@ -182,18 +163,6 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
                 g.x = torch.from_numpy(graph["node_feat"])
                 del graph["node_feat"]
 
-            if graph["y"] is not None:
-                g.y = torch.from_numpy(graph["y"])
-                del graph["y"]
-   
-            if graph["morgan"] is not None:
-                g.morgan = torch.tensor(graph["morgan"], dtype=torch.int8).view(1, -1)
-                del graph["morgan"]
-            
-            if graph["maccs"] is not None:
-                g.maccs = torch.tensor(graph["maccs"], dtype=torch.int8).view(1, -1)
-                del graph["maccs"]
-
             pyg_graph_list.append(g)
 
         return pyg_graph_list
@@ -201,9 +170,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:
         """Setup optimization components including optimizer and learning rate scheduler.
         """
-        optimizer = torch.optim.Adam(
-            self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay
-        )
+        optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay)
         scheduler = None
         if self.use_lr_scheduler:
             scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
@@ -215,41 +182,31 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
                 cooldown=0,
                 eps=1e-8,
             )
-
         return optimizer, scheduler
     
     def fit(
         self,
         X_train: List[str],
-        y_train: Optional[Union[List, np.ndarray]] = None,
-    ) -> "SupervisedMolecularEncoder":
+    ) -> "InfographMolecularEncoder":
         """Fit the model to the training data with optional validation set.
 
         Parameters
         ----------
         X_train : List[str]
             Training set input molecular structures as SMILES strings
-        y_train : Union[List, np.ndarray]
-            Training set target values for representation learning
         Returns
         -------
-        self : SupervisedMolecularEncoder
+        self : InfographMolecularEncoder
             Fitted estimator
         """
-        user_defined_task = self.num_task - self.num_pretask
-        if user_defined_task > 0:
-            if y_train is None:
-                raise ValueError("User-defined tasks require target values but y_train is None.")
-            if y_train.shape[1] != user_defined_task:
-                raise ValueError(f"Number of user-defined tasks ({user_defined_task}) must match the number of target values in y_train ({y_train.shape[1]}).")
-
+        
         self._initialize_model(self.model_class)
         self.model.initialize_parameters()
         optimizer, scheduler = self._setup_optimizers()
         
         # Prepare datasets and loaders
-        X_train, y_train = self._validate_inputs(X_train, y_train, return_rdkit_mol=True, num_task=self.num_task, num_pretask=self.num_pretask)
-        train_dataset = self._convert_to_pytorch_data(X_train, y_train)
+        X_train, _ = self._validate_inputs(X_train, return_rdkit_mol=True)
+        train_dataset = self._convert_to_pytorch_data(X_train)
         train_loader = DataLoader(
             train_dataset,
             batch_size=self.batch_size,
@@ -257,20 +214,10 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
             num_workers=0
         )
         self.fitting_loss = []
-        if user_defined_task > 0:
-            is_class_user = self._inspect_task_types(y_train, return_type="pt")
-        else:
-            is_class_user = torch.tensor([], dtype=torch.bool)
 
-        if self.predefined_task is not None:
-            is_class_predefined = torch.cat([torch.full((PSEUDOTASK[task][0],), PSEUDOTASK[task][1] == "classification", dtype=torch.bool) for task in self.predefined_task])
-        else:
-            is_class_predefined = torch.tensor([], dtype=torch.bool)
-
-        is_class = torch.cat([is_class_user, is_class_predefined])
         for epoch in range(self.epochs):
             # Training phase
-            train_losses = self._train_epoch(train_loader, optimizer, is_class, epoch)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch)
             self.fitting_loss.append(np.mean(train_losses).item())
             if scheduler:
                 scheduler.step(np.mean(train_losses).item())
@@ -279,7 +226,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer, is_class, epoch):
+    def _train_epoch(self, train_loader, optimizer, epoch):
         """Training logic for one epoch.
 
         Args:
@@ -301,16 +248,16 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         for batch in iterator:
             batch = batch.to(self.device)
             optimizer.zero_grad()
-            loss = self.model.compute_loss(batch, is_class)
+            local_global_loss, prior_loss = self.model.compute_loss(batch, self.lw_prior)
+            loss = local_global_loss + prior_loss
             loss.backward()
             if self.grad_clip_value is not None:
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip_value)
             optimizer.step()
             losses.append(loss.item())
 
-            # Update progress bar if using tqdm
             if self.verbose:
-                iterator.set_postfix({"Epoch": f"{epoch}", "Loss": f"{loss.item():.4f}"})
+                iterator.set_postfix({"Epoch": f"{epoch}", "Loss": f"{loss.item():.4f}", "Local/Global": f"{local_global_loss.item():.4f}", "Prior": f"{prior_loss.item():.4f}"})
 
         return losses
 

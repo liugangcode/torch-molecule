@@ -20,7 +20,12 @@ ALLOWABLE_ENCODER_READOUTS = GNN_ENCODER_READOUTS
 @dataclass
 class EdgePredMolecularEncoder(BaseMolecularEncoder):
     """This encoder implements a GNN-based model for molecular representation learning
-    using the attribute masking pretraining strategy.
+    using the edge prediction.
+    
+    References
+    ----------
+    - Paper: Strategies for Pre-training Graph Neural Networks (ICLR 2020) https://arxiv.org/abs/1905.12265
+    - Code: https://github.com/snap-stanford/pretrain-gnns/tree/master/chem
 
     Parameters
     ----------
@@ -54,8 +59,6 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
         Number of epochs with no improvement after which learning rate will be reduced.
     verbose : bool, default=False
         Whether to print progress information during training.
-    model_name : str, default="EdgePredMolecularEncoder"
-        Name of the encoder model.
     """
     # Model parameters
     num_layer: int = 5
@@ -97,7 +100,7 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
         
     @staticmethod
     def _get_param_names() -> List[str]:
-        return GNN_ENCODER_PARAMS
+        return GNN_ENCODER_PARAMS.copy()
     
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
         params = {
@@ -151,12 +154,6 @@ class EdgePredMolecularEncoder(BaseMolecularEncoder):
         """
 
         optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate, weight_decay=self.weight_decay)
-        
-        if self.grad_clip_value is not None:
-            for group in optimizer.param_groups:
-                group.setdefault("max_norm", self.grad_clip_value)
-                group.setdefault("norm_type", 2.0)
-
         scheduler = None
         if self.use_lr_scheduler:
             scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(

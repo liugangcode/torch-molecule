@@ -1,7 +1,8 @@
 import os
 import torch
 import torch.nn as nn
-from torch_scatter import scatter_add
+# from torch_scatter import scatter_add
+from .utils import scatter_add
 
 from ...nn import GNN_node, GNN_node_Virtualnode, MLP
 from ...utils import init_weights

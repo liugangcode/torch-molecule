@@ -5,8 +5,8 @@ torch==2.2.0+cu118
 # Install PyTorch Geometric and related packages
 -f https://data.pyg.org/whl/torch-2.2.0+cu118.html
 torch_geometric==2.6.1
-torch_cluster
-torch_scatter
+# torch_cluster
+# torch_scatter
 
 # Other dependencies
 huggingface_hub

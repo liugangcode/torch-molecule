@@ -280,7 +280,7 @@ class BaseModel(ABC):
         """
         if local_cache is None:
             local_cache = 'model.pt'
-        HuggingFaceCheckpointManager.load_model_from_hf(self, repo_id, local_cache, config_filename)
+        HuggingFaceCheckpointManager.load_model_from_hf(self, repo_id, local_cache, config_filename=config_filename)
 
     def save(self, path: Optional[str] = None, repo_id: Optional[str] = None, **kwargs) -> None:
         """Automatic save to either local disk or Hugging Face Hub.

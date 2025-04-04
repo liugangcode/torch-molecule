@@ -18,7 +18,6 @@ classifiers = [
 dependencies = [
     "torch>=2.2.0",
     "torch-geometric>=2.6.1",
-    "torch-scatter>=2.1.2",
     "numpy",
     "pandas>=2.2.3",
     "click",
@@ -36,6 +35,7 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/liugangcode/torch-molecule"
 "Bug Tracker" = "https://github.com/liugangcode/torch-molecule"
+"Documentation" = "https://liugangcode.github.io/torch-molecule/"
 
 [tool.setuptools.packages.find]
 include = ["torch_molecule*"]

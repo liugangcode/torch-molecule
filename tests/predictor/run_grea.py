@@ -218,7 +218,7 @@ def test_grea_upload():
     print("\n=== Testing model loading from Hugging Face Hub ===")        
     # Load model
     downloaded_model = GREAMolecularPredictor()
-    downloaded_model.load_from_hf(repo_id=repo_id, path="./downloaded_model/GREA_O2.pt")
+    downloaded_model.load_from_hf(repo_id=repo_id, local_cache="./downloaded_model/GREA_O2.pt")
     
     # Test prediction with downloaded model
     test_pred = downloaded_model.predict(smiles_list[3:])

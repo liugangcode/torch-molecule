@@ -15,7 +15,7 @@ Main components:
    - ⏳ GDSS and more
 
 3. **Representation Models**  
-   - ✔ MoAMa, AttrMasking, ContextPred, EdgePred  
+   - ✔ MoAMa, AttrMasking, ContextPred, EdgePred, InfoGraph
    - ⏳ more models and pretrained checkpoints
 
 .. note::

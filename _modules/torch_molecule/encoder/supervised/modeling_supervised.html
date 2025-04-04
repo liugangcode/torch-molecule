@@ -260,11 +260,9 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for torch_molecule.encoder.supervised.modeling_supervised</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Type</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Type</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
@@ -292,8 +290,8 @@
 <span class="sd">        Number of user-defined tasks for supervised pretraining. If it is specified, user must provide y_train in the fit function.</span>
 <span class="sd">    predefined_task : List[str], optional</span>
 <span class="sd">        List of predefined tasks to use. Must be from the supported task list [&quot;morgan&quot;, &quot;maccs&quot;, &quot;logP&quot;]. If None and num_task is None, all predefined tasks will be used.</span>
-<span class="sd">    encoder_type : str, default=&quot;gin-virtual&quot;</span>
-<span class="sd">        Type of GNN architecture to use. Must be one of the supported encoder types.</span>
+<span class="sd">    encoder_type : str, default=&quot;gin-virtual&quot; </span>
+<span class="sd">        Type of GNN architecture to use. One of [&quot;gin-virtual&quot;, &quot;gcn-virtual&quot;, &quot;gin&quot;, &quot;gcn&quot;].</span>
 <span class="sd">    readout : str, default=&quot;sum&quot; </span>
 <span class="sd">        Method for aggregating node features to obtain graph-level representations. One of [&quot;sum&quot;, &quot;mean&quot;, &quot;max&quot;].</span>
 <span class="sd">    num_layer : int, default=5</span>
@@ -323,7 +321,7 @@
 <span class="sd">    verbose : bool, default=False</span>
 <span class="sd">        Whether to print progress information during training.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># pretraiing task</span>
+    <span class="c1"># pretraining task</span>
     <span class="n">num_task</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">predefined_task</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1"># Model parameters    </span>
@@ -398,7 +396,7 @@
 <span class="sd">        List[str]</span>
 <span class="sd">            List of parameter names that can be used for model configuration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;num_task&quot;</span><span class="p">,</span> <span class="s2">&quot;predefined_task&quot;</span><span class="p">,</span> <span class="s2">&quot;num_pretask&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">GNN_ENCODER_PARAMS</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;num_task&quot;</span><span class="p">,</span> <span class="s2">&quot;predefined_task&quot;</span><span class="p">,</span> <span class="s2">&quot;num_pretask&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">GNN_ENCODER_PARAMS</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
@@ -470,11 +468,6 @@
         <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_decay</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_clip_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
-                <span class="n">group</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;max_norm&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_clip_value</span><span class="p">)</span>
-                <span class="n">group</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;norm_type&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
-
         <span class="n">scheduler</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_lr_scheduler</span><span class="p">:</span>
             <span class="n">scheduler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">ReduceLROnPlateau</span><span class="p">(</span>
@@ -543,17 +536,17 @@
         <span class="n">is_class</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">is_class_user</span><span class="p">,</span> <span class="n">is_class_predefined</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
             <span class="c1"># Training phase</span>
-            <span class="n">train_losses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train_epoch</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">is_class</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fitting_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">))</span>
+            <span class="n">train_losses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train_epoch</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">is_class</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitting_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
             <span class="k">if</span> <span class="n">scheduler</span><span class="p">:</span>
-                <span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">))</span>
+                <span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">fitting_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">is_class</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">is_class</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Training logic for one epoch.</span>
 
 <span class="sd">        Args:</span>
@@ -584,7 +577,7 @@
 
             <span class="c1"># Update progress bar if using tqdm</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-                <span class="n">iterator</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+                <span class="n">iterator</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
 
         <span class="k">return</span> <span class="n">losses</span>
 

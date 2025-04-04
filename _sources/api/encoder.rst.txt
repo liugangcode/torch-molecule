@@ -58,6 +58,14 @@ Self-supervised Molecular Representation Learning
    :undoc-members:
    :show-inheritance:
 
+.. rubric:: InfoGraph for Molecular Representation Learning
+
+.. autoclass:: torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder
+   :members: fit, encode
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   :undoc-members:
+   :show-inheritance:
+
 Supervised Pretraining for Molecules
 ------------------------------------
 

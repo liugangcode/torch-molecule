@@ -300,10 +300,10 @@
 <li><p><strong>task_type</strong> (<em>str</em><em>, </em><em>default=&quot;regression&quot;</em>) – Type of prediction task, either “regression” or “classification”.</p></li>
 <li><p><strong>num_layer</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of GNN layers.</p></li>
 <li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>default=300</em>) – Dimension of hidden node features.</p></li>
-<li><p><strong>gnn_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use.</p></li>
+<li><p><strong>gnn_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use. One of [“gin-virtual”, “gcn-virtual”, “gin”, “gcn”].</p></li>
 <li><p><strong>drop_ratio</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Dropout probability.</p></li>
 <li><p><strong>norm_layer</strong> (<em>str</em><em>, </em><em>default=&quot;batch_norm&quot;</em>) – Type of normalization layer to use. One of [“batch_norm”, “layer_norm”, “instance_norm”, “graph_norm”, “size_norm”, “pair_norm”].</p></li>
-<li><p><strong>graph_pooling</strong> (<em>str</em><em>, </em><em>default=&quot;sum&quot;</em>) – Method for aggregating node features to graph-level representations.</p></li>
+<li><p><strong>graph_pooling</strong> (<em>str</em><em>, </em><em>default=&quot;sum&quot;</em>) – Method for aggregating node features to graph-level representations. One of [“sum”, “mean”, “max”].</p></li>
 <li><p><strong>augmented_feature</strong> (<em>list</em><em>, </em><em>default=</em><em>[</em><em>&quot;morgan&quot;</em><em>, </em><em>&quot;maccs&quot;</em><em>]</em>) – Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.</p></li>
 <li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>default=128</em>) – Number of samples per batch for training.</p></li>
 <li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>default=500</em>) – Maximum number of training epochs.</p></li>

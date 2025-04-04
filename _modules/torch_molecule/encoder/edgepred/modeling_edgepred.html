@@ -284,7 +284,12 @@
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">EdgePredMolecularEncoder</span><span class="p">(</span><span class="n">BaseMolecularEncoder</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This encoder implements a GNN-based model for molecular representation learning</span>
-<span class="sd">    using the attribute masking pretraining strategy.</span>
+<span class="sd">    using the edge prediction.</span>
+<span class="sd">    </span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    - Paper: Strategies for Pre-training Graph Neural Networks (ICLR 2020) https://arxiv.org/abs/1905.12265</span>
+<span class="sd">    - Code: https://github.com/snap-stanford/pretrain-gnns/tree/master/chem</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -318,8 +323,6 @@
 <span class="sd">        Number of epochs with no improvement after which learning rate will be reduced.</span>
 <span class="sd">    verbose : bool, default=False</span>
 <span class="sd">        Whether to print progress information during training.</span>
-<span class="sd">    model_name : str, default=&quot;EdgePredMolecularEncoder&quot;</span>
-<span class="sd">        Name of the encoder model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Model parameters</span>
     <span class="n">num_layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
@@ -361,7 +364,7 @@
         
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="n">GNN_ENCODER_PARAMS</span>
+        <span class="k">return</span> <span class="n">GNN_ENCODER_PARAMS</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
@@ -415,12 +418,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_decay</span><span class="p">)</span>
-        
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_clip_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
-                <span class="n">group</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;max_norm&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_clip_value</span><span class="p">)</span>
-                <span class="n">group</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;norm_type&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
-
         <span class="n">scheduler</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_lr_scheduler</span><span class="p">:</span>
             <span class="n">scheduler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">ReduceLROnPlateau</span><span class="p">(</span>

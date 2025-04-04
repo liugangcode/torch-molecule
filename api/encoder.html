@@ -310,8 +310,8 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 <li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>default=300</em>) – Dimension of hidden node features.</p></li>
 <li><p><strong>drop_ratio</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Dropout probability.</p></li>
 <li><p><strong>norm_layer</strong> (<em>str</em><em>, </em><em>default=&quot;batch_norm&quot;</em>) – Type of normalization layer to use. One of [“batch_norm”, “layer_norm”, “instance_norm”, “graph_norm”, “size_norm”, “pair_norm”].</p></li>
-<li><p><strong>encoder_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use.</p></li>
-<li><p><strong>readout</strong> (<em>str</em><em>, </em><em>default=&quot;sum&quot;</em>) – Method for aggregating node features to obtain graph-level representations.</p></li>
+<li><p><strong>encoder_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use. One of [“gin-virtual”, “gcn-virtual”, “gin”, “gcn”].</p></li>
+<li><p><strong>readout</strong> (<em>str</em><em>, </em><em>default=&quot;sum&quot;</em>) – Method for aggregating node features to obtain graph-level representations. One of [“sum”, “mean”, “max”].</p></li>
 <li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>default=128</em>) – Number of samples per batch for training.</p></li>
 <li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>default=500</em>) – Maximum number of training epochs.</p></li>
 <li><p><strong>learning_rate</strong> (<em>float</em><em>, </em><em>default=0.001</em>) – Learning rate for optimizer.</p></li>
@@ -371,6 +371,11 @@ Higher values emphasize reconstruction, lower values emphasize fingerprint match
 <dd><p>Bases: <a class="reference internal" href="base.html#torch_molecule.base.encoder.BaseMolecularEncoder" title="torch_molecule.base.encoder.BaseMolecularEncoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMolecularEncoder</span></code></a></p>
 <p>This encoder implements a GNN-based model for molecular representation learning
 using the attribute masking pretraining strategy.</p>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Paper: Strategies for Pre-training Graph Neural Networks (ICLR 2020) <a class="reference external" href="https://arxiv.org/abs/1905.12265">https://arxiv.org/abs/1905.12265</a></p></li>
+<li><p>Code: <a class="reference external" href="https://github.com/snap-stanford/pretrain-gnns/tree/master/chem">https://github.com/snap-stanford/pretrain-gnns/tree/master/chem</a></p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -380,8 +385,8 @@ using the attribute masking pretraining strategy.</p>
 <li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>default=300</em>) – Dimension of hidden node features.</p></li>
 <li><p><strong>drop_ratio</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Dropout probability.</p></li>
 <li><p><strong>norm_layer</strong> (<em>str</em><em>, </em><em>default=&quot;batch_norm&quot;</em>) – Type of normalization layer to use. One of [“batch_norm”, “layer_norm”, “instance_norm”, “graph_norm”, “size_norm”, “pair_norm”].</p></li>
-<li><p><strong>encoder_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use.</p></li>
-<li><p><strong>readout</strong> (<em>str</em><em>, </em><em>default=&quot;sum&quot;</em>) – Method for aggregating node features to obtain graph-level representations.</p></li>
+<li><p><strong>encoder_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use. One of [“gin-virtual”, “gcn-virtual”, “gin”, “gcn”].</p></li>
+<li><p><strong>readout</strong> (<em>str</em><em>, </em><em>default=&quot;sum&quot;</em>) – Method for aggregating node features to obtain graph-level representations. One of [“sum”, “mean”, “max”].</p></li>
 <li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>default=128</em>) – Number of samples per batch for training.</p></li>
 <li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>default=500</em>) – Maximum number of training epochs.</p></li>
 <li><p><strong>learning_rate</strong> (<em>float</em><em>, </em><em>default=0.001</em>) – Learning rate for optimizer.</p></li>
@@ -441,6 +446,11 @@ using the attribute masking pretraining strategy.</p>
 <dd><p>Bases: <a class="reference internal" href="base.html#torch_molecule.base.encoder.BaseMolecularEncoder" title="torch_molecule.base.encoder.BaseMolecularEncoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMolecularEncoder</span></code></a></p>
 <p>This encoder implements a GNN-based model for molecular representation learning
 using the context prediction pretraining strategy.</p>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Paper: Strategies for Pre-training Graph Neural Networks (ICLR 2020) <a class="reference external" href="https://arxiv.org/abs/1905.12265">https://arxiv.org/abs/1905.12265</a></p></li>
+<li><p>Code: <a class="reference external" href="https://github.com/snap-stanford/pretrain-gnns/tree/master/chem">https://github.com/snap-stanford/pretrain-gnns/tree/master/chem</a></p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -451,8 +461,8 @@ using the context prediction pretraining strategy.</p>
 <li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>default=300</em>) – Dimension of hidden node features.</p></li>
 <li><p><strong>drop_ratio</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Dropout probability.</p></li>
 <li><p><strong>norm_layer</strong> (<em>str</em><em>, </em><em>default=&quot;batch_norm&quot;</em>) – Type of normalization layer to use. One of [“batch_norm”, “layer_norm”, “instance_norm”, “graph_norm”, “size_norm”, “pair_norm”].</p></li>
-<li><p><strong>encoder_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use.</p></li>
-<li><p><strong>readout</strong> (<em>str</em><em>, </em><em>default=&quot;sum&quot;</em>) – Method for aggregating node features to obtain graph-level representations.</p></li>
+<li><p><strong>encoder_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use. One of [“gin-virtual”, “gcn-virtual”, “gin”, “gcn”].</p></li>
+<li><p><strong>readout</strong> (<em>str</em><em>, </em><em>default=&quot;sum&quot;</em>) – Method for aggregating node features to obtain graph-level representations. One of [“sum”, “mean”, “max”].</p></li>
 <li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>default=128</em>) – Number of samples per batch for training.</p></li>
 <li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>default=500</em>) – Maximum number of training epochs.</p></li>
 <li><p><strong>learning_rate</strong> (<em>float</em><em>, </em><em>default=0.001</em>) – Learning rate for the optimizer.</p></li>
@@ -462,7 +472,6 @@ using the context prediction pretraining strategy.</p>
 <li><p><strong>scheduler_factor</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Factor by which to reduce learning rate when plateau is reached.</p></li>
 <li><p><strong>scheduler_patience</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of epochs with no improvement after which learning rate will be reduced.</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to print progress information during training.</p></li>
-<li><p><strong>model_name</strong> (<em>str</em><em>, </em><em>default=&quot;ContextPredMolecularEncoder&quot;</em>) – Name of the encoder model.</p></li>
 </ul>
 </dd>
 </dl>
@@ -511,7 +520,12 @@ using the context prediction pretraining strategy.</p>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.encoder.edgepred.modeling_edgepred.</span></span><span class="sig-name descname"><span class="pre">EdgePredMolecularEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'EdgePredMolecularEncoder'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'gin-virtual'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/encoder/edgepred/modeling_edgepred.html#EdgePredMolecularEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#torch_molecule.base.encoder.BaseMolecularEncoder" title="torch_molecule.base.encoder.BaseMolecularEncoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMolecularEncoder</span></code></a></p>
 <p>This encoder implements a GNN-based model for molecular representation learning
-using the attribute masking pretraining strategy.</p>
+using the edge prediction.</p>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Paper: Strategies for Pre-training Graph Neural Networks (ICLR 2020) <a class="reference external" href="https://arxiv.org/abs/1905.12265">https://arxiv.org/abs/1905.12265</a></p></li>
+<li><p>Code: <a class="reference external" href="https://github.com/snap-stanford/pretrain-gnns/tree/master/chem">https://github.com/snap-stanford/pretrain-gnns/tree/master/chem</a></p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -530,7 +544,6 @@ using the attribute masking pretraining strategy.</p>
 <li><p><strong>scheduler_factor</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Factor by which to reduce learning rate when plateau is reached.</p></li>
 <li><p><strong>scheduler_patience</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of epochs with no improvement after which learning rate will be reduced.</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to print progress information during training.</p></li>
-<li><p><strong>model_name</strong> (<em>str</em><em>, </em><em>default=&quot;EdgePredMolecularEncoder&quot;</em>) – Name of the encoder model.</p></li>
 </ul>
 </dd>
 </dl>
@@ -573,6 +586,7 @@ using the attribute masking pretraining strategy.</p>
 
 </dd></dl>
 
+<p class="rubric">InfoGraph for Molecular Representation Learning</p>
 </section>
 <section id="supervised-pretraining-for-molecules">
 <h2>Supervised Pretraining for Molecules<a class="headerlink" href="#supervised-pretraining-for-molecules" title="Link to this heading">¶</a></h2>
@@ -587,7 +601,7 @@ using the attribute masking pretraining strategy.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>num_task</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of user-defined tasks for supervised pretraining. If it is specified, user must provide y_train in the fit function.</p></li>
 <li><p><strong>predefined_task</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of predefined tasks to use. Must be from the supported task list [“morgan”, “maccs”, “logP”]. If None and num_task is None, all predefined tasks will be used.</p></li>
-<li><p><strong>encoder_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use. Must be one of the supported encoder types.</p></li>
+<li><p><strong>encoder_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use. One of [“gin-virtual”, “gcn-virtual”, “gin”, “gcn”].</p></li>
 <li><p><strong>readout</strong> (<em>str</em><em>, </em><em>default=&quot;sum&quot;</em>) – Method for aggregating node features to obtain graph-level representations. One of [“sum”, “mean”, “max”].</p></li>
 <li><p><strong>num_layer</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of GNN layers.</p></li>
 <li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>default=300</em>) – Dimension of hidden node features.</p></li>

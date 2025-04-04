@@ -328,13 +328,13 @@
 <span class="sd">    hidden_size : int, default=300</span>
 <span class="sd">        Dimension of hidden node features.</span>
 <span class="sd">    gnn_type : str, default=&quot;gin-virtual&quot;</span>
-<span class="sd">        Type of GNN architecture to use.</span>
+<span class="sd">        Type of GNN architecture to use. One of [&quot;gin-virtual&quot;, &quot;gcn-virtual&quot;, &quot;gin&quot;, &quot;gcn&quot;].</span>
 <span class="sd">    drop_ratio : float, default=0.5</span>
 <span class="sd">        Dropout probability.</span>
 <span class="sd">    norm_layer : str, default=&quot;batch_norm&quot;</span>
 <span class="sd">        Type of normalization layer to use. One of [&quot;batch_norm&quot;, &quot;layer_norm&quot;, &quot;instance_norm&quot;, &quot;graph_norm&quot;, &quot;size_norm&quot;, &quot;pair_norm&quot;].</span>
 <span class="sd">    graph_pooling : str, default=&quot;sum&quot;</span>
-<span class="sd">        Method for aggregating node features to graph-level representations.</span>
+<span class="sd">        Method for aggregating node features to graph-level representations. One of [&quot;sum&quot;, &quot;mean&quot;, &quot;max&quot;].</span>
 <span class="sd">    augmented_feature : list, default=[&quot;morgan&quot;, &quot;maccs&quot;]</span>
 <span class="sd">        Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.</span>
 <span class="sd">    batch_size : int, default=128</span>
@@ -554,11 +554,6 @@
         <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_decay</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_clip_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
-                <span class="n">group</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;max_norm&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_clip_value</span><span class="p">)</span>
-                <span class="n">group</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;norm_type&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
-
         <span class="n">scheduler</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_lr_scheduler</span><span class="p">:</span>
             <span class="n">scheduler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">ReduceLROnPlateau</span><span class="p">(</span>
@@ -970,16 +965,11 @@
 
             <span class="c1"># Forward pass and loss computation</span>
             <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">compute_loss</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_criterion</span><span class="p">)</span>
-
-            <span class="c1"># Backward pass</span>
             <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-
             <span class="c1"># Compute gradient norm if gradient clipping is enabled</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_clip_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_clip_value</span><span class="p">)</span>
-
             <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-
             <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
 
             <span class="c1"># Update progress bar if using tqdm</span>

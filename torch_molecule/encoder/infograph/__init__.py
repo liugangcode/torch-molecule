@@ -1,3 +1,3 @@
-from .modeling_infograph import InfographMolecularEncoder
+from .modeling_infograph import InfoGraphMolecularEncoder
 
-__all__ = ['InfographMolecularEncoder']
+__all__ = ['InfoGraphMolecularEncoder']

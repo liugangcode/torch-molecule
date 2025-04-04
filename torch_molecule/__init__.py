@@ -20,7 +20,7 @@ from .encoder.attrmask import AttrMaskMolecularEncoder
 from .encoder.contextpred import ContextPredMolecularEncoder
 from .encoder.edgepred import EdgePredMolecularEncoder
 from .encoder.moama import MoamaMolecularEncoder
-from .encoder.infograph import InfographMolecularEncoder
+from .encoder.infograph import InfoGraphMolecularEncoder
 
 """
 generator module

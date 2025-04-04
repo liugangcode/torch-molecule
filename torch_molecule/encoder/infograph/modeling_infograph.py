@@ -17,8 +17,8 @@ ALLOWABLE_ENCODER_MODELS = GNN_ENCODER_MODELS
 ALLOWABLE_ENCODER_READOUTS = GNN_ENCODER_READOUTS
 
 @dataclass
-class InfographMolecularEncoder(BaseMolecularEncoder):
-    """This encoder implements a Infograph for molecular representation learning.
+class InfoGraphMolecularEncoder(BaseMolecularEncoder):
+    """This encoder implements a InfoGraph for molecular representation learning.
 
     InfoGraph: Unsupervised and Semi-supervised Graph-Level Representation Learning via Mutual Information Maximization (ICLR 2020)
 

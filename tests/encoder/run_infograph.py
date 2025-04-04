@@ -1,5 +1,5 @@
 import numpy as np
-from torch_molecule import InfographMolecularEncoder
+from torch_molecule import InfoGraphMolecularEncoder
 
 def test_infograph_encoder():
     # Test molecules (simple examples)
@@ -12,7 +12,7 @@ def test_infograph_encoder():
     ] * 10
 
     # Basic initialization test
-    model = InfographMolecularEncoder(
+    model = InfoGraphMolecularEncoder(
         num_layer=3,
         embedding_dim=300,  # Must be divisible by num_layer
         batch_size=5,
@@ -37,7 +37,7 @@ def test_infograph_encoder():
     model.save_to_local(save_path)
     print(f"Model saved to {save_path}")
 
-    new_model = InfographMolecularEncoder()
+    new_model = InfoGraphMolecularEncoder()
     new_model.load_from_local(save_path)
     print("Model loaded successfully")
     

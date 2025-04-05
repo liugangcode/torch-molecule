@@ -75,3 +75,12 @@ Supervised Pretraining for Molecules
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :undoc-members:
    :show-inheritance:
+
+Pretrained Molecular Encoders
+----------------------------------------------
+
+.. rubric:: Sequence-based Pretrained Transformers from Hugging Face
+
+.. autoclass:: torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder
+   :members: fit, encode, load, load_from_hf
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class

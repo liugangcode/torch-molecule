@@ -374,18 +374,19 @@
 <span class="sd">            Training data, which will be used as the initial population.</span>
 <span class="sd">        y_train : Optional[Union[List, np.ndarray]]</span>
 <span class="sd">            Training labels for conditional generation (num_task is not 0).</span>
-<span class="sd">        oracles : Optional[List[Callable]]</span>
-<span class="sd">            Oracles used to score the generated molecules, if not provided, default oracles based on </span>
+<span class="sd">        oracle : Optional[Callable]</span>
+<span class="sd">            Oracle used to score the generated molecules. If not provided, default oracles based on </span>
 <span class="sd">            ``sklearn.ensemble.RandomForestRegressor`` are trained on the X_train and y_train.</span>
 <span class="sd">            </span>
-<span class="sd">            For the customized oracle, it should be a Callable object, i.e., ``oracle(X)``, and the number </span>
-<span class="sd">            of oracles must equal to the number of tasks (``num_task``).</span>
+<span class="sd">            For a customized oracle, it should be a Callable object, i.e., ``oracle(X, y)``.</span>
+<span class="sd">            Please properly wrap your oracle to take two inputs:</span>
+<span class="sd">              - a list of ``rdkit.Chem.rdchem.Mol`` objects and </span>
+<span class="sd">              - a (1, num_task) numpy array of target values that all the molecules in the list target to achieve. Take care of NaN values if any.</span>
 <span class="sd">            </span>
-<span class="sd">            Please properly wrap your oracle that takes a list of ``rdkit.Chem.rdchem.Mol`` and returns a list of scores for each molecule. </span>
-<span class="sd">            For multi-conditional generation, scores for different tasks should be aggregated, i.e. mean or sum.</span>
+<span class="sd">            Scores for different tasks should be aggregated, i.e., mean or sum. The return should be a list of scores (float).</span>
 <span class="sd">            Smaller scores mean closer to the target goal.</span>
 <span class="sd">            </span>
-<span class="sd">            We don&#39;t need oracles for unconditional generation.</span>
+<span class="sd">            Oracles are not needed for unconditional generation.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

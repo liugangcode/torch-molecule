@@ -138,6 +138,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
                 self.y_train = y_train
             else:
                 assert self.num_task == 0, "No oracles or y_train provided but num_task is not 0"
+                self.oracle = None
                     
         self.X_train = X_train
         self.is_fitted_ = True

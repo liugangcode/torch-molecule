@@ -6,9 +6,9 @@ import os
 from rdkit import Chem
 
 # Load training data
-path_to_data = ''
-train_data = pd.read_csv(f'{path_to_data}/train.csv')
-test_data = pd.read_csv(f'{path_to_data}/test.csv')
+path_to_data = pd.read_csv('../../data/polymer100.csv')
+train_data = path_to_data
+test_data = path_to_data
 
 # Extract SMILES and properties
 train_smiles_list = train_data['smiles'].tolist()
@@ -76,7 +76,8 @@ model_cond = GraphDITMolecularGenerator(
     batch_size=1024,
     drop_condition=0.1,
     verbose=True,
-    epochs=10000,
+    # epochs=10000,
+    epochs=10,
 )
 
 model_cond.fit(train_smiles_list, train_property_array)

@@ -6,17 +6,13 @@ from rdkit import Chem
 from tqdm import tqdm
 from typing import Optional, Union, Dict, Any, Tuple, List, Callable
 from dataclasses import dataclass, field
-from sklearn.ensemble import RandomForestRegressor
 from warnings import warn
 
 from .crossover import crossover
 from .mutate import mutate
+from .oracle import Oracle
 
 from ...base import BaseMolecularGenerator
-from ...utils import graph_from_smiles, graph_to_smiles
-from ...utils.graph.features import getmorganfingerprint
-
-MINIMUM = 1e-10
 
 @dataclass
 class GraphGAMolecularGenerator(BaseMolecularGenerator):
@@ -74,65 +70,86 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
         raise NotImplementedError("GraphGA does not support getting model parameters")
 
     def save_to_local(self, path: str):
-        joblib.dump(self.oracles, path)
+        joblib.dump(self.oracle, path)
         if self.verbose:
-            print(f"Saved oracles to {path}")
+            print(f"Saved oracle to {path}")
 
-    def load_from_local(self, path: str):
-        self.oracles = joblib.load(path)
-        if self.verbose:
-            print(f"Loaded oracles from {path}")
+    def load_from_local(self):
+        raise NotImplementedError(
+            "GraphGA does not support loading from local. "
+            "If you want to load the oracles saved through save_to_local, "
+            "you need to manually load the oracle from the path with joblib.load(path) "
+            "and pass it to the fit function."
+        )
+    
+    def save_to_hf(self, repo_id: str, task_id: str = "default"):
+        raise NotImplementedError("GraphGA does not support pushing to huggingface")
+    
+    def load_from_hf(self, repo_id: str, task_id: str = "default"):
+        raise NotImplementedError("GraphGA does not support loading from huggingface")
     
     def _setup_optimizers(self):
         raise NotImplementedError("GraphGA does not support setting up optimizers")
     
     def _train_epoch(self, train_loader, optimizer):
         raise NotImplementedError("GraphGA does not support training epochs")
-    
-    def push_to_huggingface(self, repo_id: str, task_id: str = "default"):
-        raise NotImplementedError("GraphGA does not support pushing to huggingface")
-    
-    def load_from_huggingface(self, repo_id: str, task_id: str = "default"):
-        raise NotImplementedError("GraphGA does not support loading from huggingface")
-    
-    def _convert_to_fingerprint(self, X_train: List[str]) -> List[np.ndarray]:
-        """Convert SMILES to fingerprint."""
-        if isinstance(X_train[0], str):
-            return np.array([getmorganfingerprint(Chem.MolFromSmiles(mol)) for mol in X_train])
-        else:
-            return np.array([getmorganfingerprint(mol) for mol in X_train])
 
     def fit(
         self,
         X_train: List[str],
         y_train: Optional[Union[List, np.ndarray]] = None,
-        oracles: Optional[List[Callable]] = None
+        oracle: Optional[List[Callable]] = None
     ) -> "GraphGAMolecularGenerator":
-        X_train, y_train = self._validate_inputs(X_train, y_train, num_task=self.num_task, return_rdkit_mol=False)
-        if y_train is not None:
-            self.y_train = np.array(y_train)
-            if oracles is None:
-                warn("No oracles provided but y_train is provided, using default oracles (RandomForestRegressor)", UserWarning)
-                self.oracles = [RandomForestRegressor() for _ in range(self.num_task)]
-                for i in range(self.num_task):
-                    X_train_fp = self._convert_to_fingerprint(X_train)
-                    nan_mask = ~np.isnan(y_train[:, i])
-                    y_train_ = y_train[:, i]
-                    y_train_ = y_train_[nan_mask]
-                    X_train_fp = X_train_fp[nan_mask]
-                    self.oracles[i].fit(X_train_fp, y_train_)
-            else:
-                self.oracles = oracles
+        """Fit the model to the training data.
 
+        Parameters
+        ----------
+        X_train : List[str]
+            Training data, which will be used as the initial population.
+        y_train : Optional[Union[List, np.ndarray]]
+            Training labels for conditional generation (num_task is not 0).
+        oracles : Optional[List[Callable]]
+            Oracles used to score the generated molecules, if not provided, default oracles based on 
+            ``sklearn.ensemble.RandomForestRegressor`` are trained on the X_train and y_train.
+            
+            For the customized oracle, it should be a Callable object, i.e., ``oracle(X)``, and the number 
+            of oracles must equal to the number of tasks (``num_task``).
+            
+            Please properly wrap your oracle that takes a list of ``rdkit.Chem.rdchem.Mol`` and returns a list of scores for each molecule. 
+            For multi-conditional generation, scores for different tasks should be aggregated, i.e. mean or sum.
+            Smaller scores mean closer to the target goal.
+            
+            We don't need oracles for unconditional generation.
+
+        Returns
+        -------
+        self : GraphGAMolecularGenerator
+            Fitted model.
+        """
+        self.y_train = None
+        if oracle is not None:
+            self.oracle = oracle
+        else:
+            X_train, y_train = self._validate_inputs(X_train, y_train, num_task=self.num_task, return_rdkit_mol=False)
+            if y_train is not None:
+                warn("No oracles provided but y_train is provided, using default oracles (RandomForestRegressor)", UserWarning)
+                self.oracle = Oracle(num_task=self.num_task)
+                self.oracle.fit(X_train, y_train)
+                self.y_train = y_train
+            else:
+                assert self.num_task == 0, "No oracles or y_train provided but num_task is not 0"
+                    
         self.X_train = X_train
         self.is_fitted_ = True
         return self
 
     def _make_mating_pool(self, population_mol, population_scores, offspring_size: int):
-        """Create mating pool based on molecule scores."""
-        population_scores = [s + MINIMUM for s in population_scores]
-        sum_scores = sum(population_scores)
-        population_probs = [p / sum_scores for p in population_scores]
+        """Create mating pool where smaller scores have higher selection probabilities."""
+        max_score = max(population_scores)
+        # Invert scores so that smaller scores become larger probabilities
+        inverted_scores = [max_score - s + 1e-6 for s in population_scores]  # Add small constant to avoid zeros
+        sum_scores = sum(inverted_scores)
+        population_probs = [p / sum_scores for p in inverted_scores]
         mating_pool = np.random.choice(population_mol, p=population_probs, size=offspring_size, replace=True)
         return mating_pool
 
@@ -161,30 +178,9 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
         return new_mol_list
     
     def _get_score(self, mol_list, label):
-        label = label[0]
-        assert self.num_task == len(label)
-        scores_list = []
-        for mol in mol_list:
-            if mol is None:
-                raise ValueError("Please remove invalid molecules from the population before scoring")
-
-            if self.num_task == 1:
-                fp = self._convert_to_fingerprint([mol])[0]
-                score = self.oracles[0].predict([fp])[0]
-                scores_list.append(float(score))
-            else:
-                mol_scores = []
-                fp = self._convert_to_fingerprint([mol])[0]
-                for idx, target in enumerate(label):
-                    if not np.isnan(target):
-                        pred = self.oracles[idx].predict([fp])[0]
-                        # Lower score for values closer to target
-                        dist = abs(float(pred) - target) / (abs(target) + 1e-8)
-                        mol_scores.append(dist)  
-                score = np.nanmean(mol_scores)
-                scores_list.append(float(score))
-        
-        return scores_list
+        if label is None:
+            return [1.0] * len(mol_list)  # For unconditional generation
+        return self.oracle(mol_list, label)
 
     def generate(
         self, 
@@ -198,36 +194,63 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
         all_generated_mols = []
         
         if labels is not None:
-            labels = np.array(labels)
-            if labels.shape[1] != len(self.oracles):
-                raise ValueError(f"The second dimension of labels (number of tasks) must equal to the number of tasks in oracles ({len(self.oracles)})")
+            try:
+                labels = np.array(labels).reshape(-1, self.num_task)
+            except:
+                raise ValueError(f"labels must be convertible to a numpy array with shape (-1, {self.num_task})")
             
-            label_iterator = range(labels.shape[0])
-            if self.verbose:
-                label_iterator = tqdm(label_iterator, desc="Generating molecules for labels")
-                
-            for i in label_iterator:
+            # Prepare all inputs for parallel processing
+            parallel_inputs = []
+            for i in range(labels.shape[0]):
                 label = labels[i:i+1]  # Keep as 2D array
                 
                 # Initialize population based on similarity to target label
-                population_mol = self._initialize_population_for_label(label)
+                if self.y_train is not None:
+                    population_mol = self._initialize_population_for_label(label)
+                else:
+                    population_idx = np.random.choice(len(self.X_train), min(self.population_size, len(self.X_train)))
+                    population_smiles = [self.X_train[idx] for idx in population_idx]
+                    population_mol = [Chem.MolFromSmiles(s) for s in population_smiles]
                 
-                # Run GA for this specific label
-                generated_mol = self._run_generation(population_mol, label)
-                all_generated_mols.append(Chem.MolToSmiles(generated_mol))
-        else:
-            sample_iterator = range(num_samples)
+                parallel_inputs.append((population_mol, label))
+            
+            # Run GA for all labels in parallel with tqdm progress bar
             if self.verbose:
-                sample_iterator = tqdm(sample_iterator, desc="Generating molecules")
-                
-            for _ in sample_iterator:
+                results = joblib.Parallel(n_jobs=self.n_jobs)(
+                    delayed(self._run_generation)(pop_mol, lbl) 
+                    for pop_mol, lbl in tqdm(parallel_inputs, desc="Generating molecules")
+                )
+            else:
+                results = joblib.Parallel(n_jobs=self.n_jobs)(
+                    delayed(self._run_generation)(pop_mol, lbl) 
+                    for pop_mol, lbl in parallel_inputs
+                )
+            
+            # Convert results to SMILES in the original order
+            all_generated_mols = [Chem.MolToSmiles(mol) for mol in results]
+        else:
+            # Prepare all inputs for parallel processing
+            parallel_inputs = []
+            for _ in range(num_samples):
                 population_idx = np.random.choice(len(self.X_train), min(self.population_size, len(self.X_train)))
-                population_smiles = [self.X_train[i] for i in population_idx]
+                population_smiles = [self.X_train[idx] for idx in population_idx]
                 population_mol = [Chem.MolFromSmiles(s) for s in population_smiles]
-                
-                # Run GA for this sample
-                generated_mol = self._run_generation(population_mol, None)
-                all_generated_mols.append(Chem.MolToSmiles(generated_mol))
+                parallel_inputs.append((population_mol, None))
+            
+            # Run GA for all samples in parallel with tqdm progress bar
+            if self.verbose:
+                results = joblib.Parallel(n_jobs=self.n_jobs)(
+                    delayed(self._run_generation)(pop_mol, lbl) 
+                    for pop_mol, lbl in tqdm(parallel_inputs, desc="Generating molecules", total=num_samples)
+                )
+            else:
+                results = joblib.Parallel(n_jobs=self.n_jobs)(
+                    delayed(self._run_generation)(pop_mol, lbl) 
+                    for pop_mol, lbl in parallel_inputs
+                )
+            
+            # Convert results to SMILES
+            all_generated_mols = [Chem.MolToSmiles(mol) for mol in results]
         
         return all_generated_mols
     
@@ -236,10 +259,9 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
         similarities = []
         
         for i in range(len(self.X_train)):
-            if hasattr(self, 'y_train'):
-                sample_label = self.y_train[i]
-                similarity = -np.nansum((sample_label - label[0])**2)
-                similarities.append((i, similarity))
+            sample_label = self.y_train[i]
+            similarity = -np.nansum((sample_label - label[0])**2)
+            similarities.append((i, similarity))
         
         if similarities:
             similarities.sort(key=lambda x: x[1], reverse=True)
@@ -252,19 +274,20 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
     
     def _run_generation(self, population_mol, label):
         """Run the genetic algorithm for a specific population and label."""
-        pool = joblib.Parallel(n_jobs=self.n_jobs)
-        
-        for generation in range(self.iteration):
+        for generation_idx in range(self.iteration):
             if label is not None:
                 population_scores = self._get_score(population_mol, label)
             else:
                 population_scores = [1.0] * len(population_mol)  # For unconditional generation
             
             mating_pool = self._make_mating_pool(population_mol, population_scores, self.offspring_size)
-            offspring_mol = pool(
-                delayed(self._reproduce)(mating_pool, self.mutation_rate) 
-                for _ in range(self.offspring_size)
-            )
+            
+            # Create offspring sequentially (parallelization is at the higher level now)
+            offspring_mol = []
+            for _ in range(self.offspring_size):
+                offspring = self._reproduce(mating_pool, self.mutation_rate)
+                offspring_mol.append(offspring)
+            
             population_mol += offspring_mol
             population_mol = self._sanitize_molecules(population_mol)
 

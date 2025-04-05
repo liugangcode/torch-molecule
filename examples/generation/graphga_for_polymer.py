@@ -4,9 +4,9 @@ from torch_molecule import GraphGAMolecularGenerator
 import os
 
 # Load training data
-path_to_data = ''
-train_data = pd.read_csv(f'{path_to_data}/train.csv')
-test_data = pd.read_csv(f'{path_to_data}/test.csv')
+path_to_data = pd.read_csv('../../data/polymer100.csv')
+train_data = path_to_data
+test_data = path_to_data
 
 # Extract SMILES and properties
 train_smiles_list = train_data['smiles'].tolist()

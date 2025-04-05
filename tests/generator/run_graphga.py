@@ -5,7 +5,7 @@ from tqdm import tqdm
 from joblib import delayed
 
 import torch
-from torch_molecule.generator.graphga.modeling_graph_ga import GraphGAMolecularGenerator
+from torch_molecule.generator.graph_ga.modeling_graph_ga import GraphGAMolecularGenerator
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import Descriptors
@@ -105,13 +105,18 @@ def test_graph_ga_generator():
         model_cond.save_to_local(save_path)
         print(f"GraphGA Model saved to {save_path}")
         
+        # Load oracles manually with joblib
+        import joblib
+        saved_oracle = joblib.load(save_path)
+        
+        # Create new model and pass the loaded oracles to fit
         new_model = GraphGAMolecularGenerator(num_task=2)
-        new_model.load_from_local(save_path)
+        new_model.fit(smiles_list, oracle=saved_oracle)
         print("GraphGA Model loaded successfully")
         
         # Test generation with loaded model
         generated_smiles = new_model.generate(labels=target_properties[:1])
-        print("Generated molecules with loaded model:", len(generated_smiles))
+        print("Generated molecules with loaded model:", len(generated_smiles), generated_smiles)
     except Exception as e:
         print(f"Error in saving/loading: {e}")
     

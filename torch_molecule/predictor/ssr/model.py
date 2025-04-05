@@ -2,9 +2,8 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 import copy
-from torch_scatter import scatter
-from torch_geometric.nn.pool.consecutive import consecutive_cluster
-from torch_geometric.nn.pool.pool import pool_batch
+# from torch_scatter import scatter
+from .utils import scatter
 
 from ...nn import GNN_node, GNN_node_Virtualnode, MLP
 from ...utils import init_weights

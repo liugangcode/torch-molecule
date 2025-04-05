@@ -108,18 +108,19 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
             Training data, which will be used as the initial population.
         y_train : Optional[Union[List, np.ndarray]]
             Training labels for conditional generation (num_task is not 0).
-        oracles : Optional[List[Callable]]
-            Oracles used to score the generated molecules, if not provided, default oracles based on 
+        oracle : Optional[Callable]
+            Oracle used to score the generated molecules. If not provided, default oracles based on 
             ``sklearn.ensemble.RandomForestRegressor`` are trained on the X_train and y_train.
             
-            For the customized oracle, it should be a Callable object, i.e., ``oracle(X)``, and the number 
-            of oracles must equal to the number of tasks (``num_task``).
+            For a customized oracle, it should be a Callable object, i.e., ``oracle(X, y)``.
+            Please properly wrap your oracle to take two inputs:
+              - a list of ``rdkit.Chem.rdchem.Mol`` objects and 
+              - a (1, num_task) numpy array of target values that all the molecules in the list target to achieve. Take care of NaN values if any.
             
-            Please properly wrap your oracle that takes a list of ``rdkit.Chem.rdchem.Mol`` and returns a list of scores for each molecule. 
-            For multi-conditional generation, scores for different tasks should be aggregated, i.e. mean or sum.
+            Scores for different tasks should be aggregated, i.e., mean or sum. The return should be a list of scores (float).
             Smaller scores mean closer to the target goal.
             
-            We don't need oracles for unconditional generation.
+            Oracles are not needed for unconditional generation.
 
         Returns
         -------

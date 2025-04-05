@@ -55,7 +55,7 @@ Modeling Molecules as Graphs with Heuristic-based Generators
    :show-inheritance:
 
 .. rubric:: Default Oracles in GraphGA
-.. autoclass:: torch_molecule.generator.graph_ga.oracle.Oracle
+.. automodule:: torch_molecule.generator.graph_ga.oracle
    :members:
    :undoc-members:
    :show-inheritance:

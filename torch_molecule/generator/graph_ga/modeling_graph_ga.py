@@ -21,8 +21,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
     References
     ----------
     - A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of 
-           Median Molecules. Journal of Chemical Information and Computer Sciences.
-           https://pubs.acs.org/doi/10.1021/ci034290p
+    Median Molecules. Journal of Chemical Information and Computer Sciences. https://pubs.acs.org/doi/10.1021/ci034290p
     - Implementation: https://github.com/wenhao-gao/mol_opt
 
     Parameters

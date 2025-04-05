@@ -21,7 +21,7 @@
 
 1. **Predictive Models**: Done: GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR. TODO: SMILES-based LSTM/Transformers, more
 2. **Generative Models**: Done: Graph DiT, GraphGA, DiGress. TODO:, GDSS, more
-3. **Representation Models**: Done: MoAMa, AttrMasking, ContextPred, EdgePred. TODO: checkpoints, more 
+3. **Representation Models**: Done: MoAMa, AttrMasking, ContextPred, EdgePred. Many pretrained models from HF. TODO: checkpoints, more 
 
 > **Note**: This project is in active development, and features may change.
 
@@ -54,6 +54,13 @@
    ```bash
    pip install -i https://test.pypi.org/simple/ torch-molecule
    ```
+
+### Additional Packages
+
+| Model | Required Packages |
+|-------|-------------------|
+| HFPretrainedMolecularEncoder | transformers |
+
 ## Usage
 
 Refer to the `tests` folder for more use cases.
@@ -65,34 +72,13 @@ The following example demonstrates how to use the `GREAMolecularPredictor` class
 More examples could be found in the folders `examples` and `tests`.
 
 ```python
-from torch_molecule import GREAMolecularPredictor, GNNMolecularPredictor
-from torch_molecule.utils.search import ParameterType, ParameterSpec
-
-# Define search parameters
-search_GNN = {
-    "gnn_type": ParameterSpec(ParameterType.CATEGORICAL, ["gin-virtual", "gcn-virtual", "gin", "gcn"]),
-    "norm_layer": ParameterSpec(ParameterType.CATEGORICAL, ["batch_norm", "layer_norm"]),
-    "graph_pooling": ParameterSpec(ParameterType.CATEGORICAL, ["mean", "sum", "max"]),
-    "augmented_feature": ParameterSpec(ParameterType.CATEGORICAL, ["maccs,morgan", "maccs", "morgan", None]),
-    "num_layer": ParameterSpec(ParameterType.INTEGER, (2, 5)),
-    "hidden_size": ParameterSpec(ParameterType.INTEGER, (64, 512)),
-    "drop_ratio": ParameterSpec(ParameterType.FLOAT, (0.0, 0.5)),
-    "learning_rate": ParameterSpec(ParameterType.LOG_FLOAT, (1e-5, 1e-2)),
-    "weight_decay": ParameterSpec(ParameterType.LOG_FLOAT, (1e-10, 1e-3)),
-}
-
-search_GREA = {
-    "gamma": ParameterSpec(ParameterType.FLOAT, (0.25, 0.75)),
-    **search_GNN
-}
+from torch_molecule import GREAMolecularPredictor
 
 # Train GREA model
 grea_model = GREAMolecularPredictor(
     num_task=num_task,
     task_type="regression",
     model_name="GREA_multitask",
-    batch_size=BATCH_SIZE,
-    epochs=N_epoch,
     evaluate_criterion='r2',
     evaluate_higher_better=True,
     verbose=True
@@ -103,7 +89,7 @@ X_train = ['C1=CC=CC=C1', 'C1=CC=CC=C1']
 y_train = [[0.5], [1.5]]
 X_val = ['C1=CC=CC=C1', 'C1=CC=CC=C1']
 y_val = [[0.5], [1.5]]
-N_trial = 100
+N_trial = 10
 
 grea_model.autofit(
     X_train=X_train.tolist(),
@@ -111,50 +97,60 @@ grea_model.autofit(
     X_val=X_val.tolist(),
     y_val=y_val,
     n_trials=N_trial,
-    search_parameters=search_GREA
 )
 ```
 
-### Using Checkpoints for Deployment
+### Checkpoints
 
-`torch-molecule` provides checkpoints hosted on Hugging Face, which can save computational resources by starting from a pretrained state. For example, a checkpoint for gas permeability predictions (in log10 space) can be used as follows:
+`torch-molecule` provides checkpoint functions that can be interacted with on Hugging Face.
 
 ```python
 from torch_molecule import GREAMolecularPredictor
+from sklearn.metrics import mean_absolute_error
 
+# Define the repository ID for Hugging Face
 repo_id = "user/repo_id"
-# Push a trained model to Hugging Face
+
+# Initialize the GREAMolecularPredictor model
 model = GREAMolecularPredictor()
+
+# Train the model using autofit
 model.autofit(
-    X_train=X.tolist(),  # List of SMILES strings
-    y_train=y_train,     # numpy array [n_samples, n_tasks]
-    X_val=X_val.tolist(),
-    y_val=y_val,
-    n_trials=100          # Number of trials for hyperparameter optimization
+    X_train=X.tolist(),  # List of SMILES strings for training
+    y_train=y_train,     # numpy array [n_samples, n_tasks] for training labels
+    X_val=X_val.tolist(),# List of SMILES strings for validation
+    y_val=y_val,         # numpy array [n_samples, n_tasks] for validation labels
 )
+
+# Make predictions on the test set
 output = model.predict(X_test.tolist()) # (n_sample, n_task)
+
+# Calculate the mean absolute error
 mae = mean_absolute_error(y_test, output['prediction'])
 metrics = {'MAE': mae}
-model.push_to_huggingface(
+
+# Save the trained model to Hugging Face
+model.save_to_hf(
     repo_id=repo_id,
     task_id=f"{task_name}",
     metrics=metrics,
     commit_message=f"Upload GREA_{task_name} model with metrics: {metrics}",
     private=False
 )
+
 # Load a pretrained checkpoint from Hugging Face
 model = GREAMolecularPredictor()
-model.load_model(f"{model_dir}/GREA_{task_name}.pt", repo_id=repo_id)
+model.load_from_hf(repo_id=repo_id, local_cache=f"{model_dir}/GREA_{task_name}.pt")
+
+# Set model parameters
 model.set_params(verbose=True)
 
-# Make predictions
+# Make predictions using the loaded model
 predictions = model.predict(smiles_list)
 ```
 
 <!-- ### Using Checkpoints for Benchmarking
-
 _(Coming soon)_ -->
-
 
 ## Project Structure
 

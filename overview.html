@@ -288,10 +288,17 @@
 <li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">GNNMolecularPredictor</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">GREAMolecularPredictor</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.sgir.modeling_sgir.SGIRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">SGIRMolecularPredictor</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">DIRMolecularPredictor</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">IRMMolecularPredictor</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.rpgnn.modeling_rpgnn.RPGNNMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">RPGNNMolecularPredictor</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.ssr.modeling_ssr.SSRMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">SSRMolecularPredictor</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#modeling-molecules-as-sequences-with-rnns">Modeling Molecules as Sequences with RNNs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/predictor.html#modeling-molecules-as-sequences-with-rnns">Modeling Molecules as Sequences with RNNs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularPredictor</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/predictor.html#torch_molecule.predictor.smiles_transformer.modeling_transformer.SMILESTransformerMolecularPredictor"><code class="docutils literal notranslate"><span class="pre">SMILESTransformerMolecularPredictor</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -300,9 +307,19 @@
 <p class="caption" role="heading"><span class="caption-text">Molecular Generator Models</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-as-graphs-with-gnn-transformer-based-generators">Modeling Molecules as Graphs with GNN / Transformer-based Generators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-as-graphs-with-heuristic-based-generators">Modeling Molecules as Graphs with Heuristic-based Generators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-as-sequences-with-transformer-based-generators">Modeling Molecules as Sequences with Transformer-based Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-as-graphs-with-gnn-transformer-based-generators">Modeling Molecules as Graphs with GNN / Transformer-based Generators</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/generator.html#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/generator.html#torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">DigressMolecularGenerator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-as-graphs-with-heuristic-based-generators">Modeling Molecules as Graphs with Heuristic-based Generators</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/generator.html#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/generator.html#modeling-molecules-as-sequences-with-transformer-based-generators">Modeling Molecules as Sequences with Transformer-based Generators</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/generator.html#torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">MolGPTMolecularGenerator</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -311,9 +328,22 @@
 <p class="caption" role="heading"><span class="caption-text">Molecular Encoder Models</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#self-supervised-molecular-representation-learning">Self-supervised Molecular Representation Learning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#supervised-pretraining-for-molecules">Supervised Pretraining for Molecules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#pretrained-molecular-encoders">Pretrained Molecular Encoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#self-supervised-molecular-representation-learning">Self-supervised Molecular Representation Learning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">MoamaMolecularEncoder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">AttrMaskMolecularEncoder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">ContextPredMolecularEncoder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">EdgePredMolecularEncoder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">InfoGraphMolecularEncoder</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#supervised-pretraining-for-molecules">Supervised Pretraining for Molecules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">SupervisedMolecularEncoder</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/encoder.html#pretrained-molecular-encoders">Pretrained Molecular Encoders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/encoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">HFPretrainedMolecularEncoder</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -54,6 +54,12 @@ Modeling Molecules as Graphs with Heuristic-based Generators
    :undoc-members:
    :show-inheritance:
 
+.. rubric:: Default Oracles in GraphGA
+.. autoclass:: torch_molecule.generator.graph_ga.oracle.Oracle
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Modeling Molecules as Sequences with Transformer-based Generators
 -----------------------------------------------------------------
 

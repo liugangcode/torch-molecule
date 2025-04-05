@@ -268,17 +268,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestRegressor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.crossover</span><span class="w"> </span><span class="kn">import</span> <span class="n">crossover</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.mutate</span><span class="w"> </span><span class="kn">import</span> <span class="n">mutate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.oracle</span><span class="w"> </span><span class="kn">import</span> <span class="n">Oracle</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">...base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMolecularGenerator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">...utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">graph_from_smiles</span><span class="p">,</span> <span class="n">graph_to_smiles</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">...utils.graph.features</span><span class="w"> </span><span class="kn">import</span> <span class="n">getmorganfingerprint</span>
-
-<span class="n">MINIMUM</span> <span class="o">=</span> <span class="mf">1e-10</span>
 
 <div class="viewcode-block" id="GraphGAMolecularGenerator">
 <a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator">[docs]</a>
@@ -338,33 +334,29 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support getting model parameters&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">save_to_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oracles</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oracle</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved oracles to </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved oracle to </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">load_from_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oracles</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded oracles from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_from_local</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;GraphGA does not support loading from local. &quot;</span>
+            <span class="s2">&quot;If you want to load the oracles saved through save_to_local, &quot;</span>
+            <span class="s2">&quot;you need to manually load the oracle from the path with joblib.load(path) &quot;</span>
+            <span class="s2">&quot;and pass it to the fit function.&quot;</span>
+        <span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_to_hf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support pushing to huggingface&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_from_hf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support loading from huggingface&quot;</span><span class="p">)</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support setting up optimizers&quot;</span><span class="p">)</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support training epochs&quot;</span><span class="p">)</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">push_to_huggingface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support pushing to huggingface&quot;</span><span class="p">)</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">load_from_huggingface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;GraphGA does not support loading from huggingface&quot;</span><span class="p">)</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">_convert_to_fingerprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SMILES to fingerprint.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">getmorganfingerprint</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span> <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">X_train</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">getmorganfingerprint</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">X_train</span><span class="p">])</span>
 
 <div class="viewcode-block" id="GraphGAMolecularGenerator.fit">
 <a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.fit">[docs]</a>
@@ -372,34 +364,60 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">y_train</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">oracles</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">oracle</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GraphGAMolecularGenerator&quot;</span><span class="p">:</span>
-        <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_inputs</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">num_task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">,</span> <span class="n">return_rdkit_mol</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">y_train</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">oracles</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No oracles provided but y_train is provided, using default oracles (RandomForestRegressor)&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oracles</span> <span class="o">=</span> <span class="p">[</span><span class="n">RandomForestRegressor</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">)]</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">):</span>
-                    <span class="n">X_train_fp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_fingerprint</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
-                    <span class="n">nan_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y_train</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
-                    <span class="n">y_train_</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
-                    <span class="n">y_train_</span> <span class="o">=</span> <span class="n">y_train_</span><span class="p">[</span><span class="n">nan_mask</span><span class="p">]</span>
-                    <span class="n">X_train_fp</span> <span class="o">=</span> <span class="n">X_train_fp</span><span class="p">[</span><span class="n">nan_mask</span><span class="p">]</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">oracles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_fp</span><span class="p">,</span> <span class="n">y_train_</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oracles</span> <span class="o">=</span> <span class="n">oracles</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the model to the training data.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X_train : List[str]</span>
+<span class="sd">            Training data, which will be used as the initial population.</span>
+<span class="sd">        y_train : Optional[Union[List, np.ndarray]]</span>
+<span class="sd">            Training labels for conditional generation (num_task is not 0).</span>
+<span class="sd">        oracles : Optional[List[Callable]]</span>
+<span class="sd">            Oracles used to score the generated molecules, if not provided, default oracles based on </span>
+<span class="sd">            ``sklearn.ensemble.RandomForestRegressor`` are trained on the X_train and y_train.</span>
+<span class="sd">            </span>
+<span class="sd">            For the customized oracle, it should be a Callable object, i.e., ``oracle(X)``, and the number </span>
+<span class="sd">            of oracles must equal to the number of tasks (``num_task``).</span>
+<span class="sd">            </span>
+<span class="sd">            Please properly wrap your oracle that takes a list of ``rdkit.Chem.rdchem.Mol`` and returns a list of scores for each molecule. </span>
+<span class="sd">            For multi-conditional generation, scores for different tasks should be aggregated, i.e. mean or sum.</span>
+<span class="sd">            Smaller scores mean closer to the target goal.</span>
+<span class="sd">            </span>
+<span class="sd">            We don&#39;t need oracles for unconditional generation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : GraphGAMolecularGenerator</span>
+<span class="sd">            Fitted model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">oracle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oracle</span> <span class="o">=</span> <span class="n">oracle</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_inputs</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">num_task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">,</span> <span class="n">return_rdkit_mol</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">y_train</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No oracles provided but y_train is provided, using default oracles (RandomForestRegressor)&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">oracle</span> <span class="o">=</span> <span class="n">Oracle</span><span class="p">(</span><span class="n">num_task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">oracle</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span> <span class="o">=</span> <span class="n">y_train</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;No oracles or y_train provided but num_task is not 0&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">oracle</span> <span class="o">=</span> <span class="kc">None</span>
+                    
         <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_make_mating_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population_mol</span><span class="p">,</span> <span class="n">population_scores</span><span class="p">,</span> <span class="n">offspring_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create mating pool based on molecule scores.&quot;&quot;&quot;</span>
-        <span class="n">population_scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">+</span> <span class="n">MINIMUM</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">population_scores</span><span class="p">]</span>
-        <span class="n">sum_scores</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">population_scores</span><span class="p">)</span>
-        <span class="n">population_probs</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="o">/</span> <span class="n">sum_scores</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">population_scores</span><span class="p">]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create mating pool where smaller scores have higher selection probabilities.&quot;&quot;&quot;</span>
+        <span class="n">max_score</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">population_scores</span><span class="p">)</span>
+        <span class="c1"># Invert scores so that smaller scores become larger probabilities</span>
+        <span class="n">inverted_scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">max_score</span> <span class="o">-</span> <span class="n">s</span> <span class="o">+</span> <span class="mf">1e-6</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">population_scores</span><span class="p">]</span>  <span class="c1"># Add small constant to avoid zeros</span>
+        <span class="n">sum_scores</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">inverted_scores</span><span class="p">)</span>
+        <span class="n">population_probs</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="o">/</span> <span class="n">sum_scores</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">inverted_scores</span><span class="p">]</span>
         <span class="n">mating_pool</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">population_mol</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">population_probs</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">offspring_size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mating_pool</span>
 
@@ -428,30 +446,9 @@
         <span class="k">return</span> <span class="n">new_mol_list</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol_list</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
-        <span class="n">scores_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">mol_list</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please remove invalid molecules from the population before scoring&quot;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">fp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_fingerprint</span><span class="p">([</span><span class="n">mol</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oracles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">fp</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">scores_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">mol_scores</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="n">fp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_fingerprint</span><span class="p">([</span><span class="n">mol</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
-                        <span class="n">pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oracles</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">fp</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-                        <span class="c1"># Lower score for values closer to target</span>
-                        <span class="n">dist</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
-                        <span class="n">mol_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>  
-                <span class="n">score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">mol_scores</span><span class="p">)</span>
-                <span class="n">scores_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
-        
-        <span class="k">return</span> <span class="n">scores_list</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol_list</span><span class="p">)</span>  <span class="c1"># For unconditional generation</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">oracle</span><span class="p">(</span><span class="n">mol_list</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GraphGAMolecularGenerator.generate">
 <a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.generate">[docs]</a>
@@ -467,36 +464,63 @@
         <span class="n">all_generated_mols</span> <span class="o">=</span> <span class="p">[]</span>
         
         <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oracles</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The second dimension of labels (number of tasks) must equal to the number of tasks in oracles (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oracles</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;labels must be convertible to a numpy array with shape (-1, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
             
-            <span class="n">label_iterator</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-                <span class="n">label_iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">label_iterator</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Generating molecules for labels&quot;</span><span class="p">)</span>
-                
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">label_iterator</span><span class="p">:</span>
+            <span class="c1"># Prepare all inputs for parallel processing</span>
+            <span class="n">parallel_inputs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
                 <span class="n">label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Keep as 2D array</span>
                 
                 <span class="c1"># Initialize population based on similarity to target label</span>
-                <span class="n">population_mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_population_for_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">population_mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_population_for_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">population_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">)))</span>
+                    <span class="n">population_smiles</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">population_idx</span><span class="p">]</span>
+                    <span class="n">population_mol</span> <span class="o">=</span> <span class="p">[</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">population_smiles</span><span class="p">]</span>
                 
-                <span class="c1"># Run GA for this specific label</span>
-                <span class="n">generated_mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_generation</span><span class="p">(</span><span class="n">population_mol</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
-                <span class="n">all_generated_mols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">generated_mol</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">sample_iterator</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">)</span>
+                <span class="n">parallel_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">population_mol</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
+            
+            <span class="c1"># Run GA for all labels in parallel with tqdm progress bar</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-                <span class="n">sample_iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">sample_iterator</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Generating molecules&quot;</span><span class="p">)</span>
-                
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">sample_iterator</span><span class="p">:</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)(</span>
+                    <span class="n">delayed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_generation</span><span class="p">)(</span><span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span><span class="p">)</span> 
+                    <span class="k">for</span> <span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">parallel_inputs</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Generating molecules&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)(</span>
+                    <span class="n">delayed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_generation</span><span class="p">)(</span><span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span><span class="p">)</span> 
+                    <span class="k">for</span> <span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span> <span class="ow">in</span> <span class="n">parallel_inputs</span>
+                <span class="p">)</span>
+            
+            <span class="c1"># Convert results to SMILES in the original order</span>
+            <span class="n">all_generated_mols</span> <span class="o">=</span> <span class="p">[</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Prepare all inputs for parallel processing</span>
+            <span class="n">parallel_inputs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">):</span>
                 <span class="n">population_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">)))</span>
-                <span class="n">population_smiles</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">population_idx</span><span class="p">]</span>
+                <span class="n">population_smiles</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">population_idx</span><span class="p">]</span>
                 <span class="n">population_mol</span> <span class="o">=</span> <span class="p">[</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">population_smiles</span><span class="p">]</span>
-                
-                <span class="c1"># Run GA for this sample</span>
-                <span class="n">generated_mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_generation</span><span class="p">(</span><span class="n">population_mol</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="n">all_generated_mols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">generated_mol</span><span class="p">))</span>
+                <span class="n">parallel_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">population_mol</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            
+            <span class="c1"># Run GA for all samples in parallel with tqdm progress bar</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)(</span>
+                    <span class="n">delayed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_generation</span><span class="p">)(</span><span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span><span class="p">)</span> 
+                    <span class="k">for</span> <span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">parallel_inputs</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Generating molecules&quot;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)(</span>
+                    <span class="n">delayed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_generation</span><span class="p">)(</span><span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span><span class="p">)</span> 
+                    <span class="k">for</span> <span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span> <span class="ow">in</span> <span class="n">parallel_inputs</span>
+                <span class="p">)</span>
+            
+            <span class="c1"># Convert results to SMILES</span>
+            <span class="n">all_generated_mols</span> <span class="o">=</span> <span class="p">[</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
         
         <span class="k">return</span> <span class="n">all_generated_mols</span></div>
 
@@ -506,10 +530,9 @@
         <span class="n">similarities</span> <span class="o">=</span> <span class="p">[]</span>
         
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;y_train&#39;</span><span class="p">):</span>
-                <span class="n">sample_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">similarity</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">((</span><span class="n">sample_label</span> <span class="o">-</span> <span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-                <span class="n">similarities</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">similarity</span><span class="p">))</span>
+            <span class="n">sample_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">similarity</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">((</span><span class="n">sample_label</span> <span class="o">-</span> <span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">similarities</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">similarity</span><span class="p">))</span>
         
         <span class="k">if</span> <span class="n">similarities</span><span class="p">:</span>
             <span class="n">similarities</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -522,19 +545,20 @@
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_run_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population_mol</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the genetic algorithm for a specific population and label.&quot;&quot;&quot;</span>
-        <span class="n">pool</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)</span>
-        
-        <span class="k">for</span> <span class="n">generation</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">generation_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iteration</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">population_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_score</span><span class="p">(</span><span class="n">population_mol</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">population_scores</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">population_mol</span><span class="p">)</span>  <span class="c1"># For unconditional generation</span>
             
             <span class="n">mating_pool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_mating_pool</span><span class="p">(</span><span class="n">population_mol</span><span class="p">,</span> <span class="n">population_scores</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">offspring_size</span><span class="p">)</span>
-            <span class="n">offspring_mol</span> <span class="o">=</span> <span class="n">pool</span><span class="p">(</span>
-                <span class="n">delayed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reproduce</span><span class="p">)(</span><span class="n">mating_pool</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation_rate</span><span class="p">)</span> 
-                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offspring_size</span><span class="p">)</span>
-            <span class="p">)</span>
+            
+            <span class="c1"># Create offspring sequentially (parallelization is at the higher level now)</span>
+            <span class="n">offspring_mol</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offspring_size</span><span class="p">):</span>
+                <span class="n">offspring</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reproduce</span><span class="p">(</span><span class="n">mating_pool</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation_rate</span><span class="p">)</span>
+                <span class="n">offspring_mol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">offspring</span><span class="p">)</span>
+            
             <span class="n">population_mol</span> <span class="o">+=</span> <span class="n">offspring_mol</span>
             <span class="n">population_mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_molecules</span><span class="p">(</span><span class="n">population_mol</span><span class="p">)</span>
 

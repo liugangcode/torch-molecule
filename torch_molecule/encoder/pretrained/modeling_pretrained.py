@@ -31,7 +31,7 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
     """Implements Hugging Face pretrained transformer models as molecular encoders.
 
     This class provides an interface to use pretrained transformer models from Hugging Face
-    as molecular encoders. It handles tokenization, encoding, and pooling of molecular representations.
+    as molecular encoders. It handles tokenization and encoding of molecular representations.
 
     Tested models include:
 
@@ -65,6 +65,8 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
     - ChemBERTa-zinc-base-v1: RoBERTa model pretrained on ZINC dataset with ~100k SMILES strings.
       Output dimension: 384.
       repo_id: "seyonec/ChemBERTa-zinc-base-v1" (https://huggingface.co/seyonec/ChemBERTa-zinc-base-v1)
+
+    Other models accessible through the transformers library have not been explicitly tested but may still be compatible with this interface.
 
     Parameters
     ----------
@@ -140,9 +142,11 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
         raise NotImplementedError("PretrainedMolecularEncoder does not support saving to huggingface.")
     
     def load_from_hf(self) -> None:
+        """The same as fit()"""
         self.fit()
     
     def load(self) -> None:
+        """The same as fit()"""
         self.fit()
 
     def fit(self) -> "HFPretrainedMolecularEncoder":

@@ -37,33 +37,46 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
 
     - ChemGPT series (1.2B/19M/4.7M): GPT-Neo based models pretrained on PubChem10M dataset with SELFIES strings.
       Output dimension: 2048.
+
       repo_id: "ncfrey/ChemGPT-1.2B" (https://huggingface.co/ncfrey/ChemGPT-1.2B)
+
       repo_id: "ncfrey/ChemGPT-19M" (https://huggingface.co/ncfrey/ChemGPT-19M)
+      
       repo_id: "ncfrey/ChemGPT-4.7M" (https://huggingface.co/ncfrey/ChemGPT-4.7M)
 
     - GPT2-ZINC-87M: GPT-2 based model (87M parameters) pretrained on ZINC dataset with ~480M SMILES strings.
       Output dimension: 768.
+
       repo_id: "entropy/gpt2_zinc_87m" (https://huggingface.co/entropy/gpt2_zinc_87m)
     
     - RoBERTa-ZINC-480M: RoBERTa based model (102M parameters) pretrained on ZINC dataset with ~480M SMILES strings.
       Output dimension: 768.
+
       repo_id: "entropy/roberta_zinc_480m" (https://huggingface.co/entropy/roberta_zinc_480m)
 
     - ChemBERTa series: Available in multiple sizes (77M/10M/5M) and training objectives (MTR/MLM).
       Output dimension: 384.
+
       repo_id: "DeepChem/ChemBERTa-77M-MTR" (https://huggingface.co/DeepChem/ChemBERTa-77M-MTR)
+      
       repo_id: "DeepChem/ChemBERTa-77M-MLM" (https://huggingface.co/DeepChem/ChemBERTa-77M-MLM)
+      
       repo_id: "DeepChem/ChemBERTa-10M-MTR" (https://huggingface.co/DeepChem/ChemBERTa-10M-MTR)
+      
       repo_id: "DeepChem/ChemBERTa-10M-MLM" (https://huggingface.co/DeepChem/ChemBERTa-10M-MLM)
+      
       repo_id: "DeepChem/ChemBERTa-5M-MLM" (https://huggingface.co/DeepChem/ChemBERTa-5M-MLM)
+
       repo_id: "DeepChem/ChemBERTa-5M-MTR" (https://huggingface.co/DeepChem/ChemBERTa-5M-MTR)
 
     - UniKi/bert-base-smiles: UniKi's BERT model pretrained on SMILES strings.
       Output dimension: 768.
+
       repo_id: "unikei/bert-base-smiles" (https://huggingface.co/unikei/bert-base-smiles)
 
     - ChemBERTa-zinc-base-v1: RoBERTa model pretrained on ZINC dataset with ~100k SMILES strings.
       Output dimension: 384.
+
       repo_id: "seyonec/ChemBERTa-zinc-base-v1" (https://huggingface.co/seyonec/ChemBERTa-zinc-base-v1)
 
     Other models accessible through the transformers library have not been explicitly tested but may still be compatible with this interface.
@@ -185,7 +198,7 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
         self.is_fitted_ = True        
         return self
 
-    def encode(self, X: List[str], return_type: Literal["np", "pt"] = "pt", add_bos_eos: Optional[bool] = None) -> Union[np.ndarray, torch.Tensor]:
+    def encode(self, X: List[str], return_type: Literal["np", "pt"] = "pt") -> Union[np.ndarray, torch.Tensor]:
         """Encode molecules into vector representations.
 
         Parameters
@@ -194,8 +207,6 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
             List of SMILES strings
         return_type : Literal["np", "pt"], default="pt"
             Return type of the representations
-        add_bos_eos : Optional[bool], default=None
-            Whether to add BOS and EOS tokens. If None, will be determined based on model type.
 
         Returns
         -------

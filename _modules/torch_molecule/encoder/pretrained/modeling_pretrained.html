@@ -333,7 +333,7 @@
 
 <span class="sd">      repo_id: &quot;DeepChem/ChemBERTa-5M-MTR&quot; (https://huggingface.co/DeepChem/ChemBERTa-5M-MTR)</span>
 
-<span class="sd">    - UniKi/bert-base-smiles: UniKi&#39;s BERT model pretrained on SMILES strings.</span>
+<span class="sd">    - UniKi/bert-base-smiles: BERT model pretrained on SMILES strings.</span>
 <span class="sd">      Output dimension: 768.</span>
 
 <span class="sd">      repo_id: &quot;unikei/bert-base-smiles&quot; (https://huggingface.co/unikei/bert-base-smiles)</span>
@@ -354,7 +354,8 @@
 <span class="sd">    batch_size : int, default=128</span>
 <span class="sd">        Batch size used when encoding multiple molecules.</span>
 <span class="sd">    add_bos_eos : Optional[bool], default=None</span>
-<span class="sd">        Whether to add beginning/end of sequence tokens. If None, determined automatically based on model type.</span>
+<span class="sd">        Whether to add beginning/end of sequence tokens. If None, models in known_add_bos_eos_list will be set to True.</span>
+<span class="sd">        The current known_add_bos_eos_list includes: [&quot;entropy/gpt2_zinc_87m&quot;].</span>
 <span class="sd">    model_name : str, default=&quot;PretrainedMolecularEncoder&quot;</span>
 <span class="sd">        Name identifier for the model instance.</span>
 <span class="sd">    verbose : bool, default=False</span>

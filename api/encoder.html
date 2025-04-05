@@ -769,7 +769,7 @@ Output dimension: 384.</p>
 <p>repo_id: “DeepChem/ChemBERTa-5M-MLM” (<a class="reference external" href="https://huggingface.co/DeepChem/ChemBERTa-5M-MLM">https://huggingface.co/DeepChem/ChemBERTa-5M-MLM</a>)</p>
 <p>repo_id: “DeepChem/ChemBERTa-5M-MTR” (<a class="reference external" href="https://huggingface.co/DeepChem/ChemBERTa-5M-MTR">https://huggingface.co/DeepChem/ChemBERTa-5M-MTR</a>)</p>
 </li>
-<li><p>UniKi/bert-base-smiles: UniKi’s BERT model pretrained on SMILES strings.
+<li><p>UniKi/bert-base-smiles: BERT model pretrained on SMILES strings.
 Output dimension: 768.</p>
 <p>repo_id: “unikei/bert-base-smiles” (<a class="reference external" href="https://huggingface.co/unikei/bert-base-smiles">https://huggingface.co/unikei/bert-base-smiles</a>)</p>
 </li>
@@ -785,7 +785,8 @@ Output dimension: 384.</p>
 <li><p><strong>repo_id</strong> (<em>str</em>) – The Hugging Face repository ID of the pretrained model.</p></li>
 <li><p><strong>max_length</strong> (<em>int</em><em>, </em><em>default=128</em>) – Maximum sequence length for tokenization. Longer sequences will be truncated.</p></li>
 <li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>default=128</em>) – Batch size used when encoding multiple molecules.</p></li>
-<li><p><strong>add_bos_eos</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em><em>, </em><em>default=None</em>) – Whether to add beginning/end of sequence tokens. If None, determined automatically based on model type.</p></li>
+<li><p><strong>add_bos_eos</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em><em>, </em><em>default=None</em>) – Whether to add beginning/end of sequence tokens. If None, models in known_add_bos_eos_list will be set to True.
+The current known_add_bos_eos_list includes: [“entropy/gpt2_zinc_87m”].</p></li>
 <li><p><strong>model_name</strong> (<em>str</em><em>, </em><em>default=&quot;PretrainedMolecularEncoder&quot;</em>) – Name identifier for the model instance.</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to display progress information during encoding.</p></li>
 </ul>

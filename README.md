@@ -168,7 +168,7 @@ predictions = model.predict(smiles_list)
 | IRM                  | [Invariant Risk Minimization](https://arxiv.org/abs/1907.02893) |
 | RPGNN                | [Relational Pooling for Graph Representations. ICLR 2019](https://arxiv.org/abs/1903.02541) |
 | GNNs                 | [Graph Convolutional Networks. ICLR 2017](https://arxiv.org/abs/1609.02907) and [Graph Isomorphism Network. ICLR 2019](https://arxiv.org/abs/1810.00826) |
-| Transformer (SMILES) | [Attention is All You Need. NeurIPS 2017](https://arxiv.org/abs/1706.03762) based on SMILES strings |
+| Transformer (SMILES) | [Transformer (Attention is All You Need. NeurIPS 2017)](https://arxiv.org/abs/1706.03762) based on SMILES strings |
 | LSTM (SMILES)        | [Long short-term memory (Neural Computation 1997)](https://ieeexplore.ieee.org/abstract/document/6795963) based on SMILES strings |
 
 ### Generative Models

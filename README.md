@@ -53,8 +53,6 @@ Below are three Markdown tables that list only the supported models. Each table 
 
 ### Representation Models
 
-### Pretraining Methods
-
 | Model        | Reference           |
 |--------------|---------------------|
 | MoAMa        | [Motif-aware Attribute Masking for Molecular Graph Pre-training. LoG 2024](https://arxiv.org/abs/2309.04589) |

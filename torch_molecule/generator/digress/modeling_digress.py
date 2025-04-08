@@ -274,9 +274,9 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
         self.fitting_epoch = 0
         for epoch in range(self.epochs):
             train_losses = self._train_epoch(train_loader, optimizer, epoch)
-            self.fitting_loss.append(np.mean(train_losses))
+            self.fitting_loss.append(np.mean(train_losses).item())
             if scheduler:
-                scheduler.step(np.mean(train_losses))
+                scheduler.step(np.mean(train_losses).item())
 
         self.fitting_epoch = epoch
         self.is_fitted_ = True

@@ -7,8 +7,8 @@ Model Persistence
 ^^^^^^^^^^^^^^^^^
 - ``load_from_local``: Load a saved model from a local file
 - ``save_to_local``: Save the current model to a local file
-- ``load_from_huggingface``: Load a model from a Hugging Face repository
-- ``push_to_huggingface``: Push the current model to a Hugging Face repository
+- ``load_from_hf``: Load a model from a Hugging Face repository
+- ``save_to_hf``: Push the current model to a Hugging Face repository
 - ``load``: Load a model from either local storage or Hugging Face
 - ``save``: Save the model to either local storage or Hugging Face
 

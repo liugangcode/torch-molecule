@@ -22,8 +22,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
 
     References
     ----------
-    - Graph Diffusion Transformers for Multi-Conditional Molecular Generation.
-      International Conference on Learning Representations (ICLR) 2024.
+    - Graph Diffusion Transformers for Multi-Conditional Molecular Generation. NeurIPS 2024.
       https://openreview.net/forum?id=cfrDLD1wfO
     - Implementation: https://github.com/liugangcode/Graph-DiT
 
@@ -303,9 +302,9 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         self.fitting_epoch = 0
         for epoch in range(self.epochs):
             train_losses = self._train_epoch(train_loader, optimizer, epoch)
-            self.fitting_loss.append(np.mean(train_losses))
+            self.fitting_loss.append(np.mean(train_losses).item())
             if scheduler:
-                scheduler.step(np.mean(train_losses))
+                scheduler.step(np.mean(train_losses).item())
 
         self.fitting_epoch = epoch
         self.is_fitted_ = True

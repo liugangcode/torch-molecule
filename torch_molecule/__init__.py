@@ -29,6 +29,7 @@ from .generator.graph_dit import GraphDITMolecularGenerator
 from .generator.graph_ga import GraphGAMolecularGenerator
 from .generator.digress import DigressMolecularGenerator
 from .generator.molgpt import MolGPTMolecularGenerator
+from .generator.gdss import GDSSMolecularGenerator
 
 __all__ = [
     # 'BaseMolecularPredictor',
@@ -55,4 +56,5 @@ __all__ = [
     'GraphGAMolecularGenerator',
     'DigressMolecularGenerator',
     'MolGPTMolecularGenerator',
+    'GDSSMolecularGenerator',
 ]

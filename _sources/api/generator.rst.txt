@@ -44,12 +44,19 @@ Modeling Molecules as Graphs with GNN / Transformer-based Generators
    :undoc-members:
    :show-inheritance:
 
+.. rubric:: GDSS for score-based molecular generation
+.. autoclass:: torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator
+   :exclude-members: fitting_epoch, fitting_loss, save_to_hf, load_from_hf
+   :members: fit, generate
+   :undoc-members:
+   :show-inheritance:
+
 Modeling Molecules as Graphs with Heuristic-based Generators
 ------------------------------------------------------------
 
 .. rubric:: Graph Genetic Algorithm for Un/Multi-conditional Molecular Generation
 .. autoclass:: torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, push_to_huggingface, load_from_huggingface
+   :exclude-members: fitting_epoch, fitting_loss, save_to_hf, load_from_hf
    :members: fit, generate
    :undoc-members:
    :show-inheritance:

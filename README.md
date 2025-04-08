@@ -23,7 +23,7 @@
 2. **Generative Models**: Done: Graph DiT, GraphGA, DiGress. TODO:, GDSS, more
 3. **Representation Models**: Done: MoAMa, AttrMasking, ContextPred, EdgePred. Many pretrained models from HF. TODO: checkpoints, more 
 
-see the [Overview](#overview) section.
+see the [List of Supported Models](#list-of-supported-models) section.
 
 > **Note**: This project is in active development, and features may change.
 
@@ -151,7 +151,7 @@ model.set_params(verbose=True)
 predictions = model.predict(smiles_list)
 ```
 
-## Overview
+## List of Supported Models
 
 ### Predictive Models
 

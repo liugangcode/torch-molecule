@@ -15,11 +15,12 @@ from .predictor.smiles_transformer import SMILESTransformerMolecularPredictor
 """
 encoder module
 """
-from .encoder.supervised import SupervisedMolecularEncoder
 from .encoder.attrmask import AttrMaskMolecularEncoder
+from .encoder.moama import MoamaMolecularEncoder
+from .encoder.graphmae import GraphMAEMolecularEncoder
+from .encoder.supervised import SupervisedMolecularEncoder
 from .encoder.contextpred import ContextPredMolecularEncoder
 from .encoder.edgepred import EdgePredMolecularEncoder
-from .encoder.moama import MoamaMolecularEncoder
 from .encoder.infograph import InfoGraphMolecularEncoder
 from .encoder.pretrained import HFPretrainedMolecularEncoder
 """
@@ -46,9 +47,10 @@ __all__ = [
     # encoders
     'SupervisedMolecularEncoder',
     'AttrMaskMolecularEncoder',
+    'MoamaMolecularEncoder',
+    'GraphMAEMolecularEncoder',
     'ContextPredMolecularEncoder',
     'EdgePredMolecularEncoder',
-    'MoamaMolecularEncoder',
     'InfoGraphMolecularEncoder',
     'HFPretrainedMolecularEncoder',
     # generators

@@ -23,7 +23,7 @@ class GNN(nn.Module):
     ):
         super(GNN, self).__init__()
         gnn_name = encoder_type.split("-")[0]
-        self.num_atom_type = 118
+        self.num_atom_type = 119
         self.hidden_size = hidden_size
         self.mask_rate = mask_rate
         self.lw_rec = lw_rec
@@ -76,16 +76,13 @@ class GNN(nn.Module):
         self.apply(reset_parameters)
 
     def compute_loss(self, batched_data):
-        
         masked_node_indices = get_mask_indices(batched_data, self.mask_rate)
-
         batched_data.masked_node_indices = torch.tensor(masked_node_indices)
-
         batched_data.y = batched_data.x[masked_node_indices][:, 0]
 
         # mask nodes' features
         for node_idx in masked_node_indices:
-            batched_data.x[node_idx] = torch.tensor([self.num_atom_type] + [0] * (batched_data.x.shape[1] - 1))
+            batched_data.x[node_idx] = torch.tensor([self.num_atom_type - 1] + [0] * (batched_data.x.shape[1] - 1))
     
         # generate predictions
         h_node, _ = self.graph_encoder(batched_data)
@@ -93,8 +90,8 @@ class GNN(nn.Module):
         batched_data.x = h_node
         prediction_class = self.predictor(batched_data)[masked_node_indices]
         
-        target_class = batched_data.y.to(torch.float32)      
-        loss_class = class_criterion(prediction_class.to(torch.float32), target_class.long())
+        # target_class = batched_data.y.to(torch.float32)
+        loss_class = class_criterion(prediction_class.to(torch.float32), batched_data.y.long())
         
         fingerprint_loss = get_fingerprint_loss(batched_data.smiles, h_rep)
                 
@@ -108,7 +105,7 @@ class GNN(nn.Module):
         return {"graph": h_rep, "node": h_node}
     
 class GNN_Decoder(torch.nn.Module):
-    def __init__(self, hidden_size, out_dim, JK = "last", drop_ratio = 0, gnn_name = "gin", error_func="bce", to_predict="atom_type"):
+    def __init__(self, hidden_size, out_dim, JK = "last", gnn_name = "gin"):
         super().__init__()
         if gnn_name == 'gin':
             self.conv = GINConv(hidden_size)

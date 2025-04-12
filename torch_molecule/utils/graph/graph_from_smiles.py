@@ -61,6 +61,7 @@ def graph_from_smiles(smiles_or_mol, properties, augmented_features=None, augmen
     # atoms
     atom_features_list = []
     for atom in mol.GetAtoms():
+        # print(atom.GetSymbol(), atom_to_feature_vector(atom)[0])
         atom_features_list.append(atom_to_feature_vector(atom))
 
     x = np.array(atom_features_list, dtype=np.int64)

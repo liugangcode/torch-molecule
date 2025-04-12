@@ -42,7 +42,15 @@ Self-supervised Molecular Representation Learning
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: Context Prediction for Molecular Representation Learning
+.. rubric:: Graph masked autoencoder
+
+.. autoclass:: torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder
+   :members: fit, encode
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   :undoc-members:
+   :show-inheritance:
+
+.. rubric:: Context Prediction
 
 .. autoclass:: torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder
    :members: fit, encode
@@ -50,7 +58,7 @@ Self-supervised Molecular Representation Learning
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: Edge Prediction for Molecular Representation Learning
+.. rubric:: Edge Prediction
 
 .. autoclass:: torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder
    :members: fit, encode
@@ -58,7 +66,7 @@ Self-supervised Molecular Representation Learning
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: InfoGraph for Molecular Representation Learning
+.. rubric:: InfoGraph
 
 .. autoclass:: torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder
    :members: fit, encode
@@ -69,7 +77,7 @@ Self-supervised Molecular Representation Learning
 Supervised Pretraining for Molecules
 ------------------------------------
 
-.. rubric:: Supervised/Pseudolabeled Pretraining for Molecules
+.. rubric:: Pretraining with Supervised/Pseudolabeled Data
 .. autoclass:: torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder
    :members: fit, encode
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class

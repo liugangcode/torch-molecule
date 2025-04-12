@@ -23,7 +23,7 @@ class GNN(nn.Module):
     ):
         super(GNN, self).__init__()
         gnn_name = encoder_type.split("-")[0]
-        self.num_atom_type = 118
+        self.num_atom_type = 119
         self.hidden_size = hidden_size
         self.mask_num = mask_num
         self.mask_rate = mask_rate
@@ -96,11 +96,10 @@ class GNN(nn.Module):
 
         # mask nodes' features
         for node_idx in masked_node_indices:
-            batched_data.x[node_idx] = torch.tensor([self.num_atom_type] + [0] * (batched_data.x.shape[1] - 1))
+            batched_data.x[node_idx] = torch.tensor([self.num_atom_type - 1] + [0] * (batched_data.x.shape[1] - 1))
     
         # generate predictions
         h_node, _ = self.graph_encoder(batched_data)
-        #h_rep = self.pool(h_node, batched_data.batch)
         prediction_class = self.predictor(h_node[masked_node_indices])
         
         target_class = batched_data.y.to(torch.float32)      

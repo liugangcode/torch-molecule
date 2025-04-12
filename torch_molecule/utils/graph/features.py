@@ -1,5 +1,7 @@
 # allowable multiple choice node and edge features 
 allowable_features = {
+    # atom types: 1-118, 119 is masked atom, 120 is misc (e.g. * for polymers)
+    # index: 0-117, 118, 119
     'possible_atomic_num_list' : list(range(1, 120)) + ['misc'],
     'possible_chirality_list' : [
         'CHI_UNSPECIFIED',

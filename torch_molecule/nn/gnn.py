@@ -107,14 +107,15 @@ class BondEncoder(torch.nn.Module):
         return bond_embedding
 
 class GINConv(MessagePassing):
-    def __init__(self, hidden_size):
+    def __init__(self, hidden_size, output_size=None):
         '''
             hidden_size (int): node embedding dimensionality
         '''
-
         super(GINConv, self).__init__(aggr = "add")
+        if output_size is None:
+            output_size = hidden_size
 
-        self.mlp = torch.nn.Sequential(torch.nn.Linear(hidden_size, 2*hidden_size), torch.nn.BatchNorm1d(2*hidden_size), torch.nn.ReLU(), torch.nn.Linear(2*hidden_size, hidden_size))
+        self.mlp = torch.nn.Sequential(torch.nn.Linear(hidden_size, 2*hidden_size), torch.nn.BatchNorm1d(2*hidden_size), torch.nn.ReLU(), torch.nn.Linear(2*hidden_size, output_size))
         self.eps = torch.nn.Parameter(torch.Tensor([0]))
 
         self.bond_encoder = BondEncoder(hidden_size = hidden_size)
@@ -132,19 +133,20 @@ class GINConv(MessagePassing):
         return aggr_out
     
 class GCNConv(MessagePassing):
-    def __init__(self, hidden_size):
+    def __init__(self, hidden_size, output_size=None):
         super(GCNConv, self).__init__(aggr='add')
+        if output_size is None:
+            output_size = hidden_size
 
-        self.linear = torch.nn.Linear(hidden_size, hidden_size)
-        self.root_emb = torch.nn.Embedding(1, hidden_size)
-        self.bond_encoder = BondEncoder(hidden_size = hidden_size)
+        self.linear = torch.nn.Linear(hidden_size, output_size)
+        self.root_emb = torch.nn.Embedding(1, output_size)
+        self.bond_encoder = BondEncoder(hidden_size = output_size)
 
     def forward(self, x, edge_index, edge_attr):
         x = self.linear(x)
         edge_embedding = self.bond_encoder(edge_attr)
 
         row, col = edge_index
-
         #edge_weight = torch.ones((edge_index.size(1), ), device=edge_index.device)
         deg = degree(row, x.size(0), dtype = x.dtype) + 1
         deg_inv_sqrt = deg.pow(-0.5)
@@ -152,7 +154,7 @@ class GCNConv(MessagePassing):
 
         norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
 
-        return self.propagate(edge_index, x=x, edge_attr = edge_embedding, norm=norm) + F.relu(x + self.root_emb.weight) * 1./deg.view(-1,1)
+        return self.propagate(edge_index, x=x, edge_attr=edge_embedding, norm=norm) + F.relu(x + self.root_emb.weight) * 1./deg.view(-1,1)
 
     def message(self, x_j, edge_attr, norm):
         return norm.view(-1, 1) * F.relu(x_j + edge_attr)

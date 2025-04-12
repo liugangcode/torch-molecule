@@ -331,6 +331,7 @@
     <span class="c1"># atoms</span>
     <span class="n">atom_features_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">():</span>
+        <span class="c1"># print(atom.GetSymbol(), atom_to_feature_vector(atom)[0])</span>
         <span class="n">atom_features_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom_to_feature_vector</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
 
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">atom_features_list</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>

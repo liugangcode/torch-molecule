@@ -262,6 +262,8 @@
           <h1>Source code for torch_molecule.utils.graph.features</h1><div class="highlight"><pre>
 <span></span><span class="c1"># allowable multiple choice node and edge features </span>
 <span class="n">allowable_features</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># atom types: 1-118, 119 is masked atom, 120 is misc (e.g. * for polymers)</span>
+    <span class="c1"># index: 0-117, 118, 119</span>
     <span class="s1">&#39;possible_atomic_num_list&#39;</span> <span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">120</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;misc&#39;</span><span class="p">],</span>
     <span class="s1">&#39;possible_chirality_list&#39;</span> <span class="p">:</span> <span class="p">[</span>
         <span class="s1">&#39;CHI_UNSPECIFIED&#39;</span><span class="p">,</span>

@@ -479,39 +479,6 @@ Options: [“sum”, “mean”, “max”]</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.fitting_loss">
-<span class="sig-name descname"><span class="pre">fitting_loss</span></span><a class="headerlink" href="#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.fitting_loss" title="Link to this definition">¶</a></dt>
-<dd><p>Training loss history.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[float]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.fitting_epoch">
-<span class="sig-name descname"><span class="pre">fitting_epoch</span></span><a class="headerlink" href="#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.fitting_epoch" title="Link to this definition">¶</a></dt>
-<dd><p>Last epoch number from training.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.model_class">
-<span class="sig-name descname"><span class="pre">model_class</span></span><a class="headerlink" href="#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.model_class" title="Link to this definition">¶</a></dt>
-<dd><p>Class of the underlying GNN model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Type[GNN]</p>
-</dd>
-</dl>
-</dd></dl>
-
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphMAEMolecularEncoder</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">encoder</span> <span class="o">=</span> <span class="n">GraphMAEMolecularEncoder</span><span class="p">(</span><span class="n">hidden_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
@@ -1022,9 +989,6 @@ The current known_add_bos_eos_list includes: [“entropy/gpt2_zinc_87m”].</p><
 </ul>
 </li>
 <li><a class="reference internal" href="#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder"><code class="docutils literal notranslate"><span class="pre">GraphMAEMolecularEncoder</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.fitting_loss"><code class="docutils literal notranslate"><span class="pre">GraphMAEMolecularEncoder.fitting_loss</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.fitting_epoch"><code class="docutils literal notranslate"><span class="pre">GraphMAEMolecularEncoder.fitting_epoch</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.model_class"><code class="docutils literal notranslate"><span class="pre">GraphMAEMolecularEncoder.model_class</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.encode"><code class="docutils literal notranslate"><span class="pre">GraphMAEMolecularEncoder.encode()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.fit"><code class="docutils literal notranslate"><span class="pre">GraphMAEMolecularEncoder.fit()</span></code></a></li>
 </ul>

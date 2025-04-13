@@ -75,16 +75,6 @@ class GraphMAEMolecularEncoder(BaseMolecularEncoder):
     model_name : str, default="GraphMAEMolecularEncoder"
         Name of the model.
     
-    Attributes
-    ----------
-    fitting_loss : List[float]
-        Training loss history.
-    fitting_epoch : int
-        Last epoch number from training.
-    model_class : Type[GNN]
-        Class of the underlying GNN model.
-    
-    
     Examples
     --------
     >>> from torch_molecule import GraphMAEMolecularEncoder

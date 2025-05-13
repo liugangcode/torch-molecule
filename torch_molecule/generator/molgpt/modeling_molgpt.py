@@ -1,18 +1,16 @@
 import re
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Type
+from typing import Optional, Dict, Any, Tuple, List, Type
 from dataclasses import dataclass, field
 
 import numpy as np
 import torch
 import torch.nn.functional as F
-from torch_geometric.loader import DataLoader
-from torch_geometric.data import Data
+from torch.utils.data import DataLoader
 from torch.cuda.amp import GradScaler
 
 from .gpt import GPT
 from .dataset import SmilesDataset
-
 from ...base import BaseMolecularGenerator
 
 @dataclass

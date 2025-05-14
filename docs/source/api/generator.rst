@@ -67,11 +67,18 @@ Modeling Molecules as Graphs with Heuristic-based Generators
    :undoc-members:
    :show-inheritance:
 
-Modeling Molecules as Sequences with Transformer-based Generators
------------------------------------------------------------------
+Modeling Molecules as Sequences
+--------------------------------
 
 .. rubric:: MolGPT for Unconditional Molecular Generation
 .. autoclass:: torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   :members: fit, generate
+   :undoc-members:
+   :show-inheritance:
+
+.. rubric:: LSTM for Unconditional/Conditional Molecular Generation
+.. autoclass:: torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
    :undoc-members:

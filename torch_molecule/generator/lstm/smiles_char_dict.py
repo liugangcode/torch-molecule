@@ -17,8 +17,8 @@ class SmilesCharDictionary(object):
 
         self.char_idx = {self.PAD: 0, self.BEGIN: 1, self.END: 2, '#': 20, '%': 22, '(': 25, ')': 24, '+': 26, '-': 27,
                          '.': 30,
-                         '*': 30,
-                        #  '*': 47,
+                        #  '*': 30,
+                         '*': 47,
                          '0': 32, '1': 31, '2': 34, '3': 33, '4': 36, '5': 35, '6': 38, '7': 37, '8': 40,
                          '9': 39, '=': 41, 'A': 7, 'B': 11, 'C': 19, 'F': 4, 'H': 6, 'I': 5, 'N': 10,
                          'O': 9, 'P': 12, 'S': 13, 'X': 15, 'Y': 14, 'Z': 3, '[': 16, ']': 18,
@@ -27,7 +27,6 @@ class SmilesCharDictionary(object):
                          }
 
         self.idx_char = {v: k for k, v in self.char_idx.items()}
-
         self.encode_dict = {"Br": 'Y', "Cl": 'X', "Si": 'A', 'Se': 'Z', '@@': 'R', 'se': 'E'}
         self.decode_dict = {v: k for k, v in self.encode_dict.items()}
 

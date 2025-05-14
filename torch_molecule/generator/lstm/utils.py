@@ -1,7 +1,6 @@
 from rdkit import Chem
 from typing import Set, Any, Optional
 import torch
-
 from .smiles_char_dict import SmilesCharDictionary
 
 def canonicalize(smiles: str, include_stereocenters=True) -> Optional[str]:

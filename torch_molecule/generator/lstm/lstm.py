@@ -1,65 +1,26 @@
-# import os
-# import time
-# from glob import glob
-# from functools import total_ordering
-# from typing import List, Set
-# from tqdm import tqdm
-
 import torch
 import torch.nn as nn
-# from torch.utils.data import DataLoader
-# import numpy as np
-
-# from .utils import canonicalize_list
-# from .utils import get_tensor_dataset, load_smiles_from_list
-# from .utils import save_model, time_since
-
-# from .action_sampler import ActionSampler
-# from .smiles_char_dict import SmilesCharDictionary
-
-# import logging
-# logger = logging.getLogger(__name__)
-# logger.addHandler(logging.NullHandler())
-
-# this file contains:
-# SmilesRnn
-# SmilesRnnTrainer 
-# SmilesRnnSampler
-
-# @total_ordering
-# class OptResult:
-#     def __init__(self, smiles: str, score: float) -> None:
-#         self.smiles = smiles
-#         self.score = score
-
-#     def __eq__(self, other):
-#         return (self.score, self.smiles) == (other.score, other.smiles)
-
-#     def __lt__(self, other):
-#         return (self.score, self.smiles) < (other.score, other.smiles)
 
 class LSTM(nn.Module):
-    """
-    character-based RNN language model optimized by with hill-climbing
-    """
-    def __init__(self, num_task, input_size, hidden_size, output_size, num_layer, dropout) -> None:
-        self.num_task = num_task
+    def __init__(self, num_task, input_size, hidden_size, output_size, num_layer, dropout):
+        super().__init__()
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.output_size = output_size
         self.num_layer = num_layer
         self.dropout = dropout
-        self.hidden_transform = nn.Linear(num_task, num_layer * hidden_size)
-        self.cell_transform = nn.Linear(num_task, num_layer * hidden_size)
+        if num_task == 0:
+            self.input_dim = 1
+        else:
+            self.input_dim = num_task
+        self.hidden_transform = nn.Linear(self.input_dim, num_layer * hidden_size)
+        self.cell_transform = nn.Linear(self.input_dim, num_layer * hidden_size)
         self.encoder = nn.Embedding(input_size, hidden_size)
         self.decoder = nn.Linear(hidden_size, output_size)
 
         self.rnn = nn.LSTM(hidden_size, hidden_size, batch_first=True, num_layers=num_layer, dropout=dropout)
         self.initialize_parameters()
-        # self.criterion = nn.CrossEntropyLoss()
-        # self.sampler = SmilesRnnSampler(device=self.device, batch_size=512)
-        # self.max_len = max_len
-        
+
     def initialize_parameters(self):
         # encoder / decoder
         nn.init.xavier_uniform_(self.encoder.weight)
@@ -78,7 +39,7 @@ class LSTM(nn.Module):
 
     def forward(self, input, hidden, cell):
         embeds = self.encoder(input)
-        output, hidden, cell = self.rnn(embeds, (hidden, cell))
+        output, (hidden, cell) = self.rnn(embeds, (hidden, cell))
         output = self.decoder(output)
         return output, hidden, cell
 

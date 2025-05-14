@@ -1,17 +1,11 @@
-import numpy as np
-# import random
-# import joblib
-# from joblib import delayed
-# from rdkit import Chem
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable
+from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Type
 from dataclasses import dataclass, field
-# from warnings import warn
+import numpy as np
 
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
-# from .oracle import Oracle
 from .lstm import LSTM
 from .utils import canonicalize
 from .action_sampler import ActionSampler
@@ -20,20 +14,47 @@ from ...base import BaseMolecularGenerator
 
 @dataclass
 class LSTMMolecularGenerator(BaseMolecularGenerator):
-    """This generator implements the LSTM with hill-climbing for molecular generation.
+    """LSTM-based molecular generator.
     
-    References
-    ----------
-    TODO.
-
+    This generator implements an LSTM architecture for molecular generation. 
+    When conditions (y values) are provided during training, they are used to initialize the hidden 
+    and cell states of the LSTM.
+    
     Parameters
     ----------
-    TODO.
+    num_task : int, default=0
+        Number of tasks for conditional generation (0 means unconditional generation).
+    max_len : int, default=100
+        Maximum length of the SMILES strings.
+    num_layer : int, default=3
+        Number of LSTM layers.
+    hidden_size : int, default=512
+        Dimension of hidden states in LSTM.
+    dropout : float, default=0.2
+        Dropout probability for regularization.
+    batch_size : int, default=128
+        Batch size for training.
+    epochs : int, default=10000
+        Maximum number of training epochs.
+    learning_rate : float, default=0.0002
+        Learning rate for optimizer.
+    weight_decay : float, default=0.0
+        L2 regularization factor.
+    use_lr_scheduler : bool, default=False
+        Whether to use learning rate scheduler.
+    scheduler_factor : float, default=0.5
+        Factor by which to reduce learning rate when using scheduler (if True).
+    scheduler_patience : int, default=5
+        Number of epochs with no improvement after which learning rate will be reduced (if True).
+    grad_norm_clip : Optional[float], default=None
+        Maximum norm for gradient clipping. None means no clipping.
+    verbose : bool, default=False
+        Whether to print progress during training.
     """
     num_task: int = 0
     # LSTM parameters
     max_len: int = 100
-    num_layers: int = 3
+    num_layer: int = 3
     hidden_size: int = 512
     dropout: float = 0.2
 
@@ -49,8 +70,14 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
     grad_norm_clip: Optional[float] = None
     # Other parameters
     verbose: bool = False
-    model_name: str = "LSTMHCGenerator"
-    model_class = LSTM
+
+    # attributes
+    model_name: str = "LSTMMolecularGenerator"
+    fitting_loss: List[float] = field(default_factory=list, init=False)
+    fitting_epoch: int = field(default=0, init=False)
+    input_size: int = field(init=False, default=None)
+    output_size: int = field(init=False, default=None)
+    model_class: Type[LSTM] = field(default=LSTM, init=False)
     
     def __post_init__(self):
         super().__post_init__()
@@ -61,16 +88,16 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
     @staticmethod
     def _get_param_names() -> List[str]:
         return [
-            "max_len", "num_layers", "hidden_size", "dropout",
+            "num_task", "max_len", "num_layer", "hidden_size", "dropout",
             "batch_size", "epochs", "learning_rate", "weight_decay",
             "use_lr_scheduler", "scheduler_factor", "scheduler_patience",
-            "grad_norm_clip", "verbose"
+            "grad_norm_clip", "verbose", "input_size", "output_size", 'model_name'
         ]
     
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
         params = [
             "num_task", "input_size", "hidden_size", "output_size", "num_layer", "dropout",
-        ]        
+        ]
         if checkpoint is not None:
             if "hyperparameters" not in checkpoint:
                 raise ValueError("Checkpoint missing 'hyperparameters' key")
@@ -88,21 +115,12 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
             else:
                 valid_smiles.append('C')  # default placeholder
         
-        # Remove duplicates while preserving order
-        unique_set = set()
-        unique_smiles = []
-        for s in valid_smiles:
-            if s not in unique_set:
-                unique_set.add(s)
-                unique_smiles.append(s)
-        
         # max len + two chars for start token 'Q' and stop token '\n'
         max_seq_len = self.max_len + 2
-        
         # allocate the zero matrix to be filled
-        seqs = np.zeros((len(unique_smiles), max_seq_len), dtype=np.int32)
+        seqs = np.zeros((len(valid_smiles), max_seq_len), dtype=np.int32)
         
-        for i, mol in enumerate(unique_smiles):
+        for i, mol in enumerate(valid_smiles):
             enc_smi = self.tokenizer.BEGIN + self.tokenizer.encode(mol) + self.tokenizer.END
             for c in range(len(enc_smi)):
                 seqs[i, c] = self.tokenizer.char_idx[enc_smi[c]]
@@ -110,12 +128,13 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
         seqs_tensor = torch.from_numpy(seqs).long()
         inp = seqs_tensor[:, :-1]
         target = seqs_tensor[:, 1:]
-        
+        bsz = inp.size(0)
         if y is not None:
+            assert len(y) == bsz
             y = torch.tensor(y)
             return TensorDataset(inp, target, y)
         else:
-            target_y = torch.zeros(inp.size(0))
+            target_y = torch.zeros(bsz, 1)
             return TensorDataset(inp, target, target_y)
 
     def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:
@@ -143,8 +162,7 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
         X_train: List[str],
         y_train: Optional[Union[List, np.ndarray]] = None,
 ) -> "LSTMMolecularGenerator":
-        
-        X_train, y_train = self._validate_inputs(X_train, y_train, num_task=self.num_task)
+        X_train, y_train = self._validate_inputs(X_train, y_train, num_task=self.num_task, return_rdkit_mol=False)
         self._initialize_model(self.model_class)
         self.model.initialize_parameters()
         optimizer, scheduler = self._setup_optimizers()
@@ -179,7 +197,8 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
             else train_loader
         )
         for step, batched_data in enumerate(iterator):
-            batched_data = batched_data.to(self.device)
+            for i in range(len(batched_data)):
+                batched_data[i] = batched_data[i].to(self.device)
             optimizer.zero_grad()
 
             loss = self.model.compute_loss(batched_data, criterion)
@@ -193,7 +212,6 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
                 iterator.set_postfix({"Epoch": epoch, "Loss": f"{loss.item():.4f}"})
             
         return losses
-
 
     def generate(
         self, 
@@ -228,6 +246,9 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
             labels = torch.from_numpy(labels)
         if labels is not None and labels.dim() == 1:
             labels = labels.unsqueeze(-1)
+        elif labels is None:
+            labels = torch.zeros(batch_size, 1)
+        labels = labels.to(self.device)
         
         all_generated_mols = []
         sampler = ActionSampler(max_batch_size=batch_size, max_seq_length=self.max_len, device=self.device)

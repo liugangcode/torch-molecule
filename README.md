@@ -176,6 +176,7 @@ predictions = model.predict(smiles_list)
 | GDSS       | [Score-based Generative Modeling of Graphs via the System of Stochastic Differential Equations. ICML 2022](https://proceedings.mlr.press/v162/jo22a/jo22a.pdf) |
 | MolGPT     | [MolGPT: Molecular Generation Using a Transformer-Decoder Model. Journal of Chemical Information and Modeling 2021](https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600) |
 | GraphGA    | [A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of Median Molecules. Journal of Chemical Information and Computer Sciences 2004](https://pubs.acs.org/doi/10.1021/ci034290p) |
+| LSTM (SMILES)        | [Long short-term memory (Neural Computation 1997)](https://ieeexplore.ieee.org/abstract/document/6795963) based on SMILES strings |
 
 ### Representation Models
 
@@ -192,55 +193,7 @@ predictions = model.predict(smiles_list)
 
 ## Project Structure
 
-The structure of `torch_molecule` is as follows:
-
-`tree -L 2 torch_molecule -I '__pycache__|*.pyc|*.pyo|.git|old*'`
-
-```
-torch_molecule
-├── base
-│   ├── base.py
-│   ├── encoder.py
-│   ├── generator.py
-│   ├── __init__.py
-│   └── predictor.py
-├── encoder
-│   ├── attrmask
-│   ├── constant.py
-│   ├── contextpred
-│   ├── edgepred
-│   ├── moama
-│   └── supervised
-├── generator
-│   ├── digress
-│   ├── graph_dit
-│   └── graphga
-├── __init__.py
-├── nn
-│   ├── attention.py
-│   ├── embedder.py
-│   ├── gnn.py
-│   ├── __init__.py
-│   └── mlp.py
-├── predictor
-│   ├── dir
-│   ├── gnn
-│   ├── grea
-│   ├── irm
-│   ├── lstm
-│   ├── rpgnn
-│   ├── sgir
-│   └── ssr
-└── utils
-    ├── checker.py
-    ├── checkpoint.py
-    ├── format.py
-    ├── generic
-    ├── graph
-    ├── hf.py
-    ├── __init__.py
-    └── search.py
-```
+See the structure of `torch_molecule` with the command `tree -L 2 torch_molecule -I '__pycache__|*.pyc|*.pyo|.git|old*'`
 
 ## Acknowledgements
 

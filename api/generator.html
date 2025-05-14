@@ -633,8 +633,8 @@ If None, RandomForestRegressors will be created when fit is called.</p></li>
 </dd></dl>
 
 </section>
-<section id="modeling-molecules-as-sequences-with-transformer-based-generators">
-<h2>Modeling Molecules as Sequences with Transformer-based Generators<a class="headerlink" href="#modeling-molecules-as-sequences-with-transformer-based-generators" title="Link to this heading">¶</a></h2>
+<section id="modeling-molecules-as-sequences">
+<h2>Modeling Molecules as Sequences<a class="headerlink" href="#modeling-molecules-as-sequences" title="Link to this heading">¶</a></h2>
 <p class="rubric">MolGPT for Unconditional Molecular Generation</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator">
@@ -710,6 +710,62 @@ Information and Modeling. <a class="reference external" href="https://pubs.acs.o
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of generated SMILES strings</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">LSTM for Unconditional/Conditional Molecular Generation</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.generator.lstm.modeling_lstm.</span></span><span class="sig-name descname"><span class="pre">LSTMMolecularGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'LSTMMolecularGenerator'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0002</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_norm_clip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/generator/lstm/modeling_lstm.html#LSTMMolecularGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#torch_molecule.base.generator.BaseMolecularGenerator" title="torch_molecule.base.generator.BaseMolecularGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMolecularGenerator</span></code></a></p>
+<p>LSTM-based molecular generator.</p>
+<p>This generator implements an LSTM architecture for molecular generation.
+When conditions (y values) are provided during training, they are used to initialize the hidden
+and cell states of the LSTM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_task</strong> (<em>int</em><em>, </em><em>default=0</em>) – Number of tasks for conditional generation (0 means unconditional generation).</p></li>
+<li><p><strong>max_len</strong> (<em>int</em><em>, </em><em>default=100</em>) – Maximum length of the SMILES strings.</p></li>
+<li><p><strong>num_layer</strong> (<em>int</em><em>, </em><em>default=3</em>) – Number of LSTM layers.</p></li>
+<li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>default=512</em>) – Dimension of hidden states in LSTM.</p></li>
+<li><p><strong>dropout</strong> (<em>float</em><em>, </em><em>default=0.2</em>) – Dropout probability for regularization.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>default=128</em>) – Batch size for training.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>default=10000</em>) – Maximum number of training epochs.</p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em><em>, </em><em>default=0.0002</em>) – Learning rate for optimizer.</p></li>
+<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>default=0.0</em>) – L2 regularization factor.</p></li>
+<li><p><strong>use_lr_scheduler</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to use learning rate scheduler.</p></li>
+<li><p><strong>scheduler_factor</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Factor by which to reduce learning rate when using scheduler (if True).</p></li>
+<li><p><strong>scheduler_patience</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of epochs with no improvement after which learning rate will be reduced (if True).</p></li>
+<li><p><strong>grad_norm_clip</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em><em>, </em><em>default=None</em>) – Maximum norm for gradient clipping. None means no clipping.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to print progress during training.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator" title="torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator"><span class="pre">LSTMMolecularGenerator</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/generator/lstm/modeling_lstm.html#LSTMMolecularGenerator.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.fit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/generator/lstm/modeling_lstm.html#LSTMMolecularGenerator.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.generate" title="Link to this definition">¶</a></dt>
+<dd><p>Generate molecules using LSTM with hill-climbing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>List</em><em>[</em><em>List</em><em>]</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em>) – Target property values for conditional generation.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – Number of molecules to generate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Generated molecules as SMILES strings.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[str]</p>
@@ -808,10 +864,15 @@ Information and Modeling. <a class="reference external" href="https://pubs.acs.o
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#modeling-molecules-as-sequences-with-transformer-based-generators">Modeling Molecules as Sequences with Transformer-based Generators</a><ul>
+<li><a class="reference internal" href="#modeling-molecules-as-sequences">Modeling Molecules as Sequences</a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">MolGPTMolecularGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">MolGPTMolecularGenerator.fit()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">MolGPTMolecularGenerator.generate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularGenerator</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularGenerator.fit()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">LSTMMolecularGenerator.generate()</span></code></a></li>
 </ul>
 </li>
 </ul>

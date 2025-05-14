@@ -161,7 +161,7 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
         self,
         X_train: List[str],
         y_train: Optional[Union[List, np.ndarray]] = None,
-) -> "LSTMMolecularGenerator":
+    ) -> "LSTMMolecularGenerator":
         X_train, y_train = self._validate_inputs(X_train, y_train, num_task=self.num_task, return_rdkit_mol=False)
         self._initialize_model(self.model_class)
         self.model.initialize_parameters()
@@ -203,7 +203,7 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
 
             loss = self.model.compute_loss(batched_data, criterion)
             loss.backward()
-            if self.grad_norm_clip:
+            if self.grad_norm_clip is not None:
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_norm_clip)
             optimizer.step()
             losses.append(loss.item())
@@ -218,7 +218,7 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
         labels: Optional[Union[List[List], np.ndarray]] = None,
         batch_size: int = 32
     ) -> List[str]:
-        """Generate molecules using LSTM with hill-climbing.
+        """Generate molecules using LSTM.
         
         Parameters
         ----------

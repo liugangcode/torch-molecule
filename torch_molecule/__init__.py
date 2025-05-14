@@ -27,11 +27,12 @@ from .encoder.pretrained import HFPretrainedMolecularEncoder
 generator module
 """
 from .generator.graph_dit import GraphDITMolecularGenerator
-from .generator.graph_ga import GraphGAMolecularGenerator
 from .generator.digress import DigressMolecularGenerator
-from .generator.molgpt import MolGPTMolecularGenerator
 from .generator.gdss import GDSSMolecularGenerator
+from .generator.graph_ga import GraphGAMolecularGenerator
+from .generator.jtvae import JTVAEMolecularGenerator
 from .generator.lstm import LSTMMolecularGenerator
+from .generator.molgpt import MolGPTMolecularGenerator
 
 __all__ = [
     # 'BaseMolecularPredictor',
@@ -56,9 +57,10 @@ __all__ = [
     'HFPretrainedMolecularEncoder',
     # generators
     'GraphDITMolecularGenerator',
-    'GraphGAMolecularGenerator',
     'DigressMolecularGenerator',
-    'MolGPTMolecularGenerator',
     'GDSSMolecularGenerator',
+    'GraphGAMolecularGenerator',
+    'JTVAEMolecularGenerator',
+    'MolGPTMolecularGenerator',
     'LSTMMolecularGenerator',
 ]

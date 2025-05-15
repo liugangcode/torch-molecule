@@ -1,10 +1,9 @@
 from tqdm import tqdm
 from dataclasses import dataclass, field
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Type
+from typing import Optional, Dict, Any, Tuple, List, Type
 import numpy as np
 
 import torch
-from torch.utils.data import DataLoader, TensorDataset
 
 from .jtnn_vae import JTNNVAE
 from .jtnn.mol_tree import MolTree
@@ -15,21 +14,51 @@ from ...base import BaseMolecularGenerator
 @dataclass
 class JTVAEMolecularGenerator(BaseMolecularGenerator):
     """ 
-    JT-VAE-based molecular generator.
-    
-    This generator implements a JT-VAE architecture for molecular generation. 
-    
+    JT-VAE-based molecular generator. Implemented for unconditional moleculargeneration.     
 
     References
     ----------
     - Junction Tree Variational Autoencoder for Molecular Graph Generation. ICML 2018. https://arxiv.org/pdf/1802.04364
     - Code: https://github.com/kamikaze0923/jtvae
 
-
     Parameters
     ----------
-    TODO.
-
+    hidden_size : int, default=450
+        Dimension of hidden layers in the model.
+    latent_size : int, default=56
+        Dimension of the latent space.
+    depthT : int, default=20
+        Depth of the tree encoder.
+    depthG : int, default=3
+        Depth of the graph decoder.
+    batch_size : int, default=32
+        Number of samples per batch during training.
+    epochs : int, default=20
+        Number of epochs to train the model.
+    learning_rate : float, default=0.003
+        Initial learning rate for the optimizer.
+    weight_decay : float, default=0.0
+        L2 regularization factor.
+    grad_norm_clip : Optional[float], default=None
+        Maximum norm for gradient clipping. None means no clipping.
+    beta : float, default=0.0
+        Initial KL divergence weight for VAE training.
+    step_beta : float, default=0.002
+        Step size for KL annealing.
+    max_beta : float, default=1.0
+        Maximum value for KL weight.
+    warmup : int, default=40000
+        Number of steps for KL annealing warmup.
+    use_lr_scheduler : bool, default=True
+        Whether to use learning rate scheduling.
+    anneal_rate : float, default=0.9
+        Learning rate annealing factor.
+    anneal_iter : int, default=40000
+        Number of iterations between learning rate updates.
+    kl_anneal_iter : int, default=2000
+        Number of iterations between KL weight updates.
+    verbose : bool, default=False
+        Whether to print detailed training information.
     """
     # Model parameters
     hidden_size: int = 450

@@ -6,7 +6,7 @@ from ...utils.graph.features import getmorganfingerprint
 
 
 class Oracle:
-    """Oracle class for scoring molecules.
+    """The default Oracle class for scoring molecules in GraphGA.
     
     This class wraps predictive models (like RandomForestRegressor) to score molecules
     based on their properties. It handles conversion of SMILES to fingerprints.

@@ -582,9 +582,6 @@ the training distribution. Can be provided as:
 
 </dd></dl>
 
-</section>
-<section id="modeling-molecules-as-graphs-with-heuristic-methods">
-<h2>Modeling Molecules as Graphs with Heuristic Methods<a class="headerlink" href="#modeling-molecules-as-graphs-with-heuristic-methods" title="Link to this heading">¶</a></h2>
 <p class="rubric">Graph Genetic Algorithm for Un/Multi-conditional Molecular Generation</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator">
@@ -652,12 +649,11 @@ Smaller scores mean closer to the target goal.</p>
 
 </dd></dl>
 
-<p class="rubric">Default Oracles in GraphGA</p>
 <dl class="py class" id="module-torch_molecule.generator.graph_ga.oracle">
 <dt class="sig sig-object py" id="torch_molecule.generator.graph_ga.oracle.Oracle">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.generator.graph_ga.oracle.</span></span><span class="sig-name descname"><span class="pre">Oracle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/generator/graph_ga/oracle.html#Oracle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.graph_ga.oracle.Oracle" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Oracle class for scoring molecules.</p>
+<p>The default Oracle class for scoring molecules in GraphGA.</p>
 <p>This class wraps predictive models (like RandomForestRegressor) to score molecules
 based on their properties. It handles conversion of SMILES to fingerprints.</p>
 <dl class="field-list simple">
@@ -914,9 +910,6 @@ and cell states of the LSTM.</p>
 <li><a class="reference internal" href="#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">JTVAEMolecularGenerator.generate()</span></code></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a class="reference internal" href="#modeling-molecules-as-graphs-with-heuristic-methods">Modeling Molecules as Graphs with Heuristic Methods</a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.fit()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.generate()</span></code></a></li>

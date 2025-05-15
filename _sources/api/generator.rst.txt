@@ -58,17 +58,13 @@ Modeling Molecules as Graphs
    :undoc-members:
    :show-inheritance:
 
-Modeling Molecules as Graphs with Heuristic Methods
----------------------------------------------------
-
 .. rubric:: Graph Genetic Algorithm for Un/Multi-conditional Molecular Generation
 .. autoclass:: torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, save_to_hf, load_from_hf
    :members: fit, generate
    :undoc-members:
    :show-inheritance:
-
-.. rubric:: Default Oracles in GraphGA
+   
 .. automodule:: torch_molecule.generator.graph_ga.oracle
    :members:
    :undoc-members:

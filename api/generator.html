@@ -290,8 +290,8 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">save(path,</span> <span class="pre">repo_id)</span></code>: Save the model to either local storage or Hugging Face</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">load(path,</span> <span class="pre">repo_id)</span></code>: Load a model from either local storage or Hugging Face</p></li>
 </ul>
-<section id="modeling-molecules-as-graphs-with-gnn-transformer-based-generators">
-<h2>Modeling Molecules as Graphs with GNN / Transformer-based Generators<a class="headerlink" href="#modeling-molecules-as-graphs-with-gnn-transformer-based-generators" title="Link to this heading">¶</a></h2>
+<section id="modeling-molecules-as-graphs">
+<h2>Modeling Molecules as Graphs<a class="headerlink" href="#modeling-molecules-as-graphs" title="Link to this heading">¶</a></h2>
 <p class="rubric">GraphDiT for Un/Multi-conditional Molecular Generation</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator">
@@ -523,9 +523,68 @@ the training distribution. Can be provided as:
 
 </dd></dl>
 
+<p class="rubric">JT-VAE for Unconditional Molecular Generation</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torch_molecule.generator.jtvae.modeling_jtvae.</span></span><span class="sig-name descname"><span class="pre">JTVAEMolecularGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'JTVAEMolecularGenerator'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">450</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">56</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depthT</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depthG</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.003</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_norm_clip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.002</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warmup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anneal_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anneal_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl_anneal_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/generator/jtvae/modeling_jtvae.html#JTVAEMolecularGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#torch_molecule.base.generator.BaseMolecularGenerator" title="torch_molecule.base.generator.BaseMolecularGenerator"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMolecularGenerator</span></code></a></p>
+<p>JT-VAE-based molecular generator. Implemented for unconditional moleculargeneration.</p>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Junction Tree Variational Autoencoder for Molecular Graph Generation. ICML 2018. <a class="reference external" href="https://arxiv.org/pdf/1802.04364">https://arxiv.org/pdf/1802.04364</a></p></li>
+<li><p>Code: <a class="reference external" href="https://github.com/kamikaze0923/jtvae">https://github.com/kamikaze0923/jtvae</a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>default=450</em>) – Dimension of hidden layers in the model.</p></li>
+<li><p><strong>latent_size</strong> (<em>int</em><em>, </em><em>default=56</em>) – Dimension of the latent space.</p></li>
+<li><p><strong>depthT</strong> (<em>int</em><em>, </em><em>default=20</em>) – Depth of the tree encoder.</p></li>
+<li><p><strong>depthG</strong> (<em>int</em><em>, </em><em>default=3</em>) – Depth of the graph decoder.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>default=32</em>) – Number of samples per batch during training.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>default=20</em>) – Number of epochs to train the model.</p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em><em>, </em><em>default=0.003</em>) – Initial learning rate for the optimizer.</p></li>
+<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>default=0.0</em>) – L2 regularization factor.</p></li>
+<li><p><strong>grad_norm_clip</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em><em>, </em><em>default=None</em>) – Maximum norm for gradient clipping. None means no clipping.</p></li>
+<li><p><strong>beta</strong> (<em>float</em><em>, </em><em>default=0.0</em>) – Initial KL divergence weight for VAE training.</p></li>
+<li><p><strong>step_beta</strong> (<em>float</em><em>, </em><em>default=0.002</em>) – Step size for KL annealing.</p></li>
+<li><p><strong>max_beta</strong> (<em>float</em><em>, </em><em>default=1.0</em>) – Maximum value for KL weight.</p></li>
+<li><p><strong>warmup</strong> (<em>int</em><em>, </em><em>default=40000</em>) – Number of steps for KL annealing warmup.</p></li>
+<li><p><strong>use_lr_scheduler</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether to use learning rate scheduling.</p></li>
+<li><p><strong>anneal_rate</strong> (<em>float</em><em>, </em><em>default=0.9</em>) – Learning rate annealing factor.</p></li>
+<li><p><strong>anneal_iter</strong> (<em>int</em><em>, </em><em>default=40000</em>) – Number of iterations between learning rate updates.</p></li>
+<li><p><strong>kl_anneal_iter</strong> (<em>int</em><em>, </em><em>default=2000</em>) – Number of iterations between KL weight updates.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to print detailed training information.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator" title="torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator"><span class="pre">JTVAEMolecularGenerator</span></a></span></span><a class="reference internal" href="../_modules/torch_molecule/generator/jtvae/modeling_jtvae.html#JTVAEMolecularGenerator.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.fit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/generator/jtvae/modeling_jtvae.html#JTVAEMolecularGenerator.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.generate" title="Link to this definition">¶</a></dt>
+<dd><p>Generate molecules using JT-VAE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>batch_size</strong> (<em>int</em>) – Number of molecules to generate.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Generated molecules as SMILES strings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="modeling-molecules-as-graphs-with-heuristic-based-generators">
-<h2>Modeling Molecules as Graphs with Heuristic-based Generators<a class="headerlink" href="#modeling-molecules-as-graphs-with-heuristic-based-generators" title="Link to this heading">¶</a></h2>
+<section id="modeling-molecules-as-graphs-with-heuristic-methods">
+<h2>Modeling Molecules as Graphs with Heuristic Methods<a class="headerlink" href="#modeling-molecules-as-graphs-with-heuristic-methods" title="Link to this heading">¶</a></h2>
 <p class="rubric">Graph Genetic Algorithm for Un/Multi-conditional Molecular Generation</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator">
@@ -834,7 +893,7 @@ and cell states of the LSTM.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Molecular Generation Models</a><ul>
-<li><a class="reference internal" href="#modeling-molecules-as-graphs-with-gnn-transformer-based-generators">Modeling Molecules as Graphs with GNN / Transformer-based Generators</a><ul>
+<li><a class="reference internal" href="#modeling-molecules-as-graphs">Modeling Molecules as Graphs</a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.fit()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">GraphDITMolecularGenerator.generate()</span></code></a></li>
@@ -850,9 +909,14 @@ and cell states of the LSTM.</p>
 <li><a class="reference internal" href="#torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">GDSSMolecularGenerator.generate()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">JTVAEMolecularGenerator</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">JTVAEMolecularGenerator.fit()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">JTVAEMolecularGenerator.generate()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#modeling-molecules-as-graphs-with-heuristic-based-generators">Modeling Molecules as Graphs with Heuristic-based Generators</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#modeling-molecules-as-graphs-with-heuristic-methods">Modeling Molecules as Graphs with Heuristic Methods</a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.fit"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.fit()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.generate"><code class="docutils literal notranslate"><span class="pre">GraphGAMolecularGenerator.generate()</span></code></a></li>

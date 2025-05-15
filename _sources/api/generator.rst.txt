@@ -27,7 +27,7 @@ inherited from :class:`torch_molecule.base.base.BaseModel`
 - ``save(path, repo_id)``: Save the model to either local storage or Hugging Face
 - ``load(path, repo_id)``: Load a model from either local storage or Hugging Face
 
-Modeling Molecules as Graphs with GNN / Transformer-based Generators
+Modeling Molecules as Graphs
 ---------------------------------------------------------------------
 
 .. rubric:: GraphDiT for Un/Multi-conditional Molecular Generation
@@ -46,13 +46,20 @@ Modeling Molecules as Graphs with GNN / Transformer-based Generators
 
 .. rubric:: GDSS for score-based molecular generation
 .. autoclass:: torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, save_to_hf, load_from_hf
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
-Modeling Molecules as Graphs with Heuristic-based Generators
-------------------------------------------------------------
+.. rubric:: JT-VAE for Unconditional Molecular Generation
+.. autoclass:: torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   :members: fit, generate
+   :undoc-members:
+   :show-inheritance:
+
+Modeling Molecules as Graphs with Heuristic Methods
+---------------------------------------------------
 
 .. rubric:: Graph Genetic Algorithm for Un/Multi-conditional Molecular Generation
 .. autoclass:: torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator

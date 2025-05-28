@@ -10,6 +10,8 @@ from .predictor.irm import IRMMolecularPredictor
 from .predictor.ssr import SSRMolecularPredictor
 from .predictor.dir import DIRMolecularPredictor
 from .predictor.rpgnn import RPGNNMolecularPredictor
+from .predictor.bfgnn import BFGNNMolecularPredictor
+from .predictor.grin import GRINMolecularPredictor
 from .predictor.lstm import LSTMMolecularPredictor
 from .predictor.smiles_transformer import SMILESTransformerMolecularPredictor
 """
@@ -44,6 +46,8 @@ __all__ = [
     'SSRMolecularPredictor',
     'DIRMolecularPredictor',
     'RPGNNMolecularPredictor',
+    'BFGNNMolecularPredictor',
+    'GRINMolecularPredictor',
     'LSTMMolecularPredictor',
     'SMILESTransformerMolecularPredictor',
     # encoders

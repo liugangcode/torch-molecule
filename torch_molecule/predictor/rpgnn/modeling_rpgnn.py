@@ -31,11 +31,12 @@ class RPGNNMolecularPredictor(GNNMolecularPredictor):
     Parameters
     ----------
     num_perm : int, default=3
-        TODO: Add description
+        Number of random permutations to use for relational pooling. 
     fixed_size : int, default=10 
-        TODO: Add description
+        Maximum number of nodes to consider in the graph. 
     num_node_feature : int, default=9
-        TODO: Add description
+        Dimension of the input node features. This should match the number of atomic features used to represent
+        each node in the molecular graph (e.g., atomic number, degree, hybridization, etc.).
     """
     
     # RPGNN-specific parameter

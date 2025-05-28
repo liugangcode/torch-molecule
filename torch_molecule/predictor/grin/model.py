@@ -5,7 +5,7 @@ from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_poo
 from ...nn import GNN_node, GNN_node_Virtualnode, MLP
 from ...utils import init_weights
 
-class GNN(nn.Module):
+class GRIN(nn.Module):
     def __init__(
         self,
         num_task,
@@ -16,10 +16,11 @@ class GNN(nn.Module):
         norm_layer="batch_norm",
         graph_pooling="max",
         augmented_feature=['maccs', 'morgan'],
-        algorithm_aligned = None
+        algorithm_aligned = 'mst'
     ):
-        super(GNN, self).__init__()
+        super(GRIN, self).__init__()
         gnn_name = gnn_type.split("-")[0]
+        self.algorithm_aligned = algorithm_aligned
         self.num_task = num_task
         self.hidden_size = hidden_size
 
@@ -32,7 +33,7 @@ class GNN(nn.Module):
                 residual=True,
                 gnn_name=gnn_name,
                 norm_layer=norm_layer,
-                algorithm_aligned = algorithm_aligned
+                algorithm_aligned=algorithm_aligned
             )
         else:
             self.graph_encoder = GNN_node(
@@ -43,7 +44,7 @@ class GNN(nn.Module):
                 residual=True,
                 gnn_name=gnn_name,
                 norm_layer=norm_layer,
-                algorithm_aligned = algorithm_aligned
+                algorithm_aligned=algorithm_aligned
             )
         if graph_pooling == "sum":
             self.pool = global_add_pool
@@ -96,7 +97,7 @@ class GNN(nn.Module):
                 h_rep = torch.cat((h_rep, maccs), dim=1)
         return h_rep
 
-    def compute_loss(self, batched_data, criterion):
+    def compute_loss(self, batched_data, criterion, l1_penalty=1e-3):
         h_node, _ = self.graph_encoder(batched_data)
         h_rep = self.pool(h_node, batched_data.batch)
         h_rep = self._augmented_graph_features(batched_data, h_rep)
@@ -104,7 +105,8 @@ class GNN(nn.Module):
         target = batched_data.y.to(torch.float32)
         is_labeled = batched_data.y == batched_data.y
         loss = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled]).mean()
-        return loss
+        l1_loss = sum(p.abs().sum() for p in self.graph_encoder.parameters()) + sum(p.abs().sum() for p in self.predictor.parameters())
+        return loss + l1_penalty * l1_loss
 
     def forward(self, batched_data):
         h_node, _ = self.graph_encoder(batched_data)

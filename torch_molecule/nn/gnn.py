@@ -4,6 +4,7 @@ from torch_geometric.utils import degree
 from torch_geometric.nn.norm import GraphNorm, PairNorm, DiffGroupNorm, InstanceNorm, LayerNorm, GraphSizeNorm
 from torch_geometric.nn import MessagePassing
 from torch_geometric.nn import global_add_pool
+from torch_scatter import scatter_min, scatter_max, scatter_mean,scatter_add
 
 from ..utils import get_atom_feature_dims, get_bond_feature_dims 
 
@@ -162,13 +163,193 @@ class GCNConv(MessagePassing):
     def update(self, aggr_out):
         return aggr_out
 
+class GINConv_BF(MessagePassing):
+    def __init__(self, hidden_size, output_size=None):
+        super().__init__(aggr=None) 
+        if output_size is None:
+            output_size = hidden_size
+        self.f_agg = torch.nn.Sequential(
+            torch.nn.Linear(2*hidden_size, 2*hidden_size),
+            torch.nn.BatchNorm1d(2*hidden_size),
+            torch.nn.ReLU(),
+            torch.nn.Linear(2*hidden_size, output_size),
+        )
+        self.f_up = torch.nn.Sequential(
+            torch.nn.Linear(2*hidden_size, 2*hidden_size),
+            torch.nn.BatchNorm1d(2*hidden_size),
+            torch.nn.ReLU(),
+            torch.nn.Linear(2*hidden_size, output_size),
+        )
+        self.bond_encoder = BondEncoder(hidden_size=output_size)
+
+    def forward(self, x, edge_index, edge_attr):
+        edge_emb = self.bond_encoder(edge_attr)
+        agg = self.propagate(edge_index, x=x, edge_attr=edge_emb)
+        out = self.f_up(torch.cat([agg, x], dim=1))
+        return out
+
+    def message(self, x_j, edge_attr):
+        return self.f_agg(torch.cat([x_j, edge_attr], dim=1))
+
+    def aggregate(self, inputs, index, dim_size=None):
+        out, _ = scatter_min(inputs, index, dim=0, dim_size=dim_size)
+        out[out == float('inf')] = 0.0
+        return out
+
+class GCNConv_BF(MessagePassing):
+    def __init__(self, hidden_size, output_size=None):
+        super().__init__(aggr=None)  
+        if output_size is None:
+            output_size = hidden_size
+        self.linear = torch.nn.Linear(hidden_size, output_size)
+        self.f_agg = torch.nn.Sequential(
+            torch.nn.Linear(2*hidden_size, 2*hidden_size),
+            torch.nn.BatchNorm1d(2*hidden_size),
+            torch.nn.ReLU(),
+            torch.nn.Linear(2*hidden_size, output_size),
+        )
+        self.f_up = torch.nn.Sequential(
+            torch.nn.Linear(2*hidden_size, 2*hidden_size),
+            torch.nn.BatchNorm1d(2*hidden_size),
+            torch.nn.ReLU(),
+            torch.nn.Linear(2*hidden_size, output_size),
+        )
+        self.bond_encoder = BondEncoder(hidden_size=output_size)
+
+    def forward(self, x, edge_index, edge_attr):
+        x_lin = self.linear(x)
+
+        row, col = edge_index
+        deg = degree(row, x_lin.size(0), dtype=x_lin.dtype) + 1
+        deg_inv_sqrt = deg.pow(-0.5)
+        deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0.0
+        norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
+
+        edge_emb = self.bond_encoder(edge_attr)
+        agg = self.propagate(
+            edge_index,
+            x=x_lin,
+            edge_attr=edge_emb,
+            norm=norm,       
+            size=None
+        )
+        return self.f_up(torch.cat([agg, x_lin], dim=1))
+
+    def message(self, x_j, edge_attr, norm):
+        m = self.f_agg(torch.cat([x_j, edge_attr], dim=1))
+        return norm.view(-1, 1) * F.relu(m)
+
+    def aggregate(self, inputs, index, dim_size=None):
+        out, _ = scatter_min(inputs, index, dim=0, dim_size=dim_size)
+        out[out == float('inf')] = 0.0
+        return out
+
+class GINConv_GRIN(MessagePassing):
+    def __init__(self, hidden_size, output_size=None):
+        super().__init__(aggr=None) 
+        if output_size is None:
+            output_size = hidden_size
+        self.mlp = torch.nn.Sequential(
+            torch.nn.Linear(2*hidden_size, 2*hidden_size),
+            torch.nn.BatchNorm1d(2*hidden_size),
+            torch.nn.ReLU(),
+            torch.nn.Linear(2*hidden_size, output_size),
+        )
+        self.eps = torch.nn.Parameter(torch.zeros(1))
+        self.bond_encoder = BondEncoder(hidden_size=output_size)
+        self.root_emb = torch.nn.Embedding(1, output_size)
+
+    def forward(self, x, edge_index, edge_attr, visited):
+        edge_emb = self.bond_encoder(edge_attr)
+        row, _ = edge_index
+        deg = degree(row, x.size(0), dtype=x.dtype) + 1
+
+        agg = self.propagate(edge_index, x=x, edge_attr=edge_emb)
+
+        agg[visited] = 0.0
+
+        concat = torch.cat([x, agg], dim=1)
+        out = self.mlp(concat)
+        out = out + F.relu((1 + self.eps) * x + self.root_emb.weight) * (1.0 / deg.view(-1,1))
+
+        _, selected = agg.max(dim=0)
+        new_visited = visited.clone()
+        new_visited[selected] = True
+        mask = torch.zeros_like(visited)
+        mask[selected] = True
+        out = torch.where(mask.unsqueeze(1), out, x)
+
+        return out, new_visited
+
+    def message(self, x_j, edge_attr):
+        return F.relu(x_j + edge_attr)
+
+    def aggregate(self, inputs, index, dim_size=None):
+        out, _ = scatter_max(inputs, index, dim=0, dim_size=dim_size)
+        out[out == float('inf')] = 0.0
+        return out
+
+class GCNConv_GRIN(MessagePassing):
+    def __init__(self, hidden_size, output_size=None):
+        super().__init__(aggr=None)  
+        if output_size is None:
+            output_size = hidden_size
+        self.linear = torch.nn.Linear(hidden_size, output_size)
+        self.root_emb = torch.nn.Embedding(1, output_size)
+        self.bond_encoder = BondEncoder(hidden_size=output_size)
+        self.f_up = torch.nn.Sequential(
+            torch.nn.Linear(2*hidden_size, 2*hidden_size),
+            torch.nn.BatchNorm1d(2*hidden_size),
+            torch.nn.ReLU(),
+            torch.nn.Linear(2*hidden_size, output_size),
+        )
+
+    def forward(self, x, edge_index, edge_attr, visited):
+        x_lin = self.linear(x)
+        row, col = edge_index
+        deg = degree(row, x_lin.size(0), dtype=x_lin.dtype) + 1
+        deg_inv_sqrt = deg.pow(-0.5)
+        deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0.0
+        norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
+
+        edge_emb = self.bond_encoder(edge_attr)
+        agg = self.propagate(
+            edge_index,
+            x=x_lin,
+            edge_attr=edge_emb,
+            norm=norm,
+        )
+
+        agg[visited] = 0.0
+
+        concat = torch.cat([x_lin, agg], dim=1)
+        out = self.f_up(concat)
+        out = out + F.relu(x_lin + self.root_emb.weight) * (1.0 / deg.view(-1,1))
+
+        _, selected = agg.max(dim=0)
+        new_visited = visited.clone()
+        new_visited[selected] = True
+        mask = torch.zeros_like(visited)
+        mask[selected] = True
+        out = torch.where(mask.unsqueeze(1), out, x)
+
+        return out, new_visited
+
+    def message(self, x_j, edge_attr, norm):
+        return norm.view(-1,1) * F.relu(x_j + edge_attr)
+
+    def aggregate(self, inputs, index, dim_size=None):
+        out, _ = scatter_max(inputs, index, dim=0, dim_size=dim_size)
+        out[out == float('inf')] = 0.0
+        return out
+
 ### GNN to generate node embedding
 class GNN_node(torch.nn.Module):
     """
     Output:
         node representations
     """
-    def __init__(self, num_layer, hidden_size, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm', encode_atom = True):
+    def __init__(self, num_layer, hidden_size, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm', encode_atom = True, algorithm_aligned = None):
         '''
             hidden_size (int): node embedding dimensionality
             num_layer (int): number of GNN message passing layers
@@ -183,7 +364,7 @@ class GNN_node(torch.nn.Module):
         self.residual = residual
         self.norm_layer = norm_layer
         self.encode_atom = encode_atom
-
+        self.algorithm_aligned = algorithm_aligned
         if self.num_layer < 2:
             raise ValueError("Number of GNN layers must be greater than 1.")
 
@@ -196,9 +377,19 @@ class GNN_node(torch.nn.Module):
 
         for layer in range(num_layer):
             if gnn_name == 'gin':
-                self.convs.append(GINConv(hidden_size))
+                if algorithm_aligned == 'bf':
+                    self.convs.append(GINConv_BF(hidden_size))
+                elif algorithm_aligned == 'mst':
+                    self.convs.append(GINConv_GRIN(hidden_size))
+                else:
+                    self.convs.append(GINConv(hidden_size))
             elif gnn_name == 'gcn':
-                self.convs.append(GCNConv(hidden_size))
+                if algorithm_aligned == 'bf':
+                    self.convs.append(GCNConv_BF(hidden_size))
+                elif algorithm_aligned == 'mst':
+                    self.convs.append(GCNConv_GRIN(hidden_size))
+                else:
+                    self.convs.append(GCNConv(hidden_size))
             else:
                 raise ValueError('Undefined GNN type called {}'.format(gnn_name))
 
@@ -241,9 +432,13 @@ class GNN_node(torch.nn.Module):
             h_list = [self.atom_encoder(x)]
         else:
             h_list = [x]
+        if self.algorithm_aligned == 'mst':
+            visited = torch.zeros(x.size(0), dtype=torch.bool, device=x.device)
         for layer in range(self.num_layer):
-
-            h = self.convs[layer](h_list[layer], edge_index, edge_attr)
+            if self.algorithm_aligned == 'mst':
+                h, visited = self.convs[layer](h_list[layer], edge_index, edge_attr, visited)
+            else:
+                h = self.convs[layer](h_list[layer], edge_index, edge_attr)
             if self.norm_layer.split('_')[0] == 'batch':
                 h = self.batch_norms[layer](h)
             else:
@@ -278,7 +473,7 @@ class GNN_node_Virtualnode(torch.nn.Module):
     Output:
         node representations
     """
-    def __init__(self, num_layer, hidden_size, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm', encode_atom = True):
+    def __init__(self, num_layer, hidden_size, drop_ratio = 0.5, JK = "last", residual = False, gnn_name = 'gin', norm_layer = 'batch_norm', encode_atom = True, algorithm_aligned = None):
         '''
             hidden_size (int): node embedding dimensionality
         '''
@@ -291,6 +486,7 @@ class GNN_node_Virtualnode(torch.nn.Module):
         self.residual = residual
         self.norm_layer = norm_layer
         self.encode_atom = encode_atom
+        self.algorithm_aligned = algorithm_aligned
         if self.num_layer < 2:
             raise ValueError("Number of GNN layers must be greater than 1.")
 
@@ -311,9 +507,19 @@ class GNN_node_Virtualnode(torch.nn.Module):
 
         for layer in range(num_layer):
             if gnn_name == 'gin':
-                self.convs.append(GINConv(hidden_size))
+                if algorithm_aligned == 'bf':
+                    self.convs.append(GINConv_BF(hidden_size))
+                elif algorithm_aligned == 'mst':
+                    self.convs.append(GINConv_GRIN(hidden_size))
+                else:
+                    self.convs.append(GINConv(hidden_size))
             elif gnn_name == 'gcn':
-                self.convs.append(GCNConv(hidden_size))
+                if algorithm_aligned == 'bf':
+                    self.convs.append(GCNConv_BF(hidden_size))
+                elif algorithm_aligned == 'mst':
+                    self.convs.append(GCNConv_GRIN(hidden_size))
+                else:
+                    self.convs.append(GCNConv(hidden_size))
             else:
                 raise ValueError('Undefined GNN type called {}'.format(gnn_name))
             
@@ -360,11 +566,16 @@ class GNN_node_Virtualnode(torch.nn.Module):
             h_list = [self.atom_encoder(x)]
         else:
             h_list = [x]
+        if self.algorithm_aligned == 'mst':
+            visited = torch.zeros(x.size(0), dtype=torch.bool, device=x.device)
         for layer in range(self.num_layer):
             ### add message from virtual nodes to graph nodes
             h_list[layer] = h_list[layer] + virtualnode_embedding[batch]
             ### Message passing among graph nodes
-            h = self.convs[layer](h_list[layer], edge_index, edge_attr)
+            if self.algorithm_aligned == 'mst':
+                h, visited = self.convs[layer](h_list[layer], edge_index, edge_attr, visited)
+            else:
+                h = self.convs[layer](h_list[layer], edge_index, edge_attr)
             if self.norm_layer.split('_')[0] == 'batch':
                 h = self.batch_norms[layer](h)
             else:

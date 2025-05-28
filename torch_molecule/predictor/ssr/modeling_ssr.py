@@ -42,13 +42,6 @@ class SSRMolecularPredictor(GNNMolecularPredictor):
     n_moments : int, default=5
         Number of moments to match in the CMD calculation. Higher values capture 
         more complex distribution characteristics.
-    coarse_pool : str, default='mean'
-        Pooling method for coarsened graphs. Determines how node features are 
-        aggregated during coarsening.
-    model_name : str, default="SSRMolecularPredictor"
-        Name of the model.
-    model_class : Type[SSR], default=SSR
-        The model class to use for prediction.
     """
     # SSR-specific parameters
     coarse_ratios: List[float] = field(default_factory=lambda: [0.8, 0.9])

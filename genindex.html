@@ -271,6 +271,16 @@
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.graph_from_smiles.add_fingerprint_feature">add_fingerprint_feature() (in module torch_molecule.utils.graph.graph_from_smiles)</a>
 </li>
+        <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv_BF.aggregate">aggregate() (torch_molecule.nn.gnn.GCNConv_BF method)</a>
+
+        <ul>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv_GRIN.aggregate">(torch_molecule.nn.gnn.GCNConv_GRIN method)</a>
+</li>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv_BF.aggregate">(torch_molecule.nn.gnn.GINConv_BF method)</a>
+</li>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv_GRIN.aggregate">(torch_molecule.nn.gnn.GINConv_GRIN method)</a>
+</li>
+        </ul></li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.features.atom_feature_vector_to_dict">atom_feature_vector_to_dict() (in module torch_molecule.utils.graph.features)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.features.atom_to_feature_vector">atom_to_feature_vector() (in module torch_molecule.utils.graph.features)</a>
@@ -281,14 +291,20 @@
 </li>
         <li><a href="api/encoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder">AttrMaskMolecularEncoder (class in torch_molecule.encoder.attrmask.modeling_attrmask)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor.autofit">autofit() (torch_molecule.base.predictor.BaseMolecularPredictor method)</a>
 
         <ul>
+          <li><a href="api/predictor.html#torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor.autofit">(torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor method)</a>
+</li>
           <li><a href="api/predictor.html#torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor.autofit">(torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor method)</a>
 </li>
           <li><a href="api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor.autofit">(torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor method)</a>
 </li>
           <li><a href="api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.autofit">(torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor method)</a>
+</li>
+          <li><a href="api/predictor.html#torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor.autofit">(torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor method)</a>
 </li>
           <li><a href="api/predictor.html#torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor.autofit">(torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor method)</a>
 </li>
@@ -321,6 +337,8 @@
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/predictor.html#torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor">BFGNNMolecularPredictor (class in torch_molecule.predictor.bfgnn.modeling_bfgnn)</a>
+</li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.features.bond_feature_vector_to_dict">bond_feature_vector_to_dict() (in module torch_molecule.utils.graph.features)</a>
 </li>
         <li><a href="api/utils.html#torch_molecule.utils.graph.features.bond_to_feature_vector">bond_to_feature_vector() (in module torch_molecule.utils.graph.features)</a>
@@ -454,11 +472,15 @@
 </li>
           <li><a href="api/generator.html#torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator.fit">(torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator method)</a>
 </li>
+          <li><a href="api/predictor.html#torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor.fit">(torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor method)</a>
+</li>
           <li><a href="api/predictor.html#torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor.fit">(torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor method)</a>
 </li>
           <li><a href="api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor.fit">(torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor method)</a>
 </li>
           <li><a href="api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.fit">(torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor method)</a>
+</li>
+          <li><a href="api/predictor.html#torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor.fit">(torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor method)</a>
 </li>
           <li><a href="api/predictor.html#torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor.fit">(torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor method)</a>
 </li>
@@ -492,7 +514,15 @@
 </li>
           <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv.forward">(torch_molecule.nn.gnn.GCNConv method)</a>
 </li>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv_BF.forward">(torch_molecule.nn.gnn.GCNConv_BF method)</a>
+</li>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv_GRIN.forward">(torch_molecule.nn.gnn.GCNConv_GRIN method)</a>
+</li>
           <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv.forward">(torch_molecule.nn.gnn.GINConv method)</a>
+</li>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv_BF.forward">(torch_molecule.nn.gnn.GINConv_BF method)</a>
+</li>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv_GRIN.forward">(torch_molecule.nn.gnn.GINConv_GRIN method)</a>
 </li>
           <li><a href="api/nn.html#torch_molecule.nn.gnn.GNN_node.forward">(torch_molecule.nn.gnn.GNN_node method)</a>
 </li>
@@ -510,6 +540,10 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv">GCNConv (class in torch_molecule.nn.gnn)</a>
+</li>
+        <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv_BF">GCNConv_BF (class in torch_molecule.nn.gnn)</a>
+</li>
+        <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv_GRIN">GCNConv_GRIN (class in torch_molecule.nn.gnn)</a>
 </li>
         <li><a href="api/generator.html#torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator">GDSSMolecularGenerator (class in torch_molecule.generator.gdss.modeling_gdss)</a>
 </li>
@@ -551,6 +585,10 @@
 </li>
         <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv">GINConv (class in torch_molecule.nn.gnn)</a>
 </li>
+        <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv_BF">GINConv_BF (class in torch_molecule.nn.gnn)</a>
+</li>
+        <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv_GRIN">GINConv_GRIN (class in torch_molecule.nn.gnn)</a>
+</li>
         <li><a href="api/nn.html#torch_molecule.nn.gnn.GNN_node">GNN_node (class in torch_molecule.nn.gnn)</a>
 </li>
         <li><a href="api/nn.html#torch_molecule.nn.gnn.GNN_node_Virtualnode">GNN_node_Virtualnode (class in torch_molecule.nn.gnn)</a>
@@ -568,6 +606,8 @@
         <li><a href="api/encoder.html#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder">GraphMAEMolecularEncoder (class in torch_molecule.encoder.graphmae.modeling_graphmae)</a>
 </li>
         <li><a href="api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor">GREAMolecularPredictor (class in torch_molecule.predictor.grea.modeling_grea)</a>
+</li>
+        <li><a href="api/predictor.html#torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor">GRINMolecularPredictor (class in torch_molecule.predictor.grin.modeling_grin)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -666,7 +706,15 @@
         <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv.message">message() (torch_molecule.nn.gnn.GCNConv method)</a>
 
         <ul>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv_BF.message">(torch_molecule.nn.gnn.GCNConv_BF method)</a>
+</li>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GCNConv_GRIN.message">(torch_molecule.nn.gnn.GCNConv_GRIN method)</a>
+</li>
           <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv.message">(torch_molecule.nn.gnn.GINConv method)</a>
+</li>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv_BF.message">(torch_molecule.nn.gnn.GINConv_BF method)</a>
+</li>
+          <li><a href="api/nn.html#torch_molecule.nn.gnn.GINConv_GRIN.message">(torch_molecule.nn.gnn.GINConv_GRIN method)</a>
 </li>
         </ul></li>
         <li><a href="api/nn.html#torch_molecule.nn.mlp.MLP">MLP (class in torch_molecule.nn.mlp)</a>
@@ -771,11 +819,15 @@
         <li><a href="api/base.html#torch_molecule.base.predictor.BaseMolecularPredictor.predict">predict() (torch_molecule.base.predictor.BaseMolecularPredictor method)</a>
 
         <ul>
+          <li><a href="api/predictor.html#torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor.predict">(torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor method)</a>
+</li>
           <li><a href="api/predictor.html#torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor.predict">(torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor method)</a>
 </li>
           <li><a href="api/predictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor.predict">(torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor method)</a>
 </li>
           <li><a href="api/predictor.html#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.predict">(torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor method)</a>
+</li>
+          <li><a href="api/predictor.html#torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor.predict">(torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor method)</a>
 </li>
           <li><a href="api/predictor.html#torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor.predict">(torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor method)</a>
 </li>

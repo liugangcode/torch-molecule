@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
-        <title>torch_molecule.predictor.rpgnn.modeling_rpgnn - torch-molecule 0.1 documentation</title>
+        <title>torch_molecule.predictor.bfgnn.modeling_bfgnn - torch-molecule 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -259,86 +259,91 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for torch_molecule.predictor.rpgnn.modeling_rpgnn</h1><div class="highlight"><pre>
+          <h1>Source code for torch_molecule.predictor.bfgnn.modeling_bfgnn</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Type</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Data</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">RPGNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">BFGNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">graph_from_smiles</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..gnn.modeling_gnn</span><span class="w"> </span><span class="kn">import</span> <span class="n">GNNMolecularPredictor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...utils.search</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ParameterSpec</span><span class="p">,</span>
     <span class="n">ParameterType</span><span class="p">,</span>
 <span class="p">)</span>
 
-<div class="viewcode-block" id="RPGNNMolecularPredictor">
-<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.rpgnn.modeling_rpgnn.RPGNNMolecularPredictor">[docs]</a>
+<div class="viewcode-block" id="BFGNNMolecularPredictor">
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">RPGNNMolecularPredictor</span><span class="p">(</span><span class="n">GNNMolecularPredictor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a GNN model based on Relational pooling.</span>
-
-<span class="sd">    The full name of RPGNN is Relational Pooling for Graph Representations.</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BFGNNMolecularPredictor</span><span class="p">(</span><span class="n">GNNMolecularPredictor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This predictor implements algorithm alignment of Bellman-Ford algorithm with GNN.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    - Relational Pooling for Graph Representations.</span>
-<span class="sd">      https://arxiv.org/abs/1903.02541</span>
-<span class="sd">    - Reference Code: https://github.com/PurdueMINDS/RelationalPooling/tree/master?tab=readme-ov-file</span>
+<span class="sd">    - Graph neural networks extrapolate out-of-distribution for shortest paths.</span>
+<span class="sd">      https://arxiv.org/abs/2503.19173</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    num_perm : int, default=3</span>
-<span class="sd">        Number of random permutations to use for relational pooling. </span>
-<span class="sd">    fixed_size : int, default=10 </span>
-<span class="sd">        Maximum number of nodes to consider in the graph. </span>
-<span class="sd">    num_node_feature : int, default=9</span>
-<span class="sd">        Dimension of the input node features. This should match the number of atomic features used to represent</span>
-<span class="sd">        each node in the molecular graph (e.g., atomic number, degree, hybridization, etc.).</span>
+<span class="sd">    :param l1_penalty: Weight for the L1 penalty</span>
+<span class="sd">    :type l1_penalty: float, default=1e-3</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="c1"># RPGNN-specific parameter</span>
-    <span class="n">num_perm</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
-    <span class="n">fixed_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="n">num_node_feature</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">9</span>
-    <span class="c1"># Override parent defaults</span>
-    <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RPGNNMolecularPredictor&quot;</span>
-    <span class="n">model_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">RPGNN</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">RPGNN</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+    <span class="n">l1_penalty</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span>
+    <span class="c1"># Other Non-init fields</span>
+    <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BFGNNMolecularPredictor&quot;</span>
+    <span class="n">model_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BFGNN</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">BFGNN</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
-
+    
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;num_perm&quot;</span><span class="p">,</span> <span class="s2">&quot;fixed_size&quot;</span><span class="p">,</span> <span class="s2">&quot;num_node_feature&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">GNNMolecularPredictor</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span>
-
+        <span class="k">return</span> <span class="n">GNNMolecularPredictor</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="s2">&quot;l1_penalty&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_default_search_space</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">search_space</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_default_search_space</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">search_space</span><span class="p">[</span><span class="s2">&quot;num_perm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-        <span class="n">search_space</span><span class="p">[</span><span class="s2">&quot;fixed_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="n">search_space</span><span class="p">[</span><span class="s2">&quot;l1_penalty&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">search_space</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="n">base_params</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_model_params</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">checkpoint</span> <span class="ow">and</span> <span class="s2">&quot;hyperparameters&quot;</span> <span class="ow">in</span> <span class="n">checkpoint</span><span class="p">:</span>
-            <span class="n">base_params</span><span class="p">[</span><span class="s2">&quot;num_perm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s2">&quot;hyperparameters&quot;</span><span class="p">][</span><span class="s2">&quot;num_perm&quot;</span><span class="p">]</span>
-            <span class="n">base_params</span><span class="p">[</span><span class="s2">&quot;fixed_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s2">&quot;hyperparameters&quot;</span><span class="p">][</span><span class="s2">&quot;fixed_size&quot;</span><span class="p">]</span>
-            <span class="n">base_params</span><span class="p">[</span><span class="s2">&quot;num_node_feature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s2">&quot;hyperparameters&quot;</span><span class="p">][</span><span class="s2">&quot;num_node_feature&quot;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">base_params</span><span class="p">[</span><span class="s2">&quot;num_perm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_perm</span>
-            <span class="n">base_params</span><span class="p">[</span><span class="s2">&quot;fixed_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_size</span>
-            <span class="n">base_params</span><span class="p">[</span><span class="s2">&quot;num_node_feature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_node_feature</span>
-        <span class="n">base_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;graph_pooling&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">base_params</span></div>
+        <span class="k">return</span> <span class="n">base_params</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
 
-    
+        <span class="n">iterator</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">tqdm</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Training&quot;</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
+            <span class="k">else</span> <span class="n">train_loader</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iterator</span><span class="p">):</span>
+            <span class="n">batch</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">compute_loss</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_criterion</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l1_penalty</span><span class="p">)</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_clip_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_clip_value</span><span class="p">)</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="n">iterator</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="n">epoch</span><span class="p">,</span> <span class="s2">&quot;Total Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+            <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">losses</span></div>
+
 </pre></div>
         </article>
       </div>

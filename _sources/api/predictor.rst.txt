@@ -43,7 +43,21 @@ Modeling Molecules as Graphs with Graph Neural Networks
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: Discovering Invariant Rationales
+.. rubric:: Learning Repetition-Invariant Representations for Polymer Informatics
+.. autoclass:: torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   :members: fit, autofit, predict
+   :undoc-members:
+   :show-inheritance:
+
+.. rubric:: Graph neural networks extrapolate out-of-distribution for shortest paths
+.. autoclass:: torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   :members: fit, autofit, predict
+   :undoc-members:
+   :show-inheritance:
+
+.. rubric:: Discovering Invariant Rationales for Graph Neural Networks
 .. autoclass:: torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, autofit, predict

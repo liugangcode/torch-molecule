@@ -306,13 +306,6 @@
 <span class="sd">    n_moments : int, default=5</span>
 <span class="sd">        Number of moments to match in the CMD calculation. Higher values capture </span>
 <span class="sd">        more complex distribution characteristics.</span>
-<span class="sd">    coarse_pool : str, default=&#39;mean&#39;</span>
-<span class="sd">        Pooling method for coarsened graphs. Determines how node features are </span>
-<span class="sd">        aggregated during coarsening.</span>
-<span class="sd">    model_name : str, default=&quot;SSRMolecularPredictor&quot;</span>
-<span class="sd">        Name of the model.</span>
-<span class="sd">    model_class : Type[SSR], default=SSR</span>
-<span class="sd">        The model class to use for prediction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># SSR-specific parameters</span>
     <span class="n">coarse_ratios</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>

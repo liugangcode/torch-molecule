@@ -157,6 +157,8 @@ predictions = model.predict(smiles_list)
 
 | Model                | Reference           |
 |----------------------|---------------------|
+| GRIN                 | [Learning Repetition-Invariant Representations for Polymer Informatics. May 2025](https://arxiv.org/abs/2505.10726) |
+| BFGNN                 | [Graph neural networks extrapolate out-of-distribution for shortest paths. March 2025](https://arxiv.org/abs/2503.19173) |
 | SGIR                 | [Semi-Supervised Graph Imbalanced Regression. KDD 2023](https://dl.acm.org/doi/10.1145/3580305.3599497) |
 | GREA                | [Graph Rationalization with Environment-based Augmentations. KDD 2022](https://dl.acm.org/doi/abs/10.1145/3534678.3539347) |
 | DIR                  | [Discovering Invariant Rationales for Graph Neural Networks. ICLR 2022](https://arxiv.org/abs/2201.12872) |

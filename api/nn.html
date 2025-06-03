@@ -331,26 +331,6 @@ Supports label dropout for classifier-free guidance.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="torch_molecule.nn.embedder.CategoricalEmbedder.token_drop">
-<span class="sig-name descname"><span class="pre">token_drop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_drop_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/embedder.html#CategoricalEmbedder.token_drop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.embedder.CategoricalEmbedder.token_drop" title="Link to this definition">¶</a></dt>
-<dd><p>Drops labels to enable classifier-free guidance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>labels</strong> (<em>torch.Tensor</em>) – Tensor of integer labels.</p></li>
-<li><p><strong>force_drop_ids</strong> (<em>torch.Tensor</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Boolean mask to force specific labels to be dropped.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Labels with some entries replaced by a dropout token.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>torch.Tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -863,7 +843,6 @@ registered hooks while the latter silently ignores them.</p>
 </li>
 <li><a class="reference internal" href="#torch_molecule.nn.embedder.CategoricalEmbedder"><code class="docutils literal notranslate"><span class="pre">CategoricalEmbedder</span></code></a><ul>
 <li><a class="reference internal" href="#torch_molecule.nn.embedder.CategoricalEmbedder.forward"><code class="docutils literal notranslate"><span class="pre">CategoricalEmbedder.forward()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.embedder.CategoricalEmbedder.token_drop"><code class="docutils literal notranslate"><span class="pre">CategoricalEmbedder.token_drop()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#torch_molecule.nn.embedder.ClusterContinuousEmbedder"><code class="docutils literal notranslate"><span class="pre">ClusterContinuousEmbedder</span></code></a><ul>

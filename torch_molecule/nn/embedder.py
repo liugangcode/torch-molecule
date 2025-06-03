@@ -86,29 +86,6 @@ class CategoricalEmbedder(nn.Module):
         self.num_classes = num_classes
         self.dropout_prob = dropout_prob
 
-    def token_drop(self, labels, force_drop_ids=None):
-        """
-        Drops labels to enable classifier-free guidance.
-
-        Parameters
-        ----------
-        labels : torch.Tensor
-            Tensor of integer labels.
-        force_drop_ids : torch.Tensor or None, optional
-            Boolean mask to force specific labels to be dropped.
-
-        Returns
-        -------
-        torch.Tensor
-            Labels with some entries replaced by a dropout token.
-        """
-        if force_drop_ids is None:
-            drop_ids = torch.rand(labels.shape[0], device=labels.device) < self.dropout_prob
-        else:
-            drop_ids = force_drop_ids == 1
-        labels = torch.where(drop_ids, self.num_classes, labels)
-        return labels
-
     def forward(self, labels, train, force_drop_ids=None):
         """
         Forward pass for categorical embedding with optional label dropout.
@@ -128,11 +105,21 @@ class CategoricalEmbedder(nn.Module):
             Embedded label representations, with optional noise added during training.
         """
         labels = labels.long().view(-1)
+
         use_dropout = self.dropout_prob > 0
-        if (train and use_dropout) or (force_drop_ids is not None):
-            labels = self.token_drop(labels, force_drop_ids)
+        drop_ids = force_drop_ids == 1
+
+        if (train and use_dropout):
+            drop_ids_rand = torch.rand(labels.shape[0], device=labels.device) < self.dropout_prob
+            if force_drop_ids is not None:
+                drop_ids = torch.logical_or(drop_ids, drop_ids_rand)
+            else:
+                drop_ids = drop_ids_rand
+        
+        if use_dropout:
+            labels = torch.where(drop_ids, self.num_classes, labels)
         embeddings = self.embedding_table(labels)
-        if True and train:
+        if train:
             noise = torch.randn_like(embeddings)
             embeddings = embeddings + noise
         return embeddings

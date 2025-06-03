@@ -6,7 +6,7 @@ import torch
 from torch_molecule import GraphDITMolecularGenerator
 from torch_molecule.utils.search import ParameterType, ParameterSpec
 
-EPOCHS = 10
+EPOCHS = 2
 BATCH_SIZE = 32
 
 def test_graph_dit_generator():
@@ -18,13 +18,15 @@ def test_graph_dit_generator():
         'CC1=CC=C(C=C1)C2=CC(=NN2C3=CC=C(C=C3)S(=O)(=O)N)C(F)(F)F'
     ]
     smiles_list = smiles_list * 25  # Create 100 molecules for training
-    properties = [1.0, 2.0, 3.0, 4.0] * 25  # Create 100 properties for training
+    # properties = [1.0, 2.0, 3.0, 4.0] * 25  # Create 100 properties for training
+    properties = [0, 0, 1, 1] * 25  # Create 100 properties for training
 
     # 1. Basic initialization test - Conditional Model
     print('smiles_list', len(smiles_list), smiles_list[:5], 'properties', len(properties), properties[:5])
     print("\n=== Testing Conditional GraphDIT model initialization ===")
     conditional_model = GraphDITMolecularGenerator(
-        task_type=['regression'],
+        task_type=['classification'],
+        drop_condition=0.1,
         timesteps=500,
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
@@ -42,7 +44,7 @@ def test_graph_dit_generator():
 
     # 3. Conditional generation test
     print("\n=== Testing Conditional GraphDIT generation ===")
-    target_properties = [1.0, 2.0, 3.0, 4.0]
+    target_properties = [0, 0, 1, 1]
     generated_smiles = conditional_model.generate(target_properties, batch_size=BATCH_SIZE)
     print(f"Conditionally generated {len(generated_smiles)} molecules")
     print("Example conditionally generated SMILES:", generated_smiles[:2])

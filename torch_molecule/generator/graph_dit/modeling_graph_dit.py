@@ -468,6 +468,8 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             y = labels.to(self.device).float()
         else:
             y = None
+
+        self.model.eval()
         for s_int in reversed(range(0, self.timesteps)):
             s_array = s_int * torch.ones((batch_size, 1)).float().to(self.device)
             t_array = s_array + 1

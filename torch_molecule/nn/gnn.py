@@ -4,7 +4,12 @@ from torch_geometric.utils import degree
 from torch_geometric.nn.norm import GraphNorm, PairNorm, DiffGroupNorm, InstanceNorm, LayerNorm, GraphSizeNorm
 from torch_geometric.nn import MessagePassing
 from torch_geometric.nn import global_add_pool
-from torch_scatter import scatter_min, scatter_max, scatter_mean,scatter_add
+try:
+    from torch_scatter import scatter_min, scatter_max, scatter_mean, scatter_add
+    _has_torch_scatter = True
+except ImportError:
+    scatter_min = scatter_max = scatter_mean = scatter_add = None
+    _has_torch_scatter = False
 
 from ..utils import get_atom_feature_dims, get_bond_feature_dims 
 
@@ -192,6 +197,9 @@ class GINConv_BF(MessagePassing):
         return self.f_agg(torch.cat([x_j, edge_attr], dim=1))
 
     def aggregate(self, inputs, index, dim_size=None):
+        if not _has_torch_scatter or scatter_min is None:
+            raise ImportError("BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
+
         out, _ = scatter_min(inputs, index, dim=0, dim_size=dim_size)
         out[out == float('inf')] = 0.0
         return out
@@ -240,6 +248,9 @@ class GCNConv_BF(MessagePassing):
         return norm.view(-1, 1) * F.relu(m)
 
     def aggregate(self, inputs, index, dim_size=None):
+        if not _has_torch_scatter or scatter_min is None:
+            raise ImportError("BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
+
         out, _ = scatter_min(inputs, index, dim=0, dim_size=dim_size)
         out[out == float('inf')] = 0.0
         return out
@@ -285,6 +296,9 @@ class GINConv_GRIN(MessagePassing):
         return F.relu(x_j + edge_attr)
 
     def aggregate(self, inputs, index, dim_size=None):
+        if not _has_torch_scatter or scatter_max is None:
+            raise ImportError("GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
+
         out, _ = scatter_max(inputs, index, dim=0, dim_size=dim_size)
         out[out == float('inf')] = 0.0
         return out
@@ -339,6 +353,9 @@ class GCNConv_GRIN(MessagePassing):
         return norm.view(-1,1) * F.relu(x_j + edge_attr)
 
     def aggregate(self, inputs, index, dim_size=None):
+        if not _has_torch_scatter or scatter_max is None:
+            raise ImportError("GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
+
         out, _ = scatter_max(inputs, index, dim=0, dim_size=dim_size)
         out[out == float('inf')] = 0.0
         return out

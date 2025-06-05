@@ -56,6 +56,8 @@
 | Model | Required Packages |
 |-------|-------------------|
 | HFPretrainedMolecularEncoder | transformers |
+| BFGNNMolecularPredictor | torch-scatter |
+| GRINMolecularPredictor | torch-scatter |
 
 ## Usage
 

@@ -266,7 +266,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.nn.norm</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphNorm</span><span class="p">,</span> <span class="n">PairNorm</span><span class="p">,</span> <span class="n">DiffGroupNorm</span><span class="p">,</span> <span class="n">InstanceNorm</span><span class="p">,</span> <span class="n">LayerNorm</span><span class="p">,</span> <span class="n">GraphSizeNorm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.nn</span><span class="w"> </span><span class="kn">import</span> <span class="n">MessagePassing</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.nn</span><span class="w"> </span><span class="kn">import</span> <span class="n">global_add_pool</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_scatter</span><span class="w"> </span><span class="kn">import</span> <span class="n">scatter_min</span><span class="p">,</span> <span class="n">scatter_max</span><span class="p">,</span> <span class="n">scatter_mean</span><span class="p">,</span><span class="n">scatter_add</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">torch_scatter</span><span class="w"> </span><span class="kn">import</span> <span class="n">scatter_min</span><span class="p">,</span> <span class="n">scatter_max</span><span class="p">,</span> <span class="n">scatter_mean</span><span class="p">,</span> <span class="n">scatter_add</span>
+    <span class="n">_has_torch_scatter</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">scatter_min</span> <span class="o">=</span> <span class="n">scatter_max</span> <span class="o">=</span> <span class="n">scatter_mean</span> <span class="o">=</span> <span class="n">scatter_add</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_has_torch_scatter</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_atom_feature_dims</span><span class="p">,</span> <span class="n">get_bond_feature_dims</span> 
 
@@ -500,6 +505,9 @@
 <div class="viewcode-block" id="GINConv_BF.aggregate">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GINConv_BF.aggregate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_has_torch_scatter</span> <span class="ow">or</span> <span class="n">scatter_min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`.&quot;</span><span class="p">)</span>
+
         <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">scatter_min</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="n">dim_size</span><span class="p">)</span>
         <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">return</span> <span class="n">out</span></div>
@@ -560,6 +568,9 @@
 <div class="viewcode-block" id="GCNConv_BF.aggregate">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GCNConv_BF.aggregate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_has_torch_scatter</span> <span class="ow">or</span> <span class="n">scatter_min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`.&quot;</span><span class="p">)</span>
+
         <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">scatter_min</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="n">dim_size</span><span class="p">)</span>
         <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">return</span> <span class="n">out</span></div>
@@ -617,6 +628,9 @@
 <div class="viewcode-block" id="GINConv_GRIN.aggregate">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GINConv_GRIN.aggregate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_has_torch_scatter</span> <span class="ow">or</span> <span class="n">scatter_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`.&quot;</span><span class="p">)</span>
+
         <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">scatter_max</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="n">dim_size</span><span class="p">)</span>
         <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">return</span> <span class="n">out</span></div>
@@ -683,6 +697,9 @@
 <div class="viewcode-block" id="GCNConv_GRIN.aggregate">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GCNConv_GRIN.aggregate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_has_torch_scatter</span> <span class="ow">or</span> <span class="n">scatter_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`.&quot;</span><span class="p">)</span>
+
         <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">scatter_max</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="n">dim_size</span><span class="p">)</span>
         <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">return</span> <span class="n">out</span></div>

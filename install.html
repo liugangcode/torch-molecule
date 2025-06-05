@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Examples" href="example.html" /><link rel="prev" title="torch-molecule documentation" href="index.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
-        <title>Installation - torch-molecule 0.1 documentation</title>
+        <title>Installation - torch-molecule (0.1.0) documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">torch-molecule 0.1 documentation</div></a>
+      <a href="index.html"><div class="brand">torch-molecule (0.1.0) documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -178,7 +178,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">torch-molecule 0.1 documentation</span>
+  <span class="sidebar-brand-text">torch-molecule (0.1.0) documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -260,7 +260,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -268,60 +268,81 @@
         <article role="main" id="furo-main-content">
           <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
-<p>To install <cite>torch-molecule</cite>, follow these steps:</p>
-<ol class="arabic">
-<li><p><strong>Create a Conda environment</strong>:</p>
+<p>This document explains how to install <code class="docutils literal notranslate"><span class="pre">torch-molecule</span></code> and any extra packages you may need.</p>
+<section id="installation-steps">
+<h2>Installation Steps<a class="headerlink" href="#installation-steps" title="Link to this heading">¶</a></h2>
+<p>Follow these steps in order.</p>
+<section id="create-a-conda-environment">
+<h3>Create a Conda Environment<a class="headerlink" href="#create-a-conda-environment" title="Link to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>torch_molecule<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11.7
 conda<span class="w"> </span>activate<span class="w"> </span>torch_molecule
 </pre></div>
 </div>
-</li>
-<li><p><strong>Install `torch_molecule` from GitHub</strong>:</p>
-<p>Clone the repository:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/liugangcode/torch-molecule
+</section>
+<section id="a-install-via-pip">
+<h3>a. Install via pip<a class="headerlink" href="#a-install-via-pip" title="Link to this heading">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>torch-molecule
 </pre></div>
 </div>
-<p>Install the requirements:</p>
+</section>
+<section id="b-install-from-source-latest-version">
+<h3>b. Install from Source (Latest Version)<a class="headerlink" href="#b-install-from-source-latest-version" title="Link to this heading">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/liugangcode/torch-molecule
+<span class="nb">cd</span><span class="w"> </span>torch-molecule
+</pre></div>
+</div>
+<p>Then install:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="c-editable-installation-for-development">
+<h3>c. Editable Installation for Development<a class="headerlink" href="#c-editable-installation-for-development" title="Link to this heading">¶</a></h3>
+<p>To work on the code directly, install in “editable” mode.</p>
+<ol class="arabic">
+<li><p>Clone the repository (if you have not already):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/liugangcode/torch-molecule
+<span class="nb">cd</span><span class="w"> </span>torch-molecule
+</pre></div>
+</div>
+</li>
+<li><p>Install the dependencies:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 </pre></div>
 </div>
-<p>Editable install:</p>
+</li>
+<li><p>Install in editable mode:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
 </li>
-<li><p><strong>Install `torch_molecule` from PyPI</strong> (Legacy):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-i<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span>torch-molecule
-</pre></div>
-</div>
-</li>
 </ol>
-<p><strong>Required Dependencies</strong>:</p>
-<p>Dependencies are listed in <a class="reference external" href="https://github.com/liugangcode/torch-molecule/requirements.txt">requirements.txt</a>. Example contents:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Install PyTorch with CUDA 11.8
--f https://download.pytorch.org/whl/cu118/torch_stable.html
-torch==2.2.0+cu118
-
-# Install PyTorch Geometric and related packages
--f https://data.pyg.org/whl/torch-2.2.0+cu118.html
-torch_geometric==2.6.1
-torch_cluster
-torch_scatter
-
-# Other dependencies
-huggingface_hub
-joblib==1.3.2
-networkx==3.2.1
-pandas==2.2.3
-PyYAML==6.0.2
-rdkit==2023.9.5
-scikit_learn==1.4.1.post1
-scipy==1.14.1
-tqdm==4.66.2
-
-optuna
-</pre></div>
+</section>
+</section>
+<section id="additional-packages">
+<h2>Additional Packages<a class="headerlink" href="#additional-packages" title="Link to this heading">¶</a></h2>
+<p>Some models require extra libraries. Install these packages if you use the corresponding model:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Required Package</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HFPretrainedMolecularEncoder</p></td>
+<td><p>transformers</p></td>
+</tr>
+<tr class="row-odd"><td><p>BFGNNMolecularPredictor</p></td>
+<td><p>torch-scatter</p></td>
+</tr>
+<tr class="row-even"><td><p>GRINMolecularPredictor</p></td>
+<td><p>torch-scatter</p></td>
+</tr>
+</tbody>
+</table>
 </div>
+</section>
 </section>
 
         </article>
@@ -367,13 +388,39 @@ optuna
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#installation-steps">Installation Steps</a><ul>
+<li><a class="reference internal" href="#create-a-conda-environment">Create a Conda Environment</a></li>
+<li><a class="reference internal" href="#a-install-via-pip">a. Install via pip</a></li>
+<li><a class="reference internal" href="#b-install-from-source-latest-version">b. Install from Source (Latest Version)</a></li>
+<li><a class="reference internal" href="#c-editable-installation-for-development">c. Editable Installation for Development</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#additional-packages">Additional Packages</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=2709fde1"></script>
+</div><script src="_static/documentation_options.js?v=432faeb9"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=5fa4622c"></script>

@@ -37,7 +37,7 @@ Then install:
 
    pip install .
 
-c. Editable Install for Development
+c. Editable Installation for Development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To work on the code directly, install in "editable" mode.

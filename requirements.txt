@@ -23,8 +23,8 @@ huggingface_hub
 optuna
 
 # docs
-sphinx
-furo
+# sphinx
+# furo
 
 # ogb
 # pytest

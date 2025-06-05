@@ -3,7 +3,6 @@ Examples
 
 This section shows how to use the `torch_molecule` library in practice. More examples are available in the `examples <https://github.com/liugangcode/torch-molecule/tree/main/examples/>`_ folder and the `tests <https://github.com/liugangcode/torch-molecule/tree/main/tests/>`_ folder.
 
-
 Molecular Property Prediction Usage
 -----------------------------------
 

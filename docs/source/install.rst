@@ -4,13 +4,33 @@ Installation
 To install `torch-molecule`, follow these steps:
 
 1. **Create a Conda environment**:
+   ```bash
+   conda create --name torch_molecule python=3.11.7
+   conda activate torch_molecule
+   ```
 
-   .. code-block:: bash
+2. **Install using pip (0.1.0)**:
 
-      conda create --name torch_molecule python=3.11.7
-      conda activate torch_molecule
+   ```bash
+   pip install torch-molecule
+   ```
 
-2. **Install `torch_molecule` from GitHub**:
+3. **Install from source for the latest version**:
+
+   Clone the repository:
+
+   ```bash
+   git clone https://github.com/liugangcode/torch-molecule
+   cd torch-molecule
+   ```
+
+   Install:
+
+   ```bash
+   pip install .
+   ```
+
+4. **Install editable `torch_molecule` (for developer)**:
 
    Clone the repository:
    
@@ -30,37 +50,11 @@ To install `torch-molecule`, follow these steps:
 
       pip install -e .
 
-3. **Install `torch_molecule` from PyPI** (Legacy):
-   
-   .. code-block:: bash
 
-      pip install -i https://test.pypi.org/simple/ torch-molecule
+### Additional Packages
 
-**Required Dependencies**:
-
-Dependencies are listed in `requirements.txt <https://github.com/liugangcode/torch-molecule/requirements.txt>`_. Example contents:
-
-.. code-block:: text
-
-   # Install PyTorch with CUDA 11.8
-   -f https://download.pytorch.org/whl/cu118/torch_stable.html
-   torch==2.2.0+cu118
-
-   # Install PyTorch Geometric and related packages
-   -f https://data.pyg.org/whl/torch-2.2.0+cu118.html
-   torch_geometric==2.6.1
-   torch_cluster
-   torch_scatter
-
-   # Other dependencies
-   huggingface_hub
-   joblib==1.3.2
-   networkx==3.2.1
-   pandas==2.2.3
-   PyYAML==6.0.2
-   rdkit==2023.9.5
-   scikit_learn==1.4.1.post1
-   scipy==1.14.1
-   tqdm==4.66.2
-
-   optuna
+| Model | Required Packages |
+|-------|-------------------|
+| HFPretrainedMolecularEncoder | transformers |
+| BFGNNMolecularPredictor | torch-scatter |
+| GRINMolecularPredictor | torch-scatter |

@@ -4,7 +4,7 @@
 torch-molecule documentation
 ============================
 
-Welcome to the torch-molecule. torch-molecule is an actively developed package designed to facilitate molecular discovery through deep learning. 
+Welcome to the torch-molecule. torch-molecule is a deep learning package designed for molecular discovery. 
 
 It offers a user-friendly interface similar to `sklearn`, and includes model checkpoints for efficient deployment and benchmarking across various molecular tasks. The package currently focuses on three main components:
 

@@ -42,7 +42,7 @@
    cd torch-molecule
    ```
 
-   Install in editable mode:
+   Install:
 
    ```bash
    pip install .

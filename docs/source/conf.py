@@ -9,7 +9,7 @@
 project = 'torch-molecule'
 copyright = '2025, Gang Liu'
 author = 'Gang Liu'
-release = '0.1.0'
+release = '(0.1.0)'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

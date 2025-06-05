@@ -1,51 +1,61 @@
 Installation
 ============
 
-To install ``torch-molecule``, follow these steps:
+This document explains how to install ``torch-molecule`` and any extra packages you may need.
 
-1. **Create a Conda environment**::
+Installation Steps
+------------------
 
-   .. code-block:: bash
+Follow these steps in order. 
 
-      conda create --name torch_molecule python=3.11.7
-      conda activate torch_molecule
+Create a Conda Environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2. **Install using pip (0.1.0)**::
+.. code-block:: bash
 
-   .. code-block:: bash
+   conda create --name torch_molecule python=3.11.7
+   conda activate torch_molecule
 
-      pip install torch-molecule
+a. Install via pip
+~~~~~~~~~~~~~~~~~~
 
-3. **Install from source for the latest version**:
+.. code-block:: bash
 
-   Clone the repository::
+   pip install torch-molecule
+
+b. Install from Source (Latest Version)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   git clone https://github.com/liugangcode/torch-molecule
+   cd torch-molecule
+
+Then install:
+
+.. code-block:: bash
+
+   pip install .
+
+c. Editable Install for Development
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To work on the code directly, install in "editable" mode.
+
+1. Clone the repository (if you have not already):
 
    .. code-block:: bash
 
       git clone https://github.com/liugangcode/torch-molecule
       cd torch-molecule
 
-   Install::
-
-   .. code-block:: bash
-
-      pip install .
-
-4. **Install editable ``torch_molecule`` (for development)**:
-
-   Clone the repository::
-
-   .. code-block:: bash
-
-      git clone https://github.com/liugangcode/torch-molecule
-
-   Install the requirements::
+2. Install the dependencies:
 
    .. code-block:: bash
 
       pip install -r requirements.txt
 
-   Editable install::
+3. Install in editable mode:
 
    .. code-block:: bash
 
@@ -54,8 +64,10 @@ To install ``torch-molecule``, follow these steps:
 Additional Packages
 -------------------
 
+Some models require extra libraries. Install these packages if you use the corresponding model:
+
 +------------------------------+-------------------+
-| Model                        | Required Packages |
+| Model                        | Required Package  |
 +==============================+===================+
 | HFPretrainedMolecularEncoder | transformers      |
 +------------------------------+-------------------+

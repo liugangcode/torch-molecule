@@ -19,8 +19,6 @@
 
 `torch-molecule` is a package under active development that facilitates molecular discovery through deep learning, featuring a user-friendly, `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. Currently, the package focuses on three main components: **Predictive Models**, **Generative Models**, and **Representation Models**. See the [List of Supported Models](#list-of-supported-models) section for all available models.
 
-> **Note**: This project is in active development, and features may change.
-
 ## Installation
 
 1. **Create a Conda environment**:
@@ -29,26 +27,25 @@
    conda activate torch_molecule
    ```
 
-2. **Install `torch_molecule` from GitHub**:
+2. **Install using pip (0.1.0)**:
+
+   ```bash
+   pip install torch-molecule
+   ```
+
+3. **Install from source for the latest version**:
 
    Clone the repository:
+
    ```bash
    git clone https://github.com/liugangcode/torch-molecule
+   cd torch-molecule
    ```
 
-   Install the requirements:
-   ```bash
-   pip install -r requirements.txt
-   ```
+   Install in editable mode:
 
-   Editable install:
    ```bash
-   pip install -e .
-   ```
-
-3. **Install `torch_molecule` from PyPI** (Legacy):
-   ```bash
-   pip install -i https://test.pypi.org/simple/ torch-molecule
+   pip install .
    ```
 
 ### Additional Packages
@@ -200,8 +197,8 @@ See the structure of `torch_molecule` with the command `tree -L 2 torch_molecule
 2. **Generative Models**: Done: Graph DiT, GraphGA, DiGress, GDS, MolGPT TODO: more
 3. **Representation Models**: Done: MoAMa, AttrMasking, ContextPred, EdgePred. Many pretrained models from HF. TODO: checkpoints, more 
 
-## Acknowledgements
+> **Note**: This project is in active development, and features may change.
 
-This project is under active development, and some features may change over time.
+## Acknowledgements
 
 The project template was adapted from [https://github.com/lwaekfjlk/python-project-template](https://github.com/lwaekfjlk/python-project-template). We thank the authors for their contribution to the open-source community.

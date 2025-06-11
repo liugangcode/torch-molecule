@@ -19,7 +19,7 @@
 
 `torch-molecule` is a package under active development that facilitates molecular discovery through deep learning, featuring a user-friendly, `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. Currently, the package focuses on three main components: **Predictive Models**, **Generative Models**, and **Representation Models**. See the [List of Supported Models](#list-of-supported-models) section for all available models.
 
-## API Comparison
+### API Comparison
 
 | Functionality | scikit-learn | torch-molecule |
 |---------------|-------------|----------------|

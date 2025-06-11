@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 import torch
 from torch_molecule import RPGNNMolecularPredictor
 from torch_molecule.utils.search import ParameterType, ParameterSpec

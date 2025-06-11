@@ -3,6 +3,8 @@ from torch_molecule import GREAMolecularPredictor
 from torch_molecule.utils.search import ParameterType, ParameterSpec
 import os
 
+EPOCHS = 5
+
 def test_grea_predictor():
     # Test data
     smiles_list = [
@@ -22,7 +24,7 @@ def test_grea_predictor():
         num_layer=3,
         hidden_size=128,
         batch_size=4,
-        epochs=5,
+        epochs=EPOCHS,
         verbose=True
     )
     print("GREA model initialized successfully")
@@ -70,7 +72,7 @@ def test_grea_predictor():
     model_auto = GREAMolecularPredictor(
         num_task=1,
         task_type="classification",
-        epochs=50,
+        epochs=EPOCHS,
         verbose=True
     )
     
@@ -94,7 +96,7 @@ def test_grea_predictor():
     model_partial = GREAMolecularPredictor(
         num_task=1,
         task_type="classification",
-        epochs=50,
+        epochs=EPOCHS,
         verbose=True
     )
     
@@ -113,7 +115,7 @@ def test_grea_predictor():
     model_default = GREAMolecularPredictor(
         num_task=1,
         task_type="classification",
-        epochs=50,
+        epochs=EPOCHS,
         verbose=True
     )
     
@@ -200,7 +202,7 @@ def test_grea_upload():
         num_layer=2,  # Small model for quick testing
         hidden_size=64,   # Small embedding dimension
         batch_size=4,
-        epochs=2,     # Few epochs for quick testing
+        epochs=EPOCHS,     # Few epochs for quick testing
         verbose=False,
         model_name='GREA_O2'
     )

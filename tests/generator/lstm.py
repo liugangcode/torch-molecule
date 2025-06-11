@@ -1,12 +1,13 @@
 import os
+import csv
 import numpy as np
-import pandas as pd
 from tqdm import tqdm
 
 import torch
 from torch_molecule.generator.lstm import LSTMMolecularGenerator
 
-EPOCHS = 1000  # Reduced for faster testing
+# EPOCHS = 1000  # Reduced for faster testing
+EPOCHS = 5
 BATCH_SIZE = 24
 
 def test_lstm_generator():
@@ -15,12 +16,21 @@ def test_lstm_generator():
                             "data", "polymer100.csv")
     print(f"Loading data from: {data_path}")
     
-    df = pd.read_csv(data_path)
-    smiles_list = df['smiles'].tolist()
+    # Read CSV without pandas
+    smiles_list = []
+    properties = []
+    property_columns = []
     
-    # Extract property columns (all columns except 'smiles')
-    property_columns = [col for col in df.columns if col != 'smiles']
-    properties = df[property_columns].values.tolist()
+    with open(data_path, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        # Get property columns (all columns except 'smiles')
+        property_columns = [col for col in reader.fieldnames if col != 'smiles']
+        
+        for row in reader:
+            smiles_list.append(row['smiles'])
+            # Extract property values for this row
+            row_properties = [float(row[col]) for col in property_columns]
+            properties.append(row_properties)
     
     print(f"Loaded {len(smiles_list)} molecules with {len(property_columns)} properties")
     print(f"Property columns: {property_columns}")

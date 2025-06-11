@@ -22,7 +22,8 @@ def test_transformer_predictor():
         batch_size=2,
         epochs=2,
         device="cpu",
-        verbose=True
+        verbose=True,
+        use_lr_scheduler=True,
     )
     print("Model initialized successfully")
 

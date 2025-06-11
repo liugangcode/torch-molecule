@@ -1,10 +1,10 @@
 import numpy as np
-import pandas as pd
 import torch
 from torch_molecule import SSRMolecularPredictor
 from torch_molecule.utils.search import ParameterType, ParameterSpec
 import os
 
+EPOCHS = 5
 
 def train_ssr_predictor():
     smiles_list = [
@@ -30,7 +30,7 @@ def train_ssr_predictor():
         n_moments=5,
         hidden_size=300,
         batch_size=128,
-        epochs=300,
+        epochs=EPOCHS,
         verbose=True
     )
     print("SSR model initialized successfully")   

@@ -1,7 +1,9 @@
 import numpy as np
-import pandas as pd
+import csv
 import os
 from torch_molecule import GraphMAEMolecularEncoder
+
+EPOCHS = 5
 
 def test_graphmae_encoder():
     # Load molecules from CSV file
@@ -17,16 +19,20 @@ def test_graphmae_encoder():
             "CCN",      # Ethylamine
         ]
     else:
-        df = pd.read_csv(data_path)
-        molecules = df['smiles'].tolist()[:50]  # Use first 50 molecules
+        molecules = []
+        with open(data_path, 'r') as file:
+            csv_reader = csv.DictReader(file)
+            for i, row in enumerate(csv_reader):
+                if i >= 50:  # Use first 50 molecules
+                    break
+                molecules.append(row['smiles'])
         print(f"Loaded {len(molecules)} molecules from {data_path}")
-    
     # Initialize GraphMAE model
     model = GraphMAEMolecularEncoder(
         num_layer=3,
         hidden_size=128,
         batch_size=16,
-        epochs=30,  # Small number for testing
+        epochs=EPOCHS,  # Small number for testing
         mask_rate=0.15,
         verbose=True,
         # device="cpu"
@@ -79,8 +85,13 @@ def test_graphmae_with_edge_masking():
             "CCN",      # Ethylamine
         ]
     else:
-        df = pd.read_csv(data_path)
-        molecules = df['smiles'].tolist()[:50]  # Use first 50 molecules
+        molecules = []
+        with open(data_path, 'r') as file:
+            csv_reader = csv.DictReader(file)
+            for i, row in enumerate(csv_reader):
+                if i >= 50:  # Use first 50 molecules
+                    break
+                molecules.append(row['smiles'])
         print(f"Loaded {len(molecules)} molecules from {data_path}")
     
     # Initialize GraphMAE model with edge masking enabled
@@ -88,7 +99,7 @@ def test_graphmae_with_edge_masking():
         num_layer=3,
         hidden_size=128,
         batch_size=16,
-        epochs=30,  # Small number for testing
+        epochs=EPOCHS,  # Small number for testing
         mask_rate=0.15,
         mask_edge=True,  # Enable edge masking
         verbose=True,

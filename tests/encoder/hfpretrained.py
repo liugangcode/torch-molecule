@@ -24,7 +24,7 @@ def test_hf_pretrained_encoder():
         {"repo_id": "DeepChem/ChemBERTa-10M-MTR", "model_name": "ChemBERTa_10M_MTR"},
         {"repo_id": "DeepChem/ChemBERTa-10M-MLM", "model_name": "ChemBERTa_10M_MLM"},
         {"repo_id": "DeepChem/ChemBERTa-5M-MLM", "model_name": "ChemBERTa_5M_MLM"},
-        {"repo_id": "DeepChem/ChemBERTa-5M-MTR", "model_name": "ChemBERTa_5M_MTR"}
+        {"repo_id": "DeepChem/ChemBERTa-5M-MTR", "model_name": "ChemBERTa_5M_MTR"},
         {"repo_id": "seyonec/ChemBERTa-zinc-base-v1", "model_name": "ChemBERTa_zinc_base_v1"},
         {"repo_id": "unikei/bert-base-smiles", "model_name": "bert-base-smiles"}
     ]

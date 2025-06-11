@@ -4,7 +4,6 @@ from tqdm import tqdm
 
 import torch
 from torch_molecule import GraphDITMolecularGenerator
-from torch_molecule.utils.search import ParameterType, ParameterSpec
 
 EPOCHS = 2
 BATCH_SIZE = 32

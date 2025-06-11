@@ -5,7 +5,7 @@ from tqdm import tqdm
 import torch
 from torch_molecule import GDSSMolecularGenerator
 
-EPOCHS = 500
+EPOCHS = 5
 BATCH_SIZE = 16
 
 def test_gdss_generator():

@@ -1,6 +1,5 @@
 import os
 import numpy as np
-import warnings
 from tqdm import tqdm
 
 import torch

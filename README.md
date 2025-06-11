@@ -56,6 +56,12 @@
 | BFGNNMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor | torch-scatter |
 
+**For models that require `torch-scatter`: Install using the following command: `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`, e.g.,
+
+> `pip install torch-scatter -f https://data.pyg.org/whl/torch-2.7.1+cu128.html`
+
+**For models that require `transformers`:** `pip install transformers`
+
 ## Usage
 
 Refer to the `tests` folder for more use cases.

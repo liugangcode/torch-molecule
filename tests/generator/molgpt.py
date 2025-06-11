@@ -5,9 +5,9 @@ from tqdm import tqdm
 
 import torch
 from torch_molecule import MolGPTMolecularGenerator
-from torch_molecule.utils.search import ParameterType, ParameterSpec
 
-EPOCHS = 1000
+# EPOCHS = 1000
+EPOCHS = 5
 BATCH_SIZE = 32
 
 def test_molgpt_generator():

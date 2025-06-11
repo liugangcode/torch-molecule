@@ -317,7 +317,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         y_val: Optional[Union[List, np.ndarray]] = None,
         X_unlbl: Optional[List[str]] = None,
         search_parameters: Optional[Dict[str, ParameterSpec]] = None,
-        n_trials: int = 10,
+        n_trials: int = 10, 
     ) -> "GNNMolecularPredictor":
         """Automatically find the best hyperparameters using Optuna optimization."""
         import optuna
@@ -565,19 +565,17 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 best_eval = current_eval
                 best_state_dict = self.model.state_dict()
                 cnt_wait = 0
+                if self.verbose:
+                    print(
+                        f"Better result found at Epoch {epoch}: Loss = {np.mean(train_losses):.4f}, "
+                        f"{self.evaluate_name} = {best_eval:.4f}"
+                    )
             else:
                 cnt_wait += 1
                 if cnt_wait > self.patience:
                     if self.verbose:
                         print(f"Early stopping triggered after {epoch} epochs")
                     break
-            
-            if self.verbose and epoch % 10 == 0:
-                print(
-                    f"Epoch {epoch}: Loss = {np.mean(train_losses):.4f}, "
-                    f"{self.evaluate_name} = {current_eval:.4f}, "
-                    f"Best {self.evaluate_name} = {best_eval:.4f}"
-                )
 
         # Restore best model
         if best_state_dict is not None:
@@ -621,7 +619,11 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         self.model.eval()
         predictions = []
         with torch.no_grad():
-            for batch in tqdm(loader, disable=not self.verbose):
+            if self.verbose:
+                iterator = tqdm(loader, desc="Predicting")
+            else:
+                iterator = loader
+            for batch in iterator:
                 batch = batch.to(self.device)
                 out = self.model(batch)
                 predictions.append(out["prediction"].cpu().numpy())

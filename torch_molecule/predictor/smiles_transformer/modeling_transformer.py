@@ -240,7 +240,6 @@ class SMILESTransformerMolecularPredictor(LSTMMolecularPredictor):
                 mode='min' if not self.evaluate_higher_better else 'max',
                 factor=self.scheduler_factor,
                 patience=self.scheduler_patience,
-                verbose=self.verbose
             )
         
         return optimizer, scheduler

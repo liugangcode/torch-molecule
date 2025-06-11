@@ -1,6 +1,6 @@
 import os
 import numpy as np
-import pandas as pd
+import csv
 from tqdm import tqdm
 
 import torch
@@ -15,8 +15,12 @@ def test_jtvae_generator():
                             "data", "polymer100.csv")
     print(f"Loading data from: {data_path}")
     
-    df = pd.read_csv(data_path)
-    smiles_list = df['smiles'].tolist()
+    # Read CSV without pandas
+    smiles_list = []
+    with open(data_path, 'r', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            smiles_list.append(row['smiles'])
     
     print(f"Loaded {len(smiles_list)} molecules")
     print(f"First 3 SMILES: {smiles_list[:3]}")

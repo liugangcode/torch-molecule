@@ -575,7 +575,6 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
                 y_true_list.append(batched_label.cpu().numpy())
         
         y_pred = np.concatenate(y_pred_list, axis=0)
-        y_pred = y_pred.reshape(-1, 1)  
         y_true = np.concatenate(y_true_list, axis=0)
         
         # Compute metric
@@ -606,7 +605,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         for batch in iterator:
             batched_input, batched_label = batch
             batched_input = batched_input.to(self.device)
-            batched_label = batched_label.to(self.device).view(-1, 1)
+            batched_label = batched_label.to(self.device)
             optimizer.zero_grad()
 
             # Forward pass and loss computation

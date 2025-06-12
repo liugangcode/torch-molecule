@@ -193,8 +193,6 @@ class SSR(nn.Module):
         
         return new_batch
 
-
-
     def initialize_parameters(self, seed=None):
         """
         Randomly initialize all model parameters using the init_weights function.

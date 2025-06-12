@@ -60,8 +60,7 @@ class LSTM(nn.Module):
         self.lstm2 = nn.LSTM(input_size=LSTMunits * 2, hidden_size=LSTMunits, bidirectional=True, batch_first=True)
         self.timedist_dense = nn.Linear(LSTMunits * 2, hidden_dim)
         self.relu = nn.ReLU()
-        self.fc = nn.Linear(hidden_dim * max_input_len, 1)
-
+        self.fc = nn.Linear(hidden_dim * max_input_len, num_task)
 
     def initialize_parameters(self, seed=None):
         """Initialize model parameters randomly.

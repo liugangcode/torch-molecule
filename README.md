@@ -17,15 +17,22 @@
 
 ---
 
-`torch-molecule` is a package that facilitates molecular discovery through deep learning, featuring a user-friendly, `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. Currently, the package focuses on three main components: **Predictive Models**, **Generative Models**, and **Representation Models**. See the [List of Supported Models](#list-of-supported-models) section for all available models.
 
-### API Comparison
+`torch-molecule` is a package that facilitates molecular discovery through deep learning, featuring a user-friendly, `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. The package focuses on three main components: **Predictive Models**, **Generative Models**, and **Representation Models**, which make molecular AI models easy to implement and deploy. 
+
+<p align="center">
+  <img src="assets/cover.png" alt="scikit-learn vs torch-molecule comparison" width="800"/>
+</p>
+
+See the [List of Supported Models](#list-of-supported-models) section for all available models.
+
+<!-- ### API Comparison
 
 | Functionality | scikit-learn | torch-molecule |
 |---------------|-------------|----------------|
 | Property Prediction | `predictor.fit/predict(...)` | `predictor.fit/autofit/predict(...)` |
 | Representation Learning | Not supported | `encoder.fit/encode(...)` |
-| Molecular Generation | Not supported | `generator.fit/generate(...)` |
+| Molecular Generation | Not supported | `generator.fit/generate(...)` | -->
 
 
 ## Installation

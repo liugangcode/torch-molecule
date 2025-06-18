@@ -109,9 +109,9 @@ y_val = [[0.5], [1.5]]
 N_trial = 10
 
 grea_model.autofit(
-    X_train=X_train.tolist(),
+    X_train=X_train,
     y_train=y_train,
-    X_val=X_val.tolist(),
+    X_val=X_val,
     y_val=y_val,
     n_trials=N_trial,
 )

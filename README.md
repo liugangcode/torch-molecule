@@ -72,7 +72,7 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 | BFGNNMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor | torch-scatter |
 
-**For models that require `torch-scatter`: Install using the following command: `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`, e.g.,
+**For models that require `torch-scatter`**: Install using the following command: `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`, e.g.,
 
 > `pip install torch-scatter -f https://data.pyg.org/whl/torch-2.7.1+cu128.html`
 
@@ -208,6 +208,7 @@ predictions = model.predict(smiles_list)
 | InfoGraph    | [InfoGraph: Unsupervised and Semi-supervised Graph-Level Representation Learning via Mutual Information Maximization. ICLR 2020](https://arxiv.org/abs/1908.01000) |
 | Supervised   | Supervised pretraining |
 | Pretrained   | More than ten pretrained models from [Hugging Face](https://huggingface.co) |
+|              | More than ten pretrained models from [Hugging Face](https://huggingface.co) |
 
 ## Project Structure
 

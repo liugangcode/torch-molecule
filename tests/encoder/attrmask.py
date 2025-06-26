@@ -41,5 +41,26 @@ def test_attrmask_encoder():
         os.remove(save_path)
         print(f"Cleaned up {save_path}")
 
+def test_attrmask_encoder_polymers():
+    # Test molecules (simple examples)
+    polymers = [
+        "*Nc1ccc([C@H](CCC)c2ccc(C3(c4ccc([C@@H](CCC)c5ccc(N*)cc5)cc4)CCC(CCCCC)CC3)cc2)cc1",
+        "*Nc1ccc(-c2c(-c3ccc(C)cc3)c(-c3ccc(C)cc3)c(N*)c(-c3ccc(C)cc3)c2-c2ccc(C)cc2)cc1",
+        "*CC(*)(C)C(=O)OCCCCCCCCCOc1ccc2cc(C(=O)Oc3ccccc3)ccc2c1"
+    ]
+    model = AttrMaskMolecularEncoder(
+        num_layer=3,
+        hidden_size=300,
+        batch_size=5,
+        epochs=5,  # Small number for testing
+        verbose=True
+    )
+    model.fit(polymers)
+    vectors = model.encode(polymers)
+    print(f"Representation shape: {vectors.shape}")
+    print(f"Representation for new molecule: {vectors[0]}")
+
+
 if __name__ == "__main__":
+    test_attrmask_encoder_polymers()
     test_attrmask_encoder()

@@ -4,6 +4,7 @@ from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_poo
 
 from ...nn import GNN_node, GNN_node_Virtualnode, MLP
 from ...utils import init_weights
+from ...utils.graph.features import allowable_features
 
 import random
 
@@ -23,11 +24,12 @@ class GNN(nn.Module):
     ):
         super(GNN, self).__init__()
         gnn_name = encoder_type.split("-")[0]
-        self.num_atom_type = 119
+        decoding_size = len(allowable_features['possible_atomic_num_list'])
         self.hidden_size = hidden_size
         self.mask_num = mask_num
         self.mask_rate = mask_rate
 
+        self.mask_atom_id = 119
         encoder_params = {
             "num_layer": num_layer,
             "hidden_size": hidden_size,
@@ -50,7 +52,7 @@ class GNN(nn.Module):
         if self.pool is None:
             raise ValueError(f"Invalid graph pooling type {readout}.")
 
-        self.predictor = MLP(hidden_size, hidden_features=2 * hidden_size, out_features=self.num_atom_type)
+        self.predictor = MLP(hidden_size, hidden_features=2 * hidden_size, out_features=decoding_size)
     
     def initialize_parameters(self, seed=None):
         """
@@ -96,7 +98,7 @@ class GNN(nn.Module):
 
         # mask nodes' features
         for node_idx in masked_node_indices:
-            batched_data.x[node_idx] = torch.tensor([self.num_atom_type - 1] + [0] * (batched_data.x.shape[1] - 1))
+            batched_data.x[node_idx] = torch.tensor([self.mask_atom_id - 1] + [0] * (batched_data.x.shape[1] - 1))
     
         # generate predictions
         h_node, _ = self.graph_encoder(batched_data)

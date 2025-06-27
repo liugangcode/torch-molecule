@@ -231,7 +231,7 @@ def load_broad6k(
     local_dir : str, optional
         Path where the data should be saved, by default "torchmol_data"
     target_cols : List[str], optional
-        List of target column names, by default ["ABCB1", "ABL1", "ADRA1D", "ADRA2B", "ADRB2", "CA12", "CA2", "CA9", "CACNA1H", "CDK2", "CHRM1", "CHRM3", "CHRM4", "CNR1", "CYP1A2", "CYP2C19", "CYP2C9", "CYP2D6", "CYP3A4", "DRD2", "DRD3", "DRD4", "EGFR", "ESR1", "FLT1", "HRH1", "HTR1A", "HTR2A", "HTR2B", "HTR2C", "HTR6", "KCNH2", "KDR", "LCK", "MCL1", "OPRK1", "PPARG", "PTGS1", "SIGMAR1", "SLC6A2", "SLC6A4"]
+        List of target column names, by default all tasks
     return_local_data_path : bool, optional
         Whether to return the local data path, by default False
     
@@ -261,7 +261,7 @@ def load_broad6k(
 
 def load_toxcast(
     local_dir: str = "torchmol_data",
-    target_cols: Optional[List[str]] = None,
+    target_cols: List[str] = TOXCAST_TASKS,
     return_local_data_path: bool = False,
 ):
     """
@@ -274,7 +274,7 @@ def load_toxcast(
     local_dir : str, optional
         Path where the data should be saved, by default "torchmol_data"
     target_cols : List[str], optional
-        List of target column names, by default None (i.e., all tasks)
+        List of target column names, by default all tasks
     return_local_data_path : bool, optional
         Whether to return the local data path, by default False
     
@@ -289,9 +289,6 @@ def load_toxcast(
             - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
             - local_data_path: Path where the data is saved
     """
-    if target_cols is None:
-        target_cols = TOXCAST_TASKS.copy()
-    
     smiles_list, property_numpy, local_data_path = _load_from_hf(
         repo_id="liuganghuggingface/toxcast",
         filename="toxcast_data.csv.gz",
@@ -308,7 +305,7 @@ def load_toxcast(
 
 def load_admet(
     local_dir: str = "torchmol_data",
-    target_cols: Optional[List[str]] = None,
+    target_cols: List[str] = ["AMES","BBB_Martins","Bioavailability_Ma","CYP1A2_Veith","CYP2C19_Veith","CYP2C9_Substrate_CarbonMangels","CYP2C9_Veith","CYP2D6_Substrate_CarbonMangels","CYP2D6_Veith","CYP3A4_Substrate_CarbonMangels","CYP3A4_Veith","Caco2_Wang","Carcinogens_Lagunin","Clearance_Hepatocyte_AZ","Clearance_Microsome_AZ","ClinTox","DILI","HIA_Hou","Half_Life_Obach","HydrationFreeEnergy_FreeSolv","LD50_Zhu","Lipophilicity_AstraZeneca","NR-AR-LBD","NR-AR","NR-AhR","NR-Aromatase","NR-ER-LBD","NR-ER","NR-PPAR-gamma","PAMPA_NCATS","PPBR_AZ","Pgp_Broccatelli","SR-ARE","SR-ATAD5","SR-HSE","SR-MMP","SR-p53","Skin_Reaction","Solubility_AqSolDB","VDss_Lombardo","hERG"],
     return_local_data_path: bool = False,
 ):
     """
@@ -321,7 +318,7 @@ def load_admet(
     local_dir : str, optional
         Path where the data should be saved, by default "torchmol_data"
     target_cols : List[str], optional
-        List of target column names, by default None (i.e., all tasks)
+        List of target column names, by default all tasks
     return_local_data_path : bool, optional
         Whether to return the local data path, by default False
     
@@ -336,9 +333,6 @@ def load_admet(
             - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
             - local_data_path: Path where the data is saved
     """
-    if target_cols is None:
-        target_cols = ["AMES","BBB_Martins","Bioavailability_Ma","CYP1A2_Veith","CYP2C19_Veith","CYP2C9_Substrate_CarbonMangels","CYP2C9_Veith","CYP2D6_Substrate_CarbonMangels","CYP2D6_Veith","CYP3A4_Substrate_CarbonMangels","CYP3A4_Veith","Caco2_Wang","Carcinogens_Lagunin","Clearance_Hepatocyte_AZ","Clearance_Microsome_AZ","ClinTox","DILI","HIA_Hou","Half_Life_Obach","HydrationFreeEnergy_FreeSolv","LD50_Zhu","Lipophilicity_AstraZeneca","NR-AR-LBD","NR-AR","NR-AhR","NR-Aromatase","NR-ER-LBD","NR-ER","NR-PPAR-gamma","PAMPA_NCATS","PPBR_AZ","Pgp_Broccatelli","SR-ARE","SR-ATAD5","SR-HSE","SR-MMP","SR-p53","Skin_Reaction","Solubility_AqSolDB","VDss_Lombardo","hERG"]
-    
     smiles_list, property_numpy, local_data_path = _load_from_hf(
         repo_id="liuganghuggingface/admet",
         filename="admet.csv",

@@ -1,0 +1,669 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>torch_molecule.datasets.load_hf_dataset - torch-molecule (0.1.0) documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">torch-molecule (0.1.0) documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">torch-molecule (0.1.0) documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Datasets Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/predictor.html">Molecular Property Prediction Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/generator.html">Molecular Generation Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/encoder.html">Molecular Encoder Models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/nn.html">Neural Network Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/utils.html">Utility Functions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html#project-structure">Project Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html#acknowledgements">Acknowledgements</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for torch_molecule.datasets.load_hf_dataset</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">TOXCAST_TASKS</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_from_hf</span><span class="p">(</span>
+    <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">SMILES_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;smiles&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load dataset from Hugging Face Hub.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    repo_id : str</span>
+<span class="sd">        Hugging Face repository ID</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        Name of the file to download</span>
+<span class="sd">    local_dir : str</span>
+<span class="sd">        Path where the data should be saved</span>
+<span class="sd">    target_cols : List[str]</span>
+<span class="sd">        List of target column names</span>
+<span class="sd">    SMILES_col : str, optional</span>
+<span class="sd">        Name of the SMILES column, by default &quot;smiles&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">        - smiles_list: List of SMILES strings</span>
+<span class="sd">        - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">        - local_dir: Path where the data is saved</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">local_dir</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found existing file at </span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">local_dir</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading dataset from Hugging Face Hub...&quot;</span><span class="p">)</span>
+        <span class="c1"># Download the dataset from Hugging Face Hub</span>
+        <span class="n">downloaded_file</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span>
+            <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
+            <span class="n">local_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">local_dir</span><span class="p">),</span>
+            <span class="n">repo_type</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># If the downloaded file has a different name, rename it to match local_dir</span>
+        <span class="k">if</span> <span class="n">downloaded_file</span> <span class="o">!=</span> <span class="n">local_dir</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">downloaded_file</span><span class="p">,</span> <span class="n">local_dir</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset downloaded and saved to </span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Determine if file is compressed based on extension</span>
+    <span class="n">is_compressed</span> <span class="o">=</span> <span class="n">local_dir</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.gz&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Read CSV file (handle both compressed and uncompressed)</span>
+    <span class="k">if</span> <span class="n">is_compressed</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">local_dir</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+            
+            <span class="c1"># Get column names from the first row</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">fieldnames</span>
+            <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;CSV file appears to be empty or malformed&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Check if SMILES column exists</span>
+            <span class="k">if</span> <span class="n">SMILES_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SMILES column &#39;</span><span class="si">{</span><span class="n">SMILES_col</span><span class="si">}</span><span class="s2">&#39; not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Check if target columns exist</span>
+            <span class="n">missing_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">target_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">missing_cols</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target columns </span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s2"> not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Read all rows</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_dir</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+            
+            <span class="c1"># Get column names from the first row</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">fieldnames</span>
+            <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;CSV file appears to be empty or malformed&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Check if SMILES column exists</span>
+            <span class="k">if</span> <span class="n">SMILES_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SMILES column &#39;</span><span class="si">{</span><span class="n">SMILES_col</span><span class="si">}</span><span class="s2">&#39; not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Check if target columns exist</span>
+            <span class="n">missing_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">target_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">missing_cols</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target columns </span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s2"> not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Read all rows</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+    
+    <span class="c1"># Extract SMILES strings</span>
+    <span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">SMILES_col</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span>
+    
+    <span class="c1"># Extract target properties</span>
+    <span class="n">property_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="n">row_properties</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">target_cols</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Convert to float, handle potential missing values</span>
+                <span class="n">value_str</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">value_str</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="n">value_str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">,</span> <span class="s1">&#39;na&#39;</span><span class="p">,</span> <span class="s1">&#39;null&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">]:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value_str</span><span class="p">)</span>
+                <span class="n">row_properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+                <span class="c1"># Handle cases where conversion fails - keep as NaN</span>
+                <span class="n">row_properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="n">property_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_properties</span><span class="p">)</span>
+    
+    <span class="c1"># Convert to numpy array</span>
+    <span class="n">property_numpy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">property_data</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_dir</span>
+
+
+<div class="viewcode-block" id="load_qm9">
+<a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_qm9">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_qm9</span><span class="p">(</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gap&quot;</span><span class="p">],</span>
+    <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load QM9 dataset from Hugging Face Hub.</span>
+
+<span class="sd">    Source: http://quantum-machine.org/datasets/</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    local_dir : str, optional</span>
+<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">    target_cols : List[str], optional</span>
+<span class="sd">        List of target column names, by default [&quot;gap&quot;]</span>
+<span class="sd">    return_local_data_path : bool, optional</span>
+<span class="sd">        Whether to return the local data path, by default False</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">        If return_local_data_path is False:</span>
+<span class="sd">            - smiles_list: List of SMILES strings</span>
+<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">        If return_local_data_path is True:</span>
+<span class="sd">            - smiles_list: List of SMILES strings</span>
+<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - local_data_path: Path where the data is saved</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/QM9&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;qm9.csv&quot;</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/qm9.csv&quot;</span><span class="p">,</span>
+        <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+
+
+<div class="viewcode-block" id="load_chembl2k">
+<a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_chembl2k">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_chembl2k</span><span class="p">(</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ABCB1&quot;</span><span class="p">,</span> <span class="s2">&quot;ABL1&quot;</span><span class="p">,</span> <span class="s2">&quot;ADRA1D&quot;</span><span class="p">,</span> <span class="s2">&quot;ADRA2B&quot;</span><span class="p">,</span> <span class="s2">&quot;ADRB2&quot;</span><span class="p">,</span> <span class="s2">&quot;CA12&quot;</span><span class="p">,</span> <span class="s2">&quot;CA2&quot;</span><span class="p">,</span> <span class="s2">&quot;CA9&quot;</span><span class="p">,</span> <span class="s2">&quot;CACNA1H&quot;</span><span class="p">,</span> <span class="s2">&quot;CDK2&quot;</span><span class="p">,</span> <span class="s2">&quot;CHRM1&quot;</span><span class="p">,</span> <span class="s2">&quot;CHRM3&quot;</span><span class="p">,</span> <span class="s2">&quot;CHRM4&quot;</span><span class="p">,</span> <span class="s2">&quot;CNR1&quot;</span><span class="p">,</span> <span class="s2">&quot;CYP1A2&quot;</span><span class="p">,</span> <span class="s2">&quot;CYP2C19&quot;</span><span class="p">,</span> <span class="s2">&quot;CYP2C9&quot;</span><span class="p">,</span> <span class="s2">&quot;CYP2D6&quot;</span><span class="p">,</span> <span class="s2">&quot;CYP3A4&quot;</span><span class="p">,</span> <span class="s2">&quot;DRD2&quot;</span><span class="p">,</span> <span class="s2">&quot;DRD3&quot;</span><span class="p">,</span> <span class="s2">&quot;DRD4&quot;</span><span class="p">,</span> <span class="s2">&quot;EGFR&quot;</span><span class="p">,</span> <span class="s2">&quot;ESR1&quot;</span><span class="p">,</span> <span class="s2">&quot;FLT1&quot;</span><span class="p">,</span> <span class="s2">&quot;HRH1&quot;</span><span class="p">,</span> <span class="s2">&quot;HTR1A&quot;</span><span class="p">,</span> <span class="s2">&quot;HTR2A&quot;</span><span class="p">,</span> <span class="s2">&quot;HTR2B&quot;</span><span class="p">,</span> <span class="s2">&quot;HTR2C&quot;</span><span class="p">,</span> <span class="s2">&quot;HTR6&quot;</span><span class="p">,</span> <span class="s2">&quot;KCNH2&quot;</span><span class="p">,</span> <span class="s2">&quot;KDR&quot;</span><span class="p">,</span> <span class="s2">&quot;LCK&quot;</span><span class="p">,</span> <span class="s2">&quot;MCL1&quot;</span><span class="p">,</span> <span class="s2">&quot;OPRK1&quot;</span><span class="p">,</span> <span class="s2">&quot;PPARG&quot;</span><span class="p">,</span> <span class="s2">&quot;PTGS1&quot;</span><span class="p">,</span> <span class="s2">&quot;SIGMAR1&quot;</span><span class="p">,</span> <span class="s2">&quot;SLC6A2&quot;</span><span class="p">,</span> <span class="s2">&quot;SLC6A4&quot;</span><span class="p">],</span>
+    <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load ChEMBL2K dataset from Hugging Face Hub.</span>
+
+<span class="sd">    ChEMBL2K is introduced from &quot;Learning Molecular Representation in a Cell&quot; (ICLR 2025)</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    local_dir : str, optional</span>
+<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">    target_cols : List[str], optional</span>
+<span class="sd">        List of target column names, by default [&quot;ABCB1&quot;, &quot;ABL1&quot;, &quot;ADRA1D&quot;, &quot;ADRA2B&quot;, &quot;ADRB2&quot;, &quot;CA12&quot;, &quot;CA2&quot;, &quot;CA9&quot;, &quot;CACNA1H&quot;, &quot;CDK2&quot;, &quot;CHRM1&quot;, &quot;CHRM3&quot;, &quot;CHRM4&quot;, &quot;CNR1&quot;, &quot;CYP1A2&quot;, &quot;CYP2C19&quot;, &quot;CYP2C9&quot;, &quot;CYP2D6&quot;, &quot;CYP3A4&quot;, &quot;DRD2&quot;, &quot;DRD3&quot;, &quot;DRD4&quot;, &quot;EGFR&quot;, &quot;ESR1&quot;, &quot;FLT1&quot;, &quot;HRH1&quot;, &quot;HTR1A&quot;, &quot;HTR2A&quot;, &quot;HTR2B&quot;, &quot;HTR2C&quot;, &quot;HTR6&quot;, &quot;KCNH2&quot;, &quot;KDR&quot;, &quot;LCK&quot;, &quot;MCL1&quot;, &quot;OPRK1&quot;, &quot;PPARG&quot;, &quot;PTGS1&quot;, &quot;SIGMAR1&quot;, &quot;SLC6A2&quot;, &quot;SLC6A4&quot;]</span>
+<span class="sd">    return_local_data_path : bool, optional</span>
+<span class="sd">        Whether to return the local data path, by default False</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">        If return_local_data_path is False:</span>
+<span class="sd">            - smiles_list: List of SMILES strings</span>
+<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">        If return_local_data_path is True:</span>
+<span class="sd">            - smiles_list: List of SMILES strings</span>
+<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - local_data_path: Path where the data is saved</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/InfoAlign-Data&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;chembl2k_raw/assays.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/cheml2k.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+
+
+
+<div class="viewcode-block" id="load_broad6k">
+<a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_broad6k">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_broad6k</span><span class="p">(</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;220_692&quot;</span><span class="p">,</span> <span class="s2">&quot;221_693&quot;</span><span class="p">,</span> <span class="s2">&quot;231_703&quot;</span><span class="p">,</span> <span class="s2">&quot;233_706&quot;</span><span class="p">,</span> <span class="s2">&quot;234_707&quot;</span><span class="p">,</span> <span class="s2">&quot;235_708&quot;</span><span class="p">,</span> <span class="s2">&quot;238_712&quot;</span><span class="p">,</span> <span class="s2">&quot;239_713&quot;</span><span class="p">,</span> <span class="s2">&quot;240_714&quot;</span><span class="p">,</span> <span class="s2">&quot;241_715&quot;</span><span class="p">,</span> <span class="s2">&quot;242_716&quot;</span><span class="p">,</span> <span class="s2">&quot;243_717&quot;</span><span class="p">,</span> <span class="s2">&quot;244_718&quot;</span><span class="p">,</span> <span class="s2">&quot;246_720&quot;</span><span class="p">,</span> <span class="s2">&quot;247_721&quot;</span><span class="p">,</span> <span class="s2">&quot;248_722&quot;</span><span class="p">,</span> <span class="s2">&quot;249_724&quot;</span><span class="p">,</span> <span class="s2">&quot;251_727&quot;</span><span class="p">,</span> <span class="s2">&quot;260_738&quot;</span><span class="p">,</span> <span class="s2">&quot;264_742&quot;</span><span class="p">,</span> <span class="s2">&quot;265_743&quot;</span><span class="p">,</span> <span class="s2">&quot;267_745&quot;</span><span class="p">,</span> <span class="s2">&quot;268_746&quot;</span><span class="p">,</span> <span class="s2">&quot;269_747&quot;</span><span class="p">,</span> <span class="s2">&quot;270_748&quot;</span><span class="p">,</span> <span class="s2">&quot;274_752&quot;</span><span class="p">,</span> <span class="s2">&quot;275_754&quot;</span><span class="p">,</span> <span class="s2">&quot;276_755&quot;</span><span class="p">,</span> <span class="s2">&quot;277_756&quot;</span><span class="p">,</span> <span class="s2">&quot;278_757&quot;</span><span class="p">,</span> <span class="s2">&quot;279_758&quot;</span><span class="p">,</span> <span class="s2">&quot;280_759&quot;</span><span class="p">],</span>
+    <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load Broad6K dataset from Hugging Face Hub. </span>
+
+<span class="sd">    Broad6K is introduced from &quot;Learning Molecular Representation in a Cell&quot; (ICLR 2025)</span>
+
+<span class="sd">    TODO: replace the column names with the original names</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    local_dir : str, optional</span>
+<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">    target_cols : List[str], optional</span>
+<span class="sd">        List of target column names, by default [&quot;ABCB1&quot;, &quot;ABL1&quot;, &quot;ADRA1D&quot;, &quot;ADRA2B&quot;, &quot;ADRB2&quot;, &quot;CA12&quot;, &quot;CA2&quot;, &quot;CA9&quot;, &quot;CACNA1H&quot;, &quot;CDK2&quot;, &quot;CHRM1&quot;, &quot;CHRM3&quot;, &quot;CHRM4&quot;, &quot;CNR1&quot;, &quot;CYP1A2&quot;, &quot;CYP2C19&quot;, &quot;CYP2C9&quot;, &quot;CYP2D6&quot;, &quot;CYP3A4&quot;, &quot;DRD2&quot;, &quot;DRD3&quot;, &quot;DRD4&quot;, &quot;EGFR&quot;, &quot;ESR1&quot;, &quot;FLT1&quot;, &quot;HRH1&quot;, &quot;HTR1A&quot;, &quot;HTR2A&quot;, &quot;HTR2B&quot;, &quot;HTR2C&quot;, &quot;HTR6&quot;, &quot;KCNH2&quot;, &quot;KDR&quot;, &quot;LCK&quot;, &quot;MCL1&quot;, &quot;OPRK1&quot;, &quot;PPARG&quot;, &quot;PTGS1&quot;, &quot;SIGMAR1&quot;, &quot;SLC6A2&quot;, &quot;SLC6A4&quot;]</span>
+<span class="sd">    return_local_data_path : bool, optional</span>
+<span class="sd">        Whether to return the local data path, by default False</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">        If return_local_data_path is False:</span>
+<span class="sd">            - smiles_list: List of SMILES strings</span>
+<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">        If return_local_data_path is True:</span>
+<span class="sd">            - smiles_list: List of SMILES strings</span>
+<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - local_data_path: Path where the data is saved</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/InfoAlign-Data&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;broad6k_raw/assays.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/broad6k.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+
+
+
+<div class="viewcode-block" id="load_toxcast">
+<a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_toxcast">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_toxcast</span><span class="p">(</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load ToxCast dataset from Hugging Face Hub.</span>
+
+<span class="sd">    Source: https://www.epa.gov/comptox-tools/exploring-toxcast-data</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    local_dir : str, optional</span>
+<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">    target_cols : List[str], optional</span>
+<span class="sd">        List of target column names, by default None (i.e., all tasks)</span>
+<span class="sd">    return_local_data_path : bool, optional</span>
+<span class="sd">        Whether to return the local data path, by default False</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">        If return_local_data_path is False:</span>
+<span class="sd">            - smiles_list: List of SMILES strings</span>
+<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">        If return_local_data_path is True:</span>
+<span class="sd">            - smiles_list: List of SMILES strings</span>
+<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - local_data_path: Path where the data is saved</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">target_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">target_cols</span> <span class="o">=</span> <span class="n">TOXCAST_TASKS</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/toxcast&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;toxcast_data.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/toxcast.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+
+
+
+
+<div class="viewcode-block" id="load_admet">
+<a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_admet">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_admet</span><span class="p">(</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load ADMET dataset from Hugging Face Hub.</span>
+<span class="sd">    </span>
+<span class="sd">    Source: https://github.com/swansonk14/admet_ai/blob/main/admet_ai/resources/data/admet.csv</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    local_dir : str, optional</span>
+<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">    target_cols : List[str], optional</span>
+<span class="sd">        List of target column names, by default None (i.e., all tasks)</span>
+<span class="sd">    return_local_data_path : bool, optional</span>
+<span class="sd">        Whether to return the local data path, by default False</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">        If return_local_data_path is False:</span>
+<span class="sd">            - smiles_list: List of SMILES strings</span>
+<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">        If return_local_data_path is True:</span>
+<span class="sd">            - smiles_list: List of SMILES strings</span>
+<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - local_data_path: Path where the data is saved</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">target_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">target_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AMES&quot;</span><span class="p">,</span><span class="s2">&quot;BBB_Martins&quot;</span><span class="p">,</span><span class="s2">&quot;Bioavailability_Ma&quot;</span><span class="p">,</span><span class="s2">&quot;CYP1A2_Veith&quot;</span><span class="p">,</span><span class="s2">&quot;CYP2C19_Veith&quot;</span><span class="p">,</span><span class="s2">&quot;CYP2C9_Substrate_CarbonMangels&quot;</span><span class="p">,</span><span class="s2">&quot;CYP2C9_Veith&quot;</span><span class="p">,</span><span class="s2">&quot;CYP2D6_Substrate_CarbonMangels&quot;</span><span class="p">,</span><span class="s2">&quot;CYP2D6_Veith&quot;</span><span class="p">,</span><span class="s2">&quot;CYP3A4_Substrate_CarbonMangels&quot;</span><span class="p">,</span><span class="s2">&quot;CYP3A4_Veith&quot;</span><span class="p">,</span><span class="s2">&quot;Caco2_Wang&quot;</span><span class="p">,</span><span class="s2">&quot;Carcinogens_Lagunin&quot;</span><span class="p">,</span><span class="s2">&quot;Clearance_Hepatocyte_AZ&quot;</span><span class="p">,</span><span class="s2">&quot;Clearance_Microsome_AZ&quot;</span><span class="p">,</span><span class="s2">&quot;ClinTox&quot;</span><span class="p">,</span><span class="s2">&quot;DILI&quot;</span><span class="p">,</span><span class="s2">&quot;HIA_Hou&quot;</span><span class="p">,</span><span class="s2">&quot;Half_Life_Obach&quot;</span><span class="p">,</span><span class="s2">&quot;HydrationFreeEnergy_FreeSolv&quot;</span><span class="p">,</span><span class="s2">&quot;LD50_Zhu&quot;</span><span class="p">,</span><span class="s2">&quot;Lipophilicity_AstraZeneca&quot;</span><span class="p">,</span><span class="s2">&quot;NR-AR-LBD&quot;</span><span class="p">,</span><span class="s2">&quot;NR-AR&quot;</span><span class="p">,</span><span class="s2">&quot;NR-AhR&quot;</span><span class="p">,</span><span class="s2">&quot;NR-Aromatase&quot;</span><span class="p">,</span><span class="s2">&quot;NR-ER-LBD&quot;</span><span class="p">,</span><span class="s2">&quot;NR-ER&quot;</span><span class="p">,</span><span class="s2">&quot;NR-PPAR-gamma&quot;</span><span class="p">,</span><span class="s2">&quot;PAMPA_NCATS&quot;</span><span class="p">,</span><span class="s2">&quot;PPBR_AZ&quot;</span><span class="p">,</span><span class="s2">&quot;Pgp_Broccatelli&quot;</span><span class="p">,</span><span class="s2">&quot;SR-ARE&quot;</span><span class="p">,</span><span class="s2">&quot;SR-ATAD5&quot;</span><span class="p">,</span><span class="s2">&quot;SR-HSE&quot;</span><span class="p">,</span><span class="s2">&quot;SR-MMP&quot;</span><span class="p">,</span><span class="s2">&quot;SR-p53&quot;</span><span class="p">,</span><span class="s2">&quot;Skin_Reaction&quot;</span><span class="p">,</span><span class="s2">&quot;Solubility_AqSolDB&quot;</span><span class="p">,</span><span class="s2">&quot;VDss_Lombardo&quot;</span><span class="p">,</span><span class="s2">&quot;hERG&quot;</span><span class="p">]</span>
+    
+    <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/admet&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;admet.csv&quot;</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/admet.csv&quot;</span><span class="p">,</span>
+        <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Gang Liu
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=432faeb9"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

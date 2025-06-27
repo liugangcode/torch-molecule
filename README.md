@@ -90,7 +90,7 @@ smiles_list, property_np_array = load_qm9(local_dir='torchmol_data')
 # len(smiles_list): 133885
 # Property array shape: (133885, 1)
 
-# load_qm9 returns the target "gas" by default, but you can adjust it by passing new target_cols
+# load_qm9 returns the target "gap" by default, but you can adjust it by passing new target_cols
 target_cols = ['homo', 'lumo', 'gap']
 smiles_list, property_np_array = load_qm9(local_dir='torchmol_data', target_cols=target_cols)
 ```

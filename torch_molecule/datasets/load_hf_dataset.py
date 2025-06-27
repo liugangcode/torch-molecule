@@ -136,6 +136,8 @@ def load_qm9(
 ):
     """
     Load QM9 dataset from Hugging Face Hub.
+
+    Source: http://quantum-machine.org/datasets/
     
     Parameters
     ----------
@@ -264,6 +266,8 @@ def load_toxcast(
 ):
     """
     Load ToxCast dataset from Hugging Face Hub.
+
+    Source: https://www.epa.gov/comptox-tools/exploring-toxcast-data
     
     Parameters
     ----------
@@ -309,6 +313,8 @@ def load_admet(
 ):
     """
     Load ADMET dataset from Hugging Face Hub.
+    
+    Source: https://github.com/swansonk14/admet_ai/blob/main/admet_ai/resources/data/admet.csv
     
     Parameters
     ----------

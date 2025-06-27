@@ -70,7 +70,7 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 
 > More examples can be found in the `examples` and `tests` folders.
 
-`torch-molecule` supports applications in broad domains from chemistry, biology, to materials science. To get started, you can load prepared datasets from `torch_molecule.dataset` (updated after v0.1.3):
+`torch-molecule` supports applications in broad domains from chemistry, biology, to materials science. To get started, you can load prepared datasets from `torch_molecule.datasets` (updated after v0.1.3):
 
 | Dataset | Description | Function |
 |---------|-------------|----------|
@@ -83,7 +83,7 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 
 
 ```python
-from torch_molecule.dataset import load_qm9
+from torch_molecule.datasets import load_qm9
 
 # local_dir is the local path where the dataset will be saved
 smiles_list, property_np_array = load_qm9(local_dir='torchmol_data')

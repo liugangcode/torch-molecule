@@ -26,15 +26,6 @@
 
 See the [List of Supported Models](#list-of-supported-models) section for all available models.
 
-<!-- ### API Comparison
-
-| Functionality | scikit-learn | torch-molecule |
-|---------------|-------------|----------------|
-| Property Prediction | `predictor.fit/predict(...)` | `predictor.fit/autofit/predict(...)` |
-| Representation Learning | Not supported | `encoder.fit/encode(...)` |
-| Molecular Generation | Not supported | `generator.fit/generate(...)` | -->
-
-
 ## Installation
 
 1. **Create a Conda environment**:
@@ -44,7 +35,6 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
    ```
 
 2. **Install using pip (0.1.2)**:
-
    ```bash
    pip install torch-molecule
    ```
@@ -52,14 +42,12 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 3. **Install from source for the latest version**:
 
    Clone the repository:
-
    ```bash
    git clone https://github.com/liugangcode/torch-molecule
    cd torch-molecule
    ```
 
    Install:
-
    ```bash
    pip install .
    ```
@@ -80,78 +68,76 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 
 ## Usage
 
-Refer to the `tests` folder for more use cases.
+> More examples can be found in the `examples` and `tests` folders.
 
-### Python API Example
+`torch-molecule` supports applications in broad domains from chemistry, biology, to materials science. To get started, you can load prepared datasets from `torch_molecule.dataset` (updated after v0.1.3):
 
-The following example demonstrates how to use the `GREAMolecularPredictor` class from `torch_molecule`:
+| Dataset | Description | Function |
+|---------|-------------|----------|
+| qm9 | Quantum chemical properties (DFT level) | `load_qm9` |
+| chembl2k | Bioactive molecules with drug-like properties | `load_chembl2k` |
+| broad6k | Bioactive molecules with drug-like properties | `load_broad6k` |
+| toxcast | Toxicity of chemical compounds | `load_toxcast` |
+| admet | Chemical absorption, distribution, metabolism, excretion, and toxicity | `load_admet` |
+| gasperm | Six gas permeability properties for polymeric materials | `load_gasperm` |
 
-More examples could be found in the folders `examples` and `tests`.
+
+```python
+from torch_molecule.dataset import load_qm9
+
+# local_dir is the local path where the dataset will be saved
+smiles_list, property_np_array = load_qm9(local_dir='torchmol_data')
+
+# len(smiles_list): 133885
+# Property array shape: (133885, 1)
+
+# load_qm9 returns the target "gas" by default, but you can adjust it by passing new target_cols
+target_cols = ['homo', 'lumo', 'gap']
+smiles_list, property_np_array = load_qm9(local_dir='torchmol_data', target_cols=target_cols)
+```
+
+(We welcome your suggestions and contributions on your datasets!)
+
+### Fit a Model
+
+After preparing the dataset, we can easily fit a model similar to how we use sklearn (actually, the coding is even simpler than sklearn, as we still need to do feature engineering in sklearn to convert molecule SMILES into vectors):
 
 ```python
 from torch_molecule import GREAMolecularPredictor
 
-# Train GREA model
-grea_model = GREAMolecularPredictor(
+split = int(0.8 * len(smiles_list))
+
+grea = GREAMolecularPredictor(
     num_task=num_task,
     task_type="regression",
-    model_name="GREA_multitask",
-    evaluate_criterion='r2',
-    evaluate_higher_better=True,
+    evaluate_higher_better=False,
     verbose=True
 )
 
-# Fit the model
-X_train = ['C1=CC=CC=C1', 'C1=CC=CC=C1']
-y_train = [[0.5], [1.5]]
-X_val = ['C1=CC=CC=C1', 'C1=CC=CC=C1']
-y_val = [[0.5], [1.5]]
-N_trial = 10
-
-grea_model.autofit(
-    X_train=X_train.tolist(),
-    y_train=y_train,
-    X_val=X_val.tolist(),
-    y_val=y_val,
-    n_trials=N_trial,
+# Fit with automatic hyperparameter tuning with 10 attempts, or implement .fit() with the default/manual hyperparameters
+grea.autofit(
+    X_train=smiles_list[:split],
+    y_train=property_np_array[:split],
+    X_val=smiles_list[split:],
+    y_val=property_np_array[split:],
+    n_trials=10,
 )
 ```
 
 ### Checkpoints
 
-`torch-molecule` provides checkpoint functions that can be interacted with on Hugging Face.
+`torch-molecule` provides checkpoint functions that can be interacted with on Hugging Face:
 
 ```python
 from torch_molecule import GREAMolecularPredictor
-from sklearn.metrics import mean_absolute_error
 
-# Define the repository ID for Hugging Face
-repo_id = "user/repo_id"
-
-# Initialize the GREAMolecularPredictor model
-model = GREAMolecularPredictor()
-
-# Train the model using autofit
-model.autofit(
-    X_train=X.tolist(),  # List of SMILES strings for training
-    y_train=y_train,     # numpy array [n_samples, n_tasks] for training labels
-    X_val=X_val.tolist(),# List of SMILES strings for validation
-    y_val=y_val,         # numpy array [n_samples, n_tasks] for validation labels
-)
-
-# Make predictions on the test set
-output = model.predict(X_test.tolist()) # (n_sample, n_task)
-
-# Calculate the mean absolute error
-mae = mean_absolute_error(y_test, output['prediction'])
-metrics = {'MAE': mae}
+repo_id = "user/repo_id"  # replace with your own Hugging Face username and repo_id
 
 # Save the trained model to Hugging Face
-model.save_to_hf(
+grea.save_to_hf(
     repo_id=repo_id,
-    task_id=f"{task_name}",
-    metrics=metrics,
-    commit_message=f"Upload GREA_{task_name} model with metrics: {metrics}",
+    task_id="qm9_grea",
+    commit_message="Upload qm9_grea",
     private=False
 )
 
@@ -159,11 +145,18 @@ model.save_to_hf(
 model = GREAMolecularPredictor()
 model.load_from_hf(repo_id=repo_id, local_cache=f"{model_dir}/GREA_{task_name}.pt")
 
-# Set model parameters
-model.set_params(verbose=True)
-
-# Make predictions using the loaded model
+# Adjust model parameters and make predictions
+model.set_params(verbose=False)
 predictions = model.predict(smiles_list)
+```
+
+Or you can save the model to a local path:
+
+```python
+grea.save_to_local("qm9_grea.pt")
+
+new_model = GREAMolecularPredictor()
+new_model.load_from_local("qm9_grea.pt")
 ```
 
 ## List of Supported Models
@@ -207,24 +200,19 @@ predictions = model.predict(smiles_list)
 | EdgePred     | [Strategies for Pre-training Graph Neural Networks. ICLR 2020](https://arxiv.org/abs/1905.12265) |
 | InfoGraph    | [InfoGraph: Unsupervised and Semi-supervised Graph-Level Representation Learning via Mutual Information Maximization. ICLR 2020](https://arxiv.org/abs/1908.01000) |
 | Supervised   | Supervised pretraining |
-| Pretrained   | [GPT2-ZINC-87M](https://huggingface.co/entropy/gpt2_zinc_87m): GPT-2 based model (87M parameters) pretrained on ZINC dataset with ~480M SMILES strings. |
-|              | [RoBERTa-ZINC-480M](https://huggingface.co/entropy/roberta_zinc_480m): RoBERTa based model (102M parameters) pretrained on ZINC dataset with ~480M SMILES strings. |
-|              | [UniKi/bert-base-smiles](https://huggingface.co/unikei/bert-base-smiles): BERT model pretrained on SMILES strings. |
-|              | [ChemBERTa-zinc-base-v1](https://huggingface.co/seyonec/ChemBERTa-zinc-base-v1): RoBERTa model pretrained on ZINC dataset with ~100k SMILES strings.|
-|              | ChemBERTa series: Available in multiple sizes and training objectives (MLM/MTR). <br>  -  [ChemBERTa-5M-MLM](https://huggingface.co/DeepChem/ChemBERTa-5M-MLM)<br>  -  [ChemBERTa-5M-MTR](https://huggingface.co/DeepChem/ChemBERTa-5M-MTR)<br>  -  [ChemBERTa-10M-MLM](https://huggingface.co/DeepChem/ChemBERTa-10M-MLM)<br>  -  [ChemBERTa-10M-MTR](https://huggingface.co/DeepChem/ChemBERTa-10M-MTR)<br>  -  [ChemBERTa-77M-MLM](https://huggingface.co/DeepChem/ChemBERTa-77M-MLM)<br>  -  [ChemBERTa-77M-MTR](https://huggingface.co/DeepChem/ChemBERTa-77M-MTR)|
-|              | ChemGPT series: GPT-Neo based models pretrained on PubChem10M dataset with SELFIES strings. <br>  -  [ChemGPT-1.2B](https://huggingface.co/ncfrey/ChemGPT-1.2B)<br>  -  [ChemGPT-4.7B](https://huggingface.co/ncfrey/ChemGPT-4.7M)<br>  -  [ChemGPT-19B](https://huggingface.co/ncfrey/ChemGPT-19M)|
+| Pretrained   | [GPT2-ZINC-87M](https://huggingface.co/entropy/gpt2_zinc_87m): GPT-2 based model (87M parameters) pretrained on ZINC dataset with ~480M SMILES strings. <br> [RoBERTa-ZINC-480M](https://huggingface.co/entropy/roberta_zinc_480m): RoBERTa based model (102M parameters) pretrained on ZINC dataset with ~480M SMILES strings. <br> [UniKi/bert-base-smiles](https://huggingface.co/unikei/bert-base-smiles): BERT model pretrained on SMILES strings. <br> [ChemBERTa-zinc-base-v1](https://huggingface.co/seyonec/ChemBERTa-zinc-base-v1): RoBERTa model pretrained on ZINC dataset with ~100k SMILES strings. <br> ChemBERTa series: Available in multiple sizes and training objectives (MLM/MTR). [ChemBERTa-5M-MLM](https://huggingface.co/DeepChem/ChemBERTa-5M-MLM), [ChemBERTa-5M-MTR](https://huggingface.co/DeepChem/ChemBERTa-5M-MTR), [ChemBERTa-10M-MLM](https://huggingface.co/DeepChem/ChemBERTa-10M-MLM), [ChemBERTa-10M-MTR](https://huggingface.co/DeepChem/ChemBERTa-10M-MTR), [ChemBERTa-77M-MLM](https://huggingface.co/DeepChem/ChemBERTa-77M-MLM), [ChemBERTa-77M-MTR](https://huggingface.co/DeepChem/ChemBERTa-77M-MTR). <br> ChemGPT series: GPT-Neo based models pretrained on PubChem10M dataset with SELFIES strings. [ChemGPT-1.2B](https://huggingface.co/ncfrey/ChemGPT-1.2B), [ChemGPT-4.7B](https://huggingface.co/ncfrey/ChemGPT-4.7M), [ChemGPT-19B](https://huggingface.co/ncfrey/ChemGPT-19M). |
 
-## Project Structure
+<!-- ## Project Structure
 
-See the structure of `torch_molecule` with the command `tree -L 2 torch_molecule -I '__pycache__|*.pyc|*.pyo|.git|old*'`
+See the structure of `torch_molecule` with the command `tree -L 2 torch_molecule -I '__pycache__|*.pyc|*.pyo|.git|old*'` -->
 
-## Plan
+<!-- ## Plan
 
 1. **Predictive Models**: Done: GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR. SMILES-based LSTM/Transformers. TODO more
 2. **Generative Models**: Done: Graph DiT, GraphGA, DiGress, GDS, MolGPT TODO: more
-3. **Representation Models**: Done: MoAMa, AttrMasking, ContextPred, EdgePred. Many pretrained models from HF. TODO: checkpoints, more 
+3. **Representation Models**: Done: MoAMa, AttrMasking, ContextPred, EdgePred. Many pretrained models from HF. TODO: checkpoints, more  -->
 
-> **Note**: This project is in active development, and features may change.
+<!-- > **Note**: This project is in active development, and features may change. -->
 
 ## Acknowledgements
 

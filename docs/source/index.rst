@@ -19,6 +19,7 @@ It offers a user-friendly interface similar to `sklearn`, and includes model che
 
    install
    example
+   dataset
    overview
 
 .. toctree::

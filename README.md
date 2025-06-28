@@ -33,7 +33,7 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
    conda activate torch_molecule
    ```
 
-2. **Install using pip (0.1.2)**:
+2. **Install using pip (v0.1.3)**:
    ```bash
    pip install torch-molecule
    ```

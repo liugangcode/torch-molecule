@@ -1,85 +1,88 @@
 from torch.utils.data import Dataset
 import torch
+from typing import List, Optional, Union, Callable
 from rdkit import Chem
-from rdkit.Chem import AllChem
-from rdkit.Chem import MolFromSmiles
-import numpy as np
+
+# assumes you already have this:
+from ...utils.graph.graph_from_smiles import graph_from_smiles
+
 
 class MolGraphDataset(Dataset):
     """
-    Dataset for MolGAN that converts SMILES to graph tensors.
-    Outputs:
-    - adj: [Y, N, N]
-    - node: [N, T]
-    - reward: float (optional)
+    Dataset for MolGAN: converts SMILES strings to graph format.
+
+    Outputs a dict with:
+    - 'adj': [Y, N, N] adjacency tensor
+    - 'node': [N, T] node feature matrix
+    - 'reward': float (optional)
+    - 'smiles': original SMILES (optional)
     """
 
-    def __init__(self, smiles_list, atom_types, bond_types, max_nodes=9, rewards=None):
+    def __init__(self,
+                 smiles_list: List[str],
+                 reward_function: Optional[Callable[[str], float]] = None,
+                 max_nodes: int = 9,
+                 drop_invalid: bool = True):
         """
         Parameters
         ----------
         smiles_list : List[str]
-            List of SMILES strings
+            List of SMILES strings to convert into graph format.
 
-        atom_types : List[str]
-            Ordered list of allowed atom types (e.g., ['C', 'O', 'N', 'F'])
-
-        bond_types : List[int]
-            List of allowed bond types (RDKit enums: SINGLE=1, DOUBLE=2, etc.)
+        reward_function : Callable[[str], float], optional
+            If provided, computes a scalar reward per molecule (e.g., QED, logP).
+            Must accept a SMILES string and return a float.
 
         max_nodes : int
-            Max number of atoms in any molecule (pad or skip otherwise)
+            Maximum allowed number of atoms (molecules exceeding this are dropped).
 
-        rewards : Optional[List[float]]
-            Precomputed rewards (e.g., QED values)
+        drop_invalid : bool
+            Whether to skip invalid or unparsable SMILES.
         """
-        self.smiles_list = smiles_list
-        self.atom_types = atom_types
-        self.bond_types = bond_types
-        self.max_nodes = max_nodes
-        self.rewards = rewards if rewards is not None else [0.0] * len(smiles_list)
+        self.samples = []
 
-        self.atom_type_map = {atom: i for i, atom in enumerate(atom_types)}
-        self.bond_type_map = {b: i for i, b in enumerate(bond_types)}
+        for smiles in smiles_list:
+            try:
+                mol = Chem.MolFromSmiles(smiles)
+                if mol is None:
+                    raise ValueError("Invalid SMILES")
 
-        self.data = [self._smiles_to_graph(s) for s in smiles_list]
+                if mol.GetNumAtoms() > max_nodes:
+                    raise ValueError("Too many atoms")
 
-    def _smiles_to_graph(self, smiles):
-        mol = Chem.MolFromSmiles(smiles)
-        mol = Chem.AddHs(mol)
-        num_atoms = mol.GetNumAtoms()
+                # Compute reward if needed
+                reward = reward_function(smiles) if reward_function else 0.0
 
-        if num_atoms > self.max_nodes:
-            raise ValueError(f"Too many atoms in molecule: {num_atoms} > {self.max_nodes}")
+                # Convert to graph
+                graph = graph_from_smiles(smiles, properties=reward)
 
-        # Node features
-        node = np.zeros((self.max_nodes, len(self.atom_types)))
-        for i, atom in enumerate(mol.GetAtoms()):
-            atom_type = atom.GetSymbol()
-            if atom_type not in self.atom_type_map:
-                continue
-            node[i, self.atom_type_map[atom_type]] = 1
+                # Sanity check
+                if 'adj' not in graph or 'node' not in graph:
+                    raise ValueError("Incomplete graph data")
 
-        # Adjacency tensor
-        adj = np.zeros((len(self.bond_types), self.max_nodes, self.max_nodes))
-        for bond in mol.GetBonds():
-            i = bond.GetBeginAtomIdx()
-            j = bond.GetEndAtomIdx()
-            bond_type = int(bond.GetBondTypeAsDouble())
-            if bond_type not in self.bond_type_map:
-                continue
-            k = self.bond_type_map[bond_type]
-            adj[k, i, j] = 1
-            adj[k, j, i] = 1  # symmetric
+                graph['reward'] = reward
+                graph['smiles'] = smiles
+                self.samples.append(graph)
 
-        return {"adj": adj, "node": node}
+            except Exception as e:
+                if not drop_invalid:
+                    self.samples.append({
+                        "adj": torch.zeros(1, max_nodes, max_nodes),
+                        "node": torch.zeros(max_nodes, 1),
+                        "reward": 0.0,
+                        "smiles": smiles
+                    })
+                else:
+                    print(f"[MolGraphDataset] Skipping SMILES {smiles}: {e}")
 
     def __len__(self):
-        return len(self.data)
+        return len(self.samples)
 
     def __getitem__(self, idx):
-        sample = self.data[idx]
-        adj = torch.tensor(sample["adj"], dtype=torch.float32)
-        node = torch.tensor(sample["node"], dtype=torch.float32)
-        reward = torch.tensor(self.rewards[idx], dtype=torch.float32)
-        return {"adj": adj, "node": node, "reward": reward}
+        sample = self.samples[idx]
+        return {
+            "adj": torch.tensor(sample["adj"], dtype=torch.float32),
+            "node": torch.tensor(sample["node"], dtype=torch.float32),
+            "reward": torch.tensor(sample["reward"], dtype=torch.float32),
+            "smiles": sample["smiles"]
+        }

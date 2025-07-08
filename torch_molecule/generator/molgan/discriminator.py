@@ -1,6 +1,5 @@
-import torch
 import torch.nn as nn
-import torch.nn.functional as F
+from .gan_utils import RelationalGCNLayer
 
 
 class MolGANDiscriminatorConfig:
@@ -41,26 +40,6 @@ class MolGANDiscriminatorConfig:
         self.num_layers = num_layers
 
 
-class RelationalGCNLayer(nn.Module):
-    def __init__(self, in_dim, out_dim, num_relations):
-        super().__init__()
-        self.num_relations = num_relations
-        self.linears = nn.ModuleList([nn.Linear(in_dim, out_dim) for _ in range(num_relations)])
-        self.bias = nn.Parameter(torch.zeros(out_dim))
-
-    def forward(self, adj, h):
-        """
-        adj: [B, Y, N, N]
-        h: [B, N, D]
-        """
-        out = 0
-        for i in range(self.num_relations):
-            adj_i = adj[:, i, :, :]
-            h_i = self.linears[i](h)
-            out += torch.bmm(adj_i, h_i)
-
-        out = out + self.bias
-        return F.relu(out)
 
 
 class MolGANDiscriminator(nn.Module):

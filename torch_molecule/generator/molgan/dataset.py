@@ -1,9 +1,8 @@
 from torch.utils.data import Dataset
 import torch
-from typing import List, Optional, Union, Callable
+from typing import List, Optional, Callable
 from rdkit import Chem
 
-# assumes you already have this:
 from ...utils.graph.graph_from_smiles import graph_from_smiles
 
 

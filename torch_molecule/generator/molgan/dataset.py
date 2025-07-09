@@ -3,6 +3,8 @@ import torch
 from typing import List, Optional, Callable
 from rdkit import Chem
 
+from .rewards import RewardNetwork
+from .gan_utils import encode_smiles_to_graph
 from ...utils.graph.graph_from_smiles import graph_from_smiles
 
 
@@ -19,7 +21,7 @@ class MolGraphDataset(Dataset):
 
     def __init__(self,
                  smiles_list: List[str],
-                 reward_function: Optional[Callable[[str], float]] = None,
+                 reward_function: Optional[RewardNetwork] = None,
                  max_nodes: int = 9,
                  drop_invalid: bool = True):
         """
@@ -50,7 +52,11 @@ class MolGraphDataset(Dataset):
                     raise ValueError("Too many atoms")
 
                 # Compute reward if needed
-                reward = reward_function(smiles) if reward_function else 0.0
+                graph = encode_smiles_to_graph(smiles)
+                if graph is None:
+                    raise ValueError("Failed to encode SMILES to graph")
+                adj, node = graph
+                reward = reward_function(node, adj) if reward_function else 0.0
 
                 # Convert to graph
                 graph = graph_from_smiles(smiles, properties=reward)
@@ -85,3 +91,11 @@ class MolGraphDataset(Dataset):
             "reward": torch.tensor(sample["reward"], dtype=torch.float32),
             "smiles": sample["smiles"]
         }
+
+def molgan_collate_fn(batch):
+    adj = torch.stack([item["adj"] for item in batch], dim=0)
+    node = torch.stack([item["node"] for item in batch], dim=0)
+    reward = torch.stack([item["reward"] for item in batch], dim=0)
+    smiles = [item["smiles"] for item in batch]
+    return {"adj": adj, "node": node, "reward": reward, "smiles": smiles}
+

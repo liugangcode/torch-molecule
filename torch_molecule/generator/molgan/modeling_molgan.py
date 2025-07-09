@@ -5,6 +5,7 @@ import torch.nn.functional as F
 from .generator import MolGANGenerator
 from .discriminator import MolGANDiscriminator
 from .rewards import RewardNetwork
+from ...utils.graph.graph_to_smiles import graph_to_smiles
 
 
 class MolGAN(nn.Module):
@@ -44,17 +45,17 @@ class MolGAN(nn.Module):
     def compute_rewards(self, smiles_list=None, adj=None, node=None):
         if self.reward is None:
             if adj is None or node is None:
-                return torch.zeros(adj.size(0), device=self.device)
+                raise ValueError("Either smiles_list or (adj, node) must be provided for reward computation.")
+            return torch.zeros(adj.size(0), device=self.device)
         return torch.tensor([
             self.reward(smiles=s) for s in smiles_list
-        ], dtype=torch.float32, device=self.device) if smiles_list else self.reward(adj=adj, node=node)
+        ], dtype=torch.float32, device=self.device) if smiles_list else self.reward(self.decode_smiles(adj, node))
 
     def decode_smiles(self, adj, node):
         """
         Convert batch of (adj, node) to SMILES strings
         This requires your graph_to_smiles function
         """
-        from your_utils.graph_to_smiles import graph_to_smiles
         graphs = list(zip(node.cpu().numpy(), adj.cpu().numpy()))
         return graph_to_smiles(graphs, atom_decoder=["C", "N", "O", "F"])
 
@@ -64,7 +65,6 @@ class MolGAN(nn.Module):
             for batch in data_loader:
                 real_adj = batch["adj"].to(self.device)
                 real_node = batch["node"].to(self.device)
-                real_smiles = batch.get("smiles", None)
 
                 # === Train Discriminator ===
                 self.dis_opt.zero_grad()

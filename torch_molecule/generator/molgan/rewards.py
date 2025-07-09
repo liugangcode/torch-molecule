@@ -52,7 +52,12 @@ class RewardNeuralNetwork(nn.Module):
     Reward Network that predicts reward from (adj, node) graphs.
     """
 
-    def __init__(self, num_atom_types=5, num_bond_types=4, hidden_dim=128, num_layers=2, num_nodes=9):
+    def __init__(self,
+                 num_atom_types=5,
+                 num_bond_types=4,
+                 hidden_dim=128,
+                 num_layers=2,
+                 num_nodes=9):
         super().__init__()
         self.gcn_layers = nn.ModuleList()
         self.gcn_layers.append(RelationalGCNLayer(num_atom_types, hidden_dim, num_bond_types))
@@ -163,6 +168,8 @@ class RewardNetwork:
         if kind in ["qed", "logp", "combo"]:
             self.oracle = RewardOracle(kind)
             self.neural = None
+            if reward_net is not None:
+                raise ValueError("reward_net should not be provided for oracle modes")
         elif kind == "neural":
             assert reward_net is not None, "reward_net must be provided for 'neural' mode"
             self.oracle = None
@@ -183,7 +190,7 @@ class RewardNetwork:
         -------
         Tensor [B] : reward per sample
         """
-        if self.neural:
+        if self.neural is not None:
             with torch.no_grad():
                 return self.neural(adj.to(self.device), node.to(self.device))
 

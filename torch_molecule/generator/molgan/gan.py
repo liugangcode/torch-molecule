@@ -1,265 +1,193 @@
-from typing import Optional, List
 import torch
-import torch.nn as nn
+import torch.nn.functional as F
+from dataclasses import dataclass
+from typing import Optional, List
 
+from torch_molecule.base.generator import BaseMolecularGenerator
+
+# If for future compatibility, do ensure Configs are imported
 from .generator import MolGANGenerator
 from .discriminator import MolGANDiscriminator
 from .rewards import RewardNetwork
 from .gan_utils import decode_smiles, encode_smiles_to_graph
+from .dataset import MolGraphDataset, molgan_collate_fn
 from ...utils.graph.graph_to_smiles import graph_to_smiles
 
+from typing import List, Optional
+from dataclasses import field
+import numpy as np
+import torch
 
-class MolGAN(nn.Module):
+# The actual MolGAN implementation
+@dataclass
+class MolGAN(BaseMolecularGenerator):
+    """MolGAN implementation compatible with BaseMolecularGenerator interface."""
 
-    """
-    Full MolGAN model integrating:
-    - Generator
-    - Discriminator
-    - Reward Network (oracle or neural)
-    """
+    model_name: str = field(default="MolGAN")
 
     def __init__(
-            self,
-            generator_config,
-            discriminator_config,
-            reward_config,
-            use_reward=True,
-            reward_lambda=1.0,
-            device="cpu"):
-        super().__init__()
-        self.device = device
-        self.use_reward = use_reward
-        self.reward_lambda = reward_lambda
-
-        self.generator = MolGANGenerator(generator_config).to(device)
-        self.discriminator = MolGANDiscriminator(discriminator_config).to(device)
-        self.reward = RewardNetwork(**reward_config) if use_reward else None
-
-        self.gen_opt = torch.optim.Adam(self.generator.parameters(), lr=generator_config.get("lr", 1e-3))
-        self.dis_opt = torch.optim.Adam(self.discriminator.parameters(), lr=discriminator_config.get("lr", 1e-3))
-
-    def generate(self, batch_size):
-        z = torch.randn(batch_size, self.generator.latent_dim).to(self.device)
-        adj, node = self.generator(z)
-        return adj, node
-
-    def compute_rewards(
         self,
-        smiles_list: Optional[List[str]] = None,
-        adj: Optional[torch.Tensor] = None,
-        node: Optional[torch.Tensor] = None,
+        latent_dim: int = 56,
+        hidden_dims_gen: List[int] = [128,128],
+        hidden_dims_disc: List[int] = [128, 128],
+        num_nodes: int = 9,
+        tau: float = 1.0,
+        num_atom_types: int = 5,
+        num_bond_types: int = 4,
+        use_reward: bool = False,
+        reward_network: Optional[RewardNetwork] = None,
+        device: Optional[str] = None
     ):
+        super().__init__()
+
+        self.latent_dim = latent_dim
+        self.hidden_dims_gen = hidden_dims_gen
+        self.hidden_dims_disc = hidden_dims_disc
+        self.num_nodes = num_nodes
+        self.num_atom_types = num_atom_types
+        self.num_bond_types = num_bond_types
+        self.use_reward = use_reward
+        self.reward = reward_network
+        self.tau = tau
+
+        self.device = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
+
+        self.generator = MolGANGenerator(
+            latent_dim=latent_dim,
+            hidden_dims=hidden_dims_gen,
+            num_nodes=num_nodes,
+            num_atom_types=num_atom_types,
+            num_bond_types=num_bond_types,
+            tau=tau
+        ).to(self.device)
+
+        self.discriminator = MolGANDiscriminator(
+            hidden_dims=hidden_dims_disc,
+            num_nodes=num_nodes,
+            num_atom_types=num_atom_types,
+            num_bond_types=num_bond_types
+        ).to(self.device)
+
+        self.gen_opt = torch.optim.Adam(self.generator.parameters(), lr=1e-4)
+        self.dis_opt = torch.optim.Adam(self.discriminator.parameters(), lr=1e-4)
+
+    def fit(
+        self,
+        X: List[str],
+        y: Optional[np.ndarray] = None,
+        epochs: int = 10,
+        batch_size: int = 32
+    ) -> "MolGAN":
         """
-        Compute reward using the internal RewardNetwork, either from SMILES or from graph tensors.
+        Fit the MolGAN model to a list of SMILES strings.
 
         Parameters
         ----------
-        smiles_list : List[str], optional
-            List of SMILES strings to compute rewards for
+        X : List[str]
+            List of training SMILES strings.
 
-        adj : Tensor [B, Y, N, N], optional
-            Adjacency tensor
+        y : Optional[np.ndarray]
+            Optional reward targets. (Unused if using oracle or no reward)
 
-        node : Tensor [B, N, T], optional
-            Node tensor
+        epochs : int
+            Number of training epochs.
+
+        batch_size : int
+            Batch size for training.
 
         Returns
         -------
-        Tensor [B]
-            Reward values
+        self : MolGAN
+            The trained model.
         """
-        if self.reward is None:
-            if adj is None or node is None:
-                raise ValueError("Either smiles_list or (adj, node) must be provided for reward computation.")
-            return torch.zeros(adj.size(0), device=self.device)
 
-        if smiles_list is not None:
-            adjs, nodes = [], []
-            for smiles in smiles_list:
-                try:
-                    encoded_graph = encode_smiles_to_graph(
-                        smiles,
-                        atom_vocab=self.atom_decoder,
-                        bond_types=self.bond_types,
-                        max_nodes=self.max_nodes
-                    )
-                    if encoded_graph is None:
-                        raise ValueError(f"Invalid SMILES: {smiles}")
-                    a, n = encoded_graph
-                    adjs.append(a)
-                    nodes.append(n)
-                except Exception:
-                    # fallback to zeros if decoding fails
-                    adjs.append(torch.zeros(len(self.bond_types), self.max_nodes, self.max_nodes))
-                    nodes.append(torch.zeros(self.max_nodes, len(self.atom_decoder)))
+        from torch.utils.data import DataLoader
 
-            adj_batch = torch.stack(adjs).to(self.device)
-            node_batch = torch.stack(nodes).to(self.device)
-            return self.reward(adj_batch, node_batch)
+        dataset = MolGraphDataset(
+            smiles_list=X,
+            reward_function=self.reward if self.use_reward else None,
+            max_nodes=self.num_nodes
+        )
 
-        elif adj is not None and node is not None:
-            return self.reward(adj.to(self.device), node.to(self.device))
+        train_loader = DataLoader(
+            dataset,
+            batch_size=batch_size,
+            shuffle=True,
+            collate_fn=molgan_collate_fn,
+            drop_last=True
+        )
 
-        else:
-            raise ValueError("Either smiles_list or (adj, node) must be provided for reward computation.")
-
-
-    def fit(
-        self,
-        data_loader,
-        epochs: int = 10,
-        log_every: int = 1,
-        reward_scale: float = 1.0
-    ):
-        """
-        Train the MolGAN model using adversarial and (optional) reward-based learning.
-
-        Parameters
-        ----------
-        data_loader : DataLoader
-            DataLoader yielding batches of {"adj", "node", "smiles"} dictionaries.
-
-        epochs : int
-            Number of training epochs.
-
-        log_every : int
-            Frequency of logging losses.
-
-        reward_scale : float
-            Weight of reward loss in the generator's total loss.
-        """
         self.generator.train()
         self.discriminator.train()
-        if self.reward and hasattr(self.reward, 'neural') and self.reward.neural:
-            self.reward.neural.eval()
 
-        for epoch in range(epochs):
-            d_losses, g_losses, reward_vals = [], [], []
+        for epoch in range(1, epochs + 1):
+            epoch_d_loss = []
+            epoch_g_loss = []
 
-            for batch in data_loader:
-                real_adj = batch["adj"].to(self.device)      # [B, Y, N, N]
-                real_node = batch["node"].to(self.device)    # [B, N, T]
-                smiles = batch.get("smiles", None)
+            for batch in train_loader:
+                real_adj = batch["adj"].to(self.device)     # [B, Y, N, N]
+                real_node = batch["node"].to(self.device)   # [B, N, T]
+                real_reward = batch["reward"].to(self.device)  # [B]
 
-                batch_size = real_adj.size(0)
+                batch_size_actual = real_adj.size(0)
+                z = torch.randn(batch_size_actual, self.latent_dim).to(self.device)
 
                 # === Train Discriminator ===
                 self.dis_opt.zero_grad()
-                fake_adj, fake_node = self.generate(batch_size)
 
-                real_logits = self.discriminator(real_adj, real_node)
-                fake_logits = self.discriminator(fake_adj.detach(), fake_node.detach())
+                # Real loss
+                d_real = self.discriminator(real_adj, real_node)
+                d_loss_real = F.binary_cross_entropy_with_logits(d_real, torch.ones_like(d_real))
 
-                d_loss = -torch.mean(real_logits) + torch.mean(fake_logits)
+                # Fake loss
+                with torch.no_grad():
+                    fake_adj, fake_node = self.generator(z)
+                d_fake = self.discriminator(fake_adj, fake_node)
+                d_loss_fake = F.binary_cross_entropy_with_logits(d_fake, torch.zeros_like(d_fake))
+
+                d_loss = d_loss_real + d_loss_fake
                 d_loss.backward()
                 self.dis_opt.step()
 
                 # === Train Generator ===
                 self.gen_opt.zero_grad()
-                fake_logits = self.discriminator(fake_adj, fake_node)
-                g_loss = -torch.mean(fake_logits)
+                fake_adj, fake_node = self.generator(z)
+                d_fake = self.discriminator(fake_adj, fake_node)
 
-                # === Add reward loss if applicable ===
-                if self.use_reward:
-                    rewards = self.compute_rewards(adj=fake_adj, node=fake_node)  # [B]
-                    reward_loss = -rewards.mean()
-                    g_loss += reward_scale * reward_loss
-                    reward_vals.append(rewards.mean().item())
+                g_adv_loss = F.binary_cross_entropy_with_logits(d_fake, torch.ones_like(d_fake))
+
+                # Reward-guided loss (optional)
+                if self.use_reward and self.reward is not None:
+                    with torch.no_grad():
+                        rwd = self.reward(fake_adj, fake_node)  # [B]
+                    g_rwd_loss = -rwd.mean()
                 else:
-                    reward_vals.append(0.0)
+                    g_rwd_loss = 0.0
 
+                g_loss = g_adv_loss + g_rwd_loss
                 g_loss.backward()
                 self.gen_opt.step()
 
-                d_losses.append(d_loss.item())
-                g_losses.append(g_loss.item())
+                epoch_d_loss.append(d_loss.item())
+                epoch_g_loss.append(g_loss.item())
 
-            if (epoch + 1) % log_every == 0:
-                print(f"[Epoch {epoch+1}/{epochs}] "
-                      f"D_loss: {sum(d_losses)/len(d_losses):.4f} | "
-                      f"G_loss: {sum(g_losses)/len(g_losses):.4f} | "
-                      f"Reward: {sum(reward_vals)/len(reward_vals):.4f}")
+            print(f"[Epoch {epoch}/{epochs}] D_loss: {np.mean(epoch_d_loss):.4f} | G_loss: {np.mean(epoch_g_loss):.4f}")
+
+        return self
 
 
-    def fit(
-        self,
-        data_loader,
-        epochs: int = 10,
-        log_every: int = 1,
-        reward_scale: float = 1.0
-    ):
+    def generate(self, n_samples: int, **kwargs) -> List[str]:
         """
-        Train the MolGAN model using adversarial and (optional) reward-based learning.
+        Generate molecules from random latent vectors.
 
-        Parameters
-        ----------
-        data_loader : DataLoader
-            DataLoader yielding batches of {"adj", "node", "smiles"} dictionaries.
-
-        epochs : int
-            Number of training epochs.
-
-        log_every : int
-            Frequency of logging losses.
-
-        reward_scale : float
-            Weight of reward loss in the generator's total loss.
+        Returns
+        -------
+        List[str] : Valid SMILES strings
         """
-        self.generator.train()
-        self.discriminator.train()
-        if self.reward and hasattr(self.reward, 'neural') and self.reward.neural:
-            self.reward.neural.eval()
-
-        for epoch in range(epochs):
-            d_losses, g_losses, reward_vals = [], [], []
-
-            for batch in data_loader:
-                real_adj = batch["adj"].to(self.device)
-                real_node = batch["node"].to(self.device)
-                smiles = batch.get("smiles", None)
-
-                batch_size = real_adj.size(0)
-
-                # === Train Discriminator ===
-                self.dis_opt.zero_grad()
-                fake_adj, fake_node = self.generate(batch_size)
-
-                real_logits = self.discriminator(real_adj, real_node)
-                fake_logits = self.discriminator(fake_adj.detach(), fake_node.detach())
-
-                d_loss = -torch.mean(real_logits) + torch.mean(fake_logits)
-                d_loss.backward()
-                self.dis_opt.step()
-
-                # === Train Generator ===
-                self.gen_opt.zero_grad()
-                fake_logits = self.discriminator(fake_adj, fake_node)
-                g_loss = -torch.mean(fake_logits)
-
-                # === Add reward loss if applicable ===
-                if self.use_reward:
-                    # Convert fake graphs to SMILES if reward expects SMILES
-                    if self.reward.oracle is not None:
-                        smiles_fake = self.decode_smiles(fake_adj, fake_node)
-                        rewards = self.compute_rewards(smiles_list=smiles_fake)
-                    else:
-                        rewards = self.compute_rewards(adj=fake_adj, node=fake_node)
-
-                    reward_loss = -rewards.mean()
-                    g_loss += reward_scale * reward_loss
-                    reward_vals.append(rewards.mean().item())
-                else:
-                    reward_vals.append(0.0)
-
-                g_loss.backward()
-                self.gen_opt.step()
-
-                d_losses.append(d_loss.item())
-                g_losses.append(g_loss.item())
-
-            if (epoch + 1) % log_every == 0:
-                print(f"[Epoch {epoch+1}/{epochs}] "
-                      f"D_loss: {sum(d_losses)/len(d_losses):.4f} | "
-                      f"G_loss: {sum(g_losses)/len(g_losses):.4f} | "
-                      f"Reward: {sum(reward_vals)/len(reward_vals):.4f}")
+        self.generator.eval()
+        with torch.no_grad():
+            z = torch.randn(n_samples, self.latent_dim).to(self.device)
+            adj, node = self.generator(z)
+            smiles = decode_smiles(adj, node)
+            return [s for s in smiles if s is not None]
 

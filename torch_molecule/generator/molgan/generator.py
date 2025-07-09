@@ -3,8 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-
-class MolGANConfig:
+# Including MolGANGeneratorConfig to allow for better instantiation
+# if required for future iternations
+class MolGANGeneratorConfig:
     """
     Configuration class for MolGAN Generator and Discriminator.
 
@@ -27,7 +28,7 @@ class MolGANConfig:
         self.tau = tau
 
 
-
+# MolGANGenerator
 class MolGANGenerator(nn.Module):
 
     """
@@ -40,16 +41,27 @@ class MolGANGenerator(nn.Module):
     Uses Gumbel-Softmax to approximate discrete molecular structure.
     """
 
-    def __init__(self, config):
+    def __init__(self,
+                 latent_dim=56,
+                 hidden_dims=[128, 128, 256],
+                 num_nodes=9,
+                 num_atom_types=5,
+                 num_bond_types=4,
+                 tau=1.0):
         super().__init__()
-        self.config = config
+        self.latent_dim = latent_dim
+        self.hidden_dims = hidden_dims
+        self.num_nodes = num_nodes
+        self.num_atom_types = num_atom_types
+        self.num_bond_types = num_bond_types
+        self.tau = tau
 
-        output_dim = (config.num_nodes * config.num_atom_types) + \
-                     (config.num_nodes * config.num_nodes * config.num_bond_types)
+        output_dim = (num_nodes * num_atom_types) + \
+                     (num_nodes * num_nodes * num_bond_types)
 
         layers = []
-        input_dim = config.latent_dim
-        for hidden_dim in config.hidden_dims:
+        input_dim = latent_dim
+        for hidden_dim in hidden_dims:
             layers.append(nn.Linear(input_dim, hidden_dim))
             layers.append(nn.ReLU())
             input_dim = hidden_dim
@@ -61,7 +73,7 @@ class MolGANGenerator(nn.Module):
         B = z.size(0)
         out = self.fc(z)
 
-        N, T, Y = self.config.num_nodes, self.config.num_atom_types, self.config.num_bond_types
+        N, T, Y = self.num_nodes, self.num_atom_types, self.num_bond_types
         node_size = N * T
         adj_size = N * N * Y
 
@@ -70,7 +82,7 @@ class MolGANGenerator(nn.Module):
         adj = adj_flat.view(B, Y, N, N)
 
         # Gumbel-softmax
-        node = F.gumbel_softmax(node, tau=self.config.tau, hard=True, dim=-1)
-        adj = F.gumbel_softmax(adj, tau=self.config.tau, hard=True, dim=1)
+        node = F.gumbel_softmax(node, tau=self.tau, hard=True, dim=-1)
+        adj = F.gumbel_softmax(adj, tau=self.tau, hard=True, dim=1)
 
         return adj, node

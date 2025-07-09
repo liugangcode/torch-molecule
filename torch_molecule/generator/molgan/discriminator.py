@@ -47,24 +47,40 @@ class MolGANDiscriminator(nn.Module):
     Discriminator network for MolGAN using stacked Relational GCNs.
     """
 
-    def __init__(self, config: MolGANDiscriminatorConfig):
+    def __init__(self,
+                 num_atom_types=5,
+                 num_bond_types=4,
+                 num_nodes=9,
+                 hidden_dims=[128, 128]):
         super().__init__()
-        self.config = config
+
+        self.num_atom_types = num_atom_types
+        self.num_bond_types = num_bond_types
+        self.num_nodes = num_nodes
+        self.hidden_dim = hidden_dims
+        self.num_layers = len(hidden_dims) + 1 # I'm including the input layer
 
         self.gcn_layers = nn.ModuleList()
         self.gcn_layers.append(
-            RelationalGCNLayer(config.num_atom_types, config.hidden_dim, config.num_bond_types)
+            RelationalGCNLayer(num_atom_types, hidden_dims[0], num_bond_types)
         )
 
-        for _ in range(1, config.num_layers):
-            self.gcn_layers.append(
-                RelationalGCNLayer(config.hidden_dim, config.hidden_dim, config.num_bond_types)
+        # for _ in range(1, num_layers):
+        #     self.gcn_layers.append(
+        #         RelationalGCNLayer(hidden_dims, hidden_dims, num_bond_types)
+        #     )
+
+        input_dim = hidden_dims[0]
+        for hidden_dim in hidden_dims[1:]:
+            self.gcn_layers.append( 
+                RelationalGCNLayer(input_dim, hidden_dim, num_bond_types)
             )
+            input_dim = hidden_dim
 
         self.readout = nn.Sequential(
-            nn.Linear(config.num_nodes * config.hidden_dim, config.hidden_dim),
+            nn.Linear(num_nodes * hidden_dims[-1], hidden_dims[-1]),
             nn.ReLU(),
-            nn.Linear(config.hidden_dim, 1)
+            nn.Linear(hidden_dims[-1], 1)
         )
 
     def forward(self, adj, node):

@@ -1,9 +1,9 @@
 from torch.utils.data import Dataset
 import torch
-from typing import List, Optional, Callable
+from typing import List, Optional
 from rdkit import Chem
 
-from .rewards import RewardNetwork
+from .rewards_molgan import RewardNetwork
 from .gan_utils import encode_smiles_to_graph
 from ...utils.graph.graph_from_smiles import graph_from_smiles
 
@@ -98,4 +98,32 @@ def molgan_collate_fn(batch):
     reward = torch.stack([item["reward"] for item in batch], dim=0)
     smiles = [item["smiles"] for item in batch]
     return {"adj": adj, "node": node, "reward": reward, "smiles": smiles}
+
+
+
+class MolGraphRewardDataset(torch.utils.data.Dataset):
+    def __init__(self, smiles_list, reward_fn, max_nodes=9):
+        self.samples = []
+        for smiles in smiles_list:
+            adj_node = encode_smiles_to_graph(smiles, max_nodes=max_nodes)
+            if adj_node is None:
+                continue
+            adj, node = adj_node
+            reward = reward_fn(smiles)
+            self.samples.append({
+                "adj": adj,
+                "node": node,
+                "reward": reward
+            })
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, idx):
+        sample = self.samples[idx]
+        return {
+            "adj": sample["adj"],
+            "node": sample["node"],
+            "reward": torch.tensor(sample["reward"], dtype=torch.float32)
+        }
 

@@ -4,10 +4,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from rdkit import Chem
-from ...utils.graph.graph_to_smiles import graph_to_smiles
-from ...utils.graph.graph_from_smiles import graph_from_smiles
-
-
+from ...utils.graph.graph_to_smiles import (
+    build_molecule_with_partial_charges,
+    correct_mol,
+    mol2smiles,
+    get_mol
+)
 
 
 class RelationalGCNLayer(nn.Module):
@@ -96,100 +98,69 @@ def encode_smiles_to_graph(
     return torch.tensor(adj), torch.tensor(node)
 
 
-def decode_smiles(
-        adj: torch.Tensor,
-        node: torch.Tensor,
-        atom_decoder: list = ["C", "N", "O", "F"]
-    ) -> list:
+ATOM_DECODER = ["C", "N", "O", "F"]  # Adjust based on your vocabulary
+BOND_DICT = [
+    None,
+    Chem.rdchem.BondType.SINGLE,
+    Chem.rdchem.BondType.DOUBLE,
+    Chem.rdchem.BondType.TRIPLE,
+    Chem.rdchem.BondType.AROMATIC,
+]
+
+def decode_smiles_from_graph(
+    adj: torch.Tensor,
+    node: torch.Tensor,
+    atom_decoder: Optional[list] = ATOM_DECODER
+) -> Optional[str]:
     """
-    Convert a batch of (adj, node) tensors to SMILES strings.
+    Converts (adj, node) graph back to a SMILES string.
 
     Parameters
     ----------
     adj : torch.Tensor
-        Adjacency tensor of shape [B, Y, N, N]
-
+        Tensor of shape [Y, N, N] with binary bond type edges.
     node : torch.Tensor
-        Node feature tensor of shape [B, N, T]
-
-    atom_decoder : list of str
-        Atom types in order of one-hot encoding indices
-
-    Returns
-    -------
-    List[str or None]
-        Decoded SMILES strings or None for invalid molecules
-    """
-    # Ensure tensors are detached and moved to CPU
-    adj_np = adj.detach().cpu().numpy()
-    node_np = node.detach().cpu().numpy()
-
-    # Build molecule list
-    molecule_list = list(zip(node_np, adj_np))
-
-    # Decode into SMILES strings
-    smiles_list = graph_to_smiles(molecule_list, atom_decoder)
-
-    return smiles_list
-
-
-
-
-
-
-
-
-
-
-
-def molgan_graph_from_smiles(smiles: str, atom_vocab: list, bond_types: list, max_nodes: int) -> Optional[dict]:
-    """
-    Convert SMILES to MolGAN-style (adjacency, node) graph.
-
-    Parameters
-    ----------
-    smiles : str
-        SMILES string
-
-    atom_vocab : list of str
-        List of allowed atom types (e.g., ['C', 'N', 'O', 'F'])
-
-    bond_types : list of float
-        List of bond types (e.g., [1.0, 1.5, 2.0, 3.0])
-
-    max_nodes : int
-        Maximum number of atoms
+        Tensor of shape [N, T] with atom type softmax/one-hot.
+    atom_decoder : list
+        List mapping indices to atom symbols.
 
     Returns
     -------
-    dict with keys:
-        'adj': [Y, N, N] tensor
-        'node': [N, T] tensor
+    Optional[str]
+        SMILES string if successful, None otherwise.
     """
-    mol = Chem.MolFromSmiles(smiles)
-    if mol is None or mol.GetNumAtoms() > max_nodes:
+    try:
+        atom_types = node.argmax(dim=-1)  # [N]
+        edge_types = torch.argmax(adj, dim=0)  # [N, N], index of strongest bond type
+
+        # Convert to RDKit Mol
+        mol_init = build_molecule_with_partial_charges(atom_types, edge_types, atom_decoder)
+
+        # Try to correct connectivity and valency
+        for connection in (True, False):
+            mol_corr, _ = correct_mol(mol_init, connection=connection)
+            if mol_corr is not None:
+                break
+        else:
+            mol_corr = mol_init  # fallback
+
+        # Final sanitization
+        smiles = mol2smiles(mol_corr)
+        if not smiles:
+            smiles = Chem.MolToSmiles(mol_corr)
+
+        # Canonicalize and return
+        mol = get_mol(smiles)
+        if mol is not None:
+            frags = Chem.rdmolops.GetMolFrags(mol, asMols=True, sanitizeFrags=False)
+            largest = max(frags, key=lambda m: m.GetNumAtoms())
+            final_smiles = mol2smiles(largest)
+            return final_smiles if final_smiles and len(final_smiles) > 1 else None
         return None
 
-    T = len(atom_vocab)
-    Y = len(bond_types)
+    except Exception as e:
+        print(f"[MolGAN Decode] Error during decoding: {e}")
+        return None
 
-    node = np.zeros((max_nodes, T))
-    for i, atom in enumerate(mol.GetAtoms()):
-        symbol = atom.GetSymbol()
-        if symbol in atom_vocab:
-            node[i, atom_vocab.index(symbol)] = 1
 
-    adj = np.zeros((Y, max_nodes, max_nodes))
-    for bond in mol.GetBonds():
-        i = bond.GetBeginAtomIdx()
-        j = bond.GetEndAtomIdx()
-        btype = bond.GetBondTypeAsDouble()
-        if btype in bond_types:
-            k = bond_types.index(btype)
-            adj[k, i, j] = 1
-            adj[k, j, i] = 1
 
-    return {
-        "adj": torch.tensor(adj, dtype=torch.float32).unsqueeze(0),
-        "node": torch.tensor(node, dtype=torch.float32).unsqueeze(0)
-    }

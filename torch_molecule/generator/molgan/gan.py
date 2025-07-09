@@ -1,22 +1,21 @@
 import torch
+import os, json
+import numpy as np
+import warnings
 import torch.nn.functional as F
 from dataclasses import dataclass
 from typing import Optional, List
+from dataclasses import field
 
 from torch_molecule.base.generator import BaseMolecularGenerator
 
 # If for future compatibility, do ensure Configs are imported
 from .generator import MolGANGenerator
 from .discriminator import MolGANDiscriminator
-from .rewards import RewardNetwork
-from .gan_utils import decode_smiles, encode_smiles_to_graph
+from .rewards_molgan import RewardOracle
+from .gan_utils import decode_smiles_from_graph
 from .dataset import MolGraphDataset, molgan_collate_fn
-from ...utils.graph.graph_to_smiles import graph_to_smiles
 
-from typing import List, Optional
-from dataclasses import field
-import numpy as np
-import torch
 
 # The actual MolGAN implementation
 @dataclass
@@ -35,7 +34,6 @@ class MolGAN(BaseMolecularGenerator):
         num_atom_types: int = 5,
         num_bond_types: int = 4,
         use_reward: bool = False,
-        reward_network: Optional[RewardNetwork] = None,
         device: Optional[str] = None
     ):
         super().__init__()
@@ -47,7 +45,6 @@ class MolGAN(BaseMolecularGenerator):
         self.num_atom_types = num_atom_types
         self.num_bond_types = num_bond_types
         self.use_reward = use_reward
-        self.reward = reward_network
         self.tau = tau
 
         self.device = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
@@ -75,8 +72,9 @@ class MolGAN(BaseMolecularGenerator):
         self,
         X: List[str],
         y: Optional[np.ndarray] = None,
+        reward: Optional[RewardOracle] = None,
         epochs: int = 10,
-        batch_size: int = 32
+        batch_size: int = 32,
     ) -> "MolGAN":
         """
         Fit the MolGAN model to a list of SMILES strings.
@@ -101,11 +99,14 @@ class MolGAN(BaseMolecularGenerator):
             The trained model.
         """
 
+        if y is not None:
+            warnings.warn("y is not used in MolGAN training. Use reward function instead.")
+
         from torch.utils.data import DataLoader
 
         dataset = MolGraphDataset(
             smiles_list=X,
-            reward_function=self.reward if self.use_reward else None,
+            reward_function = reward if self.use_reward else None,
             max_nodes=self.num_nodes
         )
 
@@ -125,9 +126,9 @@ class MolGAN(BaseMolecularGenerator):
             epoch_g_loss = []
 
             for batch in train_loader:
-                real_adj = batch["adj"].to(self.device)     # [B, Y, N, N]
-                real_node = batch["node"].to(self.device)   # [B, N, T]
-                real_reward = batch["reward"].to(self.device)  # [B]
+                real_adj = batch["adj"].to(self.device)
+                real_node = batch["node"].to(self.device)
+                real_reward = batch["reward"].to(self.device)
 
                 batch_size_actual = real_adj.size(0)
                 z = torch.randn(batch_size_actual, self.latent_dim).to(self.device)
@@ -157,9 +158,9 @@ class MolGAN(BaseMolecularGenerator):
                 g_adv_loss = F.binary_cross_entropy_with_logits(d_fake, torch.ones_like(d_fake))
 
                 # Reward-guided loss (optional)
-                if self.use_reward and self.reward is not None:
+                if self.use_reward and reward is not None:
                     with torch.no_grad():
-                        rwd = self.reward(fake_adj, fake_node)  # [B]
+                        rwd = reward(fake_adj, fake_node)  # [B]
                     g_rwd_loss = -rwd.mean()
                 else:
                     g_rwd_loss = 0.0
@@ -188,6 +189,43 @@ class MolGAN(BaseMolecularGenerator):
         with torch.no_grad():
             z = torch.randn(n_samples, self.latent_dim).to(self.device)
             adj, node = self.generator(z)
-            smiles = decode_smiles(adj, node)
+            smiles = decode_smiles_from_graph(adj, node)
+            if smiles is None:
+                return []
             return [s for s in smiles if s is not None]
+
+
+    #  Initial implementation for saving and loading the model
+    def save_pretrained(self, save_directory: str, configfile: Optional[str] = None):
+        os.makedirs(save_directory, exist_ok=True)
+        if configfile is None:
+            configfile = "config.json"
+
+        # Save model weights
+        torch.save(self.generator.state_dict(), os.path.join(save_directory, "generator.pt"))
+        torch.save(self.discriminator.state_dict(), os.path.join(save_directory, "discriminator.pt"))
+
+        # Save config
+        config = {
+            "latent_dim": self.latent_dim,
+            "hidden_dims_gen": self.hidden_dims_gen,
+            "hidden_dims_disc": self.hidden_dims_disc,
+            "num_nodes": self.num_nodes,
+            "num_atom_types": self.num_atom_types,
+            "num_bond_types": self.num_bond_types,
+            "tau": self.tau,
+            "use_reward": self.use_reward
+        }
+        with open(os.path.join(save_directory, configfile), "w") as f:
+            json.dump(config, f)
+
+    @classmethod
+    def from_pretrained(cls, load_directory: str, device: Optional[str] = None, configfile: str = "config.json") -> "MolGAN":
+        with open(os.path.join(load_directory, configfile)) as f:
+            config = json.load(f)
+
+        model = cls(**config, device=device)
+        model.generator.load_state_dict(torch.load(os.path.join(load_directory, "generator.pt"), map_location=device))
+        model.discriminator.load_state_dict(torch.load(os.path.join(load_directory, "discriminator.pt"), map_location=device))
+        return model
 

@@ -1,9 +1,9 @@
-from typing import Optional
+from typing import List, Optional
 import torch
 import torch.nn as nn
 from rdkit import Chem
 from rdkit.Chem import QED, Crippen, rdMolDescriptors
-from .gan_utils import RelationalGCNLayer, molgan_graph_from_smiles
+from .gan_utils import RelationalGCNLayer
 from ...utils.graph.graph_to_smiles import graph_to_smiles
 
 
@@ -28,7 +28,7 @@ def combo_reward(smiles: str, weights=(0.7, 0.3)) -> float:
     logp_score = Crippen.MolLogP(mol)
     return weights[0] * qed_score + weights[1] * logp_score
 
-class RewardOracle:
+class RewardOracleNonNeural:
     def __init__(self, kind="qed"):
         if kind == "qed":
             self.func = qed_reward
@@ -55,20 +55,21 @@ class RewardNeuralNetwork(nn.Module):
     def __init__(self,
                  num_atom_types=5,
                  num_bond_types=4,
-                 hidden_dim=128,
-                 num_layers=2,
+                 hidden_dims:List[int]=[128, 128],
                  num_nodes=9):
         super().__init__()
         self.gcn_layers = nn.ModuleList()
-        self.gcn_layers.append(RelationalGCNLayer(num_atom_types, hidden_dim, num_bond_types))
+        self.gcn_layers.append(RelationalGCNLayer(num_atom_types, hidden_dims[0], num_bond_types))
 
-        for _ in range(1, num_layers):
-            self.gcn_layers.append(RelationalGCNLayer(hidden_dim, hidden_dim, num_bond_types))
+        current_dim = hidden_dims[0]
+        self.num_layers = len(hidden_dims)
+        for i in range(1, self.num_layers):
+            self.gcn_layers.append(RelationalGCNLayer(current_dim, hidden_dims[i], num_bond_types))
 
         self.readout = nn.Sequential(
-            nn.Linear(num_nodes * hidden_dim, hidden_dim),
+            nn.Linear(num_nodes * hidden_dims[-1], hidden_dims[-1]),
             nn.ReLU(),
-            nn.Linear(hidden_dim, 1)
+            nn.Linear(hidden_dims[-1], 1)
         )
 
     def forward(self, adj, node):
@@ -84,74 +85,72 @@ class RewardNeuralNetwork(nn.Module):
         return self.readout(h).squeeze(-1)
 
 
-def fit_reward_network(
-    reward_model: RewardNeuralNetwork,
-    train_loader,
-    epochs: int = 10,
-    lr: float = 1e-3,
-    weight_decay: float = 0.0,
-    device: str = "cpu",
-    verbose: bool = True
-):
-    """
-    Train the reward model to approximate oracle rewards.
+    def fit(
+        self,
+        train_loader,
+        epochs: int = 10,
+        lr: float = 1e-3,
+        weight_decay: float = 0.0,
+        verbose: bool = True
+    ):
+        """
+        Train the reward self to approximate oracle rewards.
 
-    Parameters
-    ----------
-    reward_model : RewardNeuralNetwork
-        The neural network to train
+        Parameters
+        ----------
+        reward_self : RewardNeuralNetwork
+            The neural network to train
 
-    train_loader : DataLoader
-        Yields batches of (adj, node, reward)
+        train_loader : DataLoader
+            Yields batches of (adj, node, reward)
 
-    epochs : int
-        Number of training epochs
+        epochs : int
+            Number of training epochs
 
-    lr : float
-        Learning rate
+        lr : float
+            Learning rate
 
-    weight_decay : float
-        Optional L2 regularization
+        weight_decay : float
+            Optional L2 regularization
 
-    device : str
-        Device to run on ("cpu" or "cuda")
+        device : str
+            Device to run on ("cpu" or "cuda")
 
-    verbose : bool
-        Whether to print losses
-    """
-    model = reward_model.to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
-    criterion = nn.MSELoss()
+        verbose : bool
+            Whether to print losses
+        """
+        optimizer = torch.optim.Adam(self.parameters(), lr=lr, weight_decay=weight_decay)
+        criterion = nn.MSELoss()
 
-    model.train()
-    for epoch in range(epochs):
-        epoch_losses = []
+        self.train()
+        for epoch in range(epochs):
+            epoch_losses = []
 
-        for batch in train_loader:
-            adj = batch["adj"].to(device)
-            node = batch["node"].to(device)
-            reward = batch["reward"].to(device)
+            for batch in train_loader:
+                adj = batch["adj"].to(self.device)
+                node = batch["node"].to(self.device)
+                reward = batch["reward"].to(self.device)
 
-            pred = model(adj, node)  # [B]
-            loss = criterion(pred, reward)
+                pred = self(adj, node)  # [B]
+                loss = criterion(pred, reward)
 
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
 
-            epoch_losses.append(loss.item())
+                epoch_losses.append(loss.item())
 
-        if verbose:
-            print(f"[Epoch {epoch+1}/{epochs}] RewardNet Loss: {sum(epoch_losses)/len(epoch_losses):.4f}")
+            if verbose:
+                print(f"[Epoch {epoch+1}/{epochs}] RewardNet Loss: {sum(epoch_losses)/len(epoch_losses):.4f}")
 
 
 
 
 
 # Combined reward wrapper: which uses either neural or oracle rewards
-class RewardNetwork:
+class RewardOracle:
     """
-    Combined reward network that uses either a neural model or an oracle.
+    Combined reward network that uses either a neural self or an oracle.
     Accepts (adj, node) tensors as standard input.
     """
 
@@ -159,14 +158,32 @@ class RewardNetwork:
             self,
             kind="qed",
             reward_net: Optional[RewardNeuralNetwork] = None,
-            atom_decoder=None,
-            device="cpu"):
+            atom_decoder: List[str]=["C", "N", "O", "F"],
+            device="cpu"
+    ):
+        """
+        Parameters
+        ----------
+        kind : str
+            Type of reward function to use. Options:
+            - "qed": QED score
+            - "logp": LogP score
+            - "combo": Combination of QED and LogP
+            - "neural": Use a neural network for reward prediction
+        reward_net : RewardNeuralNetwork, optional
+            If kind is "neural", this should be a trained RewardNeuralNetwork instance.
+        atom_decoder : list of str, Optional
+            If kind is "qed", "logp", or "combo", this should be a list of atom types to decode graphs.
+            Defaults to ["C", "N", "O", "F"].
+        device : str
+            Device to run the reward computation on ("cpu" or "cuda").
+        """
         self.kind = kind
         self.device = device
         self.atom_decoder = atom_decoder or ["C", "N", "O", "F"]
 
         if kind in ["qed", "logp", "combo"]:
-            self.oracle = RewardOracle(kind)
+            self.oracle = RewardOracleNonNeural(kind)
             self.neural = None
             if reward_net is not None:
                 raise ValueError("reward_net should not be provided for oracle modes")
@@ -177,7 +194,11 @@ class RewardNetwork:
         else:
             raise ValueError(f"Invalid kind: {kind}")
 
-    def __call__(self, adj: torch.Tensor, node: torch.Tensor) -> torch.Tensor:
+    def __call__(
+            self,
+            adj: torch.Tensor,
+            node: torch.Tensor
+    ) -> torch.Tensor:
         """
         Compute reward from graph tensors.
 

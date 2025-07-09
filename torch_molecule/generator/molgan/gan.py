@@ -229,3 +229,23 @@ class MolGAN(BaseMolecularGenerator):
         model.discriminator.load_state_dict(torch.load(os.path.join(load_directory, "discriminator.pt"), map_location=device))
         return model
 
+
+    def _setup_optimizers(self):
+        return self.gen_opt, self.dis_opt  # Or return a scheduler if applicable
+
+    def _train_epoch(self, train_loader, optimizer):
+        # Delegate to your existing training loop inside `fit()`
+        # If not reusable, just raise NotImplementedError
+        raise NotImplementedError("MolGAN does not use `_train_epoch`; training is handled in `fit()`")
+
+    def _get_model_params(self, checkpoint=None):
+        return {
+            "latent_dim": self.latent_dim,
+            "hidden_dims_gen": self.hidden_dims_gen,
+            "hidden_dims_disc": self.hidden_dims_disc,
+            "num_nodes": self.num_nodes,
+            "tau": self.tau,
+            "num_atom_types": self.num_atom_types,
+            "num_bond_types": self.num_bond_types,
+            "use_reward": self.use_reward
+        }

@@ -102,6 +102,13 @@ class MolGAN(BaseMolecularGenerator):
         if y is not None:
             warnings.warn("y is not used in MolGAN training. Use reward function instead.")
 
+        if reward is not None and reward.kind is "neural": 
+            if len(reward.atom_decoder) != self.num_atom_types:
+                raise ValueError(
+                    f"Reward network atom decoder size {len(reward.atom_decoder)} does not match model's num_atom_types {self.num_atom_types}"
+                )
+
+
         from torch.utils.data import DataLoader
 
         dataset = MolGraphDataset(

@@ -1,8 +1,9 @@
 import os
-import numpy as np
-import torch
 from rdkit import RDLogger
-from torch_molecule.generator.molgan import MolGAN, RewardOracle
+from torch_molecule.generator.molgan import (
+    MolGAN,
+    RewardOracle,
+)
 
 RDLogger.DisableLog("rdApp.*")
 
@@ -16,6 +17,7 @@ def test_molgan():
         'C[C@H]1CN([C@@H](C)CO)C(=O)CCCn2cc(nn2)CO[C@@H]1CN(C)C(=O)CCC(F)(F)F',
         'CC1=CC=C(C=C1)C2=CC(=NN2C3=CC=C(C=C3)S(=O)(=O)N)C(F)(F)F'
     ]
+    model_decoder = ["C", "N", "O", "F", "Cl", "Br"]
 
     # 1. Initialize MolGAN
     print("\n=== Testing MolGAN Initialization ===")
@@ -28,6 +30,7 @@ def test_molgan():
         "hidden_dims_gen": [128, 128],
         "hidden_dims_disc": [128, 128],
         "tau": 1.0,
+        "use_reward": True,
     }
     model = MolGAN(**GANConfig, device="cpu")
     print("MolGAN initialized successfully")

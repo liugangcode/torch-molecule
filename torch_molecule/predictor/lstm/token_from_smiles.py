@@ -1,4 +1,5 @@
 #Dictionary mapping each character to a corresponding token (integer).
+# TODO: convert unkown elements to the pad token
 char_dic = {
     '<pad>':0,
     '#': 1,  # Triple bond

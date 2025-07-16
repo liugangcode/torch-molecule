@@ -104,7 +104,10 @@ class GNN(nn.Module):
         dummy = torch.nn.Parameter(torch.Tensor([scale])).to(prediction.device)
         losses_erm = criterion(prediction.to(torch.float32)[is_labeled] * dummy, target[is_labeled])
         
-        environments = batched_data.environment[is_labeled]
+        environments = batched_data.environment
+        if environments.dim() > 1 and environments.shape[1] == 1:
+            environments = environments.expand(-1, is_labeled.shape[1])
+        environments = environments[is_labeled]
         unique_envs = environments.unique()  
         env_losses = []
         for env in unique_envs:

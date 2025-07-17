@@ -1,5 +1,4 @@
 #Dictionary mapping each character to a corresponding token (integer).
-# TODO: convert unkown elements to the pad token
 char_dic = {
     '<pad>':0,
     '#': 1,  # Triple bond
@@ -74,7 +73,7 @@ def create_tensor_dataset(string_list, input_len, pad_token=0):
 
     for s in string_list:
         # Convert each character in the string to a token
-        tokens = [char_dic[char] for char in s]
+        tokens = [char_dic.get(char, pad_token) for char in s]
         # Pad the token sequence if it's shorter than input_len; otherwise, truncate it
         if len(tokens) < input_len:
             tokens = tokens + [pad_token] * (input_len - len(tokens))

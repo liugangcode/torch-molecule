@@ -227,9 +227,9 @@ class CausalAttNet(nn.Module):
             causal_edge_attr = torch.cat([causal_edge_attr, edge_attr[idx_reserve]])
             conf_edge_attr = torch.cat([conf_edge_attr, edge_attr[idx_drop]])
 
-        causal_x, causal_edge_index, causal_batch, _ = relabel(x, causal_edge_index, data.batch)
-        conf_x, conf_edge_index, conf_batch, _ = relabel(x, conf_edge_index, data.batch)
-
+        causal_x, causal_edge_index, causal_batch, _ = relabel(x, causal_edge_index, data.batch, keep_all_nodes=True)
+        conf_x, conf_edge_index, conf_batch, _ = relabel(x, conf_edge_index, data.batch, keep_all_nodes=True)
+        
         return (causal_x, causal_edge_index, causal_edge_attr, causal_edge_weight, causal_batch),\
                 (conf_x, conf_edge_index, conf_edge_attr, conf_edge_weight, conf_batch),\
                 pred_edge_weight

@@ -273,7 +273,7 @@ class SSR(nn.Module):
             import warnings
             warnings.warn(f"SSR loss is too large: {ssr_loss}, truncating to 10")
             ssr_loss = 10
-        total_loss = pred_loss + cmd_coeff * ssr_loss
+        total_loss = pred_loss + ssr_loss
         
         return total_loss, pred_loss, ssr_loss
         

@@ -128,9 +128,6 @@ class SSRMolecularPredictor(GNNMolecularPredictor):
                     setattr(g, f"coarsened_edge_attr_{coarse_ratio_postfix}", coarse_edge_attr)
                 setattr(g, f"num_coarse_nodes_{coarse_ratio_postfix}", torch.tensor(num_clusters))
                 setattr(g, f"clusters_{coarse_ratio_postfix}", clusters)
-            
-            if self.verbose:
-                print(f"Processed molecule {idx}: {g.num_nodes} nodes, coarsened versions added")
                 
             pyg_graph_list.append(g)
             

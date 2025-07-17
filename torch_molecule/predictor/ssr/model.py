@@ -227,7 +227,7 @@ class SSR(nn.Module):
         return h_rep
 
 
-    def compute_loss(self, batched_data, criterion, coarse_ratios=[0.8, 0.9],cmd_coeff=0.1,fine_grained=True,n_moments=5):
+    def compute_loss(self, batched_data, criterion, coarse_ratios=[0.8, 0.9], cmd_coeff=0.1, fine_grained=True, n_moments=5):
         """Compute loss with SSR regularization"""
         # Original forward pass
         h_node, _ = self.graph_encoder(batched_data)
@@ -268,6 +268,11 @@ class SSR(nn.Module):
                 ssr_loss = ssr_loss + torch.norm(h_rep - coarse_h_rep, dim=1).mean()
         
         # Compute total loss
+        ssr_loss = cmd_coeff * ssr_loss
+        if ssr_loss > 10:
+            import warnings
+            warnings.warn(f"SSR loss is too large: {ssr_loss}, truncating to 10")
+            ssr_loss = 10
         total_loss = pred_loss + cmd_coeff * ssr_loss
         
         return total_loss, pred_loss, ssr_loss

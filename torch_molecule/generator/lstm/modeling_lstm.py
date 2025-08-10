@@ -178,25 +178,29 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
         self.fitting_loss = []
         self.fitting_epoch = 0
         criterion = torch.nn.CrossEntropyLoss()
+        
+        # Calculate total steps for progress tracking
+        total_steps = self.epochs * len(train_loader)
+        
+        # Initialize global progress bar
+        global_pbar = tqdm(total=total_steps, desc="Training Progress", disable=not self.verbose)
+        
         for epoch in range(self.epochs):
-            train_losses = self._train_epoch(train_loader, optimizer, epoch, criterion)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch, criterion, global_pbar)
             self.fitting_loss.append(np.mean(train_losses).item())
             if scheduler:
                 scheduler.step(np.mean(train_losses).item())
 
+        global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer, epoch, criterion):
+    def _train_epoch(self, train_loader, optimizer, epoch, criterion, global_pbar=None):
         self.model.train()
         losses = []
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
-        for step, batched_data in enumerate(iterator):
+        
+        for step, batched_data in enumerate(train_loader):
             for i in range(len(batched_data)):
                 batched_data[i] = batched_data[i].to(self.device)
             optimizer.zero_grad()
@@ -208,8 +212,14 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
             optimizer.step()
             losses.append(loss.item())
             
-            if self.verbose:
-                iterator.set_postfix({"Epoch": epoch, "Loss": f"{loss.item():.4f}"})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Step": f"{step+1}/{len(train_loader)}",
+                    "Loss": f"{loss.item():.4f}"
+                })
+                global_pbar.update(1)
             
         return losses
 

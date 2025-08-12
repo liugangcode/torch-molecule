@@ -173,6 +173,86 @@ class GINConv_BF(MessagePassing):
         super().__init__(aggr=None) 
         if output_size is None:
             output_size = hidden_size
+        
+        edge_attr_dim = 3
+        self.edge_weight_net = torch.nn.Linear(edge_attr_dim, 1)
+
+        self.f_up = torch.nn.Sequential(
+            torch.nn.Linear(hidden_size, 2*hidden_size),
+            torch.nn.BatchNorm1d(2*hidden_size),
+            torch.nn.ReLU(),
+            torch.nn.Linear(2*hidden_size, output_size),
+        )
+
+    def forward(self, x, edge_index, edge_attr):
+        agg = self.propagate(edge_index, x=x, edge_attr=edge_attr)
+        out = self.f_up(agg)  
+        return out
+
+    def message(self, x_j, edge_attr):
+        w = self.edge_weight_net(edge_attr.float())  # shape [E, 1]
+        return x_j + w  # BF-style message: d[u] + w(u,v)
+
+    def aggregate(self, inputs, index, dim_size=None):
+        if not _has_torch_scatter or scatter_min is None:
+            raise ImportError("BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
+
+        out, _ = scatter_min(inputs, index, dim=0, dim_size=dim_size)
+        out[out == float('inf')] = 0.0
+        return out
+
+class GCNConv_BF(MessagePassing):
+    def __init__(self, hidden_size, output_size=None):
+        super().__init__(aggr=None)
+        if output_size is None:
+            output_size = hidden_size
+        
+        self.linear = torch.nn.Linear(hidden_size, output_size)
+
+        edge_attr_dim = 3
+        self.edge_weight_net = torch.nn.Linear(edge_attr_dim, 1)
+
+        self.f_up = torch.nn.Sequential(
+            torch.nn.Linear(output_size, 2*output_size),
+            torch.nn.BatchNorm1d(2*output_size),
+            torch.nn.ReLU(),
+            torch.nn.Linear(2*output_size, output_size),
+        )
+
+    def forward(self, x, edge_index, edge_attr):
+        x_lin = self.linear(x)
+
+        row, col = edge_index
+        deg = degree(row, x_lin.size(0), dtype=x_lin.dtype) + 1
+        deg_inv_sqrt = deg.pow(-0.5)
+        deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0.0
+        norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
+
+        agg = self.propagate(
+            edge_index=edge_index,
+            x=x_lin,
+            edge_attr=edge_attr,
+            norm=norm
+        )
+        return self.f_up(agg)
+
+    def message(self, x_j, edge_attr, norm):
+        w = self.edge_weight_net(edge_attr.float())  # [E, 1]
+        return norm.view(-1, 1) * (x_j + w)  # normalized Bellman-Ford message
+
+    def aggregate(self, inputs, index, dim_size=None):
+        if not _has_torch_scatter or scatter_min is None:
+            raise ImportError("BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
+
+        out, _ = scatter_min(inputs, index, dim=0, dim_size=dim_size)
+        out[out == float('inf')] = 0.0
+        return out
+
+class GINConv_GRIN(MessagePassing):
+    def __init__(self, hidden_size, output_size=None):
+        super().__init__(aggr=None) 
+        if output_size is None:
+            output_size = hidden_size
         self.f_agg = torch.nn.Sequential(
             torch.nn.Linear(2*hidden_size, 2*hidden_size),
             torch.nn.BatchNorm1d(2*hidden_size),
@@ -198,13 +278,13 @@ class GINConv_BF(MessagePassing):
 
     def aggregate(self, inputs, index, dim_size=None):
         if not _has_torch_scatter or scatter_min is None:
-            raise ImportError("BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
+            raise ImportError("GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
 
-        out, _ = scatter_min(inputs, index, dim=0, dim_size=dim_size)
+        out, _ = scatter_max(inputs, index, dim=0, dim_size=dim_size)
         out[out == float('inf')] = 0.0
         return out
 
-class GCNConv_BF(MessagePassing):
+class GCNConv_GRIN(MessagePassing):
     def __init__(self, hidden_size, output_size=None):
         super().__init__(aggr=None)  
         if output_size is None:
@@ -249,111 +329,6 @@ class GCNConv_BF(MessagePassing):
 
     def aggregate(self, inputs, index, dim_size=None):
         if not _has_torch_scatter or scatter_min is None:
-            raise ImportError("BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
-
-        out, _ = scatter_min(inputs, index, dim=0, dim_size=dim_size)
-        out[out == float('inf')] = 0.0
-        return out
-
-class GINConv_GRIN(MessagePassing):
-    def __init__(self, hidden_size, output_size=None):
-        super().__init__(aggr=None) 
-        if output_size is None:
-            output_size = hidden_size
-        self.mlp = torch.nn.Sequential(
-            torch.nn.Linear(2*hidden_size, 2*hidden_size),
-            torch.nn.BatchNorm1d(2*hidden_size),
-            torch.nn.ReLU(),
-            torch.nn.Linear(2*hidden_size, output_size),
-        )
-        self.eps = torch.nn.Parameter(torch.zeros(1))
-        self.bond_encoder = BondEncoder(hidden_size=output_size)
-        self.root_emb = torch.nn.Embedding(1, output_size)
-
-    def forward(self, x, edge_index, edge_attr, visited):
-        edge_emb = self.bond_encoder(edge_attr)
-        row, _ = edge_index
-        deg = degree(row, x.size(0), dtype=x.dtype) + 1
-
-        agg = self.propagate(edge_index, x=x, edge_attr=edge_emb)
-
-        agg[visited] = 0.0
-
-        concat = torch.cat([x, agg], dim=1)
-        out = self.mlp(concat)
-        out = out + F.relu((1 + self.eps) * x + self.root_emb.weight) * (1.0 / deg.view(-1,1))
-
-        _, selected = agg.max(dim=0)
-        new_visited = visited.clone()
-        new_visited[selected] = True
-        mask = torch.zeros_like(visited)
-        mask[selected] = True
-        out = torch.where(mask.unsqueeze(1), out, x)
-
-        return out, new_visited
-
-    def message(self, x_j, edge_attr):
-        return F.relu(x_j + edge_attr)
-
-    def aggregate(self, inputs, index, dim_size=None):
-        if not _has_torch_scatter or scatter_max is None:
-            raise ImportError("GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
-
-        out, _ = scatter_max(inputs, index, dim=0, dim_size=dim_size)
-        out[out == float('inf')] = 0.0
-        return out
-
-class GCNConv_GRIN(MessagePassing):
-    def __init__(self, hidden_size, output_size=None):
-        super().__init__(aggr=None)  
-        if output_size is None:
-            output_size = hidden_size
-        self.linear = torch.nn.Linear(hidden_size, output_size)
-        self.root_emb = torch.nn.Embedding(1, output_size)
-        self.bond_encoder = BondEncoder(hidden_size=output_size)
-        self.f_up = torch.nn.Sequential(
-            torch.nn.Linear(2*hidden_size, 2*hidden_size),
-            torch.nn.BatchNorm1d(2*hidden_size),
-            torch.nn.ReLU(),
-            torch.nn.Linear(2*hidden_size, output_size),
-        )
-
-    def forward(self, x, edge_index, edge_attr, visited):
-        x_lin = self.linear(x)
-        row, col = edge_index
-        deg = degree(row, x_lin.size(0), dtype=x_lin.dtype) + 1
-        deg_inv_sqrt = deg.pow(-0.5)
-        deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0.0
-        norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
-
-        edge_emb = self.bond_encoder(edge_attr)
-        agg = self.propagate(
-            edge_index,
-            x=x_lin,
-            edge_attr=edge_emb,
-            norm=norm,
-        )
-
-        agg[visited] = 0.0
-
-        concat = torch.cat([x_lin, agg], dim=1)
-        out = self.f_up(concat)
-        out = out + F.relu(x_lin + self.root_emb.weight) * (1.0 / deg.view(-1,1))
-
-        _, selected = agg.max(dim=0)
-        new_visited = visited.clone()
-        new_visited[selected] = True
-        mask = torch.zeros_like(visited)
-        mask[selected] = True
-        out = torch.where(mask.unsqueeze(1), out, x)
-
-        return out, new_visited
-
-    def message(self, x_j, edge_attr, norm):
-        return norm.view(-1,1) * F.relu(x_j + edge_attr)
-
-    def aggregate(self, inputs, index, dim_size=None):
-        if not _has_torch_scatter or scatter_max is None:
             raise ImportError("GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`.")
 
         out, _ = scatter_max(inputs, index, dim=0, dim_size=dim_size)
@@ -449,13 +424,8 @@ class GNN_node(torch.nn.Module):
             h_list = [self.atom_encoder(x)]
         else:
             h_list = [x]
-        if self.algorithm_aligned == 'mst':
-            visited = torch.zeros(x.size(0), dtype=torch.bool, device=x.device)
         for layer in range(self.num_layer):
-            if self.algorithm_aligned == 'mst':
-                h, visited = self.convs[layer](h_list[layer], edge_index, edge_attr, visited)
-            else:
-                h = self.convs[layer](h_list[layer], edge_index, edge_attr)
+            h = self.convs[layer](h_list[layer], edge_index, edge_attr)
             if self.norm_layer.split('_')[0] == 'batch':
                 h = self.batch_norms[layer](h)
             else:
@@ -583,16 +553,11 @@ class GNN_node_Virtualnode(torch.nn.Module):
             h_list = [self.atom_encoder(x)]
         else:
             h_list = [x]
-        if self.algorithm_aligned == 'mst':
-            visited = torch.zeros(x.size(0), dtype=torch.bool, device=x.device)
         for layer in range(self.num_layer):
             ### add message from virtual nodes to graph nodes
             h_list[layer] = h_list[layer] + virtualnode_embedding[batch]
             ### Message passing among graph nodes
-            if self.algorithm_aligned == 'mst':
-                h, visited = self.convs[layer](h_list[layer], edge_index, edge_attr, visited)
-            else:
-                h = self.convs[layer](h_list[layer], edge_index, edge_attr)
+            h = self.convs[layer](h_list[layer], edge_index, edge_attr)
             if self.norm_layer.split('_')[0] == 'batch':
                 h = self.batch_norms[layer](h)
             else:

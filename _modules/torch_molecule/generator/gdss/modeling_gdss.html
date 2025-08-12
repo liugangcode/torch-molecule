@@ -499,6 +499,8 @@
             
             <span class="c1"># No H, first heavy atom has type 0</span>
             <span class="n">node_type</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="s1">&#39;node_feat&#39;</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node_type</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">continue</span>
             
             <span class="c1"># Filter out invalid node types (&lt; 0)</span>
             <span class="n">valid_mask</span> <span class="o">=</span> <span class="n">node_type</span> <span class="o">&gt;=</span> <span class="mi">0</span>

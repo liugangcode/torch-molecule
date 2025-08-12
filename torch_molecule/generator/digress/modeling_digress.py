@@ -167,6 +167,8 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
             
             # No H, first heavy atom has type 0
             node_type = torch.from_numpy(graph['node_feat'][:, 0] - 1)
+            if node_type.numel() <= 1:
+                continue
             
             # Filter out invalid node types (< 0)
             valid_mask = node_type >= 0
@@ -191,16 +193,16 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
                 # Update node and edge data
                 node_type = node_type[valid_mask]
                 g.edge_index = remapped_edge_index
-                g.edge_attr = valid_edge_attr.long().squeeze(-1)
+                g.edge_attr = valid_edge_attr.long()
             else:
                 # No invalid nodes, proceed normally
                 g.edge_index = torch.from_numpy(graph["edge_index"])
                 edge_attr = torch.from_numpy(graph["edge_feat"])[:, 0] + 1
-                g.edge_attr = edge_attr.long().squeeze(-1)
-            
+                g.edge_attr = edge_attr.long()
+
             # * is encoded as "misc" which is 119 - 1 and should be 117
             node_type[node_type == 118] = 117
-            g.x = node_type.long().squeeze(-1)
+            g.x = node_type.long()
             # g.y = torch.from_numpy(graph["y"])
             g.y = torch.zeros(1, 1)
             del graph["node_feat"]
@@ -273,7 +275,7 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
 
     def fit(self, X_train: List[str]) -> "DigressMolecularGenerator":
         num_task = 0 if self.input_dim_y is None else self.input_dim_y
-        X_train, _ = self._validate_inputs(X_train, num_task=num_task)
+        X_train, _ = self._validate_inputs(X_train, num_task=num_task, return_rdkit_mol=False)
         self._setup_diffusion_params(X_train)
         self._initialize_model(self.model_class)
         self.model.initialize_parameters()

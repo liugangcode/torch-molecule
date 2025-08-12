@@ -190,6 +190,8 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             
             # No H, first heavy atom has type 0
             node_type = torch.from_numpy(graph['node_feat'][:, 0] - 1)
+            if node_type.numel() <= 1:
+                continue
             
             # Filter out invalid node types (< 0)
             valid_mask = node_type >= 0

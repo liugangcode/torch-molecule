@@ -4,9 +4,9 @@ import joblib
 from joblib import delayed
 from rdkit import Chem
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable
-from dataclasses import dataclass, field
+from typing import Optional, Union, Dict, Any, List, Callable
 from warnings import warn
+import torch
 
 from .crossover import crossover
 from .mutate import mutate
@@ -14,7 +14,6 @@ from .oracle import Oracle
 
 from ...base import BaseMolecularGenerator
 
-@dataclass
 class GraphGAMolecularGenerator(BaseMolecularGenerator):
     """This generator implements the Graph Genetic Algorithm for molecular generation.
     
@@ -40,24 +39,35 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
         Number of iterations for each target label (or random sample) to run the genetic algorithm.
     verbose : bool, default=False
         Whether to display progress bars and logs.
+    device : Optional[Union[torch.device, str]], default=None
+        Device to run the model on (CPU or GPU).
+    model_name : str, default="GraphGAMolecularGenerator"
+        Name identifier for the model.
     """
-
-    # GA parameters
-    num_task: int = 0
-    population_size: int = 100
-    offspring_size: int = 50
-    mutation_rate: float = 0.0067
-    n_jobs: int = 1
-    iteration: int = 5
+    def __init__(
+        self, 
+        num_task: int = 0, 
+        population_size: int = 100, 
+        offspring_size: int = 50, 
+        mutation_rate: float = 0.0067, 
+        n_jobs: int = 1, 
+        iteration: int = 5, 
+        verbose: bool = False, 
+        *,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "GraphGAMolecularGenerator"
+    ):
+        super().__init__(device=device, model_name=model_name)
+        
+        self.num_task = num_task
+        self.population_size = population_size
+        self.offspring_size = offspring_size
+        self.mutation_rate = mutation_rate
+        self.n_jobs = n_jobs
+        self.iteration = iteration
+        self.verbose = verbose
+        model_class = None
     
-    # Other parameters
-    verbose: bool = False
-    model_name: str = "GraphGAMolecularGenerator"
-    model_class = None
-    
-    def __post_init__(self):
-        super().__post_init__()
-
     @staticmethod
     def _get_param_names() -> List[str]:
         return [
@@ -307,4 +317,3 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
         
         # Return the best molecule
         return population_mol[0]
-    

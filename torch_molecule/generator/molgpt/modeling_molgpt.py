@@ -1,7 +1,7 @@
 import re
 from tqdm import tqdm
-from typing import Optional, Dict, Any, Tuple, List, Type
-from dataclasses import dataclass, field
+from typing import Optional, Dict, Any, Tuple, List, Type, Union
+import warnings
 
 import numpy as np
 import torch
@@ -13,7 +13,6 @@ from .gpt import GPT
 from .dataset import SmilesDataset
 from ...base import BaseMolecularGenerator
 
-@dataclass
 class MolGPTMolecularGenerator(BaseMolecularGenerator):
     """
     This generator implements the molecular GPT model for generating molecules.
@@ -60,38 +59,53 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
         Gradient norm clipping value.
     verbose : bool, default=False
         Whether to display progress bars during training.
+    device : Optional[Union[torch.device, str]], default=None
+        Device to run the model on (CPU or GPU).
+    model_name : str, default="MolGPTMolecularGenerator"
+        Name identifier for the model.
     """
+    def __init__(
+        self, 
+        num_layer: int = 8, 
+        num_head: int = 8, 
+        hidden_size: int = 256, 
+        max_len: int = 128, 
+        num_task: int = 0, 
+        use_scaffold: bool = False, 
+        use_lstm: bool = False, 
+        lstm_layers: int = 0, 
+        batch_size: int = 64, 
+        epochs: int = 1000, 
+        learning_rate: float = 3e-4, 
+        adamw_betas: Tuple[float, float] = (0.9, 0.95), 
+        weight_decay: float = 0.1, 
+        grad_norm_clip: float = 1.0, 
+        verbose: bool = False, 
+        *,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "MolGPTMolecularGenerator"
+    ):
+        super().__init__(device=device, model_name=model_name)
+        
+        self.num_layer = num_layer
+        self.num_head = num_head
+        self.hidden_size = hidden_size
+        self.max_len = max_len
+        self.num_task = num_task
+        self.use_scaffold = use_scaffold
+        self.use_lstm = use_lstm
+        self.lstm_layers = lstm_layers
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.adamw_betas = adamw_betas
+        self.weight_decay = weight_decay
+        self.grad_norm_clip = grad_norm_clip
+        self.verbose = verbose
+        self.fitting_loss = list()
+        self.fitting_epoch = 0
+        self.model_class = GPT
 
-    # Model parameters
-    num_layer: int = 8
-    num_head: int = 8
-    hidden_size: int = 256
-    max_len: int = 128
-    
-    # Conditioning parameters
-    num_task: int = 0
-    use_scaffold: bool = False
-    use_lstm: bool = False
-    lstm_layers: int = 0
-    
-    # Training parameters
-    batch_size: int = 64
-    epochs: int = 1000
-    learning_rate: float = 3e-4
-    adamw_betas: Tuple[float, float] = (0.9, 0.95)
-    weight_decay: float = 0.1
-    grad_norm_clip: float = 1.0
-
-    verbose: bool = False
-    # Attributes
-    model_name: str = "MolGPTMolecularGenerator"
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    model_class: Type[GPT] = field(default=GPT, init=False)
-
-    def __post_init__(self):
-        """Initialize the model after dataclass initialization."""
-        super().__post_init__()
         self.vocab_size = None
         self.token_to_id = None
         self.id_to_token = None
@@ -239,26 +253,27 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
         self.fitting_loss = []
         self.fitting_epoch = 0
         
+        # Calculate total steps for progress tracking
+        total_steps = self.epochs * len(train_loader)
+        
+        # Initialize global progress bar
+        global_pbar = tqdm(total=total_steps, desc="Training Progress", disable=not self.verbose)
+        
         scaler = GradScaler()
         for epoch in range(self.epochs):
-            train_losses = self._train_epoch(train_loader, optimizer, epoch, scaler)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch, scaler, global_pbar)
             self.fitting_loss.append(np.mean(train_losses))
 
+        global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer, epoch, scaler):
+    def _train_epoch(self, train_loader, optimizer, epoch, scaler, global_pbar=None):
         self.model.train()
         losses = []
-        
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
                 
-        for step, (x, y, prop, scaffold) in enumerate(iterator):
+        for step, (x, y, prop, scaffold) in enumerate(train_loader):
             x = x.to(self.device)
             y = y.to(self.device)
             prop = prop.to(self.device) if prop.numel() > 0 else None
@@ -274,8 +289,14 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
             scaler.update()
             losses.append(loss.item())
 
-            if self.verbose:
-                iterator.set_postfix({"Epoch": epoch, "Loss": f"{loss.item():.4f}"})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Step": f"{step+1}/{len(train_loader)}",
+                    "Loss": f"{loss.item():.4f}"
+                })
+                global_pbar.update(1)
         
         return losses
         
@@ -424,4 +445,3 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
             smiles_list.append(smiles)
         
         return smiles_list
-    

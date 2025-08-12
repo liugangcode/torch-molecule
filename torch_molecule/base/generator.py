@@ -1,16 +1,18 @@
-from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
-from typing import Optional, ClassVar, Union, List, Dict, Any, Tuple, Callable, Type, Literal
-
+from typing import Optional, List, Union
 import torch
 import numpy as np
 from .base import BaseModel
 
-@dataclass
 class BaseMolecularGenerator(BaseModel, ABC):
     """Base class for molecular generation."""
-    
-    model_name: str = field(default="BaseMolecularGenerator")
+    def __init__(
+        self,
+        *,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "BaseMolecularGenerator",
+    ):
+        super().__init__(device=device, model_name=model_name)
 
     @abstractmethod
     def fit(self, X: List[str], y: Optional[np.ndarray] = None) -> "BaseMolecularGenerator":
@@ -21,4 +23,3 @@ class BaseMolecularGenerator(BaseModel, ABC):
         """Generate molecular structures.
         """
         pass
-    

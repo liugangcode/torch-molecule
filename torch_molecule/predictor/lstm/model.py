@@ -115,7 +115,7 @@ class LSTM(nn.Module):
         prediction = self.fc(emb)     
         target = batched_label.to(torch.float32)   
         is_labeled = batched_label == batched_label
-        loss = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled])
+        loss = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled]).mean()
         return loss                 
     
     def forward(self, batched_input):

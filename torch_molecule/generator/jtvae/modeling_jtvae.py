@@ -1,6 +1,6 @@
 from tqdm import tqdm
-from dataclasses import dataclass, field
-from typing import Optional, Dict, Any, Tuple, List, Type
+from typing import Optional, Dict, Any, Tuple, List, Type, Union
+
 import numpy as np
 
 import torch
@@ -11,10 +11,9 @@ from .jtnn.vocab import Vocab
 from .jtnn.datautils import MolTreeFolder
 from ...base import BaseMolecularGenerator
 
-@dataclass
 class JTVAEMolecularGenerator(BaseMolecularGenerator):
     """ 
-    JT-VAE-based molecular generator. Implemented for unconditional moleculargeneration.     
+    JT-VAE-based molecular generator. Implemented for unconditional molecular generation.     
 
     References
     ----------
@@ -59,43 +58,58 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
         Number of iterations between KL weight updates.
     verbose : bool, default=False
         Whether to print detailed training information.
+    device : Optional[Union[torch.device, str]], default=None
+        Device to run the model on (CPU or GPU).
+    model_name : str, default="JTVAEMolecularGenerator"
+        Name identifier for the model.
     """
-    # Model parameters
-    hidden_size: int = 450
-    latent_size: int = 56
-    depthT: int = 20
-    depthG: int = 3
-
-    # Training parameters
-    batch_size: int = 32
-    epochs: int = 20
-    learning_rate: float = 0.003
-    weight_decay: float = 0.0
-    grad_norm_clip: Optional[float] = None
-    
-    # KL annealing parameters
-    beta: float = 0.0
-    step_beta: float = 0.002
-    max_beta: float = 1.0
-    warmup: int = 40000
-
-    # Learning rate scheduling
-    use_lr_scheduler: bool = True
-    anneal_rate: float = 0.9
-    anneal_iter: int = 40000
-    kl_anneal_iter: int = 2000
-
-    # Other parameters
-    verbose: bool = False
-
-    # attributes
-    model_name: str = "JTVAEMolecularGenerator"
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    model_class: Type[JTNNVAE] = field(default=JTNNVAE, init=False)
-    
-    def __post_init__(self):
-        super().__post_init__()
+    def __init__(
+        self, 
+        hidden_size: int = 450, 
+        latent_size: int = 56, 
+        depthT: int = 20, 
+        depthG: int = 3, 
+        batch_size: int = 32, 
+        epochs: int = 20, 
+        learning_rate: float = 0.003, 
+        weight_decay: float = 0.0, 
+        grad_norm_clip: Optional[float] = None, 
+        beta: float = 0.0, 
+        step_beta: float = 0.002, 
+        max_beta: float = 1.0, 
+        warmup: int = 40000, 
+        use_lr_scheduler: bool = True, 
+        anneal_rate: float = 0.9, 
+        anneal_iter: int = 40000, 
+        kl_anneal_iter: int = 2000, 
+        verbose: bool = False, 
+        *,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "JTVAEMolecularGenerator"
+    ):
+        super().__init__(device=device, model_name=model_name)
+        
+        self.hidden_size = hidden_size
+        self.latent_size = latent_size
+        self.depthT = depthT
+        self.depthG = depthG
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.weight_decay = weight_decay
+        self.grad_norm_clip = grad_norm_clip
+        self.beta = beta
+        self.step_beta = step_beta
+        self.max_beta = max_beta
+        self.warmup = warmup
+        self.use_lr_scheduler = use_lr_scheduler
+        self.anneal_rate = anneal_rate
+        self.anneal_iter = anneal_iter
+        self.kl_anneal_iter = kl_anneal_iter
+        self.verbose = verbose
+        self.fitting_loss = list()
+        self.fitting_epoch = 0
+        self.model_class = JTNNVAE
         self.vocab = None
 
     @staticmethod
@@ -185,23 +199,27 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
         self.fitting_loss = []
         self.fitting_epoch = 0
         total_step = 0
+        
+        # Calculate total steps for progress tracking
+        total_steps = self.epochs * step_len
+        
+        # Initialize global progress bar
+        global_pbar = tqdm(total=total_steps, desc="Training Progress", disable=not self.verbose)
+        
         for epoch in range(self.epochs):
-            train_losses, total_step = self._train_epoch(train_loader, optimizer, scheduler, epoch, total_step, step_len)
+            train_losses, total_step = self._train_epoch(train_loader, optimizer, scheduler, epoch, total_step, step_len, global_pbar)
             self.fitting_loss.append(np.mean(train_losses).item())
 
+        global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer, scheduler, epoch, total_step, step_len):
+    def _train_epoch(self, train_loader, optimizer, scheduler, epoch, total_step, step_len, global_pbar=None):
         self.model.train()
         losses = []
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False, total=step_len)
-            if self.verbose
-            else train_loader
-        )
-        for step, batched_data in enumerate(iterator):
+        # Remove the local tqdm iterator since we're using global progress bar
+        for step, batched_data in enumerate(train_loader):
             total_step += 1
             optimizer.zero_grad()
 
@@ -219,8 +237,18 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
             if total_step % self.kl_anneal_iter == 0 and total_step >= self.warmup:
                 self.beta = min(self.max_beta, self.beta + self.step_beta)
 
-            if self.verbose:
-                iterator.set_postfix({"Epoch": epoch, "Loss": f"{total_loss.item():.4f}, word_loss: {word_loss.item():.4f}, topo_loss: {topo_loss.item():.4f}, assm_loss: {assm_loss.item():.4f}, kl_div: {kl_div.item():.4f}"})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Step": f"{step+1}/{step_len}",
+                    "Total Loss": f"{total_loss.item():.4f}",
+                    "Word": f"{word_loss.item():.4f}",
+                    "Topo": f"{topo_loss.item():.4f}",
+                    "Assm": f"{assm_loss.item():.4f}",
+                    "KL": f"{kl_div.item():.4f}"
+                })
+                global_pbar.update(1)
             
         return losses, total_step
 
@@ -244,4 +272,3 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
             raise ValueError("Model must be fitted before generating molecules.")
         
         return self.model.sample_prior(self.device)
-    

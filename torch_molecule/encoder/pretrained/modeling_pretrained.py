@@ -1,7 +1,6 @@
 import warnings
 from tqdm import tqdm
 from typing import Optional, Union, Dict, Any, Tuple, List, Literal
-from dataclasses import dataclass, field
 
 import torch
 import numpy as np
@@ -25,8 +24,6 @@ known_repos = [
 ]
 
 known_add_bos_eos_list = ["entropy/gpt2_zinc_87m"]
-
-@dataclass(init=False)
 class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
     """Implements Hugging Face pretrained transformer models as molecular encoders.
 
@@ -92,33 +89,33 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
     add_bos_eos : Optional[bool], default=None
         Whether to add beginning/end of sequence tokens. If None, models in known_add_bos_eos_list will be set to True.
         The current known_add_bos_eos_list includes: ["entropy/gpt2_zinc_87m"].
-    model_name : str, default="PretrainedMolecularEncoder"
-        Name identifier for the model instance.
     verbose : bool, default=False
         Whether to display progress information during encoding.
+    device : Optional[Union[torch.device, str]], default=None
+        Device to run the model on (CPU or GPU).
+    model_name : str, default="HFPretrainedMolecularEncoder"
+        Name identifier for the model instance.
     """
 
-    repo_id: str
-
-    # Default arguments
-    max_length: int = 128
-    batch_size: int = 128
-    add_bos_eos: Optional[bool] = None
-    model_name: str = "PretrainedMolecularEncoder"
-    verbose: bool = False
-
-    def __init__(self, repo_id: str, max_length: int = 128, batch_size: int = 128, add_bos_eos: Optional[bool] = None,
-                 model_name: str = "PretrainedMolecularEncoder", verbose: bool = False, **kwargs):
+    def __init__(
+        self, 
+        repo_id: str, 
+        max_length: int = 128, 
+        batch_size: int = 128, 
+        add_bos_eos: Optional[bool] = None,
+        verbose: bool = False,
+        *,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "HFPretrainedMolecularEncoder"
+    ):
+        super().__init__(device=device, model_name=model_name)
+        
         self.repo_id = repo_id
         self.max_length = max_length
         self.batch_size = batch_size
         self.add_bos_eos = add_bos_eos
-        self.model_name = model_name
         self.verbose = verbose
-        super().__init__(**kwargs)
-
-    def __post_init__(self):
-        super().__post_init__()
+        
         self._require_transformers()
         self.fitting_epoch = -1
         self.fitting_loss = -1

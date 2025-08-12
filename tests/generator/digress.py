@@ -6,7 +6,7 @@ import torch
 from torch_molecule import DigressMolecularGenerator
 from torch_molecule.utils.search import ParameterType, ParameterSpec
 
-EPOCHS = 5
+EPOCHS = 100
 BATCH_SIZE = 32
 
 def test_digress_generator():

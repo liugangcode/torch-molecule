@@ -1,9 +1,8 @@
 import os
 import numpy as np
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal, Type
+from typing import Optional, Union, Dict, Any, Tuple, List, Literal
 import warnings
-from dataclasses import dataclass, field
 
 import torch
 from torch_geometric.loader import DataLoader
@@ -17,7 +16,6 @@ from ...utils import graph_from_smiles
 ALLOWABLE_ENCODER_MODELS = GNN_ENCODER_MODELS
 ALLOWABLE_ENCODER_READOUTS = GNN_ENCODER_READOUTS
 
-@dataclass
 class ContextPredMolecularEncoder(BaseMolecularEncoder):
     """This encoder implements a GNN-based model for molecular representation learning
     using the context prediction pretraining strategy.
@@ -65,45 +63,59 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
         Number of epochs with no improvement after which learning rate will be reduced.
     verbose : bool, default=False
         Whether to print progress information during training.
+    device : Optional[Union[torch.device, str]], default=None
+        Device to run the model on (CPU or GPU).
+    model_name : str, default="ContextPredMolecularEncoder"
+        Name of the encoder model.
     """
-    # Task related parameters
-    mode: str = "cbow" # cbow or skipgram
-    context_size: int = 2
-    neg_samples: int = 1
-    
-    # Model parameters
-    num_layer: int = 3
-    hidden_size: int = 300
-    drop_ratio: float = 0.5
-    norm_layer: str = "batch_norm"
-    
-    encoder_type: str = "gin-virtual"
-    readout: str = "sum"
-    
-    # Training parameters
-    batch_size: int = 128
-    epochs: int = 500
-    learning_rate: float = 0.001
-    grad_clip_value: Optional[float] = None
-    weight_decay: float = 0.0
-    
-    # Scheduler parameters
-    use_lr_scheduler: bool = False
-    scheduler_factor: float = 0.5
-    scheduler_patience: int = 5
-    
-    # Other parameters
-    verbose: bool = False
-    model_name: str = "ContextPredMolecularEncoder"
-    
-    # Non-init fields
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    model_class: Type[GNN] = field(default=GNN, init=False)
-    
-    def __post_init__(self):
-        """Initialize the model after dataclass initialization."""
-        super().__post_init__()
+    def __init__(
+        self,
+        *,
+        mode: str = "cbow",
+        context_size: int = 2,
+        neg_samples: int = 1,
+        num_layer: int = 3,
+        hidden_size: int = 300,
+        drop_ratio: float = 0.5,
+        norm_layer: str = "batch_norm",
+        encoder_type: str = "gin-virtual",
+        readout: str = "sum",
+        batch_size: int = 128,
+        epochs: int = 500,
+        learning_rate: float = 0.001,
+        grad_clip_value: Optional[float] = None,
+        weight_decay: float = 0.0,
+        use_lr_scheduler: bool = False,
+        scheduler_factor: float = 0.5,
+        scheduler_patience: int = 5,
+        verbose: bool = False,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "ContextPredMolecularEncoder"
+    ):
+        super().__init__(device=device, model_name=model_name)
+        
+        self.mode = mode
+        self.context_size = context_size
+        self.neg_samples = neg_samples
+        self.num_layer = num_layer
+        self.hidden_size = hidden_size
+        self.drop_ratio = drop_ratio
+        self.norm_layer = norm_layer
+        self.encoder_type = encoder_type
+        self.readout = readout
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.grad_clip_value = grad_clip_value
+        self.weight_decay = weight_decay
+        self.use_lr_scheduler = use_lr_scheduler
+        self.scheduler_factor = scheduler_factor
+        self.scheduler_patience = scheduler_patience
+        self.verbose = verbose
+        self.fitting_loss = list()
+        self.fitting_epoch = 0
+        self.model_class = GNN
+
         if self.encoder_type not in ALLOWABLE_ENCODER_MODELS:
             raise ValueError(f"Invalid encoder_model: {self.encoder_type}. Currently only {ALLOWABLE_ENCODER_MODELS} are supported.")
         if self.readout not in ALLOWABLE_ENCODER_READOUTS:
@@ -213,23 +225,32 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
         )
         self.fitting_loss = []
 
+        # Calculate total steps for progress tracking
+        total_steps = self.epochs * len(train_loader)
+        
+        # Initialize global progress bar
+        global_pbar = tqdm(total=total_steps, desc="Training Progress", disable=not self.verbose)
+
         for epoch in range(self.epochs):
             # Training phase
-            train_losses = self._train_epoch(train_loader, optimizer, epoch)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch, global_pbar)
             self.fitting_loss.append(np.mean(train_losses))
             if scheduler:
                 scheduler.step(np.mean(train_losses))
 
+        global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer, epoch):
+    def _train_epoch(self, train_loader, optimizer, epoch, global_pbar=None):
         """Training logic for one epoch.
 
         Args:
             train_loader: DataLoader containing training data
             optimizer: Optimizer instance for model parameter updates
+            epoch: Current epoch number
+            global_pbar: Global progress bar for tracking overall progress
 
         Returns:
             list: List of loss values for each training step
@@ -237,13 +258,7 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
         self.model.train()
         losses = []
 
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
-
-        for batch in iterator:
+        for step, batch in enumerate(train_loader):
             batch = batch.to(self.device)
             optimizer.zero_grad()
             loss = self.model.compute_loss(batch)
@@ -253,9 +268,14 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
             optimizer.step()
             losses.append(loss.item())
 
-            # Update progress bar if using tqdm
-            if self.verbose:
-                iterator.set_postfix({"Epoch": f"{epoch}", "Loss": f"{loss.item():.4f}"})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Step": f"{step+1}/{len(train_loader)}",
+                    "Loss": f"{loss.item():.4f}"
+                })
+                global_pbar.update(1)
 
         return losses
 

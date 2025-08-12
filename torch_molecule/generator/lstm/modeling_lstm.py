@@ -1,6 +1,5 @@
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Type
-from dataclasses import dataclass, field
+from typing import Optional, Union, Dict, Any, Tuple, List
 import numpy as np
 
 import torch
@@ -12,7 +11,6 @@ from .action_sampler import ActionSampler
 from .smiles_char_dict import SmilesCharDictionary
 from ...base import BaseMolecularGenerator
 
-@dataclass
 class LSTMMolecularGenerator(BaseMolecularGenerator):
     """LSTM-based molecular generator.
     
@@ -50,37 +48,53 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
         Maximum norm for gradient clipping. None means no clipping.
     verbose : bool, default=False
         Whether to print progress during training.
+    device : Optional[Union[torch.device, str]], default=None
+        Device to run the model on (CPU or GPU).
+    model_name : str, default="LSTMMolecularGenerator"
+        Name identifier for the model.
     """
-    num_task: int = 0
-    # LSTM parameters
-    max_len: int = 100
-    num_layer: int = 3
-    hidden_size: int = 512
-    dropout: float = 0.2
+    def __init__(
+        self, 
+        num_task: int = 0, 
+        max_len: int = 100, 
+        num_layer: int = 3, 
+        hidden_size: int = 512, 
+        dropout: float = 0.2, 
+        batch_size: int = 128, 
+        epochs: int = 10000, 
+        learning_rate: float = 0.0002, 
+        weight_decay: float = 0.0, 
+        use_lr_scheduler: bool = False, 
+        scheduler_factor: float = 0.5, 
+        scheduler_patience: int = 5, 
+        grad_norm_clip: Optional[float] = None, 
+        verbose: bool = False, 
+        *,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "LSTMMolecularGenerator"
+    ):
+        super().__init__(device=device, model_name=model_name)
+        
+        self.num_task = num_task
+        self.max_len = max_len
+        self.num_layer = num_layer
+        self.hidden_size = hidden_size
+        self.dropout = dropout
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.weight_decay = weight_decay
+        self.use_lr_scheduler = use_lr_scheduler
+        self.scheduler_factor = scheduler_factor
+        self.scheduler_patience = scheduler_patience
+        self.grad_norm_clip = grad_norm_clip
+        self.verbose = verbose
+        self.fitting_loss = list()
+        self.fitting_epoch = 0
+        self.input_size = None
+        self.output_size = None
+        self.model_class = LSTM
 
-    # Training parameters
-    batch_size: int = 128
-    epochs: int = 10000
-    learning_rate: float = 0.0002
-    weight_decay: float = 0.0
-    # Scheduler parameters
-    use_lr_scheduler: bool = False
-    scheduler_factor: float = 0.5
-    scheduler_patience: int = 5
-    grad_norm_clip: Optional[float] = None
-    # Other parameters
-    verbose: bool = False
-
-    # attributes
-    model_name: str = "LSTMMolecularGenerator"
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    input_size: int = field(init=False, default=None)
-    output_size: int = field(init=False, default=None)
-    model_class: Type[LSTM] = field(default=LSTM, init=False)
-    
-    def __post_init__(self):
-        super().__post_init__()
         self.tokenizer = SmilesCharDictionary()
         self.input_size = len(self.tokenizer.char_idx)
         self.output_size = len(self.tokenizer.char_idx)
@@ -178,25 +192,29 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
         self.fitting_loss = []
         self.fitting_epoch = 0
         criterion = torch.nn.CrossEntropyLoss()
+        
+        # Calculate total steps for progress tracking
+        total_steps = self.epochs * len(train_loader)
+        
+        # Initialize global progress bar
+        global_pbar = tqdm(total=total_steps, desc="Training Progress", disable=not self.verbose)
+        
         for epoch in range(self.epochs):
-            train_losses = self._train_epoch(train_loader, optimizer, epoch, criterion)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch, criterion, global_pbar)
             self.fitting_loss.append(np.mean(train_losses).item())
             if scheduler:
                 scheduler.step(np.mean(train_losses).item())
 
+        global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer, epoch, criterion):
+    def _train_epoch(self, train_loader, optimizer, epoch, criterion, global_pbar=None):
         self.model.train()
         losses = []
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
-        for step, batched_data in enumerate(iterator):
+        
+        for step, batched_data in enumerate(train_loader):
             for i in range(len(batched_data)):
                 batched_data[i] = batched_data[i].to(self.device)
             optimizer.zero_grad()
@@ -208,8 +226,14 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
             optimizer.step()
             losses.append(loss.item())
             
-            if self.verbose:
-                iterator.set_postfix({"Epoch": epoch, "Loss": f"{loss.item():.4f}"})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Step": f"{step+1}/{len(train_loader)}",
+                    "Loss": f"{loss.item():.4f}"
+                })
+                global_pbar.update(1)
             
         return losses
 
@@ -260,4 +284,3 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
             all_generated_mols.extend(canonicalized_smiles)
 
         return all_generated_mols
-    

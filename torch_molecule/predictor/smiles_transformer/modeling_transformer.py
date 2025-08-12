@@ -1,19 +1,11 @@
-import os
-import numpy as np
-from tqdm import tqdm
 from typing import Optional, Union, Dict, Any, List, Callable, Type, Tuple
 import warnings
-from dataclasses import dataclass, field
 
 import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader, TensorDataset
 
 from .model import Transformer
 from ..lstm.modeling_lstm import LSTMMolecularPredictor
 from ...utils.search import (
-    suggest_parameter,
     ParameterSpec,
     ParameterType,
 )
@@ -32,7 +24,6 @@ DEFAULT_TRANSFORMER_SEARCH_SPACES: Dict[str, ParameterSpec] = {
     "scheduler_factor": ParameterSpec(ParameterType.FLOAT, (0.1, 0.5)),
 }
 
-@dataclass
 class SMILESTransformerMolecularPredictor(LSTMMolecularPredictor):
     """This predictor implements a Transformer model for SMILES-based molecular property predictions.
     
@@ -43,6 +34,10 @@ class SMILESTransformerMolecularPredictor(LSTMMolecularPredictor):
 
     Parameters
     ----------
+    device : torch.device or str, optional
+        Device to run the model on. If None, will auto-detect GPU or use CPU.
+    model_name : str, default="SMILESTransformerMolecularPredictor"
+        Name identifier for the model.
     num_task : int, default=1
         Number of prediction tasks.
     task_type : str, default="regression"
@@ -86,53 +81,68 @@ class SMILESTransformerMolecularPredictor(LSTMMolecularPredictor):
     verbose : bool, default=False
         Whether to print progress information during training.
     """
-    # Model parameters
-    num_task: int = 1
-    task_type: str = "regression"
-    input_dim: int = 54  # vocabulary size
-    hidden_size: int = 128
-    n_heads: int = 4
-    num_layers: int = 3
-    dim_feedforward: Optional[int] = 256
-    max_input_len: int = 200  # max token length
-    dropout: float = 0.1
-    
-    # Training parameters
-    batch_size: int = 64
-    epochs: int = 200
-    loss_criterion: Optional[Callable] = None
-    evaluate_criterion: Optional[Union[str, Callable]] = None
-    evaluate_higher_better: Optional[bool] = None
-    learning_rate: float = 0.0001
-    weight_decay: float = 0.0
-    patience: int = 20
+    def __init__(
+        self,
+        num_task: int = 1,
+        task_type: str = "regression",
+        # Transformer-specific parameters
+        input_dim: int = 54,
+        hidden_size: int = 128,
+        n_heads: int = 4,
+        num_layers: int = 3,
+        dim_feedforward: Optional[int] = 256,
+        max_input_len: int = 200,
+        dropout: float = 0.1,
+        batch_size: int = 64,
+        epochs: int = 200,
+        loss_criterion: Optional[Callable] = None,
+        evaluate_criterion: Optional[Union[str, Callable]] = None,
+        evaluate_higher_better: Optional[bool] = None,
+        learning_rate: float = 0.0001,
+        weight_decay: float = 0.0,
+        patience: int = 20,
+        use_lr_scheduler: bool = True,
+        scheduler_factor: float = 0.5,
+        scheduler_patience: int = 5,
+        verbose: bool = False,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "SMILESTransformerMolecularPredictor",
+    ):
+        super().__init__(
+            device=device,
+            model_name=model_name,
+            num_task=num_task,
+            task_type=task_type,
+            input_dim=input_dim,
+            output_dim=None,
+            LSTMunits=None,
+            max_input_len=max_input_len,
+            batch_size=batch_size,
+            epochs=epochs,
+            loss_criterion=loss_criterion,
+            evaluate_criterion=evaluate_criterion,
+            evaluate_higher_better=evaluate_higher_better,
+            learning_rate=learning_rate,
+            weight_decay=weight_decay,
+            patience=patience,
+            use_lr_scheduler=use_lr_scheduler,
+            scheduler_factor=scheduler_factor,
+            scheduler_patience=scheduler_patience,
+            verbose=verbose,
+        )
+        
+        # Transformer-specific parameters
+        self.hidden_size = hidden_size
+        self.n_heads = n_heads
+        self.num_layers = num_layers
+        self.dim_feedforward = dim_feedforward
+        self.dropout = dropout
+        self.model_class = Transformer
 
-    # Scheduler parameters
-    use_lr_scheduler: bool = True
-    scheduler_factor: float = 0.5
-    scheduler_patience: int = 5
-
-    # Other parameters
-    verbose: bool = False
-    model_name: str = "SMILESTransformerMolecularPredictor"
-    
-    # Non-init fields
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    model_class: Type[Transformer] = field(default=Transformer, init=False)
-
-    def __post_init__(self):
-        """Initialize after dataclass initialization."""
-        super().__post_init__()
         # Validate n_heads is compatible with hidden_size
         if self.hidden_size % self.n_heads != 0:
             raise ValueError(f"hidden_size ({self.hidden_size}) must be divisible by n_heads ({self.n_heads})")
-            
-        # Setup loss criterion and evaluation
-        if self.loss_criterion is None:
-            self.loss_criterion = nn.MSELoss()
-        self._setup_evaluation(self.evaluate_criterion, self.evaluate_higher_better)
-
+        
     @staticmethod
     def _get_param_names() -> List[str]:
         """Get parameter names for the estimator.
@@ -244,8 +254,7 @@ class SMILESTransformerMolecularPredictor(LSTMMolecularPredictor):
         
         return optimizer, scheduler
 
-
     def _get_default_search_space(self):
         """Get the default hyperparameter search space.
         """
-        return DEFAULT_TRANSFORMER_SEARCH_SPACES
+        return DEFAULT_TRANSFORMER_SEARCH_SPACES.copy()

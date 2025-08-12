@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 import copy
-# from torch_scatter import scatter
 from .utils import scatter
 
 from ...nn import GNN_node, GNN_node_Virtualnode, MLP
@@ -269,10 +268,6 @@ class SSR(nn.Module):
         
         # Compute total loss
         ssr_loss = cmd_coeff * ssr_loss
-        if ssr_loss > 10:
-            import warnings
-            warnings.warn(f"SSR loss is too large: {ssr_loss}, truncating to 10")
-            ssr_loss = 10
         total_loss = pred_loss + ssr_loss
         
         return total_loss, pred_loss, ssr_loss

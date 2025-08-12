@@ -123,17 +123,10 @@ class Transformer(nn.Module):
         torch.Tensor
             Scalar loss value.
         """
-        # Get predictions
         prediction = self(batched_input)["prediction"]
-        
-        # Convert labels to float32
         target = batched_label.to(torch.float32)
-        
-        # Create mask for valid labels (handles NaN values)
         is_labeled = batched_label == batched_label
-        
-        # Compute loss only on valid labels
-        loss = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled])
+        loss = criterion(prediction.to(torch.float32)[is_labeled], target[is_labeled]).mean()
         return loss
 
     def forward(self, batched_input):

@@ -9,33 +9,32 @@ from ..utils import (
     root_mean_squared_error,
     r2_score,
 )
-from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
-from typing import Optional, ClassVar, Union, List, Dict, Any, Tuple, Callable, Type
+from typing import Optional, Union, List, Tuple, Callable
 from ..base.base import BaseModel
 
-@dataclass
 class BaseMolecularPredictor(BaseModel, ABC):
     """Base class for molecular discovery estimators."""
-    
-    model_name: str = field(default="BaseMolecularPredictor")
-    num_task: int = field(default=0)
-    task_type: str = field(default=None)
-    DEFAULT_METRICS: ClassVar[Dict] = {
-        "classification": {"default": ("roc_auc", roc_auc_score, True)},
-        "regression": {"default": ("mae", mean_absolute_error, False)},
-    }
+    def __init__(
+        self,
+        *,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "BaseMolecularPredictor",
+        num_task: int = 0,
+        task_type: Optional[str] = None,
+    ):
+        super().__init__(device=device, model_name=model_name)
+        self.num_task = num_task
+        self.task_type = task_type
 
-    def __post_init__(self):
-        super().__post_init__()
         if self.task_type not in ["classification", "regression"]:
             raise ValueError(f"Invalid task_type: {self.task_type}")
         if self.num_task <= 0:
             raise ValueError(f"num_task must be positive, got {self.num_task}")
 
     @staticmethod
-    def _get_param_names(self) -> List[str]:
-        return super()._get_param_names() + ["num_task", "task_type"]
+    def _get_param_names() -> List[str]:
+        return BaseModel._get_param_names() + ["num_task", "task_type"]
 
     @abstractmethod
     def autofit(self, X_train, y_train, X_val=None, y_val=None, search_parameters: Optional[dict] = None, n_trials: int = 10) -> "BaseMolecularPredictor": 
@@ -59,10 +58,16 @@ class BaseMolecularPredictor(BaseModel, ABC):
         evaluate_higher_better: Optional[bool],
     ) -> None:
         if evaluate_criterion is None:
-            default_metric = self.DEFAULT_METRICS[self.task_type]["default"]
-            self.evaluate_name = default_metric[0]
-            self.evaluate_criterion = default_metric[1]
-            self.evaluate_higher_better = default_metric[2]
+            if self.task_type == 'classification':
+                self.evaluate_name = 'roc_auc'
+                self.evaluate_criterion = roc_auc_score
+                self.evaluate_higher_better = True
+            elif self.task_type == 'regression':
+                self.evaluate_name = 'mae'
+                self.evaluate_criterion = mean_absolute_error
+                self.evaluate_higher_better = False
+            else:
+                raise ValueError(f"The task type {self.task_type} does not have a default metric.")
         else:
             if isinstance(evaluate_criterion, str):
                 metric_map = {

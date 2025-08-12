@@ -1,13 +1,7 @@
-import os
-import numpy as np
-import warnings
-import datetime
 from tqdm import tqdm
 from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal, Type
-from dataclasses import dataclass, field
 
 import torch
-from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 
 from .model import SSR
@@ -18,7 +12,6 @@ from ...utils.search import (
     ParameterType,
 )
 
-@dataclass
 class SSRMolecularPredictor(GNNMolecularPredictor):
     """This predictor implements a SizeShiftReg model with the GNN.
     
@@ -42,20 +35,130 @@ class SSRMolecularPredictor(GNNMolecularPredictor):
     n_moments : int, default=5
         Number of moments to match in the CMD calculation. Higher values capture 
         more complex distribution characteristics.
+    coarse_pool : str, default='mean'
+        Pooling method for coarsened graphs.
+    num_task : int, default=1
+        Number of prediction tasks.
+    task_type : str, default="regression"
+        Type of prediction task, either "regression" or "classification".
+    num_layer : int, default=5
+        Number of GNN layers.
+    hidden_size : int, default=300
+        Dimension of hidden node features.
+    gnn_type : str, default="gin-virtual"
+        Type of GNN architecture to use. One of ["gin-virtual", "gcn-virtual", "gin", "gcn"].
+    drop_ratio : float, default=0.5
+        Dropout probability.
+    norm_layer : str, default="batch_norm"
+        Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
+    graph_pooling : str, default="sum"
+        Method for aggregating node features to graph-level representations. One of ["sum", "mean", "max"].
+    augmented_feature : list or None, default=None
+        Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.
+        Examples like ["morgan", "maccs"] or None.
+    batch_size : int, default=128
+        Number of samples per batch for training.
+    epochs : int, default=500
+        Maximum number of training epochs.
+    loss_criterion : callable, optional
+        Loss function for training.
+    evaluate_criterion : str or callable, optional
+        Metric for model evaluation.
+    evaluate_higher_better : bool, optional
+        Whether higher values of the evaluation metric are better.
+    learning_rate : float, default=0.001
+        Learning rate for optimizer.
+    grad_clip_value : float, optional
+        Maximum norm of gradients for gradient clipping.
+    weight_decay : float, default=0.0
+        L2 regularization strength.
+    patience : int, default=50
+        Number of epochs to wait for improvement before early stopping.
+    use_lr_scheduler : bool, default=False
+        Whether to use learning rate scheduler.
+    scheduler_factor : float, default=0.5
+        Factor by which to reduce learning rate when plateau is reached.
+    scheduler_patience : int, default=5
+        Number of epochs with no improvement after which learning rate will be reduced.
+    verbose : bool, default=False
+        Whether to print progress information during training.
+    device : torch.device or str, optional
+        Device to use for computations.
+    model_name : str, default="SSRMolecularPredictor"
+        Name of the model.
     """
-    # SSR-specific parameters
-    coarse_ratios: List[float] = field(default_factory=lambda: [0.8, 0.9])
-    cmd_coeff: float = field(default=0.1)
-    fine_grained: bool = field(default=True)
-    n_moments: int = field(default=5)
-    coarse_pool: str = field(default='mean')
-
-    # Other Non-init fields
-    model_name: str = "SSRMolecularPredictor"
-    model_class: Type[SSR] = field(default=SSR, init=False)
-
-    def __post_init__(self):
-        super().__post_init__()
+    def __init__(
+        self,
+        # SSR-specific parameters
+        coarse_ratios: List[float] = [0.8, 0.9],
+        cmd_coeff: float = 0.1,
+        fine_grained: bool = True,
+        n_moments: int = 5,
+        coarse_pool: str = 'mean',
+        # Core model parameters
+        num_task: int = 1,
+        task_type: str = "regression",
+        # GNN architecture parameters
+        num_layer: int = 5,
+        hidden_size: int = 300,
+        gnn_type: str = "gin-virtual",
+        drop_ratio: float = 0.5,
+        norm_layer: str = "batch_norm",
+        graph_pooling: str = "sum",
+        augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = None,
+        # Training parameters
+        batch_size: int = 128,
+        epochs: int = 500,
+        learning_rate: float = 0.001,
+        weight_decay: float = 0.0,
+        grad_clip_value: Optional[float] = None,
+        patience: int = 50,
+        # Learning rate scheduler parameters
+        use_lr_scheduler: bool = False,
+        scheduler_factor: float = 0.5,
+        scheduler_patience: int = 5,
+        # Loss and evaluation parameters
+        loss_criterion: Optional[Callable] = None,
+        evaluate_criterion: Optional[Union[str, Callable]] = None,
+        evaluate_higher_better: Optional[bool] = None,
+        # General parameters
+        verbose: bool = False,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "SSRMolecularPredictor",
+    ):
+        super().__init__(
+            num_task=num_task,
+            task_type=task_type,
+            num_layer=num_layer,
+            hidden_size=hidden_size,
+            gnn_type=gnn_type,
+            drop_ratio=drop_ratio,
+            norm_layer=norm_layer,
+            graph_pooling=graph_pooling,
+            augmented_feature=augmented_feature,
+            batch_size=batch_size,
+            epochs=epochs,
+            learning_rate=learning_rate,
+            weight_decay=weight_decay,
+            grad_clip_value=grad_clip_value,
+            patience=patience,
+            use_lr_scheduler=use_lr_scheduler,
+            scheduler_factor=scheduler_factor,
+            scheduler_patience=scheduler_patience,
+            loss_criterion=loss_criterion,
+            evaluate_criterion=evaluate_criterion,
+            evaluate_higher_better=evaluate_higher_better,
+            verbose=verbose,
+            device=device,
+            model_name=model_name,
+        )
+        
+        self.coarse_ratios = coarse_ratios
+        self.cmd_coeff = cmd_coeff
+        self.fine_grained = fine_grained
+        self.n_moments = n_moments
+        self.coarse_pool = coarse_pool
+        self.model_class = SSR
 
     @staticmethod
     def _get_param_names() -> List[str]:
@@ -76,7 +179,6 @@ class SSRMolecularPredictor(GNNMolecularPredictor):
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
         base_params = super()._get_model_params(checkpoint)
         return base_params
-
 
     def _convert_to_pytorch_data(self, X, y=None):
         """Convert SMILES to PyTorch Geometric data with coarsened versions, preserving edge attributes."""
@@ -218,47 +320,34 @@ class SSRMolecularPredictor(GNNMolecularPredictor):
         
         return coarse_edge_index, coarse_edge_attr, clusters
 
-    def _train_epoch(self, train_loader, optimizer, epoch):
-        """Training logic for one epoch with SSR."""
+    def _train_epoch(self, train_loader, optimizer, epoch, global_pbar=None):
         self.model.train()
         losses = []
         pred_losses = []
         ssr_losses = []
 
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
-
-        for batch in iterator:
+        for batch_idx, batch in enumerate(train_loader):
             batch = batch.to(self.device)
             optimizer.zero_grad()
 
-            # Forward pass and loss computation
             total_loss, pred_loss, ssr_loss = self.model.compute_loss(batch, self.loss_criterion, self.coarse_ratios, self.cmd_coeff, self.fine_grained, self.n_moments)
-
-            # Backward pass
             total_loss.backward()
-
-            # Compute gradient norm if gradient clipping is enabled
             if self.grad_clip_value is not None:
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip_value)
-
             optimizer.step()
 
             losses.append(total_loss.item())
             pred_losses.append(pred_loss.item())
             ssr_losses.append(ssr_loss.item())
 
-            # Update progress bar if using tqdm
-            if self.verbose:
-                iterator.set_postfix({
-                    "Epoch": epoch,
+            if global_pbar is not None:
+                global_pbar.update(1)
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Batch": f"{batch_idx+1}/{len(train_loader)}",
                     "Total loss": f"{total_loss.item():.4f}",
                     "Pred loss": f"{pred_loss.item():.4f}",
-                    "ssr_loss": f"{ssr_loss.item():.4f}"
+                    "SSR loss": f"{ssr_loss.item():.4f}"
                 })
 
-        # Return all loss components for logging
         return losses

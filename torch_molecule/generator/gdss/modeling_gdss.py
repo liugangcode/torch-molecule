@@ -16,9 +16,8 @@ from .utils import compute_dataset_info, to_dense, quantize_mol
 from ...base import BaseMolecularGenerator
 from ...utils import graph_from_smiles, graph_to_smiles
 
-@dataclass
 class GDSSMolecularGenerator(BaseMolecularGenerator):
-    """ This generator implements "Score-based Generative Modeling of Graphs via the System of Stochastic Differential Equations"
+    """This generator implements "Score-based Generative Modeling of Graphs via the System of Stochastic Differential Equations"
 
     References
     ----------
@@ -88,58 +87,87 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
         Whether to remove noise in the final step of sampling.
     verbose : bool, default=False
         Whether to display progress bars and logs.
+    device : Optional[Union[torch.device, str]], optional
+        Device to use for computation (cuda/cpu)
+    model_name : str, optional
+        Name of the model, defaults to "GDSSMolecularGenerator"
         
     """
-    
-    # Model parameters
-    num_layer: int = 3
-    hidden_size_adj: float = 8
-    hidden_size: int = 16
-    attention_dim: int = 16
-    num_head: int = 4
+    def __init__(
+        self, 
+        *,
+        num_layer: int = 3, 
+        hidden_size_adj: float = 8, 
+        hidden_size: int = 16, 
+        attention_dim: int = 16, 
+        num_head: int = 4, 
+        sde_type_x: str = 'VE', 
+        sde_beta_min_x: float = 0.1, 
+        sde_beta_max_x: float = 1, 
+        sde_num_scales_x: int = 1000, 
+        sde_type_adj: str = 'VE', 
+        sde_beta_min_adj: float = 0.1, 
+        sde_beta_max_adj: float = 1, 
+        sde_num_scales_adj: int = 1000, 
+        batch_size: int = 128, 
+        epochs: int = 500, 
+        learning_rate: float = 0.005, 
+        grad_clip_value: Optional[float] = 1.0, 
+        weight_decay: float = 1e-4, 
+        use_loss_reduce_mean: bool = False, 
+        use_lr_scheduler: bool = False, 
+        scheduler_factor: float = 0.5, 
+        scheduler_patience: int = 5, 
+        sampler_predictor: str = 'Reverse', 
+        sampler_corrector: str = 'Langevin', 
+        sampler_snr: float = 0.2, 
+        sampler_scale_eps: float = 0.7, 
+        sampler_n_steps: int = 1, 
+        sampler_probability_flow: bool = False, 
+        sampler_noise_removal: bool = True, 
+        verbose: bool = False, 
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "GDSSMolecularGenerator"
+    ):
+        super().__init__(
+            device=device,
+            model_name=model_name,
+        )
+        
+        self.num_layer = num_layer
+        self.hidden_size_adj = hidden_size_adj
+        self.hidden_size = hidden_size
+        self.attention_dim = attention_dim
+        self.num_head = num_head
+        self.sde_type_x = sde_type_x
+        self.sde_beta_min_x = sde_beta_min_x
+        self.sde_beta_max_x = sde_beta_max_x
+        self.sde_num_scales_x = sde_num_scales_x
+        self.sde_type_adj = sde_type_adj
+        self.sde_beta_min_adj = sde_beta_min_adj
+        self.sde_beta_max_adj = sde_beta_max_adj
+        self.sde_num_scales_adj = sde_num_scales_adj
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.grad_clip_value = grad_clip_value
+        self.weight_decay = weight_decay
+        self.use_loss_reduce_mean = use_loss_reduce_mean
+        self.use_lr_scheduler = use_lr_scheduler
+        self.scheduler_factor = scheduler_factor
+        self.scheduler_patience = scheduler_patience
+        self.sampler_predictor = sampler_predictor
+        self.sampler_corrector = sampler_corrector
+        self.sampler_snr = sampler_snr
+        self.sampler_scale_eps = sampler_scale_eps
+        self.sampler_n_steps = sampler_n_steps
+        self.sampler_probability_flow = sampler_probability_flow
+        self.sampler_noise_removal = sampler_noise_removal
+        self.verbose = verbose
+        self.fitting_loss = list()
+        self.fitting_epoch = 0
+        self.model_class = GDSSModel
 
-    # Diffusion parameters
-    sde_type_x: str = 'VE' # One of 'VP', 'VE', 'subVP'
-    sde_beta_min_x: float = 0.1
-    sde_beta_max_x: float = 1
-    sde_num_scales_x: int = 1000
-    sde_type_adj: str = 'VE' # One of 'VP', 'VE', 'subVP'
-    sde_beta_min_adj: float = 0.1
-    sde_beta_max_adj: float = 1
-    sde_num_scales_adj: int = 1000
-
-    # Training parameters
-    batch_size: int = 128
-    epochs: int = 500
-    learning_rate: float = 0.005
-    grad_clip_value: Optional[float] = 1.0
-    weight_decay: float = 1e-4
-    use_loss_reduce_mean: bool = False
-
-    # Scheduler parameters
-    use_lr_scheduler: bool = False
-    scheduler_factor: float = 0.5
-    scheduler_patience: int = 5
-
-    # Sampling parameters
-    sampler_predictor: str = 'Reverse'  # One of 'Euler', 'Reverse', others will be treated as 'Euler'
-    sampler_corrector: str = 'Langevin' # One of 'Langevin', 'None', others will be treated as 'None'
-    sampler_snr: float = 0.2
-    sampler_scale_eps: float = 0.7
-    sampler_n_steps: int = 1
-    sampler_probability_flow: bool = False
-    sampler_noise_removal: bool = True
-
-    verbose: bool = False
-    # Attributes
-    model_name: str = "GDSSMolecularGenerator"
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    model_class: Type[GDSSModel] = field(default=GDSSModel, init=False)
-    # dataset_info: Dict[str, Any] = field(default_factory=dict, init=False)
-    def __post_init__(self):
-        """Initialize the model after dataclass initialization."""
-        super().__post_init__()
         self.max_node = None
         self.input_dim_X = None
         self.input_dim_adj = None
@@ -361,28 +389,66 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
             num_workers=0
         )
 
+        # Calculate total steps for global progress bar
+        steps_per_epoch = len(train_loader)
+        total_steps = self.epochs * steps_per_epoch
+        
+        # Initialize global progress bar
+        global_pbar = None
+        if self.verbose:
+            global_pbar = tqdm(
+                total=total_steps,
+                desc="GDSS Training Progress",
+                unit="step",
+                dynamic_ncols=True,
+                leave=True
+            )
+
         self.fitting_loss = []
         self.fitting_epoch = 0
-        for epoch in range(self.epochs):
-            train_losses = self._train_epoch(train_loader, optimizer, epoch)
-            self.fitting_loss.append(np.mean(train_losses).item())
-            if scheduler:
-                scheduler.step(np.mean(train_losses).item())
+        
+        try:
+            for epoch in range(self.epochs):
+                train_losses = self._train_epoch(train_loader, optimizer, epoch, global_pbar)
+                epoch_loss = np.mean(train_losses).item()
+                self.fitting_loss.append(epoch_loss)
+                
+                if scheduler:
+                    scheduler.step(epoch_loss)
 
-        self.fitting_epoch = epoch
+                # Update global progress bar with epoch summary
+                if global_pbar is not None:
+                    global_pbar.set_postfix({
+                        "Epoch": f"{epoch+1}/{self.epochs}",
+                        "Avg Loss": f"{epoch_loss:.4f}"
+                    })
+
+            self.fitting_epoch = epoch
+        finally:
+            # Ensure progress bar is closed
+            if global_pbar is not None:
+                global_pbar.close()
+
         self.is_fitted_ = True
         return self
     
-    def _train_epoch(self, train_loader, optimizer, epoch):
+    def _train_epoch(self, train_loader, optimizer, epoch, global_pbar=None):
+        """Training logic for one epoch.
+
+        Args:
+            train_loader: DataLoader containing training data
+            optimizer: Optimizer instance for model parameter updates
+            epoch: Current epoch number
+            global_pbar: Global progress bar for tracking overall training progress
+
+        Returns:
+            list: List of loss values for each training step
+        """
         self.model.train()
         losses = []
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
+        
         active_index = self.dataset_info["active_index"]
-        for step, batched_data in enumerate(iterator):
+        for step, batched_data in enumerate(train_loader):
             batched_data = batched_data.to(self.device)
             optimizer.zero_grad()
 
@@ -399,8 +465,16 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
             optimizer.step()
             losses.append(loss.item())
 
-            if self.verbose:
-                iterator.set_postfix({"Epoch": epoch, "Loss": f"{loss.item():.4f}", "Loss_x": f"{loss_x.item():.4f}", "Loss_adj": f"{loss_adj.item():.4f}"})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.update(1)
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Step": f"{step+1}/{len(train_loader)}",
+                    "Loss": f"{loss.item():.4f}",
+                    "Node Loss": f"{loss_x.item():.4f}",
+                    "Adj Loss": f"{loss_adj.item():.4f}"
+                })
             
         return losses
     

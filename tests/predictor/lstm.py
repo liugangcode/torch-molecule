@@ -27,7 +27,8 @@ def test_lstm_predictor():
         output_dim=5,  # Output dimension matches number of tasks
         LSTMunits=60,
         batch_size=2,
-        epochs=2,
+        epochs=200,
+        patience=200,
         device="cpu",
         verbose=True
     )

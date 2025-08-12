@@ -1,7 +1,6 @@
 import numpy as np
 from tqdm import tqdm
 from typing import Optional, Union, Dict, Any, Tuple, List, Type
-from dataclasses import dataclass, field
 
 import torch
 import torch.nn.functional as F
@@ -15,7 +14,6 @@ from .diffusion import NoiseScheduleDiscrete, MarginalTransition, sample_discret
 from ...base import BaseMolecularGenerator
 from ...utils import graph_from_smiles, graph_to_smiles
 
-@dataclass
 class DigressMolecularGenerator(BaseMolecularGenerator):
     """
     This generator implements the DiGress for unconditional molecular generation.
@@ -26,82 +24,101 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
       Learning Representations (ICLR) 2023. https://openreview.net/forum?id=UaAD-Nu86WX
     - Code: https://github.com/cvignac/DiGress
 
-    :param hidden_size_X: Hidden dimension size for node features, defaults to 256
-    :type hidden_size_X: int, optional
-    :param hidden_size_E: Hidden dimension size for edge features, defaults to 128
-    :type hidden_size_E: int, optional
-    :param num_layer: Number of transformer layers, defaults to 5
-    :type num_layer: int, optional
-    :param n_head: Number of attention heads, defaults to 8
-    :type n_head: int, optional
-    :param dropout: Dropout rate for transformer layers, defaults to 0.1
-    :type dropout: float, optional
-    :param timesteps: Number of diffusion timesteps, defaults to 500
-    :type timesteps: int, optional
-    :param batch_size: Batch size for training, defaults to 128
-    :type batch_size: int, optional
-    :param epochs: Number of training epochs, defaults to 10000
-    :type epochs: int, optional
-    :param learning_rate: Learning rate for optimization, defaults to 0.0002
-    :type learning_rate: float, optional
-    :param grad_clip_value: Value for gradient clipping (None = no clipping), defaults to None
-    :type grad_clip_value: Optional[float], optional
-    :param weight_decay: Weight decay for optimization, defaults to 0.0
-    :type weight_decay: float, optional
-    :param lw_X: Loss weight for node reconstruction, defaults to 1
-    :type lw_X: float, optional
-    :param lw_E: Loss weight for edge reconstruction, defaults to 10
-    :type lw_E: float, optional
-    :param use_lr_scheduler: Whether to use learning rate scheduler, defaults to False
-    :type use_lr_scheduler: bool, optional
-    :param scheduler_factor: Factor for learning rate scheduler (if use_lr_scheduler is True), defaults to 0.5 
-    :type scheduler_factor: float, optional
-    :param scheduler_patience: Patience for learning rate scheduler (if use_lr_scheduler is True), defaults to 5
-    :type scheduler_patience: int, optional
-    :param verbose: Whether to display progress bars and logs. Default is False.
-    :type verbose: bool
+    Parameters
+    ----------
+    hidden_size_X : int, optional
+        Hidden dimension size for node features, defaults to 256
+    hidden_size_E : int, optional
+        Hidden dimension size for edge features, defaults to 128
+    num_layer : int, optional
+        Number of transformer layers, defaults to 5
+    n_head : int, optional
+        Number of attention heads, defaults to 8
+    dropout : float, optional
+        Dropout rate for transformer layers, defaults to 0.1
+    timesteps : int, optional
+        Number of diffusion timesteps, defaults to 500
+    batch_size : int, optional
+        Batch size for training, defaults to 128
+    epochs : int, optional
+        Number of training epochs, defaults to 10000
+    learning_rate : float, optional
+        Learning rate for optimization, defaults to 0.0002
+    grad_clip_value : Optional[float], optional
+        Value for gradient clipping (None = no clipping), defaults to None
+    weight_decay : float, optional
+        Weight decay for optimization, defaults to 0.0
+    lw_X : float, optional
+        Loss weight for node reconstruction, defaults to 1
+    lw_E : float, optional
+        Loss weight for edge reconstruction, defaults to 10
+    use_lr_scheduler : bool, optional
+        Whether to use learning rate scheduler, defaults to False
+    scheduler_factor : float, optional
+        Factor for learning rate scheduler (if use_lr_scheduler is True), defaults to 0.5 
+    scheduler_patience : int, optional
+        Patience for learning rate scheduler (if use_lr_scheduler is True), defaults to 5
+    verbose : bool, optional
+        Whether to display progress bars and logs. Default is False.
+    device : Optional[Union[torch.device, str]], optional
+        Device to use for computation (cuda/cpu)
+    model_name : str, optional
+        Name of the model, defaults to "DigressMolecularGenerator"
     """
-    
-    # Model parameters
-    hidden_size_X: int = 256
-    hidden_size_E: int = 128
-    num_layer: int = 5
-    n_head: int = 8
-    dropout: float = 0.1
+    def __init__(
+        self, 
+        hidden_size_X: int = 256, 
+        hidden_size_E: int = 128, 
+        num_layer: int = 5, 
+        n_head: int = 8, 
+        dropout: float = 0.1, 
+        timesteps: int = 500, 
+        batch_size: int = 512, 
+        epochs: int = 1000, 
+        learning_rate: float = 0.0002, 
+        grad_clip_value: Optional[float] = None, 
+        weight_decay: float = 1e-12, 
+        lw_X: float = 1, 
+        lw_E: float = 5, 
+        use_lr_scheduler: bool = False, 
+        scheduler_factor: float = 0.5, 
+        scheduler_patience: int = 5, 
+        verbose: bool = False, 
+        device: Optional[Union[torch.device, str]] = None, 
+        model_name: str = "DigressMolecularGenerator"
+    ):
+        super().__init__(
+            device=device,
+            model_name=model_name,
+        )
+        
+        self.hidden_size_X = hidden_size_X
+        self.hidden_size_E = hidden_size_E
+        self.num_layer = num_layer
+        self.n_head = n_head
+        self.dropout = dropout
+        self.timesteps = timesteps
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.grad_clip_value = grad_clip_value
+        self.weight_decay = weight_decay
+        self.lw_X = lw_X
+        self.lw_E = lw_E
+        self.use_lr_scheduler = use_lr_scheduler
+        self.scheduler_factor = scheduler_factor
+        self.scheduler_patience = scheduler_patience
+        self.verbose = verbose
+        self.fitting_loss = list()
+        self.fitting_epoch = 0
+        self.model_class = GraphTransformer
+        self.dataset_info = dict()
 
-    # Diffusion parameters
-    timesteps: int = 500
-    
-    # Training parameters
-    batch_size: int = 512
-    epochs: int = 1000
-    learning_rate: float = 0.0002
-    grad_clip_value: Optional[float] = None
-    weight_decay: float = 1e-12
-    lw_X: float = 1
-    lw_E: float = 5
-
-    # Scheduler parameters
-    use_lr_scheduler: bool = False
-    scheduler_factor: float = 0.5
-    scheduler_patience: int = 5
-    verbose: bool = False
-
-    # attributes
-    model_name: str = "DigressMolecularGenerator"
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    model_class: Type[GraphTransformer] = field(default=GraphTransformer, init=False)
-    dataset_info: Dict[str, Any] = field(default_factory=dict, init=False)
-
-    def __post_init__(self):
-        """Initialize the model after dataclass initialization."""
-        super().__post_init__()
         self.input_dim_X = None
         self.input_dim_E = None
         self.input_dim_y = 1
-        self.hidden_size_y: int = 128
-        self.max_node: int = None
+        self.hidden_size_y = 128
+        self.max_node: Optional[int] = None
 
     @staticmethod
     def _get_param_names() -> List[str]:
@@ -270,28 +287,66 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
             num_workers=0
         )
 
+        # Calculate total steps for global progress bar
+        steps_per_epoch = len(train_loader)
+        total_steps = self.epochs * steps_per_epoch
+        
+        # Initialize global progress bar
+        global_pbar = None
+        if self.verbose:
+            global_pbar = tqdm(
+                total=total_steps,
+                desc="DiGress Training Progress",
+                unit="step",
+                dynamic_ncols=True,
+                leave=True
+            )
+
         self.fitting_loss = []
         self.fitting_epoch = 0
-        for epoch in range(self.epochs):
-            train_losses = self._train_epoch(train_loader, optimizer, epoch)
-            self.fitting_loss.append(np.mean(train_losses).item())
-            if scheduler:
-                scheduler.step(np.mean(train_losses).item())
+        
+        try:
+            for epoch in range(self.epochs):
+                train_losses = self._train_epoch(train_loader, optimizer, epoch, global_pbar)
+                epoch_loss = np.mean(train_losses).item()
+                self.fitting_loss.append(epoch_loss)
+                
+                if scheduler:
+                    scheduler.step(epoch_loss)
 
-        self.fitting_epoch = epoch
+                # Update global progress bar with epoch summary
+                if global_pbar is not None:
+                    global_pbar.set_postfix({
+                        "Epoch": f"{epoch+1}/{self.epochs}",
+                        "Avg Loss": f"{epoch_loss:.4f}"
+                    })
+
+            self.fitting_epoch = epoch
+        finally:
+            # Ensure progress bar is closed
+            if global_pbar is not None:
+                global_pbar.close()
+
         self.is_fitted_ = True
         return self
     
-    def _train_epoch(self, train_loader, optimizer, epoch):
+    def _train_epoch(self, train_loader, optimizer, epoch, global_pbar=None):
+        """Training logic for one epoch.
+
+        Args:
+            train_loader: DataLoader containing training data
+            optimizer: Optimizer instance for model parameter updates
+            epoch: Current epoch number
+            global_pbar: Global progress bar for tracking overall training progress
+
+        Returns:
+            list: List of loss values for each training step
+        """
         self.model.train()
         losses = []
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
+        
         active_index = self.dataset_info["active_index"]
-        for step, batched_data in enumerate(iterator):
+        for step, batched_data in enumerate(train_loader):
             batched_data = batched_data.to(self.device)
             optimizer.zero_grad()
 
@@ -309,8 +364,16 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
             optimizer.step()
             losses.append(loss.item())
             
-            if self.verbose:
-                iterator.set_postfix({"Epoch": epoch, "Loss": f"{loss.item():.4f}", "Loss_X": f"{loss_X.item():.4f}", "Loss_E": f"{loss_E.item():.4f}"})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.update(1)
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Step": f"{step+1}/{len(train_loader)}",
+                    "Loss": f"{loss.item():.4f}",
+                    "Node Loss": f"{loss_X.item():.4f}",
+                    "Edge Loss": f"{loss_E.item():.4f}"
+                })
             
         return losses
 

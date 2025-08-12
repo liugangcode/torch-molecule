@@ -1,10 +1,7 @@
-import os
-import numpy as np
 import warnings
-import datetime
+import numpy as np
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal
-from dataclasses import dataclass
+from typing import Optional, Union, List, Callable, Literal
 
 import torch
 from torch_geometric.loader import DataLoader
@@ -18,10 +15,8 @@ from ...utils.search import (
     ParameterType,
 )
 
-@dataclass
 class SGIRMolecularPredictor(GREAMolecularPredictor):
-    """
-    This predictor implements SGIR for semi-supervised graph imbalanced regression.
+    """This predictor implements SGIR for semi-supervised graph imbalanced regression.
 
     It trains the GREA model based on pseudo-labeling and data augmentation.
 
@@ -31,39 +26,157 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
       https://dl.acm.org/doi/10.1145/3580305.3599497
     - Code: https://github.com/liugangcode/SGIR
 
-    :param num_anchor: Number of anchor points used to split the label space during pseudo-labeling
-    :type num_anchor: int, default=10
-    :param warmup_epoch: Number of epochs to train before starting pseudo-labeling and data augmentation
-    :type warmup_epoch: int, default=20
-    :param labeling_interval: Interval (in epochs) between pseudo-labeling steps
-    :type labeling_interval: int, default=5
-    :param augmentation_interval: Interval (in epochs) between data augmentation steps
-    :type augmentation_interval: int, default=5
-    :param top_quantile: Quantile threshold for selecting high confidence predictions during pseudo-labeling
-    :type top_quantile: float, default=0.1
-    :param label_logscale: Whether to use log scale for the label space during pseudo-labeling and data augmentation
-    :type label_logscale: bool, default=False
-    :param lw_aug: Weight for the data augmentation loss
-    :type lw_aug: float, default=1
+    Parameters
+    ----------
+    num_anchor : int, default=10
+        Number of anchor points used to split the label space during pseudo-labeling.
+    warmup_epoch : int, default=20
+        Number of epochs to train before starting pseudo-labeling and data augmentation.
+    labeling_interval : int, default=5
+        Interval (in epochs) between two pseudo-labeling steps. It controls the update frequency of pseudo-labeling.
+    augmentation_interval : int, default=5
+        Interval (in epochs) between two data augmentation steps. It controls the update frequency of data augmentation.
+    top_quantile : float, default=0.1
+        Quantile threshold for selecting high confidence predictions during pseudo-labeling.
+    label_logscale : bool, default=False
+        Whether to use log scale for the label space during pseudo-labeling and data augmentation.
+    lw_aug : float, default=1
+        Loss weight for the augmented data.
+    gamma : float, default=0.4
+        GREA-specific parameter that penalize the size of the rationales (ratio between the number of nodes in the rationales and the number of nodes in the original graph).
+    num_task : int, default=1
+        Number of prediction tasks. SGIR currently only supports regression tasks with 1 task.
+    task_type : str, default="regression"
+        Type of prediction task, either "regression" or "classification".
+    num_layer : int, default=5
+        Number of GNN layers.
+    hidden_size : int, default=300
+        Dimension of hidden node features.
+    gnn_type : str, default="gin-virtual"
+        Type of GNN architecture to use. One of ["gin-virtual", "gcn-virtual", "gin", "gcn"].
+    drop_ratio : float, default=0.5
+        Dropout probability.
+    norm_layer : str, default="batch_norm"
+        Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
+    graph_pooling : str, default="sum"
+        Method for aggregating node features to graph-level representations. One of ["sum", "mean", "max"].
+    augmented_feature : list or None, default=None
+        Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.
+        Examples like ["morgan", "maccs"] or None.
+    batch_size : int, default=128
+        Number of samples per batch for training.
+    epochs : int, default=500
+        Maximum number of training epochs.
+    loss_criterion : callable, optional
+        Loss function for training.
+    evaluate_criterion : str or callable, optional
+        Metric for model evaluation.
+    evaluate_higher_better : bool, optional
+        Whether higher values of the evaluation metric are better.
+    learning_rate : float, default=0.001
+        Learning rate for optimizer.
+    grad_clip_value : float, optional
+        Maximum norm of gradients for gradient clipping.
+    weight_decay : float, default=0.0
+        L2 regularization strength.
+    patience : int, default=50
+        Number of epochs to wait for improvement before early stopping.
+    use_lr_scheduler : bool, default=False
+        Whether to use learning rate scheduler.
+    scheduler_factor : float, default=0.5
+        Factor by which to reduce learning rate when plateau is reached.
+    scheduler_patience : int, default=5
+        Number of epochs with no improvement after which learning rate will be reduced.
+    verbose : bool, default=False
+        Whether to print progress information during training.
+    device : torch.device or str, optional
+        Device to run the model on. If None, will auto-detect GPU or use CPU.
+    model_name : str, default="SGIRMolecularPredictor"
+        Name identifier for the model.
     """
-    # SGIR-specific parameters
-    num_anchor: int = 10
-    warmup_epoch: int = 20
-    labeling_interval: int = 5
-    augmentation_interval: int = 5
-    top_quantile: float = 0.1
-    label_logscale: bool = False
-    lw_aug: float = 1
-    # Override parent defaults
-    task_type: str = "regression"
-    model_name: str = "SGIRMolecularPredictor"
     
-    def __post_init__(self):
-        super().__post_init__()
+    def __init__(
+        self,
+        # SGIR-specific parameters
+        num_anchor: int = 10,
+        warmup_epoch: int = 20,
+        labeling_interval: int = 5,
+        augmentation_interval: int = 5,
+        top_quantile: float = 0.1,
+        label_logscale: bool = False,
+        lw_aug: float = 1,
+        gamma: float = 0.4,
+        # Core model parameters
+        num_task: int = 1,
+        task_type: str = "regression",
+        # GNN architecture parameters
+        num_layer: int = 5,
+        hidden_size: int = 300,
+        gnn_type: str = "gin-virtual",
+        drop_ratio: float = 0.5,
+        norm_layer: str = "batch_norm",
+        graph_pooling: str = "sum",
+        augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = None,
+        # Training parameters
+        batch_size: int = 128,
+        epochs: int = 500,
+        learning_rate: float = 0.001,
+        weight_decay: float = 0.0,
+        grad_clip_value: Optional[float] = None,
+        patience: int = 50,
+        # Learning rate scheduler parameters
+        use_lr_scheduler: bool = False,
+        scheduler_factor: float = 0.5,
+        scheduler_patience: int = 5,
+        # Loss and evaluation parameters
+        loss_criterion: Optional[Callable] = None,
+        evaluate_criterion: Optional[Union[str, Callable]] = None,
+        evaluate_higher_better: Optional[bool] = None,
+        # General parameters
+        verbose: bool = False,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "SGIRMolecularPredictor",
+    ):
+        super().__init__(
+            gamma=gamma,
+            num_task=num_task,
+            task_type=task_type,
+            num_layer=num_layer,
+            hidden_size=hidden_size,
+            gnn_type=gnn_type,
+            drop_ratio=drop_ratio,
+            norm_layer=norm_layer,
+            graph_pooling=graph_pooling,
+            augmented_feature=augmented_feature,
+            batch_size=batch_size,
+            epochs=epochs,
+            learning_rate=learning_rate,
+            weight_decay=weight_decay,
+            grad_clip_value=grad_clip_value,
+            patience=patience,
+            use_lr_scheduler=use_lr_scheduler,
+            scheduler_factor=scheduler_factor,
+            scheduler_patience=scheduler_patience,
+            loss_criterion=loss_criterion,
+            evaluate_criterion=evaluate_criterion,
+            evaluate_higher_better=evaluate_higher_better,
+            verbose=verbose,
+            device=device,
+            model_name=model_name,
+        )
         
+        # SGIR-specific parameters
+        self.num_anchor = num_anchor
+        self.warmup_epoch = warmup_epoch
+        self.labeling_interval = labeling_interval
+        self.augmentation_interval = augmentation_interval
+        self.top_quantile = top_quantile
+        self.label_logscale = label_logscale
+        self.lw_aug = lw_aug
+
         if self.task_type != "regression" or self.num_task != 1:
             raise ValueError("SGIR only supports regression tasks with 1 task")
-        
+    
     @staticmethod
     def _get_param_names():
         grea_params = [
@@ -140,57 +253,88 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
         best_eval = float('-inf') if self.evaluate_higher_better else float('inf')
         cnt_wait = 0
 
-        self.model.train()
-        for epoch in range(self.epochs):
-            # Training phase
-            train_losses = self._train_epoch(train_loader, augmented_dataset, optimizer, epoch)
-            
-            # Update datasets after warmup
-            if epoch > self.warmup_epoch:
-                if epoch % self.labeling_interval == 0:
-                    train_loader = build_selection_dataset(
-                        self.model, train_dataset, unlbl_dataset,
-                        self.batch_size, self.num_anchor, self.top_quantile,
-                        self.device, self.label_logscale
-                    )
-
-                if epoch % self.augmentation_interval == 0:
-                    augmented_dataset = build_augmentation_dataset(
-                        self.model, train_dataset, unlbl_dataset,
-                        self.batch_size, self.num_anchor, self.device, 
-                        self.label_logscale
-                    )
-
-            self.fitting_loss.append(np.mean(train_losses))
-
-            # Validation and model selection
-            current_eval = self._evaluation_epoch(val_loader)
-            if scheduler:
-                scheduler.step(current_eval)
-            
-            is_better = (
-                current_eval > best_eval if self.evaluate_higher_better
-                else current_eval < best_eval
+        # Calculate total steps for global progress bar
+        steps_per_epoch = len(train_loader)
+        total_steps = self.epochs * steps_per_epoch
+        
+        # Initialize global progress bar
+        global_pbar = None
+        if self.verbose:
+            global_pbar = tqdm(
+                total=total_steps,
+                desc="SGIR Training Progress",
+                unit="step",
+                dynamic_ncols=True,
+                leave=True
             )
-            
-            if is_better:
-                self.fitting_epoch = epoch
-                best_eval = current_eval
-                best_state_dict = self.model.state_dict()
-                cnt_wait = 0
-            else:
-                cnt_wait += 1
-                if cnt_wait > self.patience:
-                    if self.verbose:
-                        print(f"Early stopping at epoch {epoch}")
-                    break
-            
-            if self.verbose and epoch % 10 == 0:
-                print(
-                    f"Epoch {epoch}: Loss = {np.mean(train_losses):.4f}, "
-                    f"{self.evaluate_name} = {current_eval:.4f}, "
-                    f"Best {self.evaluate_name} = {best_eval:.4f}"
+
+        self.model.train()
+        try:
+            for epoch in range(self.epochs):
+                # Training phase
+                train_losses = self._train_epoch(train_loader, augmented_dataset, optimizer, epoch, global_pbar)
+                
+                # Update datasets after warmup
+                if epoch > self.warmup_epoch:
+                    if epoch % self.labeling_interval == 0:
+                        train_loader = build_selection_dataset(
+                            self.model, train_dataset, unlbl_dataset,
+                            self.batch_size, self.num_anchor, self.top_quantile,
+                            self.device, self.label_logscale
+                        )
+
+                    if epoch % self.augmentation_interval == 0:
+                        augmented_dataset = build_augmentation_dataset(
+                            self.model, train_dataset, unlbl_dataset,
+                            self.batch_size, self.num_anchor, self.device, 
+                            self.label_logscale
+                        )
+
+                self.fitting_loss.append(np.mean(train_losses))
+
+                # Validation and model selection
+                current_eval = self._evaluation_epoch(val_loader)
+                if scheduler:
+                    scheduler.step(current_eval)
+                
+                is_better = (
+                    current_eval > best_eval if self.evaluate_higher_better
+                    else current_eval < best_eval
                 )
+                
+                if is_better:
+                    self.fitting_epoch = epoch
+                    best_eval = current_eval
+                    best_state_dict = self.model.state_dict()
+                    cnt_wait = 0
+                    if self.verbose and global_pbar:
+                        global_pbar.set_postfix({
+                            "Epoch": f"{epoch+1}/{self.epochs}",
+                            "Loss": f"{np.mean(train_losses):.4f}",
+                            f"{self.evaluate_name}": f"{best_eval:.4f}",
+                            "Status": "✓ Best"
+                        })
+                else:
+                    cnt_wait += 1
+                    if self.verbose and global_pbar:
+                        global_pbar.set_postfix({
+                            "Epoch": f"{epoch+1}/{self.epochs}",
+                            "Loss": f"{np.mean(train_losses):.4f}",
+                            f"{self.evaluate_name}": f"{current_eval:.4f}",
+                            "Wait": f"{cnt_wait}/{self.patience}"
+                        })
+                    if cnt_wait > self.patience:
+                        if self.verbose:
+                            if global_pbar:
+                                global_pbar.set_postfix({
+                                    "Status": "Early Stopped",
+                                    "Epoch": f"{epoch+1}/{self.epochs}"
+                                })
+                        break
+        finally:
+            # Ensure progress bar is closed
+            if global_pbar is not None:
+                global_pbar.close()
 
         # Restore best model
         if best_state_dict is not None:
@@ -204,7 +348,19 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
         self.is_fitted_ = True
         return self
     
-    def _train_epoch(self, train_loader, augmented_dataset, optimizer, epoch):
+    def _train_epoch(self, train_loader, augmented_dataset, optimizer, epoch, global_pbar=None):
+        """Training logic for one epoch.
+
+        Args:
+            train_loader: DataLoader containing training data
+            augmented_dataset: Augmented dataset for SGIR training
+            optimizer: Optimizer instance for model parameter updates
+            epoch: Current epoch number
+            global_pbar: Global progress bar for tracking overall training progress
+
+        Returns:
+            list: List of loss values for each training step
+        """
         losses = []
 
         if augmented_dataset is not None and self.lw_aug != 0:
@@ -221,13 +377,7 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
             aug_inputs = None
             aug_outputs = None
 
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
-
-        for batch_idx, batch in enumerate(iterator):
+        for batch_idx, batch in enumerate(train_loader):
             batch = batch.to(self.device)
             optimizer.zero_grad()
 
@@ -253,8 +403,15 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
 
             losses.append(loss.item())
 
-            # Update progress bar if using tqdm
-            if self.verbose:
-                iterator.set_postfix({"Epoch": epoch, "Total Loss": f"{loss.item():.4f}", "Lbls Loss": f"{Lx.item():.4f}", "Aug Loss": f"{Laug.item():.4f}",})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.update(1)
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Batch": f"{batch_idx+1}/{len(train_loader)}",
+                    "Total Loss": f"{loss.item():.4f}",
+                    "(Pseudo)Labeled Loss": f"{Lx.item():.4f}",
+                    "Aug Loss": f"{Laug.item():.4f}"
+                })
 
         return losses

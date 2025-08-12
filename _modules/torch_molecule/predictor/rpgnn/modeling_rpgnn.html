@@ -280,7 +280,6 @@
 
 <div class="viewcode-block" id="RPGNNMolecularPredictor">
 <a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.rpgnn.modeling_rpgnn.RPGNNMolecularPredictor">[docs]</a>
-<span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">RPGNNMolecularPredictor</span><span class="p">(</span><span class="n">GNNMolecularPredictor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a GNN model based on Relational pooling.</span>
 
@@ -294,6 +293,55 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    num_task : int, default=1</span>
+<span class="sd">        Number of prediction tasks.</span>
+<span class="sd">    task_type : str, default=&quot;regression&quot;</span>
+<span class="sd">        Type of prediction task, either &quot;regression&quot; or &quot;classification&quot;.</span>
+<span class="sd">    num_layer : int, default=5</span>
+<span class="sd">        Number of GNN layers.</span>
+<span class="sd">    hidden_size : int, default=300</span>
+<span class="sd">        Dimension of hidden node features.</span>
+<span class="sd">    gnn_type : str, default=&quot;gin-virtual&quot;</span>
+<span class="sd">        Type of GNN architecture to use. One of [&quot;gin-virtual&quot;, &quot;gcn-virtual&quot;, &quot;gin&quot;, &quot;gcn&quot;].</span>
+<span class="sd">    drop_ratio : float, default=0.5</span>
+<span class="sd">        Dropout probability.</span>
+<span class="sd">    norm_layer : str, default=&quot;batch_norm&quot;</span>
+<span class="sd">        Type of normalization layer to use. One of [&quot;batch_norm&quot;, &quot;layer_norm&quot;, &quot;instance_norm&quot;, &quot;graph_norm&quot;, &quot;size_norm&quot;, &quot;pair_norm&quot;].</span>
+<span class="sd">    graph_pooling : str, default=&quot;sum&quot;</span>
+<span class="sd">        Method for aggregating node features to graph-level representations. One of [&quot;sum&quot;, &quot;mean&quot;, &quot;max&quot;].</span>
+<span class="sd">    augmented_feature : list or None, default=None</span>
+<span class="sd">        Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.</span>
+<span class="sd">        Examples like [&quot;morgan&quot;, &quot;maccs&quot;] or None.</span>
+<span class="sd">    batch_size : int, default=128</span>
+<span class="sd">        Number of samples per batch for training.</span>
+<span class="sd">    epochs : int, default=500</span>
+<span class="sd">        Maximum number of training epochs.</span>
+<span class="sd">    loss_criterion : callable, optional</span>
+<span class="sd">        Loss function for training.</span>
+<span class="sd">    evaluate_criterion : str or callable, optional</span>
+<span class="sd">        Metric for model evaluation.</span>
+<span class="sd">    evaluate_higher_better : bool, optional</span>
+<span class="sd">        Whether higher values of the evaluation metric are better.</span>
+<span class="sd">    learning_rate : float, default=0.001</span>
+<span class="sd">        Learning rate for optimizer.</span>
+<span class="sd">    grad_clip_value : float, optional</span>
+<span class="sd">        Maximum norm of gradients for gradient clipping.</span>
+<span class="sd">    weight_decay : float, default=0.0</span>
+<span class="sd">        L2 regularization strength.</span>
+<span class="sd">    patience : int, default=50</span>
+<span class="sd">        Number of epochs to wait for improvement before early stopping.</span>
+<span class="sd">    use_lr_scheduler : bool, default=False</span>
+<span class="sd">        Whether to use learning rate scheduler.</span>
+<span class="sd">    scheduler_factor : float, default=0.5</span>
+<span class="sd">        Factor by which to reduce learning rate when plateau is reached.</span>
+<span class="sd">    scheduler_patience : int, default=5</span>
+<span class="sd">        Number of epochs with no improvement after which learning rate will be reduced.</span>
+<span class="sd">    verbose : bool, default=False</span>
+<span class="sd">        Whether to print progress information during training.</span>
+<span class="sd">    device : torch.device or str, optional</span>
+<span class="sd">        Device to run the model on. If None, will auto-detect GPU or use CPU.</span>
+<span class="sd">    model_name : str, default=&quot;RPGNNMolecularPredictor&quot;</span>
+<span class="sd">        Name identifier for the model.</span>
 <span class="sd">    num_perm : int, default=3</span>
 <span class="sd">        Number of random permutations to use for relational pooling. </span>
 <span class="sd">    fixed_size : int, default=10 </span>
@@ -302,17 +350,73 @@
 <span class="sd">        Dimension of the input node features. This should match the number of atomic features used to represent</span>
 <span class="sd">        each node in the molecular graph (e.g., atomic number, degree, hybridization, etc.).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="c1"># RPGNN-specific parameter</span>
-    <span class="n">num_perm</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
-    <span class="n">fixed_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="n">num_node_feature</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">9</span>
-    <span class="c1"># Override parent defaults</span>
-    <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RPGNNMolecularPredictor&quot;</span>
-    <span class="n">model_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">RPGNN</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">RPGNN</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="c1"># RPGNN-specific parameters</span>
+        <span class="n">num_perm</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">fixed_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">num_node_feature</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span>
+        <span class="c1"># Core model parameters</span>
+        <span class="n">num_task</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">task_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;regression&quot;</span><span class="p">,</span>
+        <span class="c1"># GNN architecture parameters</span>
+        <span class="n">num_layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">hidden_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
+        <span class="n">gnn_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gin-virtual&quot;</span><span class="p">,</span>
+        <span class="n">drop_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">norm_layer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;batch_norm&quot;</span><span class="p">,</span>
+        <span class="n">graph_pooling</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+        <span class="n">augmented_feature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;morgan&quot;</span><span class="p">,</span> <span class="s2">&quot;maccs&quot;</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># Training parameters</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+        <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">grad_clip_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">patience</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+        <span class="c1"># Learning rate scheduler parameters</span>
+        <span class="n">use_lr_scheduler</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">scheduler_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">scheduler_patience</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="c1"># Loss and evaluation parameters</span>
+        <span class="n">loss_criterion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">evaluate_criterion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">evaluate_higher_better</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># General parameters</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RPGNNMolecularPredictor&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+            <span class="n">num_task</span><span class="o">=</span><span class="n">num_task</span><span class="p">,</span>
+            <span class="n">task_type</span><span class="o">=</span><span class="n">task_type</span><span class="p">,</span>
+            <span class="n">num_layer</span><span class="o">=</span><span class="n">num_layer</span><span class="p">,</span>
+            <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_size</span><span class="p">,</span>
+            <span class="n">gnn_type</span><span class="o">=</span><span class="n">gnn_type</span><span class="p">,</span>
+            <span class="n">drop_ratio</span><span class="o">=</span><span class="n">drop_ratio</span><span class="p">,</span>
+            <span class="n">norm_layer</span><span class="o">=</span><span class="n">norm_layer</span><span class="p">,</span>
+            <span class="n">graph_pooling</span><span class="o">=</span><span class="n">graph_pooling</span><span class="p">,</span>
+            <span class="n">augmented_feature</span><span class="o">=</span><span class="n">augmented_feature</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
+            <span class="n">learning_rate</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span>
+            <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">,</span>
+            <span class="n">grad_clip_value</span><span class="o">=</span><span class="n">grad_clip_value</span><span class="p">,</span>
+            <span class="n">patience</span><span class="o">=</span><span class="n">patience</span><span class="p">,</span>
+            <span class="n">use_lr_scheduler</span><span class="o">=</span><span class="n">use_lr_scheduler</span><span class="p">,</span>
+            <span class="n">scheduler_factor</span><span class="o">=</span><span class="n">scheduler_factor</span><span class="p">,</span>
+            <span class="n">scheduler_patience</span><span class="o">=</span><span class="n">scheduler_patience</span><span class="p">,</span>
+            <span class="n">loss_criterion</span><span class="o">=</span><span class="n">loss_criterion</span><span class="p">,</span>
+            <span class="n">evaluate_criterion</span><span class="o">=</span><span class="n">evaluate_criterion</span><span class="p">,</span>
+            <span class="n">evaluate_higher_better</span><span class="o">=</span><span class="n">evaluate_higher_better</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_perm</span> <span class="o">=</span> <span class="n">num_perm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_size</span> <span class="o">=</span> <span class="n">fixed_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_node_feature</span> <span class="o">=</span> <span class="n">num_node_feature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_class</span> <span class="o">=</span> <span class="n">RPGNN</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -337,8 +441,6 @@
         <span class="n">base_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;graph_pooling&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">base_params</span></div>
 
-
-    
 </pre></div>
         </article>
       </div>

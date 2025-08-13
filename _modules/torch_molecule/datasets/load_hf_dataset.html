@@ -267,7 +267,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">TOXCAST_TASKS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">TOXCAST_TASKS</span><span class="p">,</span> <span class="n">SMILESDataset</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_load_from_hf</span><span class="p">(</span>
     <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -414,13 +414,11 @@
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">    Tuple[SMILESDataset, str] or SMILESDataset</span>
 <span class="sd">        If return_local_data_path is False:</span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">        If return_local_data_path is True:</span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
@@ -430,10 +428,11 @@
         <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
         <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
     <span class="p">)</span>
+    <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span>
+        <span class="k">return</span> <span class="n">molecular_dataset</span><span class="p">,</span> <span class="n">local_data_path</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+        <span class="k">return</span> <span class="n">molecular_dataset</span></div>
 
 
 <div class="viewcode-block" id="load_chembl2k">
@@ -459,13 +458,11 @@
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">    Tuple[SMILESDataset, str] or SMILESDataset</span>
 <span class="sd">        If return_local_data_path is False:</span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">        If return_local_data_path is True:</span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
@@ -475,10 +472,11 @@
         <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
         <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
     <span class="p">)</span>
+    <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span>
+        <span class="k">return</span> <span class="n">molecular_dataset</span><span class="p">,</span> <span class="n">local_data_path</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+        <span class="k">return</span> <span class="n">molecular_dataset</span></div>
 
 
 
@@ -507,13 +505,11 @@
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">    Tuple[SMILESDataset, str] or SMILESDataset</span>
 <span class="sd">        If return_local_data_path is False:</span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">        If return_local_data_path is True:</span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
@@ -523,10 +519,11 @@
         <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
         <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
     <span class="p">)</span>
+    <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span>
+        <span class="k">return</span> <span class="n">molecular_dataset</span><span class="p">,</span> <span class="n">local_data_path</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+        <span class="k">return</span> <span class="n">molecular_dataset</span></div>
 
 
 
@@ -553,13 +550,11 @@
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">    Tuple[SMILESDataset, str] or SMILESDataset</span>
 <span class="sd">        If return_local_data_path is False:</span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">        If return_local_data_path is True:</span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
@@ -569,10 +564,11 @@
         <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
         <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
     <span class="p">)</span>
+    <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span>
+        <span class="k">return</span> <span class="n">molecular_dataset</span><span class="p">,</span> <span class="n">local_data_path</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+        <span class="k">return</span> <span class="n">molecular_dataset</span></div>
 
 
 
@@ -600,13 +596,11 @@
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</span>
+<span class="sd">    Tuple[SMILESDataset, str] or SMILESDataset</span>
 <span class="sd">        If return_local_data_path is False:</span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">        If return_local_data_path is True:</span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
@@ -616,12 +610,48 @@
         <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
         <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
     <span class="p">)</span>
+    <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span>
+        <span class="k">return</span> <span class="n">molecular_dataset</span><span class="p">,</span> <span class="n">local_data_path</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+        <span class="k">return</span> <span class="n">molecular_dataset</span></div>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">load_zinc250k</span><span class="p">(</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
+    <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load ZINC250K dataset from Hugging Face Hub.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    local_dir : str, optional</span>
+<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">    return_local_data_path : bool, optional</span>
+<span class="sd">        Whether to return the local data path, by default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[SMILESDataset, str] or SMILESDataset</span>
+<span class="sd">        If return_local_data_path is False:</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
+<span class="sd">        If return_local_data_path is True:</span>
+<span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
+<span class="sd">            - local_data_path: Path where the data is saved</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/zinc250k&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;zinc.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/zinc250k.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">target_cols</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+    <span class="p">)</span>
+    <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">molecular_dataset</span><span class="p">,</span> <span class="n">local_data_path</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">molecular_dataset</span>
 </pre></div>
         </article>
       </div>

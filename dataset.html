@@ -286,13 +286,11 @@
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
 <dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
 </ul>
 </dd>
 <dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
 <li><p>local_data_path: Path where the data is saved</p></li>
 </ul>
 </dd>
@@ -300,7 +298,7 @@
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</p>
+<dd class="field-odd"><p>Tuple[SMILESDataset, str] or SMILESDataset</p>
 </dd>
 </dl>
 </dd></dl>
@@ -322,13 +320,11 @@
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
 <dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
 </ul>
 </dd>
 <dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
 <li><p>local_data_path: Path where the data is saved</p></li>
 </ul>
 </dd>
@@ -336,7 +332,7 @@
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</p>
+<dd class="field-odd"><p>Tuple[SMILESDataset, str] or SMILESDataset</p>
 </dd>
 </dl>
 </dd></dl>
@@ -359,13 +355,11 @@
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
 <dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
 </ul>
 </dd>
 <dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
 <li><p>local_data_path: Path where the data is saved</p></li>
 </ul>
 </dd>
@@ -373,7 +367,7 @@
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</p>
+<dd class="field-odd"><p>Tuple[SMILESDataset, str] or SMILESDataset</p>
 </dd>
 </dl>
 </dd></dl>
@@ -395,13 +389,11 @@
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
 <dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
 </ul>
 </dd>
 <dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
 <li><p>local_data_path: Path where the data is saved</p></li>
 </ul>
 </dd>
@@ -409,7 +401,7 @@
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</p>
+<dd class="field-odd"><p>Tuple[SMILESDataset, str] or SMILESDataset</p>
 </dd>
 </dl>
 </dd></dl>
@@ -431,13 +423,11 @@
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
 <dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
 </ul>
 </dd>
 <dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
 <li><p>local_data_path: Path where the data is saved</p></li>
 </ul>
 </dd>
@@ -445,7 +435,7 @@
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]</p>
+<dd class="field-odd"><p>Tuple[SMILESDataset, str] or SMILESDataset</p>
 </dd>
 </dl>
 </dd></dl>
@@ -453,21 +443,19 @@
 <p class="rubric">Gas Permeability for polymers</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.datasets.load_gasperm">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_gasperm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['CH4',</span> <span class="pre">'CO2',</span> <span class="pre">'H2',</span> <span class="pre">'N2',</span> <span class="pre">'O2']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/torch_molecule/datasets/load_local_csv.html#load_gasperm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_gasperm" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_gasperm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['CH4',</span> <span class="pre">'CO2',</span> <span class="pre">'H2',</span> <span class="pre">'N2',</span> <span class="pre">'O2']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SMILESDataset</span></span></span><a class="reference internal" href="_modules/torch_molecule/datasets/load_local_csv.html#load_gasperm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_gasperm" title="Link to this definition">¶</a></dt>
 <dd><p>Load gas permeability dataset from local CSV.gz file within torch_molecule package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>target_cols</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of target column names. Default is [“CH4”, “CO2”, “H2”, “N2”, “O2”]</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>smiles_list: List of SMILES strings</p></li>
-<li><p>property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</p></li>
-</ul>
-</p>
+<dd class="field-even"><p>Dataset object with data (SMILES strings) and target (property values) attributes
+- data: List[str]
+- target: np.ndarray</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[List[str], np.ndarray]</p>
+<dd class="field-odd"><p>SMILESDataset</p>
 </dd>
 </dl>
 </dd></dl>

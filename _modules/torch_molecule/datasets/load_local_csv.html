@@ -265,6 +265,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">SMILESDataset</span>
 
 <span class="n">current_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
 
@@ -282,9 +283,10 @@
 <span class="sd">        target_cols (List[str]): List of target column names</span>
 <span class="sd">    </span>
 <span class="sd">    Returns:</span>
-<span class="sd">        Tuple[List[List[str]], np.ndarray]: </span>
-<span class="sd">            - input_data: List of lists containing input data (e.g., SMILES strings)</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">        SMILESDataset: </span>
+<span class="sd">            Dataset object with data (SMILES strings) and target (property values) attributes</span>
+<span class="sd">            - data: List[str]</span>
+<span class="sd">            - target: np.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_file_path</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
     
@@ -326,14 +328,13 @@
             <span class="n">property_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">property_row</span><span class="p">)</span>
     
     <span class="n">property_numpy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">property_data</span><span class="p">)</span>
-        
-    <span class="k">return</span> <span class="n">input_data</span><span class="p">,</span> <span class="n">property_numpy</span>
+    <span class="k">return</span> <span class="n">input_data</span><span class="p">,</span> <span class="n">property_numpy</span>    
 
 <div class="viewcode-block" id="load_gasperm">
 <a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_gasperm">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_gasperm</span><span class="p">(</span>
     <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CH4&quot;</span><span class="p">,</span> <span class="s2">&quot;CO2&quot;</span><span class="p">,</span> <span class="s2">&quot;H2&quot;</span><span class="p">,</span> <span class="s2">&quot;N2&quot;</span><span class="p">,</span> <span class="s2">&quot;O2&quot;</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SMILESDataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load gas permeability dataset from local CSV.gz file within torch_molecule package.</span>
 <span class="sd">    </span>
@@ -341,18 +342,18 @@
 <span class="sd">        target_cols (List[str]): List of target column names. Default is [&quot;CH4&quot;, &quot;CO2&quot;, &quot;H2&quot;, &quot;N2&quot;, &quot;O2&quot;]</span>
 <span class="sd">    </span>
 <span class="sd">    Returns:</span>
-<span class="sd">        Tuple[List[str], np.ndarray]: </span>
-<span class="sd">            - smiles_list: List of SMILES strings</span>
-<span class="sd">            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
+<span class="sd">        SMILESDataset: </span>
+<span class="sd">            Dataset object with data (SMILES strings) and target (property values) attributes</span>
+<span class="sd">            - data: List[str]</span>
+<span class="sd">            - target: np.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">input_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SMILES&quot;</span><span class="p">]</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;polymer_gas_permeability.csv.gz&quot;</span>
     
     <span class="n">input_data</span><span class="p">,</span> <span class="n">property_numpy</span> <span class="o">=</span> <span class="n">_load_from_local_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">input_cols</span><span class="p">,</span> <span class="n">target_cols</span><span class="p">)</span>
-    
     <span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">]</span>
     
-    <span class="k">return</span> <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span></div>
+    <span class="k">return</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span></div>
 
 </pre></div>
         </article>

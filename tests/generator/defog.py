@@ -4,7 +4,7 @@ import torch
 
 from torch_molecule import DeFoGMolecularGenerator
 
-EPOCHS = 2
+EPOCHS = 10
 BATCH_SIZE = 32
 
 def test_defog_generator():
@@ -20,12 +20,16 @@ def test_defog_generator():
         'CC1=CC=C(C=C1)C2=CC(=NN2C3=CC=C(C=C3)S(=O)(=O)N)C(F)(F)F'
     ]
     smiles_list = smiles_list * 25  # Create 100 molecules for training
-    properties = [0, 0, 1, 1] * 25  # Create 100 properties for training
+    
+    # Multi-dimensional properties: each row is a molecule, each column is a property
+    # Properties range from 0 to 1
+    np.random.seed(42)  # For reproducible results
+    properties = np.random.rand(100, 3)  # 100 molecules, 3 properties each
 
-    # 1. Conditional Model Testing
-    print("\n=== Testing Conditional DeFoG Model ===")
+    # 1. Multi-Conditional Model Testing
+    print("\n=== Testing Multi-Conditional DeFoG Model ===")
     conditional_model = DeFoGMolecularGenerator(
-        task_type=['regression'],
+        task_type=['regression', 'regression', 'regression'],  # 3 regression tasks
         epochs=EPOCHS,
         batch_size=BATCH_SIZE,
         learning_rate=5e-4,
@@ -33,19 +37,26 @@ def test_defog_generator():
         guidance_weight=0.2,
         verbose=True,
     )
-    print("Conditional DeFoG Model initialized successfully.")
+    print("Multi-Conditional DeFoG Model initialized successfully.")
     print(f"Input dim y: {conditional_model.input_dim_y}")
 
-    print("\n--- Fitting conditional model ---")
+    print("\n--- Fitting multi-conditional model ---")
     conditional_model.fit(smiles_list, properties)
-    print("Conditional DeFoG Model fitting completed.")
+    print("Multi-Conditional DeFoG Model fitting completed.")
 
-    print("\n--- Testing conditional generation ---")
-    target_properties = [[0], [0], [1], [1]]
+    print("\n--- Testing multi-conditional generation ---")
+    # Generate molecules with specific multi-dimensional properties
+    target_properties = [
+        [0.1, 0.2, 0.3],  # Low values for all properties
+        [0.4, 0.5, 0.6],  # Medium values for all properties
+        [0.7, 0.8, 0.9],  # High values for all properties
+        [0.9, 0.1, 0.5]   # Mixed values
+    ]
     generated_smiles = conditional_model.generate(labels=target_properties)
-    print(f"Conditionally generated {len(generated_smiles)} molecules.")
+    print(f"Multi-conditionally generated {len(generated_smiles)} molecules.")
     assert len(generated_smiles) == len(target_properties)
     print("Example SMILES:", generated_smiles[:2])
+    print("Target properties for first molecule:", target_properties[0])
 
     print("\n--- Testing model saving and loading ---")
     save_path = "conditional_defog_test_model.pt"
@@ -70,7 +81,29 @@ def test_defog_generator():
         os.remove(save_path)
         print(f"Cleaned up {save_path}")
 
-    # 2. Unconditional Model Testing
+    # 2. Single-property conditional testing (backwards compatibility)
+    print("\n=== Testing Single-Property Conditional DeFoG Model ===")
+    single_properties = properties[:, 0:1]  # Use only first property
+    single_conditional_model = DeFoGMolecularGenerator(
+        task_type=['regression'],  # Single regression task
+        epochs=EPOCHS,
+        batch_size=BATCH_SIZE,
+        learning_rate=5e-4,
+        sample_steps=10,
+        guidance_weight=0.2,
+        verbose=True,
+    )
+    print("Single-Property Conditional DeFoG Model initialized successfully.")
+    
+    single_conditional_model.fit(smiles_list, single_properties)
+    print("Single-Property DeFoG Model fitting completed.")
+    
+    single_target_properties = [[0.2], [0.5], [0.8], [0.1]]
+    single_generated_smiles = single_conditional_model.generate(labels=single_target_properties)
+    print(f"Single-conditionally generated {len(single_generated_smiles)} molecules.")
+    assert len(single_generated_smiles) == len(single_target_properties)
+
+    # 3. Unconditional Model Testing
     print("\n=== Testing Unconditional DeFoG Model ===")
     unconditional_model = DeFoGMolecularGenerator(
         task_type=[],  # Empty task_type for unconditional generation

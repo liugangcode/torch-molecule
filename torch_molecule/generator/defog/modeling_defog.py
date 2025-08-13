@@ -33,10 +33,10 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
     num_layer : int, default=6
         Number of transformer layers
     hidden_mlp_dims : Dict[str, int], default={'X': 256, 'E': 128, 'y': 128}
-        Hidden dimensions for MLP layers in X, E, and y components
+        Hidden dimensions for MLP layers in X (node dim), E (edge dim), and y (property dim) components
     hidden_dims : Dict[str, Any], default={'dx': 256, 'de': 64, 'dy': 64, 'n_head': 8, 'dim_ffX': 256, 'dim_ffE': 128, 'dim_ffy': 128}
         Hidden dimensions for transformer components including attention heads and feed-forward layers
-        Keys: 'dx', 'de', 'dy', 'n_head', 'dim_ffX', 'dim_ffE', 'dim_ffy'
+        Keys: 'dx' (node dim), 'de' (edge dim), 'dy' (property dim), 'n_head' (number of attention heads), 'dim_ffX' (feed-forward dim for node features), 'dim_ffE' (feed-forward dim for edge features), 'dim_ffy' (feed-forward dim for property features)
     transition : str, default='marginal'
         Transition type for flow matching.
         Options: 'marginal', 'absorbing', 'uniform', 'absorbfirst', 'argmax', 'edge_marginal', 'node_marginal'
@@ -239,8 +239,6 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
         
         return optimizer, scheduler
 
-
-    
     def _convert_to_pytorch_data(self, X, y=None):
         """Convert numpy arrays to PyTorch Geometric data format."""
         if self.verbose:
@@ -256,7 +254,9 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
             g = Data()
             
             node_type = torch.from_numpy(graph['node_feat'][:, 0] - 1)
-            
+            if node_type.numel() <= 1:
+                continue
+
             valid_mask = node_type >= 0
             if not valid_mask.all():
                 # Get valid nodes and adjust edge indices
@@ -398,24 +398,30 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
         train_dataset = self._convert_to_pytorch_data(X_train, y_train)
         train_loader = DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True)
 
+        # Calculate total steps for global progress bar
+        total_steps = self.epochs * len(train_loader)
+        global_progress = tqdm(total=total_steps, desc="Training Progress", leave=True) if self.verbose else None
+
         self.fitting_loss = []
         for epoch in range(self.epochs):
-            train_losses = self._train_epoch(train_loader, optimizer, epoch)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch, global_progress)
             avg_loss = np.mean(train_losses)
             self.fitting_loss.append(avg_loss)
             if scheduler:
                 scheduler.step(avg_loss)
         
+        if global_progress:
+            global_progress.close()
+        
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer, epoch):
+    def _train_epoch(self, train_loader, optimizer, epoch, global_progress=None):
         self.model.train()
         losses = []
-        iterator = tqdm(train_loader, desc=f"Epoch {epoch}", leave=False) if self.verbose else train_loader
 
         active_index = self.dataset_info["active_index"]
-        for batched_data in iterator:
+        for batched_data in train_loader:
             batched_data = batched_data.to(self.device)
             optimizer.zero_grad()
             
@@ -467,8 +473,17 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
             optimizer.step()
             
             losses.append(loss.item())
-            if self.verbose:
-                iterator.set_postfix({"Loss": f"{loss.item():.4f}"})
+            
+            # Update global progress bar
+            if global_progress:
+                global_progress.set_postfix({
+                    "Epoch": f"{epoch+1}",
+                    "Loss": f"{loss.item():.4f}",
+                    "Loss_X": f"{masked_loss_X.item():.4f}",
+                    "Loss_E": f"{masked_loss_E.item():.4f}",
+                    "Loss_y": f"{loss_y.item():.4f}"
+                })
+                global_progress.update(1)
 
         return losses
 

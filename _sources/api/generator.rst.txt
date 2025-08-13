@@ -3,6 +3,25 @@ Molecular Generation Models
 
 The generator models inherit from the :class:`torch_molecule.base.generator.BaseMolecularGenerator` class and share common methods for model training, generation and persistence.
 
+The following models support conditional generation (click model name to jump to details):
+
+.. list-table:: Conditional Generation Models
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Model
+     - Description
+   * - :class:`GraphDITMolecularGenerator <torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator>`
+     - `Graph Diffusion Transformers for Multi-Conditional Molecular Generation <https://arxiv.org/abs/2401.13858>`_
+   * - :class:`DeFoGMolecularGenerator <torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator>`
+     - `Discrete Flow Matching for Graph Generation <https://openreview.net/forum?id=KPRIwWhqAZ>`_
+   * - :class:`GraphGAMolecularGenerator <torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator>`
+     - Graph Genetic Algorithm with Random Forests
+   * - :class:`MolGPTMolecularGenerator <torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator>`
+     - `MolGPT: Molecular Generation Using a Transformer-Decoder Model <https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600>`_
+   * - :class:`LSTMMolecularGenerator <torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator>`
+     - LSTM
+
 .. rubric:: Training and Generation
 
 - ``fit(X, **kwargs)``: Train the model on given data, where X contains SMILES strings (y should be provided for conditional generation)
@@ -30,10 +49,29 @@ inherited from :class:`torch_molecule.base.base.BaseModel`
 Modeling Molecules as Graphs
 ---------------------------------------------------------------------
 
-.. rubric:: GraphDiT for Un/Multi-conditional Molecular Generation
+.. rubric:: GraphDiT for Unconditional/Multi-Conditional Molecular Generation
 .. autoclass:: torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
+   :undoc-members:
+   :show-inheritance:
+
+.. rubric:: Discrete Flow Matching for Graph Generation for Unconditional/Multi-Conditional Molecular Generation
+.. autoclass:: torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   :members: fit, generate
+   :undoc-members:
+   :show-inheritance:
+
+.. rubric:: Graph Genetic Algorithm for Unconditional/Multi-Conditional Molecular Generation
+.. autoclass:: torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator
+   :exclude-members: fitting_epoch, fitting_loss, save_to_hf, load_from_hf
+   :members: fit, generate
+   :undoc-members:
+   :show-inheritance:
+   
+.. automodule:: torch_molecule.generator.graph_ga.oracle
+   :members:
    :undoc-members:
    :show-inheritance:
 
@@ -44,7 +82,7 @@ Modeling Molecules as Graphs
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: GDSS for score-based molecular generation
+.. rubric:: GDSS for Unconditional Molecular Generation
 .. autoclass:: torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
@@ -58,29 +96,17 @@ Modeling Molecules as Graphs
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: Graph Genetic Algorithm for Un/Multi-conditional Molecular Generation
-.. autoclass:: torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, save_to_hf, load_from_hf
-   :members: fit, generate
-   :undoc-members:
-   :show-inheritance:
-   
-.. automodule:: torch_molecule.generator.graph_ga.oracle
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Modeling Molecules as Sequences
 --------------------------------
 
-.. rubric:: MolGPT for Unconditional Molecular Generation
+.. rubric:: MolGPT for Unconditional/Multi-Conditional Molecular Generation
 .. autoclass:: torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: LSTM for Unconditional/Conditional Molecular Generation
+.. rubric:: LSTM for Unconditional/Multi-Conditional Molecular Generation
 .. autoclass:: torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate

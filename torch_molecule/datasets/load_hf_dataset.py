@@ -5,7 +5,7 @@ import numpy as np
 from huggingface_hub import hf_hub_download
 from typing import List, Tuple, Optional
 
-from .constant import TOXCAST_TASKS
+from .constant import TOXCAST_TASKS, SMILESDataset
 
 def _load_from_hf(
     repo_id: str,
@@ -150,13 +150,11 @@ def load_qm9(
     
     Returns
     -------
-    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]
+    Tuple[SMILESDataset, str] or SMILESDataset
         If return_local_data_path is False:
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
         If return_local_data_path is True:
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
             - local_data_path: Path where the data is saved
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
@@ -166,10 +164,11 @@ def load_qm9(
         target_cols=target_cols,
         SMILES_col="smiles"
     )
+    molecular_dataset = SMILESDataset(data=smiles_list, target=property_numpy)
     if return_local_data_path:
-        return smiles_list, property_numpy, local_data_path
+        return molecular_dataset, local_data_path
     else:
-        return smiles_list, property_numpy
+        return molecular_dataset
 
 def load_chembl2k(
     local_dir: str = "torchmol_data",
@@ -192,13 +191,11 @@ def load_chembl2k(
     
     Returns
     -------
-    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]
+    Tuple[SMILESDataset, str] or SMILESDataset
         If return_local_data_path is False:
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
         If return_local_data_path is True:
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
             - local_data_path: Path where the data is saved
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
@@ -208,10 +205,11 @@ def load_chembl2k(
         target_cols=target_cols,
         SMILES_col="smiles"
     )
+    molecular_dataset = SMILESDataset(data=smiles_list, target=property_numpy)
     if return_local_data_path:
-        return smiles_list, property_numpy, local_data_path
+        return molecular_dataset, local_data_path
     else:
-        return smiles_list, property_numpy
+        return molecular_dataset
 
 
 def load_broad6k(
@@ -237,13 +235,11 @@ def load_broad6k(
     
     Returns
     -------
-    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]
+    Tuple[SMILESDataset, str] or SMILESDataset
         If return_local_data_path is False:
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
         If return_local_data_path is True:
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
             - local_data_path: Path where the data is saved
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
@@ -253,10 +249,11 @@ def load_broad6k(
         target_cols=target_cols,
         SMILES_col="smiles"
     )
+    molecular_dataset = SMILESDataset(data=smiles_list, target=property_numpy)
     if return_local_data_path:
-        return smiles_list, property_numpy, local_data_path
+        return molecular_dataset, local_data_path
     else:
-        return smiles_list, property_numpy
+        return molecular_dataset
 
 
 def load_toxcast(
@@ -280,13 +277,11 @@ def load_toxcast(
     
     Returns
     -------
-    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]
+    Tuple[SMILESDataset, str] or SMILESDataset
         If return_local_data_path is False:
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
         If return_local_data_path is True:
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
             - local_data_path: Path where the data is saved
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
@@ -296,10 +291,11 @@ def load_toxcast(
         target_cols=target_cols,
         SMILES_col="smiles"
     )
+    molecular_dataset = SMILESDataset(data=smiles_list, target=property_numpy)
     if return_local_data_path:
-        return smiles_list, property_numpy, local_data_path
+        return molecular_dataset, local_data_path
     else:
-        return smiles_list, property_numpy
+        return molecular_dataset
 
 
 
@@ -324,13 +320,11 @@ def load_admet(
     
     Returns
     -------
-    Tuple[List[str], np.ndarray] or Tuple[List[str], np.ndarray, str]
+    Tuple[SMILESDataset, str] or SMILESDataset
         If return_local_data_path is False:
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
         If return_local_data_path is True:
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
             - local_data_path: Path where the data is saved
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
@@ -340,8 +334,44 @@ def load_admet(
         target_cols=target_cols,
         SMILES_col="smiles"
     )
+    molecular_dataset = SMILESDataset(data=smiles_list, target=property_numpy)
     if return_local_data_path:
-        return smiles_list, property_numpy, local_data_path
+        return molecular_dataset, local_data_path
     else:
-        return smiles_list, property_numpy
+        return molecular_dataset
 
+def load_zinc250k(
+    local_dir: str = "torchmol_data",
+    return_local_data_path: bool = False,
+):
+    """
+    Load ZINC250K dataset from Hugging Face Hub.
+    
+    Parameters
+    ----------
+    local_dir : str, optional
+        Path where the data should be saved, by default "torchmol_data"
+    return_local_data_path : bool, optional
+        Whether to return the local data path, by default False
+
+    Returns
+    -------
+    Tuple[SMILESDataset, str] or SMILESDataset
+        If return_local_data_path is False:
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
+        If return_local_data_path is True:
+            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
+            - local_data_path: Path where the data is saved
+    """
+    smiles_list, property_numpy, local_data_path = _load_from_hf(
+        repo_id="liuganghuggingface/zinc250k",
+        filename="zinc.csv.gz",
+        local_dir=f"{local_dir}/zinc250k.csv.gz",
+        target_cols=[],
+        SMILES_col="smiles"
+    )
+    molecular_dataset = SMILESDataset(data=smiles_list, target=None)
+    if return_local_data_path:
+        return molecular_dataset, local_data_path
+    else:
+        return molecular_dataset

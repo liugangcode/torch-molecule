@@ -32,9 +32,9 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
     ----------
     num_layer : int, default=6
         Number of transformer layers
-    hidden_mlp_dims : Dict[str, int], default={'X': 256, 'E': 128, 'y': 128}
+    hidden_mlp_dims : Dict[str, int], default={'X': 256, 'E': 128, 'y': 128} if None
         Hidden dimensions for MLP layers in X (node dim), E (edge dim), and y (property dim) components
-    hidden_dims : Dict[str, Any], default={'dx': 256, 'de': 64, 'dy': 64, 'n_head': 8, 'dim_ffX': 256, 'dim_ffE': 128, 'dim_ffy': 128}
+    hidden_dims : Dict[str, Any], default={'dx': 256, 'de': 64, 'dy': 64, 'n_head': 8, 'dim_ffX': 256, 'dim_ffE': 128, 'dim_ffy': 128} if None
         Hidden dimensions for transformer components including attention heads and feed-forward layers
         Keys: 'dx' (node dim), 'de' (edge dim), 'dy' (property dim), 'n_head' (number of attention heads), 'dim_ffX' (feed-forward dim for node features), 'dim_ffE' (feed-forward dim for edge features), 'dim_ffy' (feed-forward dim for property features)
     transition : str, default='marginal'
@@ -43,7 +43,7 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
     time_distortion : str, default="polydec"
         Time distortion schedule used during training/sampling.
         Options: 'identity', 'cos', 'revcos', 'polyinc', 'polydec'
-    lambda_train : List[float], default=[5.0, 1.0]
+    lambda_train : List[float], default=[5.0, 1.0] if None
         Loss weights: [edge_loss_weight, property_loss_weight]
     extra_features_type : str, default='rrwp'
         Extra feature type.

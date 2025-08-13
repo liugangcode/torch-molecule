@@ -38,7 +38,7 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
     max_len : int, default=128
         Maximum length of SMILES strings.
     num_task : int, default=0
-        Number of property prediction tasks for conditional generation. O for unconditional generation.
+        Number of property prediction tasks for conditional generation. 0 for unconditional generation.
     use_scaffold : bool, default=False
         Whether to use scaffold conditioning.
     use_lstm : bool, default=False

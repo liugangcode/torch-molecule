@@ -97,7 +97,7 @@ smiles_list, property_np_array = molecular_data.data, molecular_data.target
 
 # the target could be None if loading an unlabeled dataset
 from torch_molecule.datasets import load_zinc250k
-molecular_data = load_zinc250k(local_dir='torchmol_data', target_cols=target_cols)
+molecular_data = load_zinc250k(local_dir='torchmol_data')
 smiles_list = molecular_data.data
 assert molecular_data.target is None
 ```

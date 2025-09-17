@@ -2,6 +2,7 @@ import numpy as np
 from tqdm import tqdm
 from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal
 import warnings
+import copy # <- Add this line
 
 import torch
 from torch_geometric.loader import DataLoader
@@ -268,9 +269,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         """Convert numpy arrays to PyTorch Geometric data format.
         """
         if self.verbose:
-            iterator = tqdm(enumerate(X), desc="Converting molecules to graphs", total=len(X))
-        else:
-            iterator = enumerate(X)
+            print("Converting molecules to graphs: preparing data for training...")
+        iterator = enumerate(X)
 
         pyg_graph_list = []
         for idx, smiles_or_mol in iterator:
@@ -579,20 +579,10 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         # Calculate total steps for global progress bar
         steps_per_epoch = len(train_loader)
         total_steps = self.epochs * steps_per_epoch
-        
-        # Initialize global progress bar
-        global_pbar = None
-        if self.verbose:
-            global_pbar = tqdm(
-                total=total_steps,
-                desc="Training Progress",
-                unit="step",
-                dynamic_ncols=True
-            )
 
         for epoch in range(self.epochs):
             # Training phase
-            train_losses = self._train_epoch(train_loader, optimizer, epoch, global_pbar)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch)
             self.fitting_loss.append(float(np.mean(train_losses)))
 
             # Validation phase
@@ -610,11 +600,10 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             if is_better:
                 self.fitting_epoch = epoch
                 best_eval = current_eval
-                best_state_dict = self.model.state_dict()
+                best_state_dict = copy.deepcopy(self.model.state_dict()) # <- Fix critical bug of saving the last epoch state dict instead of the best of all epochs
                 cnt_wait = 0
                 if self.verbose:
-                    # Update global progress bar with current metrics
-                    global_pbar.set_postfix({
+                    print({
                         "Epoch": f"{epoch+1}/{self.epochs}",
                         "Loss": f"{float(np.mean(train_losses)):.4f}",
                         f"{self.evaluate_name}": f"{best_eval:.4f}",
@@ -623,7 +612,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             else:
                 cnt_wait += 1
                 if self.verbose:
-                    global_pbar.set_postfix({
+                    print({
                         "Epoch": f"{epoch+1}/{self.epochs}",
                         "Loss": f"{float(np.mean(train_losses)):.4f}",
                         f"{self.evaluate_name}": f"{current_eval:.4f}",
@@ -631,16 +620,11 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                     })
                 if cnt_wait > self.patience:
                     if self.verbose:
-                        global_pbar.set_postfix({
+                        print({
                             "Status": "Early Stopped",
                             "Epoch": f"{epoch+1}/{self.epochs}"
                         })
-                        global_pbar.close()
                     break
-
-        # Close global progress bar
-        if global_pbar is not None:
-            global_pbar.close()
 
         # Restore best model
         if best_state_dict is not None:
@@ -685,9 +669,8 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         predictions = []
         with torch.no_grad():
             if self.verbose:
-                iterator = tqdm(loader, desc="Predicting")
-            else:
-                iterator = loader
+                print("Predicting...")
+            iterator = loader
             for batch in iterator:
                 batch = batch.to(self.device)
                 out = self.model(batch)
@@ -734,14 +717,13 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         # Adjust metric value based on higher/lower better
         return metric_value
 
-    def _train_epoch(self, train_loader, optimizer, epoch, global_pbar=None):
+    def _train_epoch(self, train_loader, optimizer, epoch):
         """Training logic for one epoch.
 
         Args:
             train_loader: DataLoader containing training data
             optimizer: Optimizer instance for model parameter updates
             epoch: Current epoch number
-            global_pbar: Global progress bar for tracking overall training progress
 
         Returns:
             list: List of loss values for each training step
@@ -759,14 +741,4 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip_value)
             optimizer.step()
             losses.append(loss.item())
-
-            # Update global progress bar
-            if global_pbar is not None:
-                global_pbar.update(1)
-                global_pbar.set_postfix({
-                    "Epoch": f"{epoch+1}/{self.epochs}",
-                    "Batch": f"{batch_idx+1}/{len(train_loader)}",
-                    "Loss": f"{loss.item():.4f}"
-                })
-
         return losses

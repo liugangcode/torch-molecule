@@ -52,8 +52,8 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         Factor by which to reduce the learning rate when plateau is detected.
     scheduler_patience : int, default=5
         Number of epochs with no improvement after which learning rate will be reduced.
-    verbose : bool, default=False
-        Whether to print progress information during training.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : torch.device or str, optional
         Device to use for computation. Inherited from BaseMolecularEncoder.
     model_name : str, default="SupervisedMolecularEncoder"
@@ -77,7 +77,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         use_lr_scheduler: bool = False, 
         scheduler_factor: float = 0.5, 
         scheduler_patience: int = 5, 
-        verbose: bool = False, 
+        verbose: str = "none", 
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "SupervisedMolecularEncoder"
     ):
@@ -99,7 +99,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
+        self.verbose = verbose.lower()
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GNN
@@ -165,8 +165,11 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
     def _convert_to_pytorch_data(self, X, y=None):
         """Convert numpy arrays to PyTorch Geometric data format.
         """
-        if self.verbose:
+        if self.verbose == "progress_bar":
             iterator = tqdm(enumerate(X), desc="Converting molecules to graphs", total=len(X))
+        elif self.verbose == "print_statement":
+            print("Converting molecules to graphs, preparing data for training...")
+            iterator = enumerate(X)
         else:
             iterator = enumerate(X)
 
@@ -282,7 +285,9 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         
         # Calculate total steps for global progress bar
         total_steps = self.epochs * len(train_loader)
-        global_pbar = tqdm(total=total_steps, desc="Training", disable=not self.verbose)
+        global_pbar = None
+        if self.verbose == "progress_bar":  
+            global_pbar = tqdm(total=total_steps, desc="Training Progress")
         
         for epoch in range(self.epochs):
             # Training phase
@@ -291,7 +296,8 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
             if scheduler:
                 scheduler.step(float(np.mean(train_losses)))
 
-        global_pbar.close()
+        if global_pbar is not None:
+            global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
@@ -323,12 +329,15 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
             losses.append(loss.item())
 
             # Update global progress bar
-            if self.verbose:
-                global_pbar.set_postfix({
+            log_dict = {
                     "Epoch": f"{epoch + 1}/{self.epochs}",
                     "Loss": f"{loss.item():.4f}"
-                })
+                }
+            if self.verbose == "progress_bar" and global_pbar:
+                global_pbar.set_postfix(log_dict)
                 global_pbar.update(1)
+            if self.verbose == "print_statement":
+                print(log_dict)
 
         return losses
 

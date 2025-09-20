@@ -107,7 +107,7 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
         evaluate_criterion: Optional[Union[str, Callable]] = None,
         evaluate_higher_better: Optional[bool] = None,
         # General parameters
-        verbose: bool = False,
+        verbose: str = "none",
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "GRINMolecularPredictor"
     ):
@@ -133,7 +133,7 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
             loss_criterion=loss_criterion,
             evaluate_criterion=evaluate_criterion,
             evaluate_higher_better=evaluate_higher_better,
-            verbose=verbose,
+            verbose=verbose.lower(),
             device=device,
             model_name=model_name,
         )

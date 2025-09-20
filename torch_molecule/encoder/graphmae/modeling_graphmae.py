@@ -68,8 +68,8 @@ class GraphMAEMolecularEncoder(BaseMolecularEncoder):
     scheduler_patience : int, default=5
         Number of epochs with no improvement after which learning rate will be reduced.
     
-    verbose : bool, default=False
-        Whether to display progress bars and logs.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : Optional[Union[torch.device, str]], default=None
         Device to run the model on (CPU or GPU).
     model_name : str, default="GraphMAEMolecularEncoder"
@@ -102,7 +102,7 @@ class GraphMAEMolecularEncoder(BaseMolecularEncoder):
         use_lr_scheduler: bool = False,
         scheduler_factor: float = 0.5,
         scheduler_patience: int = 5,
-        verbose: bool = False,
+        verbose: str = "none",
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "GraphMAEMolecularEncoder"
     ):
@@ -124,7 +124,7 @@ class GraphMAEMolecularEncoder(BaseMolecularEncoder):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
+        self.verbose = verbose.lower()
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GNN
@@ -168,8 +168,11 @@ class GraphMAEMolecularEncoder(BaseMolecularEncoder):
     def _convert_to_pytorch_data(self, X):
         """Convert numpy arrays to PyTorch Geometric data format.
         """
-        if self.verbose:
+        if self.verbose == "progress_bar":
             iterator = tqdm(enumerate(X), desc="Converting molecules to graphs", total=len(X))
+        elif self.verbose == "print_statement":
+            print("Converting molecules to graphs: preparing data for training...")
+            iterator = enumerate(X)
         else:
             iterator = enumerate(X)
 
@@ -247,16 +250,18 @@ class GraphMAEMolecularEncoder(BaseMolecularEncoder):
         self.fitting_loss = []
 
         # Calculate total steps for progress tracking
-        total_steps = self.epochs * len(train_loader)        
-        global_pbar = tqdm(total=total_steps, desc="Training Progress", disable=not self.verbose)
+        total_steps = self.epochs * len(train_loader)
+        global_pbar = None
+        if self.verbose == "progress_bar":
+            global_pbar = tqdm(total=total_steps, desc="Training Progress")
 
         for epoch in range(self.epochs):
             train_losses = self._train_epoch(train_loader, optimizer, epoch, global_pbar)
             self.fitting_loss.append(float(np.mean(train_losses)))
             if scheduler:
                 scheduler.step(np.mean(train_losses))
-
-        global_pbar.close()
+        if global_pbar is not None:
+            global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
@@ -285,13 +290,16 @@ class GraphMAEMolecularEncoder(BaseMolecularEncoder):
             optimizer.step()
             losses.append(loss.item())
 
-            if global_pbar is not None:
-                global_pbar.set_postfix({
+            log_dict = {
                     "Epoch": f"{epoch+1}/{self.epochs}",
                     "Step": f"{step+1}/{len(train_loader)}",
                     "Loss": f"{loss.item():.4f}"
-                })
+                }
+            if global_pbar is not None:
+                global_pbar.set_postfix(log_dict)
                 global_pbar.update(1)
+            if self.verbose == "print_statement":
+                print(log_dict)
         return losses
 
     def encode(self, X: List[str], return_type: Literal["np", "pt"] = "pt") -> Union[np.ndarray, torch.Tensor]:

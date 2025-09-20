@@ -57,8 +57,8 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
         Weight decay for optimizer.
     grad_norm_clip : float, default=1.0
         Gradient norm clipping value.
-    verbose : bool, default=False
-        Whether to display progress bars during training.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : Optional[Union[torch.device, str]], default=None
         Device to run the model on (CPU or GPU).
     model_name : str, default="MolGPTMolecularGenerator"
@@ -80,7 +80,7 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
         adamw_betas: Tuple[float, float] = (0.9, 0.95), 
         weight_decay: float = 0.1, 
         grad_norm_clip: float = 1.0, 
-        verbose: bool = False, 
+        verbose: str = "none", 
         *,
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "MolGPTMolecularGenerator"
@@ -101,7 +101,7 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
         self.adamw_betas = adamw_betas
         self.weight_decay = weight_decay
         self.grad_norm_clip = grad_norm_clip
-        self.verbose = verbose
+        self.verbose = verbose.lower()
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GPT
@@ -257,14 +257,16 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
         total_steps = self.epochs * len(train_loader)
         
         # Initialize global progress bar
-        global_pbar = tqdm(total=total_steps, desc="Training Progress", disable=not self.verbose)
+        global_pbar = None
+        if self.verbose == "progress_bar":
+            global_pbar = tqdm(total=total_steps, desc="Training Progress")
         
         scaler = GradScaler()
         for epoch in range(self.epochs):
             train_losses = self._train_epoch(train_loader, optimizer, epoch, scaler, global_pbar)
             self.fitting_loss.append(np.mean(train_losses))
-
-        global_pbar.close()
+        if global_pbar is not None:
+            global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
@@ -290,14 +292,16 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
             losses.append(loss.item())
 
             # Update global progress bar
-            if global_pbar is not None:
-                global_pbar.set_postfix({
+            log_dict = {
                     "Epoch": f"{epoch+1}/{self.epochs}",
                     "Step": f"{step+1}/{len(train_loader)}",
                     "Loss": f"{loss.item():.4f}"
-                })
+                }
+            if global_pbar is not None:
+                global_pbar.set_postfix(log_dict)
                 global_pbar.update(1)
-        
+            if self.verbose == "print_statement":
+                print(log_dict)
         return losses
         
     @torch.no_grad()

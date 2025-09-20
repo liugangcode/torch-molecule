@@ -65,8 +65,8 @@ class BFGNNMolecularPredictor(GNNMolecularPredictor):
         Factor by which to reduce learning rate when plateau is reached.
     scheduler_patience : int, default=5
         Number of epochs with no improvement after which learning rate will be reduced.
-    verbose : bool, default=False
-        Whether to print progress information during training.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     """
     
     def __init__(
@@ -100,7 +100,7 @@ class BFGNNMolecularPredictor(GNNMolecularPredictor):
         evaluate_criterion: Optional[Union[str, Callable]] = None,
         evaluate_higher_better: Optional[bool] = None,
         # General parameters
-        verbose: bool = False,
+        verbose: str = "none",
         device: Optional[torch.device | str] = None,
         model_name: str = "BFGNNMolecularPredictor",
     ):
@@ -126,7 +126,7 @@ class BFGNNMolecularPredictor(GNNMolecularPredictor):
             loss_criterion=loss_criterion,
             evaluate_criterion=evaluate_criterion,
             evaluate_higher_better=evaluate_higher_better,
-            verbose=verbose,
+            verbose=verbose.lower(),
             device=device,
             model_name=model_name,
         )

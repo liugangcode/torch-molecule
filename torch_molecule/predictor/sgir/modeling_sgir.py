@@ -2,6 +2,7 @@ import warnings
 import numpy as np
 from tqdm import tqdm
 from typing import Optional, Union, List, Callable, Literal
+import copy
 
 import torch
 from torch_geometric.loader import DataLoader
@@ -87,8 +88,8 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
         Factor by which to reduce learning rate when plateau is reached.
     scheduler_patience : int, default=5
         Number of epochs with no improvement after which learning rate will be reduced.
-    verbose : bool, default=False
-        Whether to print progress information during training.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : torch.device or str, optional
         Device to run the model on. If None, will auto-detect GPU or use CPU.
     model_name : str, default="SGIRMolecularPredictor"
@@ -133,7 +134,7 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
         evaluate_criterion: Optional[Union[str, Callable]] = None,
         evaluate_higher_better: Optional[bool] = None,
         # General parameters
-        verbose: bool = False,
+        verbose: str = "none",
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "SGIRMolecularPredictor",
     ):
@@ -160,7 +161,7 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
             loss_criterion=loss_criterion,
             evaluate_criterion=evaluate_criterion,
             evaluate_higher_better=evaluate_higher_better,
-            verbose=verbose,
+            verbose=verbose.lower(),
             device=device,
             model_name=model_name,
         )
@@ -259,7 +260,7 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
         
         # Initialize global progress bar
         global_pbar = None
-        if self.verbose:
+        if self.verbose == "progress_bar":
             global_pbar = tqdm(
                 total=total_steps,
                 desc="SGIR Training Progress",
@@ -305,24 +306,30 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
                 if is_better:
                     self.fitting_epoch = epoch
                     best_eval = current_eval
-                    best_state_dict = self.model.state_dict()
+                    best_state_dict = copy.deepcopy(self.model.state_dict()) #Save the best epoch model not the last one
                     cnt_wait = 0
-                    if self.verbose and global_pbar:
-                        global_pbar.set_postfix({
+                    log_dict = {
                             "Epoch": f"{epoch+1}/{self.epochs}",
                             "Loss": f"{np.mean(train_losses):.4f}",
                             f"{self.evaluate_name}": f"{best_eval:.4f}",
                             "Status": "✓ Best"
-                        })
+                    }
+                    if self.verbose == "progress_bar" and global_pbar:
+                        global_pbar.set_postfix(log_dict)
+                    elif self.verbose == "print_statement":
+                        print(log_dict)
                 else:
                     cnt_wait += 1
-                    if self.verbose and global_pbar:
-                        global_pbar.set_postfix({
+                    log_dict = {
                             "Epoch": f"{epoch+1}/{self.epochs}",
                             "Loss": f"{np.mean(train_losses):.4f}",
                             f"{self.evaluate_name}": f"{current_eval:.4f}",
                             "Wait": f"{cnt_wait}/{self.patience}"
-                        })
+                        }
+                    if self.verbose == "progress_bar" and global_pbar:
+                        global_pbar.set_postfix(log_dict)
+                    elif self.verbose == "print_statement":
+                        print(log_dict)
                     if cnt_wait > self.patience:
                         if self.verbose:
                             if global_pbar:

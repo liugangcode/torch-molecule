@@ -56,8 +56,8 @@ class InfoGraphMolecularEncoder(BaseMolecularEncoder):
         Factor by which to reduce the learning rate when plateau is detected.
     scheduler_patience : int, default=5
         Number of epochs with no improvement after which learning rate will be reduced.
-    verbose : bool, default=False
-        Whether to print progress information during training.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : Optional[Union[torch.device, str]], default=None
         Device to run the model on (CPU or GPU).
     model_name : str, default="InfoGraphMolecularEncoder"
@@ -80,7 +80,7 @@ class InfoGraphMolecularEncoder(BaseMolecularEncoder):
         use_lr_scheduler: bool = False, 
         scheduler_factor: float = 0.5, 
         scheduler_patience: int = 5, 
-        verbose: bool = False, 
+        verbose: str = "none", 
         *,
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "InfoGraphMolecularEncoder"
@@ -102,7 +102,7 @@ class InfoGraphMolecularEncoder(BaseMolecularEncoder):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
+        self.verbose = verbose.lower()
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GNN
@@ -148,8 +148,11 @@ class InfoGraphMolecularEncoder(BaseMolecularEncoder):
     def _convert_to_pytorch_data(self, X):
         """Convert numpy arrays to PyTorch Geometric data format.
         """
-        if self.verbose:
+        if self.verbose == "progress_bar":
             iterator = tqdm(enumerate(X), desc="Converting molecules to graphs", total=len(X))
+        elif self.verbose == "print_statement":
+            print("Converting molecules to graphs, preparing data for training...")
+            iterator = enumerate(X)
         else:
             iterator = enumerate(X)
 
@@ -224,7 +227,9 @@ class InfoGraphMolecularEncoder(BaseMolecularEncoder):
         self.fitting_loss = []
 
         total_steps = self.epochs * len(train_loader)        
-        global_pbar = tqdm(total=total_steps, desc="Training Progress", disable=not self.verbose)
+        global_pbar = None
+        if self.verbose == "progress_bar": 
+            global_pbar = tqdm(total=total_steps, desc="Training Progress")
 
         for epoch in range(self.epochs):
             # Training phase
@@ -232,8 +237,8 @@ class InfoGraphMolecularEncoder(BaseMolecularEncoder):
             self.fitting_loss.append(np.mean(train_losses).item())
             if scheduler:
                 scheduler.step(np.mean(train_losses).item())
-
-        global_pbar.close()
+        if global_pbar is not None:
+            global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
@@ -261,16 +266,18 @@ class InfoGraphMolecularEncoder(BaseMolecularEncoder):
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip_value)
             optimizer.step()
             losses.append(loss.item())
-
-            if global_pbar is not None:
-                global_pbar.set_postfix({
+            log_dict = {
                     "Epoch": f"{epoch+1}/{self.epochs}",
                     "Step": f"{step+1}/{len(train_loader)}",
                     "Loss": f"{loss.item():.4f}",
                     "Local/Global": f"{local_global_loss.item():.4f}",
                     "Prior": f"{prior_loss.item():.4f}"
-                })
+                }
+            if global_pbar is not None:
+                global_pbar.set_postfix(log_dict)
                 global_pbar.update(1)
+            if self.verbose == "print_statement":
+                print(log_dict)
 
         return losses
 

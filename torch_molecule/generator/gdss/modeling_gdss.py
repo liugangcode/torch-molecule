@@ -85,8 +85,8 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
         Whether to use probability flow ODE for sampling.
     sampler_noise_removal : bool, default=True
         Whether to remove noise in the final step of sampling.
-    verbose : bool, default=False
-        Whether to display progress bars and logs.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : Optional[Union[torch.device, str]], optional
         Device to use for computation (cuda/cpu)
     model_name : str, optional
@@ -125,7 +125,7 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
         sampler_n_steps: int = 1, 
         sampler_probability_flow: bool = False, 
         sampler_noise_removal: bool = True, 
-        verbose: bool = False, 
+        verbose: str = "none", 
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "GDSSMolecularGenerator"
     ):
@@ -163,7 +163,7 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
         self.sampler_n_steps = sampler_n_steps
         self.sampler_probability_flow = sampler_probability_flow
         self.sampler_noise_removal = sampler_noise_removal
-        self.verbose = verbose
+        self.verbose = verbose.lower()
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GDSSModel
@@ -219,8 +219,11 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
     def _convert_to_pytorch_data(self, X, y=None):
         """Convert numpy arrays to PyTorch Geometric data format.
         """
-        if self.verbose:
+        if self.verbose == "progress_bar":
             iterator = tqdm(enumerate(X), desc="Converting molecules to graphs", total=len(X))
+        elif self.verbose == "print_statement":
+            print("Converting molecules to graphs, preparing data for training")
+            iterator = enumerate(X)
         else:
             iterator = enumerate(X)
 
@@ -397,7 +400,7 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
         
         # Initialize global progress bar
         global_pbar = None
-        if self.verbose:
+        if self.verbose == "progress_bar":
             global_pbar = tqdm(
                 total=total_steps,
                 desc="GDSS Training Progress",
@@ -419,11 +422,14 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
                     scheduler.step(epoch_loss)
 
                 # Update global progress bar with epoch summary
-                if global_pbar is not None:
-                    global_pbar.set_postfix({
+                log_dict = {
                         "Epoch": f"{epoch+1}/{self.epochs}",
                         "Avg Loss": f"{epoch_loss:.4f}"
-                    })
+                    }
+                if global_pbar is not None:
+                    global_pbar.set_postfix(log_dict)
+                elif self.verbose == "print_statement":
+                    print(log_dict)
 
             self.fitting_epoch = epoch
         finally:

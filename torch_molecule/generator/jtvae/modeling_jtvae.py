@@ -56,8 +56,8 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
         Number of iterations between learning rate updates.
     kl_anneal_iter : int, default=2000
         Number of iterations between KL weight updates.
-    verbose : bool, default=False
-        Whether to print detailed training information.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : Optional[Union[torch.device, str]], default=None
         Device to run the model on (CPU or GPU).
     model_name : str, default="JTVAEMolecularGenerator"
@@ -82,7 +82,7 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
         anneal_rate: float = 0.9, 
         anneal_iter: int = 40000, 
         kl_anneal_iter: int = 2000, 
-        verbose: bool = False, 
+        verbose: str = "none", 
         *,
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "JTVAEMolecularGenerator"
@@ -204,13 +204,16 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
         total_steps = self.epochs * step_len
         
         # Initialize global progress bar
-        global_pbar = tqdm(total=total_steps, desc="Training Progress", disable=not self.verbose)
+        global_pbar = None
+        if self.verbose == "progress_bar":
+            global_pbar = tqdm(total=total_steps, desc="Training Progress")
         
         for epoch in range(self.epochs):
             train_losses, total_step = self._train_epoch(train_loader, optimizer, scheduler, epoch, total_step, step_len, global_pbar)
             self.fitting_loss.append(np.mean(train_losses).item())
 
-        global_pbar.close()
+        if global_pbar is not None:
+            global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
@@ -238,8 +241,7 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
                 self.beta = min(self.max_beta, self.beta + self.step_beta)
 
             # Update global progress bar
-            if global_pbar is not None:
-                global_pbar.set_postfix({
+            log_dict = {
                     "Epoch": f"{epoch+1}/{self.epochs}",
                     "Step": f"{step+1}/{step_len}",
                     "Total Loss": f"{total_loss.item():.4f}",
@@ -247,8 +249,12 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
                     "Topo": f"{topo_loss.item():.4f}",
                     "Assm": f"{assm_loss.item():.4f}",
                     "KL": f"{kl_div.item():.4f}"
-                })
+                }
+            if global_pbar is not None:
+                global_pbar.set_postfix(log_dict)
                 global_pbar.update(1)
+            if self.verbose == "print_statement":
+                print(log_dict)
             
         return losses, total_step
 

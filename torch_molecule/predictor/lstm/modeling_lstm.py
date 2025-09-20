@@ -1,6 +1,7 @@
 import warnings
 from tqdm import tqdm
 from typing import Optional, Union, Dict, Any, List, Callable, Tuple
+import copy
 
 import numpy as np
 import torch
@@ -70,8 +71,8 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         Factor by which to reduce learning rate when plateau is reached.
     scheduler_patience : int, default=5
         Number of epochs with no improvement after which learning rate will be reduced.
-    verbose : bool, default=False
-        Whether to print progress information during training.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : torch.device or str, optional
         Device to run the model on. If None, will auto-detect GPU or use CPU.
     model_name : str, default="LSTMMolecularPredictor"
@@ -100,7 +101,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         use_lr_scheduler: bool = False,
         scheduler_factor: float = 0.5,
         scheduler_patience: int = 5,
-        verbose: bool = False,
+        verbose: str = "none",
     ):
         super().__init__(
             device=device,
@@ -124,7 +125,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
+        self.verbose = verbose.lower()
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = LSTM
@@ -468,7 +469,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         
         # Initialize global progress bar
         global_pbar = None
-        if self.verbose:
+        if self.verbose == "progress_bar":
             global_pbar = tqdm(
                 total=total_steps,
                 desc="Training Progress",
@@ -496,24 +497,30 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
                 if is_better:
                     self.fitting_epoch = epoch
                     best_eval = current_eval
-                    best_state_dict = self.model.state_dict()
+                    best_state_dict = copy.deepcopy(self.model.state_dict()) # Save the best epoch model not the last one
                     cnt_wait = 0
-                    if self.verbose and global_pbar:
-                        global_pbar.set_postfix({
+                    log_dict = {
                             "Epoch": f"{epoch+1}/{self.epochs}",
                             "Loss": f"{np.mean(train_losses):.4f}",
                             f"{self.evaluate_name}": f"{best_eval:.4f}",
                             "Status": "✓ Best"
-                        })
+                        }
+                    if self.verbose == "progress_bar" and global_pbar:
+                        global_pbar.set_postfix(log_dict)
+                    elif self.verbose == "print_statement":
+                        print(log_dict)
                 else:
                     cnt_wait += 1
-                    if self.verbose and global_pbar:
-                        global_pbar.set_postfix({
+                    log_dict = {
                             "Epoch": f"{epoch+1}/{self.epochs}",
                             "Loss": f"{np.mean(train_losses):.4f}",
                             f"{self.evaluate_name}": f"{current_eval:.4f}",
                             "Wait": f"{cnt_wait}/{self.patience}"
-                        })
+                        }
+                    if self.verbose == "progress_bar" and global_pbar:
+                        global_pbar.set_postfix(log_dict)
+                    elif self.verbose == "print_statement":
+                        print(log_dict)
                     if cnt_wait > self.patience:
                         if self.verbose:
                             if global_pbar:

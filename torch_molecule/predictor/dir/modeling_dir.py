@@ -79,8 +79,8 @@ class DIRMolecularPredictor(GNNMolecularPredictor):
         Metric for model evaluation.
     evaluate_higher_better : bool, optional
         Whether higher values of the evaluation metric are better.
-    verbose : bool, default=False
-        Whether to print progress information during training.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : torch.device or str, optional
         Device to use for computation.
     model_name : str, default="DIRMolecularPredictor"
@@ -118,7 +118,7 @@ class DIRMolecularPredictor(GNNMolecularPredictor):
         evaluate_criterion: Optional[Union[str, Callable]] = None,
         evaluate_higher_better: Optional[bool] = None,
         # General parameters
-        verbose: bool = False,
+        verbose: str = "none",
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "DIRMolecularPredictor",
     ):
@@ -144,7 +144,7 @@ class DIRMolecularPredictor(GNNMolecularPredictor):
             loss_criterion=loss_criterion,
             evaluate_criterion=evaluate_criterion,
             evaluate_higher_better=evaluate_higher_better,
-            verbose=verbose,
+            verbose=verbose.lower(),
             device=device,
             model_name=model_name,
         )

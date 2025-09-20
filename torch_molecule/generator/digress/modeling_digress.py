@@ -58,8 +58,8 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
         Factor for learning rate scheduler (if use_lr_scheduler is True), defaults to 0.5 
     scheduler_patience : int, optional
         Patience for learning rate scheduler (if use_lr_scheduler is True), defaults to 5
-    verbose : bool, optional
-        Whether to display progress bars and logs. Default is False.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : Optional[Union[torch.device, str]], optional
         Device to use for computation (cuda/cpu)
     model_name : str, optional
@@ -83,7 +83,7 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
         use_lr_scheduler: bool = False, 
         scheduler_factor: float = 0.5, 
         scheduler_patience: int = 5, 
-        verbose: bool = False, 
+        verbose: str = "none", 
         device: Optional[Union[torch.device, str]] = None, 
         model_name: str = "DigressMolecularGenerator"
     ):
@@ -108,7 +108,7 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
+        self.verbose = verbose.lower()
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GraphTransformer
@@ -151,8 +151,11 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
     def _convert_to_pytorch_data(self, X, y=None):
         """Convert numpy arrays to PyTorch Geometric data format.
         """
-        if self.verbose:
+        if self.verbose == "progress_bar":
             iterator = tqdm(enumerate(X), desc="Converting molecules to graphs", total=len(X))
+        elif self.verbose == "print_statement":
+            print("Converting molecules to graphs, preparing data for training...")
+            iterator = enumerate(X)
         else:
             iterator = enumerate(X)
 
@@ -295,7 +298,7 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
         
         # Initialize global progress bar
         global_pbar = None
-        if self.verbose:
+        if self.verbose == "progress_bar":
             global_pbar = tqdm(
                 total=total_steps,
                 desc="DiGress Training Progress",
@@ -317,11 +320,14 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
                     scheduler.step(epoch_loss)
 
                 # Update global progress bar with epoch summary
-                if global_pbar is not None:
-                    global_pbar.set_postfix({
+                log_dict = {
                         "Epoch": f"{epoch+1}/{self.epochs}",
                         "Avg Loss": f"{epoch_loss:.4f}"
-                    })
+                    }
+                if global_pbar is not None:
+                    global_pbar.set_postfix(log_dict)
+                elif self.verbose == "print_statement":
+                    print(log_dict)
 
             self.fitting_epoch = epoch
         finally:

@@ -29,7 +29,7 @@ def test_graph_dit_generator():
         timesteps=500,
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
-        verbose=True,
+        verbose="progress_bar",
         guide_scale=2.0,
         lw_X=1,
         lw_E=5
@@ -81,7 +81,7 @@ def test_graph_dit_generator():
         timesteps=500,
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
-        verbose=True
+        verbose="progress_bar"
     )
     print("Unconditional GraphDIT Model initialized successfully")
 

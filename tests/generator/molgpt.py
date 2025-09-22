@@ -39,7 +39,7 @@ def test_molgpt_generator():
         max_len=64,
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
-        verbose=True
+        verbose="progress_bar"
     )
     print("Unconditional MolGPT Model initialized successfully")
 
@@ -84,7 +84,7 @@ def test_molgpt_generator():
         num_task=1,  # Enable property conditioning
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
-        verbose=True
+        verbose="progress_bar"
     )
     print("Property Conditional MolGPT Model initialized successfully")
 
@@ -130,7 +130,7 @@ def test_molgpt_generator():
         use_scaffold=True,  # Enable scaffold conditioning
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
-        verbose=True
+        verbose="progress_bar"
     )
     print("Scaffold Conditional MolGPT Model initialized successfully")
 
@@ -177,7 +177,7 @@ def test_molgpt_generator():
         use_scaffold=True,  # Enable scaffold conditioning
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
-        verbose=True
+        verbose="progress_bar"
     )
     print("Combined Conditional MolGPT Model initialized successfully")
 

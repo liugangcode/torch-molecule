@@ -143,7 +143,7 @@ class IRMMolecularPredictor(GNNMolecularPredictor):
             loss_criterion=loss_criterion,
             evaluate_criterion=evaluate_criterion,
             evaluate_higher_better=evaluate_higher_better,
-            verbose=verbose.lower(),
+            verbose=verbose,
             device=device,
             model_name=model_name
         )

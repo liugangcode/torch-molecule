@@ -5,7 +5,7 @@ from torch_molecule.datasets import load_qm9
 
 
 def train_on_qm9() -> None:
-    model = DigressMolecularGenerator(verbose=True, batch_size=1024, epochs=2)
+    model = DigressMolecularGenerator(verbose="progress_bar", batch_size=1024, epochs=2)
 
     smiles_list, _ = load_qm9(local_dir="torchmol_data")
 

@@ -35,7 +35,7 @@ def test_defog_generator():
         learning_rate=5e-4,
         sample_steps=10,  # Fewer steps for faster testing
         guidance_weight=0.2,
-        verbose=True,
+        verbose="progress_bar",
     )
     print("Multi-Conditional DeFoG Model initialized successfully.")
     print(f"Input dim y: {conditional_model.input_dim_y}")
@@ -91,7 +91,7 @@ def test_defog_generator():
         learning_rate=5e-4,
         sample_steps=10,
         guidance_weight=0.2,
-        verbose=True,
+        verbose="progress_bar",
     )
     print("Single-Property Conditional DeFoG Model initialized successfully.")
     
@@ -112,7 +112,7 @@ def test_defog_generator():
         learning_rate=5e-4,
         sample_steps=10,  # Fewer steps for faster testing
         guidance_weight=0.0,  # No guidance for unconditional generation
-        verbose=True,
+        verbose="progress_bar",
     )
     print("Unconditional DeFoG Model initialized successfully.")
     print(f"Input dim y: {unconditional_model.input_dim_y}")

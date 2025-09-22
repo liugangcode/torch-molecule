@@ -25,7 +25,7 @@ def test_grea_predictor():
         hidden_size=128,
         batch_size=4,
         epochs=EPOCHS,
-        verbose=True
+        verbose="print_statement"
     )
     print("GREA model initialized successfully")
 
@@ -73,7 +73,7 @@ def test_grea_predictor():
         num_task=1,
         task_type="classification",
         epochs=EPOCHS,
-        verbose=True
+        verbose="print_statement"
     )
     
     model_auto.autofit(
@@ -97,7 +97,7 @@ def test_grea_predictor():
         num_task=1,
         task_type="classification",
         epochs=EPOCHS,
-        verbose=True
+        verbose="print_statement"
     )
     
     model_partial.autofit(
@@ -116,7 +116,7 @@ def test_grea_predictor():
         num_task=1,
         task_type="classification",
         epochs=EPOCHS,
-        verbose=True
+        verbose="print_statement"
     )
     
     model_default.autofit(
@@ -160,7 +160,7 @@ def test_grea_predictor():
         model_invalid = GREAMolecularPredictor(
             num_task=1,
             task_type="classification",
-            verbose=True
+            verbose="print_statement"
         )
         model_invalid.autofit(
             smiles_list,
@@ -203,7 +203,7 @@ def test_grea_upload():
         hidden_size=64,   # Small embedding dimension
         batch_size=4,
         epochs=EPOCHS,     # Few epochs for quick testing
-        verbose=False,
+        verbose="none",
         model_name='GREA_O2'
     )
     

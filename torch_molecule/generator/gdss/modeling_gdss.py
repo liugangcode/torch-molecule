@@ -163,7 +163,7 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
         self.sampler_n_steps = sampler_n_steps
         self.sampler_probability_flow = sampler_probability_flow
         self.sampler_noise_removal = sampler_noise_removal
-        self.verbose = verbose.lower()
+        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GDSSModel

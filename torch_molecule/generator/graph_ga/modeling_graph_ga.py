@@ -37,8 +37,8 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
         Number of parallel jobs to run. -1 means using all processors.
     iteration : int, default=5
         Number of iterations for each target label (or random sample) to run the genetic algorithm.
-    verbose : bool, default=False
-        Whether to display progress bars and logs.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : Optional[Union[torch.device, str]], default=None
         Device to run the model on (CPU or GPU).
     model_name : str, default="GraphGAMolecularGenerator"
@@ -52,7 +52,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
         mutation_rate: float = 0.0067, 
         n_jobs: int = 1, 
         iteration: int = 5, 
-        verbose: bool = False, 
+        verbose: str = "none", 
         *,
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "GraphGAMolecularGenerator"
@@ -80,7 +80,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
 
     def save_to_local(self, path: str):
         joblib.dump(self.oracle, path)
-        if self.verbose:
+        if self.verbose is not "none":
             print(f"Saved oracle to {path}")
 
     def load_from_local(self):
@@ -226,7 +226,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
                 parallel_inputs.append((population_mol, label))
             
             # Run GA for all labels in parallel with tqdm progress bar
-            if self.verbose:
+            if self.verbose is not "none":
                 results = joblib.Parallel(n_jobs=self.n_jobs)(
                     delayed(self._run_generation)(pop_mol, lbl) 
                     for pop_mol, lbl in tqdm(parallel_inputs, desc="Generating molecules")
@@ -249,7 +249,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
                 parallel_inputs.append((population_mol, None))
             
             # Run GA for all samples in parallel with tqdm progress bar
-            if self.verbose:
+            if self.verbose is not "none":
                 results = joblib.Parallel(n_jobs=self.n_jobs)(
                     delayed(self._run_generation)(pop_mol, lbl) 
                     for pop_mol, lbl in tqdm(parallel_inputs, desc="Generating molecules", total=num_samples)

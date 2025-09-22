@@ -78,8 +78,8 @@ class SMILESTransformerMolecularPredictor(LSTMMolecularPredictor):
         Factor by which to reduce learning rate when plateau is reached.
     scheduler_patience : int, default=5
         Number of epochs with no improvement after which learning rate will be reduced.
-    verbose : bool, default=False
-        Whether to print progress information during training.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     """
     def __init__(
         self,
@@ -104,7 +104,7 @@ class SMILESTransformerMolecularPredictor(LSTMMolecularPredictor):
         use_lr_scheduler: bool = True,
         scheduler_factor: float = 0.5,
         scheduler_patience: int = 5,
-        verbose: bool = False,
+        verbose: str = "none",
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "SMILESTransformerMolecularPredictor",
     ):

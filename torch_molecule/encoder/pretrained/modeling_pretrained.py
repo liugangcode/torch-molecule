@@ -89,8 +89,8 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
     add_bos_eos : Optional[bool], default=None
         Whether to add beginning/end of sequence tokens. If None, models in known_add_bos_eos_list will be set to True.
         The current known_add_bos_eos_list includes: ["entropy/gpt2_zinc_87m"].
-    verbose : bool, default=False
-        Whether to display progress information during encoding.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : Optional[Union[torch.device, str]], default=None
         Device to run the model on (CPU or GPU).
     model_name : str, default="HFPretrainedMolecularEncoder"
@@ -103,7 +103,7 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
         max_length: int = 128, 
         batch_size: int = 128, 
         add_bos_eos: Optional[bool] = None,
-        verbose: bool = False,
+        verbose: str = "none",
         *,
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "HFPretrainedMolecularEncoder"
@@ -217,7 +217,10 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
         
         # Process in batches
         all_embeddings = []
-        iterator = tqdm(range(0, len(X), self.batch_size), desc="Encoding molecules", total=len(X) // self.batch_size, disable=not self.verbose)
+        if self.verbose == "progress_bar" or self.verbose == "print_statement":
+            iterator = tqdm(range(0, len(X), self.batch_size), desc="Encoding molecules", total=len(X) // self.batch_size, disable=False)
+        else:
+            iterator = tqdm(range(0, len(X), self.batch_size), desc="Encoding molecules", total=len(X) // self.batch_size, disable=True)
         for i in iterator:
             batch_X = X[i:i + self.batch_size]
             

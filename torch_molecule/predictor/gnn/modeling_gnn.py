@@ -168,7 +168,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         self.evaluate_higher_better = evaluate_higher_better
         
         # General parameters
-        self.verbose = verbose.lower()
+        self.verbose = verbose
         
         # Training state
         self.fitting_loss = list()

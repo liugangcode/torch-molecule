@@ -23,7 +23,7 @@ def test_bfgnn_predictor():
         batch_size=4,
         epochs=100,  # Small number for testing
         patience=100,
-        verbose=True,
+        verbose="print_statement",
         l1_penalty=1e-3
     )
     print("Model initialized successfully")
@@ -68,9 +68,8 @@ def test_bfgnn_predictor():
     model_auto = BFGNNMolecularPredictor(
         num_task=1,
         task_type="classification",
-        epochs=3,  # Small number for testing
-        # verbose=True
-        verbose=False
+        epochs=50,  # Small number for testing
+        verbose="print_statement"
     )
     
     model_auto.autofit(

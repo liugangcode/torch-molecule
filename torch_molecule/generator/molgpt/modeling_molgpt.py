@@ -101,7 +101,7 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
         self.adamw_betas = adamw_betas
         self.weight_decay = weight_decay
         self.grad_norm_clip = grad_norm_clip
-        self.verbose = verbose.lower()
+        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GPT

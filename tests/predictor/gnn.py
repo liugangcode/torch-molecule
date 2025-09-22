@@ -20,8 +20,8 @@ def test_gnn_predictor():
         num_layer=3,
         hidden_size=128,
         batch_size=4,
-        epochs=5,  # Small number for testing
-        verbose=True
+        epochs=20,  # Small number for testing
+        verbose="progress_bar"
     )
     print("Model initialized successfully")
 
@@ -61,8 +61,7 @@ def test_gnn_predictor():
         num_task=1,
         task_type="classification",
         epochs=3,  # Small number for testing
-        # verbose=True
-        verbose=False
+        verbose="none"
     )
     
     model_auto.autofit(

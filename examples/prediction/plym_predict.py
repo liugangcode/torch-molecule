@@ -99,7 +99,7 @@ def train_and_evaluate_models(model_type='both'):
             epochs=N_epoch,
             evaluate_criterion='r2',
             evaluate_higher_better=True,
-            verbose=True
+            verbose="progress_bar"
         )
         
         # Fit the model with hyperparameter optimization
@@ -153,7 +153,7 @@ def train_and_evaluate_models(model_type='both'):
             epochs=N_epoch,
             evaluate_criterion='r2',
             evaluate_higher_better=True,
-            verbose=True
+            verbose="progress_bar"
         )
         
         # Fit the model with hyperparameter optimization

@@ -89,7 +89,7 @@ for idx, name in enumerate(oracle_names, 1):
         mutation_rate=0.01,
         n_jobs=10,
         iteration=10,
-        verbose=True
+        verbose="progress_bar"
     )
     
     # Fit the model

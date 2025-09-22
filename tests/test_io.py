@@ -113,7 +113,7 @@ def test_huggingface_interface():
         hidden_size=64,
         batch_size=4,
         epochs=2,
-        verbose=False,
+        verbose="none",
         model_name='GREA_TEST'
     )
     
@@ -253,7 +253,7 @@ def test_supervised_encoder_save_load():
     encoder = SupervisedMolecularEncoder(
         predefined_task=["morgan", "maccs"],
         epochs=2,
-        verbose=False
+        verbose="none"
     )
     
     try:

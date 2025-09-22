@@ -24,7 +24,7 @@ def test_dir_predictor():
         hidden_size=128,
         batch_size=4,
         epochs=5,
-        verbose=True
+        verbose="progress_bar"
     )
     print("DIR model initialized successfully")
 
@@ -80,7 +80,7 @@ def test_dir_predictor():
         num_task=1,
         task_type="classification",
         epochs=3,
-        verbose=True
+        verbose="progress_bar"
     )
     
     model_auto.autofit(
@@ -103,7 +103,7 @@ def test_dir_predictor():
         num_task=1,
         task_type="classification",
         epochs=3,
-        verbose=True
+        verbose="progress_bar"
     )
     
     model_partial.autofit(
@@ -120,7 +120,7 @@ def test_dir_predictor():
         num_task=1,
         task_type="classification",
         epochs=3,
-        verbose=True
+        verbose="progress_bar"
     )
     
     model_default.autofit(
@@ -164,7 +164,7 @@ def test_dir_predictor():
         model_invalid = DIRMolecularPredictor(
             num_task=1,
             task_type="classification",
-            verbose=True
+            verbose="progress_bar"
         )
         model_invalid.autofit(
             smiles_list,
@@ -202,7 +202,7 @@ def test_dir_upload():
         hidden_size=64,   # Small embedding dimension
         batch_size=4,
         epochs=2,     # Few epochs for quick testing
-        verbose=False,
+        verbose="none",
         model_name='DIR_Invariant'
     )
     

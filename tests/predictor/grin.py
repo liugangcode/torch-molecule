@@ -22,7 +22,7 @@ def test_grin_predictor():
         hidden_size=128,
         batch_size=4,
         epochs=5,  # Small number for testing
-        verbose=True,
+        verbose="progress_bar",
     )
     print("Model initialized successfully")
 
@@ -72,8 +72,7 @@ def test_grin_predictor():
         num_task=1,
         task_type="classification",
         epochs=3,  # Small number for testing
-        # verbose=True
-        verbose=False
+        verbose="none"
     )
     
     model_auto.autofit(

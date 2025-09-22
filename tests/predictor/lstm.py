@@ -30,7 +30,7 @@ def test_lstm_predictor():
         epochs=200,
         patience=200,
         device="cpu",
-        verbose=True
+        verbose="progress_bar"
     )
     print("Model initialized successfully")
 
@@ -58,7 +58,7 @@ def test_lstm_predictor():
         num_task=5,  # 5 tasks for multitask regression
         task_type="regression",
         epochs=3,  # Small number for testing
-        verbose=True
+        verbose="progress_bar"
     )
     
     model_auto.autofit(

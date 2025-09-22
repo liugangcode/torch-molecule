@@ -113,7 +113,7 @@ def test_irm_gnn_predictor():
         batch_size=10,
         patience=1000,
         epochs=10,  # Small number for testing
-        verbose=True,
+        verbose="progress_bar", #or print_statement or none
         IRM_environment="random",  # IRM-specific
         penalty_weight=100,        # IRM-specific
         penalty_anneal_iters=2    # IRM-specific
@@ -159,7 +159,7 @@ def test_irm_gnn_predictor():
         num_task=1,
         task_type="classification",
         epochs=3,  # Small number for testing
-        verbose=False
+        verbose="progress_bar", #or print_statement or none
     )
     
     model_auto.autofit(

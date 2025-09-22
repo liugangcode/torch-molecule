@@ -29,7 +29,7 @@ def train_rpgnn_predictor():
         hidden_size=300,
         batch_size=128,
         epochs=2,
-        verbose=True
+        verbose="progress_bar"
     )
     print("RPGNN model initialized successfully")   
     
@@ -68,7 +68,7 @@ def train_rpgnn_predictor():
         epochs=3,
         num_node_feature=num_node_feature,
         fixed_size=10,
-        verbose=True
+        verbose="progress_bar"
     )
     
     model_auto.autofit(

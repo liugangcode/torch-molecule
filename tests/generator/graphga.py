@@ -47,7 +47,7 @@ def test_graph_ga_generator():
         mutation_rate=0.01,
         n_jobs=1,  # Use 1 for easier debugging
         iteration=3,
-        verbose=True
+        verbose="progress_bar"
     )
     print("GraphGA Model (unconditional) initialized successfully")
     
@@ -59,7 +59,7 @@ def test_graph_ga_generator():
         mutation_rate=0.01,
         n_jobs=1,  # Use 1 for easier debugging
         iteration=3,
-        verbose=True
+        verbose="progress_bar"
     )
     print("GraphGA Model (conditional) initialized successfully")
     

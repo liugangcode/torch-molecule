@@ -45,7 +45,7 @@ def test_lstm_generator():
         max_len=64,
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
-        verbose=True
+        verbose="progress_bar"
     )
     print("Unconditional LSTM Model initialized successfully")
 
@@ -89,7 +89,7 @@ def test_lstm_generator():
         num_task=len(property_columns),  # Set number of properties
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
-        verbose=True
+        verbose="progress_bar"
     )
     print("Property Conditional LSTM Model initialized successfully")
 

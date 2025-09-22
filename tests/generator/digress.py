@@ -29,7 +29,7 @@ def test_digress_generator():
         timesteps=500,
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
-        verbose=True,
+        verbose="progress_bar",
         lw_X=1,
         lw_E=5
     )

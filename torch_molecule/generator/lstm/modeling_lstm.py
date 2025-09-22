@@ -88,7 +88,7 @@ class LSTMMolecularGenerator(BaseMolecularGenerator):
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
         self.grad_norm_clip = grad_norm_clip
-        self.verbose = verbose.lower()
+        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.input_size = None

@@ -28,7 +28,7 @@ model_cond = GraphGAMolecularGenerator(
     offspring_size=10,
     n_jobs=1,
     iteration=5,
-    verbose=True
+    verbose="progress_bar"
 )
 print("GraphGA Model (conditional) initialized successfully")
 model_cond.fit(train_smiles_list, train_property_array)

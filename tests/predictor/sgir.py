@@ -27,7 +27,7 @@ def test_sgir_predictor():
         hidden_size=128,
         batch_size=4,
         epochs=20,
-        verbose=True,
+        verbose="progress_bar",
         warmup_epoch=5,
         labeling_interval=1,
         augmentation_interval=1
@@ -63,7 +63,7 @@ def test_sgir_predictor():
         num_task=1,
         task_type="regression",
         epochs=3,
-        verbose=True
+        verbose="progress_bar"
     )
     
     model_auto.autofit(

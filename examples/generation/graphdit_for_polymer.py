@@ -75,7 +75,7 @@ model_cond = GraphDITMolecularGenerator(
     task_type=['regression'] * len(property_names),
     batch_size=1024,
     drop_condition=0.1,
-    verbose=True,
+    verbose="progress_bar",
     # epochs=10000,
     epochs=10,
 )

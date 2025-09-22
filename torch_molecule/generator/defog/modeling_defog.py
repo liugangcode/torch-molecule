@@ -82,8 +82,8 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
         Number of epochs with no improvement after which learning rate will be reduced
     task_type : List[str], default=[]
         List specifying type of each task ('regression' or 'classification')
-    verbose : bool, default=False
-        Whether to display progress bars and logs
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
     device : Optional[Union[torch.device, str]], default=None
         Device to run the model on (CPU or GPU)
     model_name : str, default="DeFoGMolecularGenerator"
@@ -115,7 +115,7 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
         scheduler_factor: float = 0.5,
         scheduler_patience: int = 10,
         task_type: Optional[List[str]] = None,
-        verbose: bool = False,
+        verbose: str = "none",
         *,
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "DeFoGMolecularGenerator",
@@ -241,8 +241,11 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
 
     def _convert_to_pytorch_data(self, X, y=None):
         """Convert numpy arrays to PyTorch Geometric data format."""
-        if self.verbose:
+        if self.verbose == "progress_bar":
             iterator = tqdm(enumerate(X), desc="Converting molecules to graphs", total=len(X))
+        elif self.verbose == "print_statement":
+            print("Converting molecules to graphs, preparing data for training...")
+            iterator = enumerate(X)
         else:
             iterator = enumerate(X)
 
@@ -400,8 +403,9 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
 
         # Calculate total steps for global progress bar
         total_steps = self.epochs * len(train_loader)
-        global_progress = tqdm(total=total_steps, desc="Training Progress", leave=True) if self.verbose else None
-
+        global_progress = None
+        if self.verbose == "progress_bar":
+            global_progress = tqdm(total=total_steps, desc="Training Progress", leave=True)
         self.fitting_loss = []
         for epoch in range(self.epochs):
             train_losses = self._train_epoch(train_loader, optimizer, epoch, global_progress)
@@ -598,7 +602,7 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
             # unconditional
             y = torch.zeros(batch_size, self.input_dim_y, device=self.device)
 
-        for t_int in tqdm(reversed(range(0, self.sample_steps)), desc="Generating", total=self.sample_steps, disable=not self.verbose):
+        for t_int in tqdm(reversed(range(0, self.sample_steps)), desc="Generating", total=self.sample_steps, disable=(not self.verbose=="progress_bar")):
             t_array = t_int * torch.ones((batch_size, 1), device=self.device)
             s_array = (t_int + 1) * torch.ones((batch_size, 1), device=self.device)
             

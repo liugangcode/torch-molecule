@@ -117,7 +117,7 @@ grea = GREAMolecularPredictor(
     num_task=num_task,
     task_type="regression",
     evaluate_higher_better=False,
-    verbose=True
+    verbose="progress_bar" #or "print_statement" recommended for jupyter notebooks, or "none"
 )
 
 # Fit with automatic hyperparameter tuning with 10 attempts, or implement .fit() with the default/manual hyperparameters

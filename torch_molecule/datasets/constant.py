@@ -1,3 +1,20 @@
+from dataclasses import dataclass
+from typing import List
+import numpy as np
+
+@dataclass
+class SMILESDataset:
+    """
+    Data class for storing molecular SMILES dataset with input and target data.
+    
+    Attributes:
+        data (List[str]): Input data (e.g., list of SMILES strings)
+        target (np.ndarray | None): Target property values as 2D numpy array (rows=molecules, cols=targets) or None
+    """
+    data: List[str]
+    target: np.ndarray | None
+
+
 TOXCAST_TASKS = [
     'ACEA_T47D_80hr_Negative', 'ACEA_T47D_80hr_Positive',
     'APR_HepG2_CellCycleArrest_24h_dn', 'APR_HepG2_CellCycleArrest_24h_up',

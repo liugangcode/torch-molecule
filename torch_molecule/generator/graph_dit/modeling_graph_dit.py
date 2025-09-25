@@ -1,12 +1,12 @@
-import numpy as np
 from tqdm import tqdm
 from typing import Optional, Union, Dict, Any, Tuple, List, Type
-from dataclasses import dataclass, field
 
 import torch
 import torch.nn.functional as F
 from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
+
+import numpy as np
 
 from .transformer import Transformer
 from .utils import PlaceHolder, to_dense, compute_dataset_info
@@ -15,7 +15,6 @@ from .diffusion import NoiseScheduleDiscrete, MarginalTransition, sample_discret
 from ...base import BaseMolecularGenerator
 from ...utils import graph_from_smiles, graph_to_smiles
 
-@dataclass
 class GraphDITMolecularGenerator(BaseMolecularGenerator):
     """
     This generator implements the graph diffusion transformer for (multi-conditional and unconditional) molecular generation.
@@ -68,47 +67,67 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         Number of epochs with no improvement after which learning rate will be reduced
     verbose : bool, default=False
         Whether to display progress bars and logs
+    device : Optional[Union[torch.device, str]], default=None
+        Device to run the model on (CPU or GPU)
+    model_name : str, default="GraphDITMolecularGenerator"
+        Name identifier for the model
     """
-    
-    # Model parameters
-    num_layer: int = 6
-    hidden_size: int = 1152
-    dropout: float = 0.
-    drop_condition: float = 0.
-    num_head: int = 16
-    mlp_ratio: float = 4
-    task_type: List[str] = field(default_factory=list)
+    def __init__(
+        self, 
+        num_layer: int = 6, 
+        hidden_size: int = 1152, 
+        dropout: float = 0., 
+        drop_condition: float = 0., 
+        num_head: int = 16, 
+        mlp_ratio: float = 4, 
+        task_type: Optional[List[str]] = None, 
+        timesteps: int = 500, 
+        batch_size: int = 128, 
+        epochs: int = 10000, 
+        learning_rate: float = 0.0002, 
+        grad_clip_value: Optional[float] = None, 
+        weight_decay: float = 0.0, 
+        lw_X: float = 1, 
+        lw_E: float = 5, 
+        guide_scale: float = 2., 
+        use_lr_scheduler: bool = False, 
+        scheduler_factor: float = 0.5, 
+        scheduler_patience: int = 5, 
+        verbose: bool = False, 
+        *,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "GraphDITMolecularGenerator"
+    ):
+        super().__init__(device=device, model_name=model_name)
+        
+        self.num_layer = num_layer
+        self.hidden_size = hidden_size
+        self.dropout = dropout
+        self.drop_condition = drop_condition
+        self.num_head = num_head
+        self.mlp_ratio = mlp_ratio
+        if task_type is None:
+            self.task_type = list()
+        else:
+            self.task_type = task_type
+        self.timesteps = timesteps
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.grad_clip_value = grad_clip_value
+        self.weight_decay = weight_decay
+        self.lw_X = lw_X
+        self.lw_E = lw_E
+        self.guide_scale = guide_scale
+        self.use_lr_scheduler = use_lr_scheduler
+        self.scheduler_factor = scheduler_factor
+        self.scheduler_patience = scheduler_patience
+        self.verbose = verbose
+        self.fitting_loss = list()
+        self.fitting_epoch = 0
+        self.dataset_info = dict()
+        self.model_class = Transformer
 
-    # Diffusion parameters
-    timesteps: int = 500
-    
-    # Training parameters
-    batch_size: int = 128
-    epochs: int = 10000
-    learning_rate: float = 0.0002
-    grad_clip_value: Optional[float] = None
-    weight_decay: float = 0.0
-    lw_X: float = 1
-    lw_E: float = 5
-    # Sampling parameters
-    guide_scale: float = 2.
-    # Scheduler parameters
-    use_lr_scheduler: bool = False
-    scheduler_factor: float = 0.5
-    scheduler_patience: int = 5
-
-    verbose: bool = False
-
-    # Attributes
-    model_name: str = "GraphDITMolecularGenerator"
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    dataset_info: Dict[str, Any] = field(default_factory=dict, init=False)
-    model_class: Type[Transformer] = field(default=Transformer, init=False)
-
-    def __post_init__(self):
-        """Initialize the model after dataclass initialization."""
-        super().__post_init__()
         self.max_node = None
         self.input_dim_X = None
         self.input_dim_E = None
@@ -171,6 +190,8 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             
             # No H, first heavy atom has type 0
             node_type = torch.from_numpy(graph['node_feat'][:, 0] - 1)
+            if node_type.numel() <= 1:
+                continue
             
             # Filter out invalid node types (< 0)
             valid_mask = node_type >= 0
@@ -300,26 +321,30 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
 
         self.fitting_loss = []
         self.fitting_epoch = 0
+        
+        # Calculate total steps for progress tracking
+        total_steps = self.epochs * len(train_loader)
+        
+        # Initialize global progress bar
+        global_pbar = tqdm(total=total_steps, desc="Training Progress", disable=not self.verbose)
+        
         for epoch in range(self.epochs):
-            train_losses = self._train_epoch(train_loader, optimizer, epoch)
+            train_losses = self._train_epoch(train_loader, optimizer, epoch, global_pbar)
             self.fitting_loss.append(np.mean(train_losses).item())
             if scheduler:
                 scheduler.step(np.mean(train_losses).item())
 
+        global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
     
-    def _train_epoch(self, train_loader, optimizer, epoch):
+    def _train_epoch(self, train_loader, optimizer, epoch, global_pbar=None):
         self.model.train()
         losses = []
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
+        # Remove the local tqdm iterator since we're using global progress bar
         active_index = self.dataset_info["active_index"]
-        for step, batched_data in enumerate(iterator):
+        for step, batched_data in enumerate(train_loader):
             batched_data = batched_data.to(self.device)
             optimizer.zero_grad()
 
@@ -338,8 +363,16 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
             optimizer.step()
             losses.append(loss.item())
             
-            if self.verbose:
-                iterator.set_postfix({"Epoch": epoch, "Loss": f"{loss.item():.4f}", "Loss_X": f"{loss_X.item():.4f}", "Loss_E": f"{loss_E.item():.4f}"})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Step": f"{step+1}/{len(train_loader)}",
+                    "Loss": f"{loss.item():.4f}",
+                    "Loss_X": f"{loss_X.item():.4f}",
+                    "Loss_E": f"{loss_E.item():.4f}"
+                })
+                global_pbar.update(1)
             
         return losses
 

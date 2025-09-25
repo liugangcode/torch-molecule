@@ -3,6 +3,7 @@ import numpy as np
 import gzip
 import csv
 from typing import List, Tuple
+from .constant import SMILESDataset
 
 current_file_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -20,9 +21,10 @@ def _load_from_local_csv(
         target_cols (List[str]): List of target column names
     
     Returns:
-        Tuple[List[List[str]], np.ndarray]: 
-            - input_data: List of lists containing input data (e.g., SMILES strings)
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+        SMILESDataset: 
+            Dataset object with data (SMILES strings) and target (property values) attributes
+            - data: List[str]
+            - target: np.ndarray
     """
     data_path = os.path.join(current_file_path, "data", filename)
     
@@ -64,12 +66,11 @@ def _load_from_local_csv(
             property_data.append(property_row)
     
     property_numpy = np.array(property_data)
-        
-    return input_data, property_numpy
+    return input_data, property_numpy    
 
 def load_gasperm(
     target_cols: List[str] = ["CH4", "CO2", "H2", "N2", "O2"],
-) -> Tuple[List[str], np.ndarray]:
+) -> SMILESDataset:
     """
     Load gas permeability dataset from local CSV.gz file within torch_molecule package.
     
@@ -77,15 +78,15 @@ def load_gasperm(
         target_cols (List[str]): List of target column names. Default is ["CH4", "CO2", "H2", "N2", "O2"]
     
     Returns:
-        Tuple[List[str], np.ndarray]: 
-            - smiles_list: List of SMILES strings
-            - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)
+        SMILESDataset: 
+            Dataset object with data (SMILES strings) and target (property values) attributes
+            - data: List[str]
+            - target: np.ndarray
     """
     input_cols = ["SMILES"]
     filename = "polymer_gas_permeability.csv.gz"
     
     input_data, property_numpy = _load_from_local_csv(filename, input_cols, target_cols)
-    
     smiles_list = [row[0] for row in input_data]
     
-    return smiles_list, property_numpy
+    return SMILESDataset(data=smiles_list, target=property_numpy)

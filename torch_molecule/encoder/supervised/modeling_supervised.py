@@ -1,7 +1,6 @@
 import numpy as np
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Literal, Type
-from dataclasses import dataclass, field
+from typing import Optional, Union, Dict, Any, Tuple, List, Literal
 
 import torch
 from torch_geometric.loader import DataLoader
@@ -16,7 +15,6 @@ from ...utils import PSEUDOTASK
 ALLOWABLE_ENCODER_MODELS = GNN_ENCODER_MODELS
 ALLOWABLE_ENCODER_READOUTS = GNN_ENCODER_READOUTS
 
-@dataclass
 class SupervisedMolecularEncoder(BaseMolecularEncoder):
     """This encoder implements a GNN model for supervised molecular representation learning with user-defined or predefined fingerprint/calculated property tasks.
 
@@ -56,43 +54,55 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         Number of epochs with no improvement after which learning rate will be reduced.
     verbose : bool, default=False
         Whether to print progress information during training.
+    device : torch.device or str, optional
+        Device to use for computation. Inherited from BaseMolecularEncoder.
+    model_name : str, default="SupervisedMolecularEncoder"
+        Name of the model. Inherited from BaseMolecularEncoder.
     """
-    # pretraining task
-    num_task: Optional[int] = None
-    predefined_task: Optional[List[str]] = None
-    # Model parameters    
-    encoder_type: str = "gin-virtual"
-    readout: str = "sum"
-    num_layer: int = 5
-    hidden_size: int = 300
-    drop_ratio: float = 0.5
-    norm_layer: str = "batch_norm"
-    
-    # Training parameters
-    batch_size: int = 128
-    epochs: int = 500
-    learning_rate: float = 0.001
-    grad_clip_value: Optional[float] = None
-    weight_decay: float = 0.0
-    
-    # Scheduler parameters
-    use_lr_scheduler: bool = False
-    scheduler_factor: float = 0.5
-    scheduler_patience: int = 5
-    
-    # Other parameters
-    verbose: bool = False
-    model_name: str = "SupervisedMolecularEncoder"
-    
-    # Non-init fields
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    model_class: Type[GNN] = field(default=GNN, init=False)
-    
-    def __post_init__(self):
-        """Initialize the model after dataclass initialization."""
-        super().__post_init__()
-        self.num_pretask = None
+    def __init__(
+        self, 
+        num_task: Optional[int] = None, 
+        predefined_task: Optional[List[str]] = None, 
+        encoder_type: str = "gin-virtual", 
+        readout: str = "sum", 
+        num_layer: int = 5, 
+        hidden_size: int = 300, 
+        drop_ratio: float = 0.5, 
+        norm_layer: str = "batch_norm", 
+        batch_size: int = 128, 
+        epochs: int = 500, 
+        learning_rate: float = 0.001, 
+        grad_clip_value: Optional[float] = None, 
+        weight_decay: float = 0.0, 
+        use_lr_scheduler: bool = False, 
+        scheduler_factor: float = 0.5, 
+        scheduler_patience: int = 5, 
+        verbose: bool = False, 
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "SupervisedMolecularEncoder"
+    ):
+        super().__init__(device=device, model_name=model_name)
+        
+        self.num_task = num_task
+        self.predefined_task = predefined_task
+        self.encoder_type = encoder_type
+        self.readout = readout
+        self.num_layer = num_layer
+        self.hidden_size = hidden_size
+        self.drop_ratio = drop_ratio
+        self.norm_layer = norm_layer
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.grad_clip_value = grad_clip_value
+        self.weight_decay = weight_decay
+        self.use_lr_scheduler = use_lr_scheduler
+        self.scheduler_factor = scheduler_factor
+        self.scheduler_patience = scheduler_patience
+        self.verbose = verbose
+        self.fitting_loss = list()
+        self.fitting_epoch = 0
+        self.model_class = GNN
 
         if self.encoder_type not in ALLOWABLE_ENCODER_MODELS:
             raise ValueError(f"Invalid encoder: {self.encoder_type}. Currently only {ALLOWABLE_ENCODER_MODELS} are supported.")
@@ -236,19 +246,20 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         self : SupervisedMolecularEncoder
             Fitted estimator
         """
-        user_defined_task = self.num_task - self.num_pretask
+        user_defined_task = (self.num_task or 0) - self.num_pretask
         if user_defined_task > 0:
             if y_train is None:
                 raise ValueError("User-defined tasks require target values but y_train is None.")
-            if y_train.shape[1] != user_defined_task:
-                raise ValueError(f"Number of user-defined tasks ({user_defined_task}) must match the number of target values in y_train ({y_train.shape[1]}).")
+            y_train_arr = np.array(y_train) if isinstance(y_train, list) else y_train
+            if y_train_arr.shape[1] != user_defined_task:
+                raise ValueError(f"Number of user-defined tasks ({user_defined_task}) must match the number of target values in y_train ({y_train_arr.shape[1]}).")
 
         self._initialize_model(self.model_class)
         self.model.initialize_parameters()
         optimizer, scheduler = self._setup_optimizers()
         
         # Prepare datasets and loaders
-        X_train, y_train = self._validate_inputs(X_train, y_train, return_rdkit_mol=True, num_task=self.num_task, num_pretask=self.num_pretask)
+        X_train, y_train = self._validate_inputs(X_train, y_train, return_rdkit_mol=True, num_task=self.num_task or 0, num_pretask=self.num_pretask)
         train_dataset = self._convert_to_pytorch_data(X_train, y_train)
         train_loader = DataLoader(
             train_dataset,
@@ -268,23 +279,32 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
             is_class_predefined = torch.tensor([], dtype=torch.bool)
 
         is_class = torch.cat([is_class_user, is_class_predefined])
+        
+        # Calculate total steps for global progress bar
+        total_steps = self.epochs * len(train_loader)
+        global_pbar = tqdm(total=total_steps, desc="Training", disable=not self.verbose)
+        
         for epoch in range(self.epochs):
             # Training phase
-            train_losses = self._train_epoch(train_loader, optimizer, is_class, epoch)
-            self.fitting_loss.append(np.mean(train_losses).item())
+            train_losses = self._train_epoch(train_loader, optimizer, is_class, epoch, global_pbar)
+            self.fitting_loss.append(float(np.mean(train_losses)))
             if scheduler:
-                scheduler.step(np.mean(train_losses).item())
+                scheduler.step(float(np.mean(train_losses)))
 
+        global_pbar.close()
         self.fitting_epoch = epoch
         self.is_fitted_ = True
         return self
 
-    def _train_epoch(self, train_loader, optimizer, is_class, epoch):
+    def _train_epoch(self, train_loader, optimizer, is_class, epoch, global_pbar):
         """Training logic for one epoch.
 
         Args:
             train_loader: DataLoader containing training data
             optimizer: Optimizer instance for model parameter updates
+            is_class: Boolean tensor indicating classification tasks
+            epoch: Current epoch number
+            global_pbar: Global progress bar for all epochs
 
         Returns:
             list: List of loss values for each training step
@@ -292,13 +312,7 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         self.model.train()
         losses = []
 
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
-
-        for batch in iterator:
+        for batch in train_loader:
             batch = batch.to(self.device)
             optimizer.zero_grad()
             loss = self.model.compute_loss(batch, is_class)
@@ -308,9 +322,13 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
             optimizer.step()
             losses.append(loss.item())
 
-            # Update progress bar if using tqdm
+            # Update global progress bar
             if self.verbose:
-                iterator.set_postfix({"Epoch": f"{epoch}", "Loss": f"{loss.item():.4f}"})
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch + 1}/{self.epochs}",
+                    "Loss": f"{loss.item():.4f}"
+                })
+                global_pbar.update(1)
 
         return losses
 

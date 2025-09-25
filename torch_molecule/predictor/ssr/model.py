@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 import copy
-# from torch_scatter import scatter
 from .utils import scatter
 
 from ...nn import GNN_node, GNN_node_Virtualnode, MLP
@@ -227,7 +226,7 @@ class SSR(nn.Module):
         return h_rep
 
 
-    def compute_loss(self, batched_data, criterion, coarse_ratios=[0.8, 0.9],cmd_coeff=0.1,fine_grained=True,n_moments=5):
+    def compute_loss(self, batched_data, criterion, coarse_ratios=[0.8, 0.9], cmd_coeff=0.1, fine_grained=True, n_moments=5):
         """Compute loss with SSR regularization"""
         # Original forward pass
         h_node, _ = self.graph_encoder(batched_data)
@@ -268,7 +267,8 @@ class SSR(nn.Module):
                 ssr_loss = ssr_loss + torch.norm(h_rep - coarse_h_rep, dim=1).mean()
         
         # Compute total loss
-        total_loss = pred_loss + cmd_coeff * ssr_loss
+        ssr_loss = cmd_coeff * ssr_loss
+        total_loss = pred_loss + ssr_loss
         
         return total_loss, pred_loss, ssr_loss
         

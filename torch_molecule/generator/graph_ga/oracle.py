@@ -1,9 +1,7 @@
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from rdkit import Chem
-from typing import List, Any
 from ...utils.graph.features import getmorganfingerprint
-
 
 class Oracle:
     """The default Oracle class for scoring molecules in GraphGA.

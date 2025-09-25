@@ -1,9 +1,7 @@
-import os
 import numpy as np
 from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal, Type
+from typing import Optional, Union, Dict, Any, Tuple, List, Callable, Literal
 import warnings
-from dataclasses import dataclass, field
 
 import torch
 from torch_geometric.loader import DataLoader
@@ -49,7 +47,6 @@ DEFAULT_GNN_SEARCH_SPACES: Dict[str, ParameterSpec] = {
     "weight_decay": ParameterSpec(ParameterType.LOG_FLOAT, (1e-8, 1e-3)),
 }
 
-@dataclass
 class GNNMolecularPredictor(BaseMolecularPredictor):
     """This predictor implements a GNN model for molecular property prediction tasks.
     
@@ -71,8 +68,9 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].
     graph_pooling : str, default="sum"
         Method for aggregating node features to graph-level representations. One of ["sum", "mean", "max"].
-    augmented_feature : list, default=["morgan", "maccs"]
+    augmented_feature : list or None, default=None
         Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.
+        Examples like ["morgan", "maccs"] or None.
     batch_size : int, default=128
         Number of samples per batch for training.
     epochs : int, default=500
@@ -100,47 +98,82 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
     verbose : bool, default=False
         Whether to print progress information during training.
     """
-    # Model parameters
-    num_task: int = 1
-    task_type: str = "regression"
-    num_layer: int = 5
-    hidden_size: int = 300
-    gnn_type: str = "gin-virtual"
-    drop_ratio: float = 0.5
-    norm_layer: str = "batch_norm"
-    graph_pooling: str = "sum"
     
-    # Augmented features
-    augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = field(
-        default_factory=lambda: ["morgan", "maccs"]
-    )
-    
-    # Training parameters
-    batch_size: int = 128
-    epochs: int = 500
-    loss_criterion: Optional[Callable] = None
-    evaluate_criterion: Optional[Union[str, Callable]] = None
-    evaluate_higher_better: Optional[bool] = None
-    learning_rate: float = 0.001
-    grad_clip_value: Optional[float] = None
-    weight_decay: float = 0.0
-    patience: int = 50
-    
-    # Scheduler parameters
-    use_lr_scheduler: bool = False
-    scheduler_factor: float = 0.5
-    scheduler_patience: int = 5
-    
-    verbose: bool = False
-    # Other Non-init fields
-    model_name: str = "GNNMolecularPredictor"
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    model_class: Type[GNN] = field(default=GNN, init=False)
+    def __init__(
+        self,
+        # Core model parameters
+        num_task: int = 1,
+        task_type: str = "regression",
+        # GNN architecture parameters
+        num_layer: int = 5,
+        hidden_size: int = 300,
+        gnn_type: str = "gin-virtual",
+        drop_ratio: float = 0.5,
+        norm_layer: str = "batch_norm",
+        graph_pooling: str = "sum",
+        augmented_feature: Optional[list[Literal["morgan", "maccs"]]] = None,
+        # Training parameters
+        batch_size: int = 128,
+        epochs: int = 500,
+        learning_rate: float = 0.001,
+        weight_decay: float = 0.0,
+        grad_clip_value: Optional[float] = None,
+        patience: int = 50,
+        # Learning rate scheduler parameters
+        use_lr_scheduler: bool = False,
+        scheduler_factor: float = 0.5,
+        scheduler_patience: int = 5,
+        # Loss and evaluation parameters
+        loss_criterion: Optional[Callable] = None,
+        evaluate_criterion: Optional[Union[str, Callable]] = None,
+        evaluate_higher_better: Optional[bool] = None,
+        # General parameters
+        verbose: bool = False,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "GNNMolecularPredictor"
+    ):
+        super().__init__(
+            device=device,
+            model_name=model_name,
+            num_task=num_task,
+            task_type=task_type,
+        )
+        
+        # Core model parameters
+        self.num_layer = num_layer
+        self.hidden_size = hidden_size
+        self.gnn_type = gnn_type
+        self.drop_ratio = drop_ratio
+        self.norm_layer = norm_layer
+        self.graph_pooling = graph_pooling
+        self.augmented_feature = augmented_feature
+        
+        # Training parameters
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.weight_decay = weight_decay
+        self.grad_clip_value = grad_clip_value
+        self.patience = patience
+        
+        # Learning rate scheduler parameters
+        self.use_lr_scheduler = use_lr_scheduler
+        self.scheduler_factor = scheduler_factor
+        self.scheduler_patience = scheduler_patience
+        
+        # Loss and evaluation parameters
+        self.loss_criterion = loss_criterion
+        self.evaluate_criterion = evaluate_criterion
+        self.evaluate_higher_better = evaluate_higher_better
+        
+        # General parameters
+        self.verbose = verbose
+        
+        # Training state
+        self.fitting_loss = list()
+        self.fitting_epoch = 0
+        self.model_class = GNN
 
-    def __post_init__(self):
-        """Initialize and validate the model after dataclass initialization."""
-        super().__post_init__()
         if self.augmented_feature is not None:
             valid_augmented_feature = {"morgan", "maccs"}
             invalid_fps = set(self.augmented_feature) - valid_augmented_feature
@@ -543,10 +576,24 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         best_eval = float('-inf') if self.evaluate_higher_better else float('inf')
         cnt_wait = 0
 
+        # Calculate total steps for global progress bar
+        steps_per_epoch = len(train_loader)
+        total_steps = self.epochs * steps_per_epoch
+        
+        # Initialize global progress bar
+        global_pbar = None
+        if self.verbose:
+            global_pbar = tqdm(
+                total=total_steps,
+                desc="Training Progress",
+                unit="step",
+                dynamic_ncols=True
+            )
+
         for epoch in range(self.epochs):
             # Training phase
-            train_losses = self._train_epoch(train_loader, optimizer, epoch)
-            self.fitting_loss.append(np.mean(train_losses))
+            train_losses = self._train_epoch(train_loader, optimizer, epoch, global_pbar)
+            self.fitting_loss.append(float(np.mean(train_losses)))
 
             # Validation phase
             current_eval = self._evaluation_epoch(val_loader)
@@ -566,16 +613,34 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 best_state_dict = self.model.state_dict()
                 cnt_wait = 0
                 if self.verbose:
-                    print(
-                        f"Better result found at Epoch {epoch}: Loss = {np.mean(train_losses):.4f}, "
-                        f"{self.evaluate_name} = {best_eval:.4f}"
-                    )
+                    # Update global progress bar with current metrics
+                    global_pbar.set_postfix({
+                        "Epoch": f"{epoch+1}/{self.epochs}",
+                        "Loss": f"{float(np.mean(train_losses)):.4f}",
+                        f"{self.evaluate_name}": f"{best_eval:.4f}",
+                        "Status": "✓ Best"
+                    })
             else:
                 cnt_wait += 1
+                if self.verbose:
+                    global_pbar.set_postfix({
+                        "Epoch": f"{epoch+1}/{self.epochs}",
+                        "Loss": f"{float(np.mean(train_losses)):.4f}",
+                        f"{self.evaluate_name}": f"{current_eval:.4f}",
+                        "Wait": f"{cnt_wait}/{self.patience}"
+                    })
                 if cnt_wait > self.patience:
                     if self.verbose:
-                        print(f"Early stopping triggered after {epoch} epochs")
+                        global_pbar.set_postfix({
+                            "Status": "Early Stopped",
+                            "Epoch": f"{epoch+1}/{self.epochs}"
+                        })
+                        global_pbar.close()
                     break
+
+        # Close global progress bar
+        if global_pbar is not None:
+            global_pbar.close()
 
         # Restore best model
         if best_state_dict is not None:
@@ -669,12 +734,14 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         # Adjust metric value based on higher/lower better
         return metric_value
 
-    def _train_epoch(self, train_loader, optimizer, epoch):
+    def _train_epoch(self, train_loader, optimizer, epoch, global_pbar=None):
         """Training logic for one epoch.
 
         Args:
             train_loader: DataLoader containing training data
             optimizer: Optimizer instance for model parameter updates
+            epoch: Current epoch number
+            global_pbar: Global progress bar for tracking overall training progress
 
         Returns:
             list: List of loss values for each training step
@@ -682,27 +749,24 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         self.model.train()
         losses = []
 
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
-
-        for batch in iterator:
+        for batch_idx, batch in enumerate(train_loader):
             batch = batch.to(self.device)
             optimizer.zero_grad()
 
-            # Forward pass and loss computation
             loss = self.model.compute_loss(batch, self.loss_criterion)
             loss.backward()
-            # Compute gradient norm if gradient clipping is enabled
             if self.grad_clip_value is not None:
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip_value)
             optimizer.step()
             losses.append(loss.item())
 
-            # Update progress bar if using tqdm
-            if self.verbose:
-                iterator.set_postfix({"Epoch": epoch, "Loss": f"{loss.item():.4f}"})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.update(1)
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Batch": f"{batch_idx+1}/{len(train_loader)}",
+                    "Loss": f"{loss.item():.4f}"
+                })
 
         return losses

@@ -1,17 +1,20 @@
-from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
-from typing import Optional, ClassVar, Union, List, Dict, Any, Tuple, Callable, Type, Literal
+from typing import Optional, Union, List, Literal
 
 import torch
 import numpy as np
 from .base import BaseModel
 
-@dataclass
 class BaseMolecularEncoder(BaseModel, ABC):
     """Base class for molecular representation learning."""
-    
-    model_name: str = field(default="BaseMolecularEncoder")
-
+    def __init__(
+        self,
+        *,
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "BaseMolecularEncoder",
+    ):
+        super().__init__(device=device, model_name=model_name)
+        
     @abstractmethod
     def encode(self, X: List[str], return_type: Literal["np", "pt"] = "pt") -> Union[np.ndarray, torch.Tensor]:
         pass

@@ -15,7 +15,9 @@ def test_gasperm_download_and_cleanup():
         print("-" * 40)
         
         # Test with default target columns
-        smiles_list, property_numpy = load_gasperm()
+        molecular_dataset = load_gasperm()
+        smiles_list = molecular_dataset.data
+        property_numpy = molecular_dataset.target
         
         # Print results
         print(f"\nResults:")
@@ -52,7 +54,9 @@ def test_gasperm_download_and_cleanup():
         print("-" * 40)
         
         custom_targets = ["CH4", "CO2"]
-        smiles_list2, property_numpy2 = load_gasperm(target_cols=custom_targets)
+        molecular_dataset2 = load_gasperm(target_cols=custom_targets)
+        smiles_list2 = molecular_dataset2.data
+        property_numpy2 = molecular_dataset2.target
         
         print(f"Custom target results:")
         print(f"- Target columns: {custom_targets}")
@@ -65,7 +69,9 @@ def test_gasperm_download_and_cleanup():
         print("-" * 40)
         
         single_target = ["H2"]
-        smiles_list3, property_numpy3 = load_gasperm(target_cols=single_target)
+        molecular_dataset3 = load_gasperm(target_cols=single_target)
+        smiles_list3 = molecular_dataset3.data
+        property_numpy3 = molecular_dataset3.target
         
         print(f"Single target results:")
         print(f"- Target columns: {single_target}")
@@ -80,7 +86,9 @@ def test_gasperm_download_and_cleanup():
         
         try:
             invalid_targets = ["INVALID_GAS"]
-            smiles_list4, property_numpy4 = load_gasperm(target_cols=invalid_targets)
+            molecular_dataset4 = load_gasperm(target_cols=invalid_targets)
+            smiles_list4 = molecular_dataset4.data
+            property_numpy4 = molecular_dataset4.target
             print("ERROR: Should have raised ValueError for invalid target column")
         except ValueError as e:
             print(f"Successfully caught expected error: {e}")

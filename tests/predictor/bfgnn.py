@@ -21,7 +21,8 @@ def test_bfgnn_predictor():
         num_layer=3,
         hidden_size=128,
         batch_size=4,
-        epochs=5,  # Small number for testing
+        epochs=100,  # Small number for testing
+        patience=100,
         verbose=True,
         l1_penalty=1e-3
     )

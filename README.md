@@ -70,7 +70,6 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 > More examples can be found in the `examples` and `tests` folders.
 
 `torch-molecule` supports applications in broad domains from chemistry, biology, to materials science. To get started, you can load prepared datasets from `torch_molecule.datasets` (updated after v0.1.3):
-
 | Dataset | Description | Function |
 |---------|-------------|----------|
 | qm9 | Quantum chemical properties (DFT level) | `load_qm9` |
@@ -79,23 +78,31 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 | toxcast | Toxicity of chemical compounds | `load_toxcast` |
 | admet | Chemical absorption, distribution, metabolism, excretion, and toxicity | `load_admet` |
 | gasperm | Six gas permeability properties for polymeric materials | `load_gasperm` |
-
+| zinc250k | A common subset of ZINC dataset, which does not have labels and could be used for unconditional generation or virtual screening | `load_zinc250k` |
 
 ```python
 from torch_molecule.datasets import load_qm9
 
 # local_dir is the local path where the dataset will be saved
-smiles_list, property_np_array = load_qm9(local_dir='torchmol_data')
+molecular_data = load_qm9(local_dir='torchmol_data')
+smiles_list, property_np_array = molecular_data.data, molecular_data.target
 
 # len(smiles_list): 133885
 # Property array shape: (133885, 1)
 
 # load_qm9 returns the target "gap" by default, but you can adjust it by passing new target_cols
 target_cols = ['homo', 'lumo', 'gap']
-smiles_list, property_np_array = load_qm9(local_dir='torchmol_data', target_cols=target_cols)
+molecular_data = load_qm9(local_dir='torchmol_data', target_cols=target_cols)
+smiles_list, property_np_array = molecular_data.data, molecular_data.target
+
+# the target could be None if loading an unlabeled dataset
+from torch_molecule.datasets import load_zinc250k
+molecular_data = load_zinc250k(local_dir='torchmol_data')
+smiles_list = molecular_data.data
+assert molecular_data.target is None
 ```
 
-(We welcome your suggestions and contributions on your datasets!)
+(We are actively adding more datasets. We welcome your suggestions and contributions on your datasets!)
 
 ### Fit a Model
 
@@ -180,6 +187,7 @@ new_model.load_from_local("qm9_grea.pt")
 
 | Model      | Reference           |
 |------------|---------------------|
+| DeFoG      | [DeFoG: Discrete Flow Matching for Graph Generation. ICML 2025](https://openreview.net/pdf?id=KPRIwWhqAZ) |
 | Graph DiT  | [Graph Diffusion Transformers for Multi-Conditional Molecular Generation. NeurIPS 2024](https://openreview.net/forum?id=cfrDLD1wfO) |
 | DiGress    | [DiGress: Discrete Denoising Diffusion for Graph Generation. ICLR 2023](https://openreview.net/forum?id=UaAD-Nu86WX) |
 | GDSS       | [Score-based Generative Modeling of Graphs via the System of Stochastic Differential Equations. ICML 2022](https://proceedings.mlr.press/v162/jo22a/jo22a.pdf) |

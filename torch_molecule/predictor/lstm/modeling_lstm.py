@@ -1,13 +1,9 @@
-import os
-import numpy as np
-from tqdm import tqdm
-from typing import Optional, Union, Dict, Any, List, Callable, Type, Tuple
 import warnings
-from dataclasses import dataclass, field
+from tqdm import tqdm
+from typing import Optional, Union, Dict, Any, List, Callable, Tuple
 
+import numpy as np
 import torch
-import torch.nn as nn
-import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
 from .model import LSTM
@@ -30,7 +26,6 @@ DEFAULT_LSTM_SEARCH_SPACES: Dict[str, ParameterSpec] = {
     "scheduler_factor": ParameterSpec(ParameterType.FLOAT, (0.1, 0.5)),
 }
 
-@dataclass
 class LSTMMolecularPredictor(BaseMolecularPredictor):
     """This predictor implements a LSTM model for molecular property prediction tasks.
 
@@ -77,45 +72,66 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         Number of epochs with no improvement after which learning rate will be reduced.
     verbose : bool, default=False
         Whether to print progress information during training.
-
+    device : torch.device or str, optional
+        Device to run the model on. If None, will auto-detect GPU or use CPU.
+    model_name : str, default="LSTMMolecularPredictor"
+        Name identifier for the model.  
     """
-    # Model parameters
-    num_task: int = 1
-    task_type: str = "regression"
-    input_dim: int = 54 # vocabulary size
-    output_dim: int = 15
-    LSTMunits: int = 60
-    max_input_len: int = 200 # max token length
-    
-    # Training parameters
-    batch_size: int = 128
-    epochs: int = 500
-    loss_criterion: Optional[Callable] = None
-    evaluate_criterion: Optional[Union[str, Callable]] = None
-    evaluate_higher_better: Optional[bool] = None
-    learning_rate: float = 0.001
-    weight_decay: float = 0.0
-    patience: int = 50
-
-    # Scheduler parameters
-    use_lr_scheduler: bool = False
-    scheduler_factor: float = 0.5
-    scheduler_patience: int = 5
-
-    # Other parameters
-    verbose: bool = False
-    model_name: str = "LSTMMolecularPredictor"
-    
-    # Non-init fields
-    fitting_loss: List[float] = field(default_factory=list, init=False)
-    fitting_epoch: int = field(default=0, init=False)
-    model_class: Type[LSTM] = field(default=LSTM, init=False)
-
-    def __post_init__(self):
-        super().__post_init__()
+    def __init__(
+        self,
+        # Parent class parameters
+        device: Optional[Union[torch.device, str]] = None,
+        model_name: str = "LSTMMolecularPredictor",
+        num_task: int = 1,
+        task_type: str = "regression",
+        # LSTM-specific parameters
+        input_dim: int = 54,
+        output_dim: int = 15,
+        LSTMunits: int = 60,
+        max_input_len: int = 200,
+        batch_size: int = 128,
+        epochs: int = 500,
+        loss_criterion: Optional[Callable] = None,
+        evaluate_criterion: Optional[Union[str, Callable]] = None,
+        evaluate_higher_better: Optional[bool] = None,
+        learning_rate: float = 0.001,
+        weight_decay: float = 0.0,
+        patience: int = 50,
+        use_lr_scheduler: bool = False,
+        scheduler_factor: float = 0.5,
+        scheduler_patience: int = 5,
+        verbose: bool = False,
+    ):
+        super().__init__(
+            device=device,
+            model_name=model_name,
+            num_task=num_task,
+            task_type=task_type,
+        )
+        
+        self.input_dim = input_dim
+        self.output_dim = output_dim
+        self.LSTMunits = LSTMunits
+        self.max_input_len = max_input_len
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.loss_criterion = loss_criterion
+        self.evaluate_criterion = evaluate_criterion
+        self.evaluate_higher_better = evaluate_higher_better
+        self.learning_rate = learning_rate
+        self.weight_decay = weight_decay
+        self.patience = patience
+        self.use_lr_scheduler = use_lr_scheduler
+        self.scheduler_factor = scheduler_factor
+        self.scheduler_patience = scheduler_patience
+        self.verbose = verbose
+        self.fitting_loss = list()
+        self.fitting_epoch = 0
+        self.model_class = LSTM
+       
         # Setup loss criterion and evaluation
         if self.loss_criterion is None:
-            self.loss_criterion = nn.MSELoss()
+            self.loss_criterion = self._load_default_criterion()
         self._setup_evaluation(self.evaluate_criterion, self.evaluate_higher_better)
 
     @staticmethod
@@ -183,14 +199,11 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
     def _convert_to_pytorch_data(self, X, y=None):
         """Convert numpy arrays to PyTorch data format.
         """
-        if self.verbose:
-            iterator = tqdm(enumerate(X), desc="Converting lists of data to tensordataset", total=len(X))
-        else:
-            iterator = enumerate(X)
         tokenized_X = create_tensor_dataset(X, self.max_input_len)
         if y is not None and y.size > 0:
             if len(y) != len(X):
                 raise ValueError(f"The number of smiles {len(X)} is incompatible with the number of labels {len(y)}!")
+            
             return TensorDataset(torch.tensor(tokenized_X, dtype=torch.long),
                                     torch.tensor(y, dtype=torch.float32))
         return TensorDataset(torch.tensor(tokenized_X, dtype=torch.long),
@@ -416,10 +429,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         self.model.initialize_parameters()
         optimizer, scheduler = self._setup_optimizers()
         
-        # Prepare datasets and loaders
-        if not isinstance(X_train, list) or not all(isinstance(item, str) for item in X_train):
-            raise TypeError(f"Expected train data to be a list of strings, but got {type(X_train)} with elements {X_train}")
-
+        X_train, y_train = self._validate_inputs(X_train, y_train, return_rdkit_mol=False)
         train_dataset = self._convert_to_pytorch_data(X_train, y_train)
         train_loader = DataLoader(
             train_dataset,
@@ -436,9 +446,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
                 UserWarning
             )
         else:
-            if not isinstance(X_val, list) or not all(isinstance(item, str) for item in X_val):
-                raise TypeError(f"Expected valid data to be a list of strings, but got {type(X_val)} with elements {X_val}")
-
+            X_val, y_val = self._validate_inputs(X_val, y_val, return_rdkit_mol=False)
             val_dataset = self._convert_to_pytorch_data(X_val, y_val)
             val_loader = DataLoader(
                 val_dataset,
@@ -454,41 +462,70 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         best_eval = float('-inf') if self.evaluate_higher_better else float('inf')
         cnt_wait = 0
 
-        for epoch in range(self.epochs):
-            # Training phase
-            train_losses = self._train_epoch(train_loader, optimizer)
-            self.fitting_loss.append(np.mean(train_losses))
-
-            # Validation phase
-            current_eval = self._evaluation_epoch(val_loader)
-            
-            if scheduler:
-                scheduler.step(current_eval)
-            
-            # Model selection (check if current evaluation is better)
-            is_better = (
-                current_eval > best_eval if self.evaluate_higher_better
-                else current_eval < best_eval
+        # Calculate total steps for global progress bar
+        steps_per_epoch = len(train_loader)
+        total_steps = self.epochs * steps_per_epoch
+        
+        # Initialize global progress bar
+        global_pbar = None
+        if self.verbose:
+            global_pbar = tqdm(
+                total=total_steps,
+                desc="Training Progress",
+                unit="step",
+                dynamic_ncols=True,
+                leave=True
             )
-            
-            if is_better:
-                self.fitting_epoch = epoch
-                best_eval = current_eval
-                best_state_dict = self.model.state_dict()
-                cnt_wait = 0
-            else:
-                cnt_wait += 1
-                if cnt_wait > self.patience:
-                    if self.verbose:
-                        print(f"Early stopping triggered after {epoch} epochs")
-                    break
-            
-            if self.verbose and epoch % 10 == 0:
-                print(
-                    f"Epoch {epoch}: Loss = {np.mean(train_losses):.4f}, "
-                    f"{self.evaluate_name} = {current_eval:.4f}, "
-                    f"Best {self.evaluate_name} = {best_eval:.4f}"
+
+        try:
+            for epoch in range(self.epochs):
+                train_losses = self._train_epoch(train_loader, optimizer, epoch, global_pbar)
+                self.fitting_loss.append(float(np.mean(train_losses)))
+
+                current_eval = self._evaluation_epoch(val_loader)
+                
+                if scheduler:
+                    scheduler.step(current_eval)
+                
+                # Model selection (check if current evaluation is better)
+                is_better = (
+                    current_eval > best_eval if self.evaluate_higher_better
+                    else current_eval < best_eval
                 )
+                
+                if is_better:
+                    self.fitting_epoch = epoch
+                    best_eval = current_eval
+                    best_state_dict = self.model.state_dict()
+                    cnt_wait = 0
+                    if self.verbose and global_pbar:
+                        global_pbar.set_postfix({
+                            "Epoch": f"{epoch+1}/{self.epochs}",
+                            "Loss": f"{np.mean(train_losses):.4f}",
+                            f"{self.evaluate_name}": f"{best_eval:.4f}",
+                            "Status": "✓ Best"
+                        })
+                else:
+                    cnt_wait += 1
+                    if self.verbose and global_pbar:
+                        global_pbar.set_postfix({
+                            "Epoch": f"{epoch+1}/{self.epochs}",
+                            "Loss": f"{np.mean(train_losses):.4f}",
+                            f"{self.evaluate_name}": f"{current_eval:.4f}",
+                            "Wait": f"{cnt_wait}/{self.patience}"
+                        })
+                    if cnt_wait > self.patience:
+                        if self.verbose:
+                            if global_pbar:
+                                global_pbar.set_postfix({
+                                    "Status": "Early Stopped",
+                                    "Epoch": f"{epoch+1}/{self.epochs}"
+                                })
+                        break
+        finally:
+            # Ensure progress bar is closed
+            if global_pbar is not None:
+                global_pbar.close()
 
         # Restore best model
         if best_state_dict is not None:
@@ -583,12 +620,14 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         # Adjust metric value based on higher/lower better
         return metric_value
 
-    def _train_epoch(self, train_loader, optimizer):
+    def _train_epoch(self, train_loader, optimizer, epoch, global_pbar=None):
         """Training logic for one epoch.
 
         Args:
             train_loader: DataLoader containing training data
             optimizer: Optimizer instance for model parameter updates
+            epoch: Current epoch number
+            global_pbar: Global progress bar for tracking overall training progress
 
         Returns:
             list: List of loss values for each training step
@@ -596,31 +635,24 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         self.model.train()
         losses = []
 
-        iterator = (
-            tqdm(train_loader, desc="Training", leave=False)
-            if self.verbose
-            else train_loader
-        )
-
-        for batch in iterator:
+        for batch_idx, batch in enumerate(train_loader):
             batched_input, batched_label = batch
             batched_input = batched_input.to(self.device)
             batched_label = batched_label.to(self.device)
             optimizer.zero_grad()
 
-            # Forward pass and loss computation
             loss = self.model.compute_loss(batched_input, batched_label, self.loss_criterion)
-
-            # Backward pass
             loss.backward()
-
             optimizer.step()
-
             losses.append(loss.item())
 
-            # Update progress bar if using tqdm
-            if self.verbose:
-                iterator.set_postfix({"loss": f"{loss.item():.4f}"})
+            # Update global progress bar
+            if global_pbar is not None:
+                global_pbar.update(1)
+                global_pbar.set_postfix({
+                    "Epoch": f"{epoch+1}/{self.epochs}",
+                    "Batch": f"{batch_idx+1}/{len(train_loader)}",
+                    "Loss": f"{loss.item():.4f}"
+                })
 
         return losses
-

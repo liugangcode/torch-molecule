@@ -1,4 +1,4 @@
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 
 """
 predictor module
@@ -35,6 +35,7 @@ from .generator.graph_ga import GraphGAMolecularGenerator
 from .generator.jtvae import JTVAEMolecularGenerator
 from .generator.lstm import LSTMMolecularGenerator
 from .generator.molgpt import MolGPTMolecularGenerator
+from .generator.defog import DeFoGMolecularGenerator
 
 __all__ = [
     # 'BaseMolecularPredictor',
@@ -67,4 +68,5 @@ __all__ = [
     'JTVAEMolecularGenerator',
     'MolGPTMolecularGenerator',
     'LSTMMolecularGenerator',
+    'DeFoGMolecularGenerator',
 ]

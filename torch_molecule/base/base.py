@@ -1,36 +1,47 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Optional, Dict, List, Type, Any, ClassVar, Union, Tuple, Callable, Literal
+from typing import Optional, Dict, List, Type, Any, Union, Tuple
 import torch
 import os
 import numpy as np
 from ..utils.checkpoint import LocalCheckpointManager, HuggingFaceCheckpointManager
 from ..utils.checker import MolecularInputChecker
 
-@dataclass
 class BaseModel(ABC):
     """Base class for molecular models with shared functionality.
     
     This abstract class provides common methods and utilities for molecular models,
     including model initialization, saving/loading, and parameter management.
-    """
     
-    device: Optional[torch.device] = field(default=None)
-    model_name: str = field(default="BaseModel")
-    model_class: Optional[Type[torch.nn.Module]] = field(default=None, init=False) # used for model initialization
-    model: Optional[torch.nn.Module] = field(default=None, init=False) # initialized model
-    is_fitted_: bool = field(default=False, init=False)
-
-    def __post_init__(self):
-        """Initialize common device settings after instance creation.
+    Parameters
+    ----------
+    device : torch.device, optional
+        Device to run the model on. If None, automatically selects CUDA if available,
+        otherwise CPU.
+    model_name : str, default="BaseModel"
+        String identifier for the model name which can be specified by the user.
         
-        Sets the device to CUDA if available, otherwise CPU, when no device is specified.
-        Converts string device specifications to torch.device objects.
-        """
+    Attributes
+    ----------
+    model_class : type or None
+        The class of the model used to initialize the model instance.
+    model : object or None
+        The fitted model instance if the model has been trained, None otherwise.
+    is_fitted_ : bool
+        Whether the model has been fitted/trained. False by default.
+    """
+    def __init__(self, device: Optional[torch.device] = None, model_name: str = "BaseModel"):
+        self.device = device
+        self.model_name = model_name # string of the model name which could be specified by the user
+        
         if self.device is None:
             self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         elif isinstance(self.device, str):
             self.device = torch.device(self.device)
+
+        self.is_fitted_ = False # whether the model is fitted
+        self.model = None # the fitted model if not None
+        self.model_class = None # the class of the model used to initialize the model
 
     @abstractmethod
     def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:
@@ -78,7 +89,7 @@ class BaseModel(ABC):
         pass
 
     @staticmethod
-    def _get_param_names(self) -> List[str]:
+    def _get_param_names() -> List[str]:
         """Get parameter names in the modeling class.
         
         Returns
@@ -104,7 +115,7 @@ class BaseModel(ABC):
             Dictionary of parameter names mapped to their values
         """
         out = {}
-        for key in self._get_param_names():
+        for key in self.__class__._get_param_names():
             value = getattr(self, key)
             if deep and hasattr(value, "get_params"):
                 deep_items = value.get_params().items()
@@ -393,4 +404,3 @@ class BaseModel(ABC):
             repr_str = "\n".join([repr_str[:N_CHAR_MAX//2], "...", repr_str[-N_CHAR_MAX//2:]])
         
         return repr_str
-    

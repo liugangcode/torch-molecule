@@ -121,26 +121,44 @@ class MolGANDiscriminator(torch.nn.Module):
         self.gcn_layers = torch.nn.ModuleList(layers)
         self.fc = torch.nn.Linear(input_dim, 1)
 
-    def forward(self, atom_feats: torch.Tensor, adj: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self,
+        atom_feats: torch.Tensor,
+        adj: torch.Tensor,
+        mask: torch.Tensor
+    ) -> torch.Tensor:
         # atom_feats: [batch, max_num_atoms, num_atom_types]
         # adj: [batch, num_bond_types, max_num_atoms, max_num_atoms]
+        # mask: [batch, max_num_atoms] (float, 1=real, 0=pad)
         h = atom_feats
         for layer in self.gcn_layers:
             if isinstance(layer, RelationalGCNLayer):
                 h = layer(h, adj)
             else:
-                h = layer(h)
+                # If using BatchNorm1d, input should be [batch, features, nodes]
+                if isinstance(layer, torch.nn.BatchNorm1d):
+                    # Permute for batchnorm: [batch, nodes, features] → [batch, features, nodes]
+                    h = layer(h.permute(0, 2, 1)).permute(0, 2, 1)
+                else:
+                    h = layer(h)
+
+        # MASKED GRAPH READOUT
+        # mask: [batch, max_num_atoms] float
+        mask = mask.unsqueeze(-1)  # [batch, max_num_atoms, 1]
+        h_masked = h * mask  # zeros padded nodes
 
         if self.readout == 'sum':
-            g = h.sum(dim=1)  # [batch, hidden_dim]
+            g = h_masked.sum(dim=1)   # [batch, hidden_dim]
         elif self.readout == 'mean':
-            g = h.mean(dim=1)
+            # Prevent divide-by-zero with (mask.sum(dim=1, keepdim=True)+1e-8)
+            g = h_masked.sum(dim=1) / (mask.sum(dim=1) + 1e-8)
         elif self.readout == 'max':
-            g, _ = h.max(dim=1)
+            # Set padded to large neg, then max
+            h_masked_pad = h.clone()
+            h_masked_pad[mask.squeeze(-1) == 0] = float('-inf')
+            g, _ = h_masked_pad.max(dim=1)
         else:
             raise ValueError(f"Unknown readout type: {self.readout}")
 
         out = self.fc(g)  # [batch, 1]
         return out.squeeze(-1)  # [batch]
-
-

@@ -55,7 +55,7 @@ class MolGANModel(nn.Module):
         self,
         gen_optimizer: torch.optim.Optimizer,
         disc_optimizer: torch.optim.Optimizer,
-        lambda_rl: float = 0.0,
+        lambda_rl: float = 0.25,
         reward_optimizer: Optional[torch.optim.Optimizer] = None,
         gen_scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,
         disc_scheduler: Optional[torch.optim.lr_scheduler._LRScheduler] = None,

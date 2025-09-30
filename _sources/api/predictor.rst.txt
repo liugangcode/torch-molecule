@@ -1,7 +1,7 @@
 Molecular Property Prediction Models
 =====================================
 
-The predictor models inherit from the :class:`torch_molecule.base.predictor.BaseMolecularPredictor` class and share common methods for model training, evaluation, prediction and persistence.
+The predictor models inherit from the :class:`BaseMolecularPredictor <torch_molecule.base.predictor.BaseMolecularPredictor>` class and share common methods for model training, evaluation, prediction and persistence.
 
 .. rubric:: Training and Prediction
 
@@ -11,7 +11,7 @@ The predictor models inherit from the :class:`torch_molecule.base.predictor.Base
 
 .. rubric:: Model Persistence
 
-inherited from :class:`torch_molecule.base.base.BaseModel`
+inherited from :class:`BaseModel <torch_molecule.base.base.BaseModel>`
 
 - ``save_to_local(path)``: Save the trained model to a local file
 - ``load_from_local(path)``: Load a trained model from a local file

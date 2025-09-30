@@ -1,13 +1,13 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="../../../../">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>torch_molecule.generator.graph_ga.modeling_graph_ga - torch-molecule (0.1.0) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -21,14 +21,14 @@
   }
   @media not print {
     body[data-theme="dark"] {
-      --color-code-background: #2b2b2b;
-  --color-code-foreground: #f8f8f2;
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
-        --color-code-background: #2b2b2b;
-  --color-code-foreground: #f8f8f2;
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
   
       }
     }
@@ -143,14 +143,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -160,8 +156,7 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
@@ -169,8 +164,7 @@
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -178,8 +172,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -201,7 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../example.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dataset.html">Datasets Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../overview.html">Model Overview</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Model Overview</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../overview.html">Model Overview</a><input aria-label="Toggle navigation of Model Overview" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/predictor.html">Molecular Property Prediction Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generator.html">Molecular Generation Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/encoder.html">Molecular Encoder Models</a></li>
@@ -245,8 +238,7 @@
         </a>
         <div class="content-icon-container">
           <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -254,8 +246,7 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
@@ -301,8 +292,8 @@
 <span class="sd">        Number of parallel jobs to run. -1 means using all processors.</span>
 <span class="sd">    iteration : int, default=5</span>
 <span class="sd">        Number of iterations for each target label (or random sample) to run the genetic algorithm.</span>
-<span class="sd">    verbose : bool, default=False</span>
-<span class="sd">        Whether to display progress bars and logs.</span>
+<span class="sd">    verbose : str, default=&quot;none&quot;</span>
+<span class="sd">        Whether to display progress info. Options are: &quot;none&quot;, &quot;progress_bar&quot;, &quot;print_statement&quot;. If any other, &quot;none&quot; is automatically chosen.</span>
 <span class="sd">    device : Optional[Union[torch.device, str]], default=None</span>
 <span class="sd">        Device to run the model on (CPU or GPU).</span>
 <span class="sd">    model_name : str, default=&quot;GraphGAMolecularGenerator&quot;</span>
@@ -316,12 +307,12 @@
         <span class="n">mutation_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0067</span><span class="p">,</span> 
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> 
         <span class="n">iteration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> 
-        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span> 
         <span class="o">*</span><span class="p">,</span>
         <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;GraphGAMolecularGenerator&quot;</span>
     <span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span> <span class="o">=</span> <span class="n">num_task</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">population_size</span> <span class="o">=</span> <span class="n">population_size</span>
@@ -329,7 +320,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mutation_rate</span> <span class="o">=</span> <span class="n">mutation_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span> <span class="o">=</span> <span class="n">n_jobs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iteration</span> <span class="o">=</span> <span class="n">iteration</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
         <span class="n">model_class</span> <span class="o">=</span> <span class="kc">None</span>
     
     <span class="nd">@staticmethod</span>
@@ -344,7 +335,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">save_to_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oracle</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saved oracle to </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">load_from_local</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -495,7 +486,7 @@
                 <span class="n">parallel_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">population_mol</span><span class="p">,</span> <span class="n">label</span><span class="p">))</span>
             
             <span class="c1"># Run GA for all labels in parallel with tqdm progress bar</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
                 <span class="n">results</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)(</span>
                     <span class="n">delayed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_generation</span><span class="p">)(</span><span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span><span class="p">)</span> 
                     <span class="k">for</span> <span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">parallel_inputs</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Generating molecules&quot;</span><span class="p">)</span>
@@ -518,7 +509,7 @@
                 <span class="n">parallel_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">population_mol</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
             
             <span class="c1"># Run GA for all samples in parallel with tqdm progress bar</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
                 <span class="n">results</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)(</span>
                     <span class="n">delayed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_generation</span><span class="p">)(</span><span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span><span class="p">)</span> 
                     <span class="k">for</span> <span class="n">pop_mol</span><span class="p">,</span> <span class="n">lbl</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">parallel_inputs</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Generating molecules&quot;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)</span>

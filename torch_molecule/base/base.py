@@ -20,6 +20,8 @@ class BaseModel(ABC):
         otherwise CPU.
     model_name : str, default="BaseModel"
         String identifier for the model name which can be specified by the user.
+    verbose : str, default="none"
+        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.
         
     Attributes
     ----------
@@ -30,10 +32,10 @@ class BaseModel(ABC):
     is_fitted_ : bool
         Whether the model has been fitted/trained. False by default.
     """
-    def __init__(self, device: Optional[torch.device] = None, model_name: str = "BaseModel"):
+    def __init__(self, device: Optional[torch.device] = None, model_name: str = "BaseModel", verbose: str = "none"):
         self.device = device
         self.model_name = model_name # string of the model name which could be specified by the user
-        
+            
         if self.device is None:
             self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         elif isinstance(self.device, str):
@@ -42,6 +44,11 @@ class BaseModel(ABC):
         self.is_fitted_ = False # whether the model is fitted
         self.model = None # the fitted model if not None
         self.model_class = None # the class of the model used to initialize the model
+
+        self.verbose = verbose
+        if self.verbose not in ["none", "progress_bar", "print_statement"]:
+            print(f"Invalid verbose: {self.verbose}. Valid options are: none, progress_bar, print_statement. Setting verbose to none.")
+            self.verbose = "none"
 
     @abstractmethod
     def _setup_optimizers(self) -> Tuple[torch.optim.Optimizer, Optional[Any]]:

@@ -17,7 +17,7 @@ def test_edgepred_encoder():
         hidden_size=300,
         batch_size=5,
         epochs=5,  # Small number for testing
-        verbose=True
+        verbose="progress_bar"
     )
     print("Model initialized successfully")
     

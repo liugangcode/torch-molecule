@@ -31,7 +31,7 @@ def train_ssr_predictor():
         hidden_size=300,
         batch_size=128,
         epochs=EPOCHS,
-        verbose="progress_bar"
+        verbose="print_statement"
     )
     print("SSR model initialized successfully")   
     
@@ -68,7 +68,7 @@ def train_ssr_predictor():
         num_task=1,
         task_type="regression",
         epochs=3,
-        verbose="progress_bar"
+        verbose="print_statement"
     )
     
     model_auto.autofit(

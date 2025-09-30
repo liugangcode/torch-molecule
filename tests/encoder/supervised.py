@@ -16,7 +16,7 @@ def test_supervised_encoder():
     encoder1 = SupervisedMolecularEncoder(
         predefined_task=["morgan", "maccs", "logP"],
         epochs=2,  # Small number for testing
-        verbose=True
+        verbose='print_statement'
     )
     encoder1.fit(molecules, y_train=None)
     encodings1 = encoder1.encode(molecules)
@@ -35,7 +35,7 @@ def test_supervised_encoder():
     encoder2 = SupervisedMolecularEncoder(
         num_task=2,  # Two custom tasks
         epochs=2,    # Small number for testing
-        verbose=True
+        verbose='progress_bar'
     )
     encoder2.fit(molecules, y_train=y_custom)
     encodings2 = encoder2.encode(molecules)
@@ -47,7 +47,7 @@ def test_supervised_encoder():
         predefined_task=["morgan"],
         num_task=2,  # 1024 (morgan) + 2 (custom)
         epochs=2,    # Small number for testing
-        verbose=True
+        verbose='progress_bar'
     )
     encoder3.fit(molecules, y_train=y_custom)
     encodings3 = encoder3.encode(molecules)

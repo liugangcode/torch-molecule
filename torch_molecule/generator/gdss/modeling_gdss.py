@@ -132,6 +132,7 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
         super().__init__(
             device=device,
             model_name=model_name,
+            verbose=verbose,
         )
         
         self.num_layer = num_layer
@@ -163,7 +164,6 @@ class GDSSMolecularGenerator(BaseMolecularGenerator):
         self.sampler_n_steps = sampler_n_steps
         self.sampler_probability_flow = sampler_probability_flow
         self.sampler_noise_removal = sampler_noise_removal
-        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GDSSModel

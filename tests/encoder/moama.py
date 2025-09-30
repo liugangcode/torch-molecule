@@ -18,7 +18,7 @@ def test_moama_encoder():
         hidden_size=300,
         batch_size=5,
         epochs=5,  # Small number for testing
-        verbose=True
+        verbose='print_statement'
     )
     print("Model initialized successfully")
     
@@ -59,7 +59,7 @@ def test_moama_encoder_polymers():
         hidden_size=300,
         batch_size=5,
         epochs=5,  # Small number for testing
-        verbose=True
+        verbose='progress_bar'
     )
     model.fit(polymers)
     vectors = model.encode(polymers)

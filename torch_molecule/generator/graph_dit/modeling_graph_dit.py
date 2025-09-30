@@ -98,7 +98,7 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "GraphDITMolecularGenerator"
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         
         self.num_layer = num_layer
         self.hidden_size = hidden_size
@@ -122,12 +122,10 @@ class GraphDITMolecularGenerator(BaseMolecularGenerator):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.dataset_info = dict()
         self.model_class = Transformer
-
         self.max_node = None
         self.input_dim_X = None
         self.input_dim_E = None

@@ -22,8 +22,9 @@ class BaseMolecularPredictor(BaseModel, ABC):
         model_name: str = "BaseMolecularPredictor",
         num_task: int = 0,
         task_type: Optional[str] = None,
+        verbose: str = "none",
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         self.num_task = num_task
         self.task_type = task_type
 

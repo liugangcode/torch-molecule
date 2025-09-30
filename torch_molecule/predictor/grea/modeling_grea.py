@@ -193,7 +193,7 @@ class GREAMolecularPredictor(GNNMolecularPredictor):
         variances = []
         node_scores = []
         with torch.no_grad():
-            for batch in tqdm(loader, disable=not self.verbose):
+            for batch in tqdm(loader, disable=self.verbose != "progress_bar"):
                 batch = batch.to(self.device)
                 out = self.model(batch)
                 predictions.append(out["prediction"].cpu().numpy())

@@ -120,7 +120,7 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "DeFoGMolecularGenerator",
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
 
         # Defaults for dict/list parameters
         if hidden_mlp_dims is None:
@@ -165,7 +165,6 @@ class DeFoGMolecularGenerator(BaseMolecularGenerator):
             self.task_type = list()
         else:
             self.task_type = task_type
-        self.verbose = verbose
 
         # Book-keeping attributes
         self.fitting_loss = list()

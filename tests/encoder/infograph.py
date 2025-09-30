@@ -17,7 +17,7 @@ def test_infograph_encoder():
         embedding_dim=300,  # Must be divisible by num_layer
         batch_size=5,
         epochs=5,  # Small number for testing
-        verbose=True,
+        verbose='progress_bar',
         lw_prior=0.1
     )
     print("Model initialized successfully")

@@ -34,7 +34,7 @@ def test_graphmae_encoder():
         batch_size=16,
         epochs=EPOCHS,  # Small number for testing
         mask_rate=0.15,
-        verbose=True,
+        verbose='progress_bar',
         # device="cpu"
     )
     print("GraphMAE model initialized successfully")
@@ -102,7 +102,7 @@ def test_graphmae_with_edge_masking():
         epochs=EPOCHS,  # Small number for testing
         mask_rate=0.15,
         mask_edge=True,  # Enable edge masking
-        verbose=True,
+        verbose='progress_bar',
         # device="cpu"
     )
     print("GraphMAE model with edge masking initialized successfully")

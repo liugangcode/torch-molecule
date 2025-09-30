@@ -331,7 +331,7 @@ class SGIRMolecularPredictor(GREAMolecularPredictor):
                     elif self.verbose == "print_statement":
                         print(log_dict)
                     if cnt_wait > self.patience:
-                        if self.verbose:
+                        if self.verbose == "progress_bar":
                             if global_pbar:
                                 global_pbar.set_postfix({
                                     "Status": "Early Stopped",

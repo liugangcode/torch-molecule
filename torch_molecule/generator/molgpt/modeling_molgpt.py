@@ -85,7 +85,7 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "MolGPTMolecularGenerator"
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         
         self.num_layer = num_layer
         self.num_head = num_head
@@ -101,7 +101,6 @@ class MolGPTMolecularGenerator(BaseMolecularGenerator):
         self.adamw_betas = adamw_betas
         self.weight_decay = weight_decay
         self.grad_norm_clip = grad_norm_clip
-        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GPT

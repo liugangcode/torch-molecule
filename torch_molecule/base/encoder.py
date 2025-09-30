@@ -12,8 +12,9 @@ class BaseMolecularEncoder(BaseModel, ABC):
         *,
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "BaseMolecularEncoder",
+        verbose: str = "none",
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         
     @abstractmethod
     def encode(self, X: List[str], return_type: Literal["np", "pt"] = "pt") -> Union[np.ndarray, torch.Tensor]:

@@ -57,7 +57,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "GraphGAMolecularGenerator"
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         
         self.num_task = num_task
         self.population_size = population_size
@@ -65,7 +65,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
         self.mutation_rate = mutation_rate
         self.n_jobs = n_jobs
         self.iteration = iteration
-        self.verbose = verbose
+
         model_class = None
     
     @staticmethod
@@ -80,7 +80,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
 
     def save_to_local(self, path: str):
         joblib.dump(self.oracle, path)
-        if self.verbose is not "none":
+        if self.verbose != "none":
             print(f"Saved oracle to {path}")
 
     def load_from_local(self):
@@ -226,7 +226,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
                 parallel_inputs.append((population_mol, label))
             
             # Run GA for all labels in parallel with tqdm progress bar
-            if self.verbose is not "none":
+            if self.verbose != "none":
                 results = joblib.Parallel(n_jobs=self.n_jobs)(
                     delayed(self._run_generation)(pop_mol, lbl) 
                     for pop_mol, lbl in tqdm(parallel_inputs, desc="Generating molecules")
@@ -249,7 +249,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
                 parallel_inputs.append((population_mol, None))
             
             # Run GA for all samples in parallel with tqdm progress bar
-            if self.verbose is not "none":
+            if self.verbose != "none":
                 results = joblib.Parallel(n_jobs=self.n_jobs)(
                     delayed(self._run_generation)(pop_mol, lbl) 
                     for pop_mol, lbl in tqdm(parallel_inputs, desc="Generating molecules", total=num_samples)

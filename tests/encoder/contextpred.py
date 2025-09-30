@@ -19,7 +19,7 @@ def test_contextpred_encoder():
         mode='cbow', # 'cbow' or 'skipgram'
         context_size=2,
         neg_samples=1,
-        verbose=True
+        verbose='print_statement'
     )
     print("Model initialized successfully")
     

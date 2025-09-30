@@ -80,12 +80,12 @@ class InfoGraphMolecularEncoder(BaseMolecularEncoder):
         use_lr_scheduler: bool = False, 
         scheduler_factor: float = 0.5, 
         scheduler_patience: int = 5, 
-        verbose: str = "none", 
         *,
         device: Optional[Union[torch.device, str]] = None,
-        model_name: str = "InfoGraphMolecularEncoder"
+        model_name: str = "InfoGraphMolecularEncoder",
+        verbose: str = "none", 
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         
         self.lw_prior = lw_prior
         self.embedding_dim = embedding_dim
@@ -102,7 +102,6 @@ class InfoGraphMolecularEncoder(BaseMolecularEncoder):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GNN
@@ -311,7 +310,7 @@ class InfoGraphMolecularEncoder(BaseMolecularEncoder):
         self.model.eval()
         encodings = []
         with torch.no_grad():
-            for batch in tqdm(loader, disable=not self.verbose):
+            for batch in tqdm(loader, disable=self.verbose != "progress_bar"):
                 batch = batch.to(self.device)
                 out = self.model(batch)
                 encodings.append(out["graph"].cpu())

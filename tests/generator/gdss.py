@@ -29,7 +29,7 @@ def test_gdss_generator():
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
         learning_rate=0.005,
-        verbose="progress_bar"
+        verbose="print_statement"
     )
     print("GDSS Model initialized successfully")
 

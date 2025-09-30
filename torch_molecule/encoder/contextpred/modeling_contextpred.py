@@ -92,7 +92,7 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "ContextPredMolecularEncoder"
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         
         self.mode = mode
         self.context_size = context_size
@@ -111,7 +111,6 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GNN
@@ -148,7 +147,7 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
     def _convert_to_pytorch_data(self, X):
         """Convert numpy arrays to PyTorch Geometric data format.
         """
-        if self.verbose:
+        if self.verbose == "progress_bar":
             iterator = tqdm(enumerate(X), desc="Converting molecules to graphs", total=len(X))
         else:
             iterator = enumerate(X)
@@ -314,7 +313,7 @@ class ContextPredMolecularEncoder(BaseMolecularEncoder):
         self.model.eval()
         encodings = []
         with torch.no_grad():
-            for batch in tqdm(loader, disable=not self.verbose):
+            for batch in tqdm(loader, disable=self.verbose != "progress_bar"):
                 batch = batch.to(self.device)
                 out = self.model(batch)
                 encodings.append(out["graph"].cpu())

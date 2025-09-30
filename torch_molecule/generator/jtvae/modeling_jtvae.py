@@ -87,7 +87,7 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "JTVAEMolecularGenerator"
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         
         self.hidden_size = hidden_size
         self.latent_size = latent_size
@@ -106,7 +106,6 @@ class JTVAEMolecularGenerator(BaseMolecularGenerator):
         self.anneal_rate = anneal_rate
         self.anneal_iter = anneal_iter
         self.kl_anneal_iter = kl_anneal_iter
-        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = JTNNVAE

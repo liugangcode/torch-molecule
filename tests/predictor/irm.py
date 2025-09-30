@@ -29,7 +29,7 @@ def test_irm_gnn_predictor():
         hidden_size=128,
         batch_size=10,
         epochs=2,
-        verbose=True,
+        verbose='print_statement',
         IRM_environment=environments
     )
     model_manual_env.fit(smiles_list, properties)

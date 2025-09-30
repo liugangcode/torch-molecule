@@ -1,7 +1,7 @@
 Datasets Overview
 ====================================================
 
-The ``torch-molecule`` provide easy access to a wide range of datasets (pre-cached or from Hugging Face Hub).
+The ``torch-molecule`` provide easy access to a wide range of datasets (locally or from Hugging Face Hub).
 
 .. rubric:: QM9
 .. autofunction:: torch_molecule.datasets.load_qm9

@@ -138,6 +138,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             model_name=model_name,
             num_task=num_task,
             task_type=task_type,
+            verbose=verbose,
         )
         
         # Core model parameters
@@ -166,9 +167,6 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         self.loss_criterion = loss_criterion
         self.evaluate_criterion = evaluate_criterion
         self.evaluate_higher_better = evaluate_higher_better
-        
-        # General parameters
-        self.verbose = verbose
         
         # Training state
         self.fitting_loss = list()
@@ -371,7 +369,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                     f"Valid parameters are: {list(default_search_parameters.keys())}"
                 )
                 
-        if self.verbose:
+        if self.verbose != "none":
             all_params = set(self._get_param_names())
             searched_params = set(search_parameters.keys())
             non_searched_params = all_params - searched_params
@@ -445,7 +443,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
                 best_loss = self.fitting_loss.copy()  # Added .copy() for safety
                 best_epoch = self.fitting_epoch
             
-            if self.verbose:
+            if self.verbose != "none":
                 print(
                     f"Trial {trial.number}: {self.evaluate_name} = {score:.4f} "
                     f"({'better' if is_better else 'worse'} than best = {best_score:.4f})"
@@ -459,7 +457,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
         
         # Create study with optional output control
         optuna.logging.set_verbosity(
-            optuna.logging.INFO if self.verbose else optuna.logging.WARNING
+            optuna.logging.INFO if self.verbose != "none" else optuna.logging.WARNING
         )
         
         # Create and run study
@@ -472,7 +470,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             objective,
             n_trials=n_trials,
             catch=(Exception,),
-            show_progress_bar=self.verbose
+            show_progress_bar=self.verbose == "progress_bar"
         )
         
         if best_state_dict is not None:
@@ -485,7 +483,7 @@ class GNNMolecularPredictor(BaseMolecularPredictor):
             self.fitting_epoch = best_epoch
             self.is_fitted_ = True
             
-            if self.verbose:
+            if self.verbose != "none":
                 print(f"\nOptimization completed successfully:")
                 print(f"Best {self.evaluate_name}: {best_score:.4f}")
     

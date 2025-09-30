@@ -1,7 +1,7 @@
 Molecular Encoder Models
 ====================================================
 
-The encoder models inherit from the :class:`torch_molecule.base.encoder.BaseMolecularEncoder` class and share common methods for model pretraining and encoding, as well as model persistence.
+The encoder models inherit from the :class:`BaseMolecularEncoder <torch_molecule.base.encoder.BaseMolecularEncoder>` class and share common methods for model pretraining and encoding, as well as model persistence.
 
 .. rubric:: Training and Encoding
 
@@ -14,7 +14,7 @@ The encoder models inherit from the :class:`torch_molecule.base.encoder.BaseMole
 
 .. rubric:: Model Persistence
 
-inherited from :class:`torch_molecule.base.base.BaseModel`
+inherited from :class:`BaseModel <torch_molecule.base.base.BaseModel>`
 
 - ``save_to_local(path)``: Save the trained model to a local file
 - ``load_from_local(path)``: Load a trained model from a local file

@@ -77,11 +77,11 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         use_lr_scheduler: bool = False, 
         scheduler_factor: float = 0.5, 
         scheduler_patience: int = 5, 
-        verbose: str = "none", 
         device: Optional[Union[torch.device, str]] = None,
-        model_name: str = "SupervisedMolecularEncoder"
+        model_name: str = "SupervisedMolecularEncoder",
+        verbose: str = "none", 
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         
         self.num_task = num_task
         self.predefined_task = predefined_task
@@ -99,7 +99,6 @@ class SupervisedMolecularEncoder(BaseMolecularEncoder):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GNN

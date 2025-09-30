@@ -182,8 +182,11 @@ class SSRMolecularPredictor(GNNMolecularPredictor):
 
     def _convert_to_pytorch_data(self, X, y=None):
         """Convert SMILES to PyTorch Geometric data with coarsened versions, preserving edge attributes."""
-        if self.verbose:
+        if self.verbose == "progress_bar":
             iterator = tqdm(enumerate(X), desc="Converting molecules to graphs", total=len(X))
+        elif self.verbose == "print_statement":
+            iterator = enumerate(X)
+            print("Converting molecules to graphs: preparing data for training...")
         else:
             iterator = enumerate(X)
             

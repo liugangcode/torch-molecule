@@ -40,7 +40,7 @@ The following example demonstrates how to use the `GREAMolecularPredictor`:
        epochs=N_epoch,
        evaluate_criterion='r2',
        evaluate_higher_better=True,
-       verbose=True
+       verbose='progress_bar'
    )
 
    # Fit the model
@@ -80,7 +80,7 @@ The following example demonstrates how to use the `GraphDITMolecularGenerator` f
        task_type=['regression'] * len(property_names),
        batch_size=1024,
        drop_condition=0.1,
-       verbose=True,
+       verbose='progress_bar',
        epochs=10000,
    )
 
@@ -162,6 +162,6 @@ Using Pretrained Checkpoints
    model_dir = "local_model_dir_to_save"
    model = GREAMolecularPredictor()
    model.load_model(f"{model_dir}/GREA_{task_name}.pt", repo_id=repo_id)
-   model.set_params(verbose=True)
+   model.set_params(verbose='progress_bar')
 
    predictions = model.predict(smiles_list)

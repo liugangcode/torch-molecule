@@ -108,6 +108,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
             model_name=model_name,
             num_task=num_task,
             task_type=task_type,
+            verbose=verbose,
         )
         
         self.input_dim = input_dim
@@ -125,7 +126,6 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = LSTM
@@ -234,7 +234,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
                 mode='min' if not self.evaluate_higher_better else 'max',
                 factor=self.scheduler_factor,
                 patience=self.scheduler_patience,
-                verbose=self.verbose
+                verbose=self.verbose != "none"
             )
         
         return optimizer, scheduler
@@ -267,7 +267,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
                     f"Valid parameters are: {list(default_search_parameters.keys())}"
                 )
             
-        if self.verbose:
+        if self.verbose != "none":
             all_params = set(self._get_param_names())
             searched_params = set(search_parameters.keys())
             non_searched_params = all_params - searched_params
@@ -339,7 +339,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
                 best_loss = self.fitting_loss.copy()
                 best_epoch = self.fitting_epoch
 
-            if self.verbose:
+            if self.verbose != "none":
                 print(
                     f"Trial {trial.number}: {self.evaluate_name} = {score:.4f} "
                     f"({'better' if is_better else 'worse'} than best = {best_score:.4f})"
@@ -353,7 +353,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         
         # Create study with optional output control
         optuna.logging.set_verbosity(
-            optuna.logging.INFO if self.verbose else optuna.logging.WARNING
+            optuna.logging.INFO if self.verbose != "none" else optuna.logging.WARNING
         )
 
         # Create study with optional output control
@@ -366,7 +366,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
             objective,
             n_trials=n_trials,
             catch=(Exception,),
-            show_progress_bar=self.verbose
+            show_progress_bar=self.verbose == "progress_bar"
         )
         
         if best_state_dict is not None:
@@ -377,7 +377,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
             self.fitting_epoch = best_epoch
             self.is_fitted_ = True
             
-            if self.verbose:    
+            if self.verbose != "none":    
                 print(f"\nOptimization completed successfully:")
                 print(f"Best {self.evaluate_name}: {best_score:.4f}")
                 
@@ -501,7 +501,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
                     cnt_wait = 0
                     log_dict = {
                             "Epoch": f"{epoch+1}/{self.epochs}",
-                            "Loss": f"{np.mean(train_losses):.4f}",
+                            "Loss": f"{float(np.mean(train_losses)):.4f}",
                             f"{self.evaluate_name}": f"{best_eval:.4f}",
                             "Status": "✓ Best"
                         }
@@ -522,7 +522,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
                     elif self.verbose == "print_statement":
                         print(log_dict)
                     if cnt_wait > self.patience:
-                        if self.verbose:
+                        if self.verbose != "none":
                             if global_pbar:
                                 global_pbar.set_postfix({
                                     "Status": "Early Stopped",
@@ -577,7 +577,7 @@ class LSTMMolecularPredictor(BaseMolecularPredictor):
         self.model.eval()
         predictions = []
         with torch.no_grad():
-            for batch in tqdm(loader, disable=not self.verbose):
+            for batch in tqdm(loader, disable=self.verbose != 'progress_bar'):
                 batched_input, batched_label = batch
                 batched_input = batched_input.to(self.device)
  

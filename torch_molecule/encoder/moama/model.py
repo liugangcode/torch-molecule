@@ -92,9 +92,6 @@ class GNN(nn.Module):
         h_rep = self.pool(h_node, batched_data.batch)
         batched_data.x = h_node
         prediction_class = self.predictor(batched_data)[masked_node_indices]
-        print('prediction_class', prediction_class.max(), prediction_class.min())
-        print('batched_data.y', batched_data.y.max(), batched_data.y.min())
-
         
         # target_class = batched_data.y.to(torch.float32)
         loss_class = class_criterion(prediction_class.to(torch.float32), batched_data.y.long())

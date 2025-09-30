@@ -11,8 +11,9 @@ class BaseMolecularGenerator(BaseModel, ABC):
         *,
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "BaseMolecularGenerator",
+        verbose: str = "none",
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
 
     @abstractmethod
     def fit(self, X: List[str], y: Optional[np.ndarray] = None) -> "BaseMolecularGenerator":

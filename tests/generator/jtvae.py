@@ -34,7 +34,7 @@ def test_jtvae_generator():
         depthG=2,         # Reduced for faster testing
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
-        verbose="progress_bar"
+        verbose="print_statement"
     )
     print("JTVAE Model initialized successfully")
 

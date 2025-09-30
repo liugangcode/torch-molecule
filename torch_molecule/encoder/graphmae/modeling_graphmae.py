@@ -106,7 +106,7 @@ class GraphMAEMolecularEncoder(BaseMolecularEncoder):
         device: Optional[Union[torch.device, str]] = None,
         model_name: str = "GraphMAEMolecularEncoder"
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         self.mask_rate = mask_rate
         self.mask_edge = mask_edge
         self.predictor_type = predictor_type
@@ -124,7 +124,6 @@ class GraphMAEMolecularEncoder(BaseMolecularEncoder):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GNN
@@ -332,7 +331,7 @@ class GraphMAEMolecularEncoder(BaseMolecularEncoder):
         self.model.eval()
         encodings = []
         with torch.no_grad():
-            for batch in tqdm(loader, disable=not self.verbose):
+            for batch in tqdm(loader, disable=self.verbose != "progress_bar"):
                 batch = batch.to(self.device)
                 out = self.model(batch)
                 encodings.append(out["graph"].cpu())

@@ -1,7 +1,7 @@
 Molecular Generation Models
 =============================
 
-The generator models inherit from the :class:`torch_molecule.base.generator.BaseMolecularGenerator` class and share common methods for model training, generation and persistence.
+The generator models inherit from the :class:`BaseMolecularGenerator <torch_molecule.base.generator.BaseMolecularGenerator>` class and share common methods for model training, generation and persistence.
 
 The following models support conditional generation (click model name to jump to details):
 
@@ -29,19 +29,19 @@ The following models support conditional generation (click model name to jump to
 
 .. rubric:: Model Persistence
 
-inherited from :class:`torch_molecule.base.base.BaseModel`
+inherited from :class:`BaseModel <torch_molecule.base.base.BaseModel>`
 
 - ``save_to_local(path)``: Save the trained model to a local file
 - ``load_from_local(path)``: Load a trained model from a local file
 - ``save_to_hf(repo_id)``: Push the model to Hugging Face Hub
 
   Not implemented for:
-  - :class:`torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator`
+  - :class:`GraphGAMolecularGenerator <torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator>`
 
 - ``load_from_hf(repo_id, local_cache)``: Load a model from Hugging Face Hub and save it to a local file
 
   Not implemented for:
-  - :class:`torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator`
+  - :class:`GraphGAMolecularGenerator <torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator>`
 
 - ``save(path, repo_id)``: Save the model to either local storage or Hugging Face
 - ``load(path, repo_id)``: Load a model from either local storage or Hugging Face

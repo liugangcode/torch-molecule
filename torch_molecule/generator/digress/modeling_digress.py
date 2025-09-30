@@ -90,6 +90,7 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
         super().__init__(
             device=device,
             model_name=model_name,
+            verbose=verbose,
         )
         
         self.hidden_size_X = hidden_size_X
@@ -108,7 +109,6 @@ class DigressMolecularGenerator(BaseMolecularGenerator):
         self.use_lr_scheduler = use_lr_scheduler
         self.scheduler_factor = scheduler_factor
         self.scheduler_patience = scheduler_patience
-        self.verbose = verbose
         self.fitting_loss = list()
         self.fitting_epoch = 0
         self.model_class = GraphTransformer

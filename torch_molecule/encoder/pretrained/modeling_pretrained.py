@@ -103,18 +103,17 @@ class HFPretrainedMolecularEncoder(BaseMolecularEncoder):
         max_length: int = 128, 
         batch_size: int = 128, 
         add_bos_eos: Optional[bool] = None,
-        verbose: str = "none",
         *,
         device: Optional[Union[torch.device, str]] = None,
-        model_name: str = "HFPretrainedMolecularEncoder"
+        model_name: str = "HFPretrainedMolecularEncoder",
+        verbose: str = "none", 
     ):
-        super().__init__(device=device, model_name=model_name)
+        super().__init__(device=device, model_name=model_name, verbose=verbose)
         
         self.repo_id = repo_id
         self.max_length = max_length
         self.batch_size = batch_size
         self.add_bos_eos = add_bos_eos
-        self.verbose = verbose
         
         self._require_transformers()
         self.fitting_epoch = -1

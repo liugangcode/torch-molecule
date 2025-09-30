@@ -152,7 +152,7 @@ model = GREAMolecularPredictor()
 model.load_from_hf(repo_id=repo_id, local_cache=f"{model_dir}/GREA_{task_name}.pt")
 
 # Adjust model parameters and make predictions
-model.set_params(verbose=False)
+model.set_params(verbose='none')
 predictions = model.predict(smiles_list)
 ```
 
@@ -171,7 +171,7 @@ new_model.load_from_local("qm9_grea.pt")
 
 | Model                | Reference           |
 |----------------------|---------------------|
-| GRIN                 | [Learning Repetition-Invariant Representations for Polymer Informatics. May 2025](https://arxiv.org/abs/2505.10726) |
+| GRIN                 | [Learning Repetition-Invariant Representations for Polymer Informatics. NeurIPS 2025. May 2025](https://arxiv.org/abs/2505.10726) |
 | BFGNN                 | [Graph neural networks extrapolate out-of-distribution for shortest paths. March 2025](https://arxiv.org/abs/2503.19173) |
 | SGIR                 | [Semi-Supervised Graph Imbalanced Regression. KDD 2023](https://dl.acm.org/doi/10.1145/3580305.3599497) |
 | GREA                | [Graph Rationalization with Environment-based Augmentations. KDD 2022](https://dl.acm.org/doi/abs/10.1145/3534678.3539347) |

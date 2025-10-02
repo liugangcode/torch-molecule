@@ -170,3 +170,4 @@ examples/prediction/train_GNN_for_any.py
 examples/prediction/train_GREA_for_gas.py
 tools/
 **/*.bak
+procedure.txt

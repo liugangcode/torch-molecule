@@ -15,7 +15,7 @@ class MolGANModel(nn.Module):
 
         # Initialize generator and discriminator
         self.gen_config = generator_config if generator_config is not None else MolGANGeneratorConfig()
-        self.gen = MolGANGenerator(self.gen_config)
+        self.gen: MolGANGenerator = MolGANGenerator(self.gen_config)
 
         self.disc_config = discriminator_config if discriminator_config is not None else MolGANDiscriminatorConfig()
         self.disc = MolGANDiscriminator(self.disc_config)
@@ -28,9 +28,20 @@ class MolGANModel(nn.Module):
         )
 
 
-    def generate(self, batch_size: int):
+    def generate(self, batch_size: int, sample_mode: Optional[str] = None):
         """Generate a batch of molecules."""
-        return self.gen(batch_size)
+        z = torch.randn(
+            batch_size,
+            self.gen_config.z_dim,
+            device = torch.device(self.gen.device)
+        )
+        if sample_mode is None:
+            if self.training:
+                return self.gen(z, sample_mode='softmax')
+            else:
+                return self.gen(z, sample_mode='argmax')
+        else:
+            return self.gen(z, sample_mode=sample_mode)
 
 
     def discriminate(
@@ -78,7 +89,7 @@ class MolGANModel(nn.Module):
         mask = (node_features.sum(-1) != 0).float()
 
         z = torch.randn(batch_size, self.gen_config.z_dim, device=node_features.device)
-        fake_atom_logits, fake_bond_logits = self.gen(z)
+        fake_atom_logits, fake_bond_logits = self.gen(z, sample_mode='softmax')
         fake_atom = torch.softmax(fake_atom_logits, -1)
         fake_bond = torch.softmax(fake_bond_logits, 1)
         fake_mask = (fake_atom.argmax(-1) != 0).float()
@@ -106,9 +117,7 @@ class MolGANModel(nn.Module):
 
         # === Generator update ===
         self.gen_optimizer.zero_grad()
-        fake_atom_logits, fake_bond_logits = self.gen(z)
-        fake_atom = torch.softmax(fake_atom_logits, -1)
-        fake_bond = torch.softmax(fake_bond_logits, 1)
+        fake_atom_logits, fake_bond_logits = self.gen(z, sample_mode='softmax')
         fake_mask = (fake_atom.argmax(-1) != 0).float()
         fake_scores = self.disc(fake_atom, fake_bond, fake_mask)
         g_wgan_loss = -fake_scores.mean()
@@ -140,7 +149,22 @@ class MolGANModel(nn.Module):
             if i % log_interval == 0:
                 print({k: round(v, 5) for k, v in result.items()})
 
-
+    def evaluate(self, dataloader, reward_fn):
+        self.gen.eval()
+        self.disc.eval()
+        if self.reward_net: self.reward_net.eval()
+        eval_metrics = {'d_loss': 0.0, 'g_loss': 0.0, 'rl_loss': 0.0, 'r_loss': 0.0}
+        count = 0
+        with torch.no_grad():
+            for batch in dataloader:
+                result = self.training_step(batch, reward_fn, pretrain=False)
+                for k in eval_metrics.keys():
+                    if result[k] is not None:
+                        eval_metrics[k] += result[k]
+                count += 1
+        for k in eval_metrics.keys():
+            eval_metrics[k] /= count
+        return {k: round(v, 5) for k, v in eval_metrics.items()}
 
 
 

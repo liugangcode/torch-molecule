@@ -313,7 +313,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error loading model from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="n">verbose</span> <span class="o">=</span> <span class="n">model_instance</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;verbose&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">verbose</span> <span class="o">=</span> <span class="n">model_instance</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;verbose&quot;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">)</span>
 
         <span class="n">required_keys</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model_state_dict&quot;</span><span class="p">,</span> <span class="s2">&quot;hyperparameters&quot;</span><span class="p">,</span> <span class="s2">&quot;model_name&quot;</span><span class="p">}</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">key</span> <span class="ow">in</span> <span class="n">checkpoint</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">):</span>
@@ -322,6 +322,8 @@
 
         <span class="n">parameter_status</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">new_value</span> <span class="ow">in</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s2">&quot;hyperparameters&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;device&#39;</span><span class="p">]:</span>
+                <span class="k">continue</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model_instance</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
                 <span class="n">old_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model_instance</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
                 <span class="n">is_changed</span> <span class="o">=</span> <span class="p">(</span><span class="n">old_value</span> <span class="o">!=</span> <span class="n">new_value</span><span class="p">)</span>
@@ -334,7 +336,7 @@
                 <span class="k">if</span> <span class="n">is_changed</span><span class="p">:</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="n">model_instance</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">parameter_status</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">parameter_status</span> <span class="ow">and</span> <span class="n">verbose</span> <span class="o">!=</span> <span class="s1">&#39;none&#39;</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Hyperparameter Status:&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Parameter&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Old Value&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;New Value&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Status&#39;</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -408,6 +410,8 @@
 
             <span class="n">parameter_status</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">new_value</span> <span class="ow">in</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s2">&quot;hyperparameters&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;device&#39;</span><span class="p">]:</span>
+                    <span class="k">continue</span>
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model_instance</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
                     <span class="n">old_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model_instance</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
                     <span class="n">is_changed</span> <span class="o">=</span> <span class="p">(</span><span class="n">old_value</span> <span class="o">!=</span> <span class="n">new_value</span><span class="p">)</span>

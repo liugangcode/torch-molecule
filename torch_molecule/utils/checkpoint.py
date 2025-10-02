@@ -53,7 +53,7 @@ class LocalCheckpointManager:
         except Exception as e:
             raise ValueError(f"Error loading model from {path}: {str(e)}")
 
-        verbose = model_instance.get_params().get("verbose", False)
+        verbose = model_instance.get_params().get("verbose", 'none')
 
         required_keys = {"model_state_dict", "hyperparameters", "model_name"}
         if not all(key in checkpoint for key in required_keys):
@@ -62,6 +62,8 @@ class LocalCheckpointManager:
 
         parameter_status = []
         for key, new_value in checkpoint["hyperparameters"].items():
+            if key in ['device']:
+                continue
             if hasattr(model_instance, key):
                 old_value = getattr(model_instance, key)
                 is_changed = (old_value != new_value)
@@ -74,7 +76,7 @@ class LocalCheckpointManager:
                 if is_changed:
                     setattr(model_instance, key, new_value)
 
-        if parameter_status and verbose:
+        if parameter_status and verbose != 'none':
             print("\nHyperparameter Status:")
             print("-" * 80)
             print(f"{'Parameter':<20} {'Old Value':<20} {'New Value':<20} {'Status':<10}")
@@ -142,6 +144,8 @@ class HuggingFaceCheckpointManager:
 
             parameter_status = []
             for key, new_value in checkpoint["hyperparameters"].items():
+                if key in ['device']:
+                    continue
                 if hasattr(model_instance, key):
                     old_value = getattr(model_instance, key)
                     is_changed = (old_value != new_value)

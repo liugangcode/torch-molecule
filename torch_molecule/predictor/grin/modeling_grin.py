@@ -1,9 +1,15 @@
 from typing import Optional, Union, Dict, Any, List, Callable, Literal
 
 import torch
-
+import numpy as np
+import warnings
+import copy
+from torch_geometric.data import Data, DataLoader
+from tqdm import tqdm
 from .model import GRIN
+from .utils import SmilesRepeat
 from ..gnn.modeling_gnn import GNNMolecularPredictor
+from ...utils import graph_from_smiles
 from ...utils.search import (
     ParameterSpec,
     ParameterType,
@@ -21,6 +27,8 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
 
     Parameters
     ----------
+    polymer_train_augmentation : int, default=None
+        Number of times to repeat the polymer for training.
     l1_penalty : float, default=1e-3
         Weight for the L1 penalty.
     epochs_to_penalize : int, default=100
@@ -78,6 +86,7 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
     def __init__(
         self,
         # GRIN-specific parameters
+        polymer_train_augmentation: Optional[int] = None,
         l1_penalty: float = 1e-3,
         epochs_to_penalize: int = 100,
         # Core model parameters
@@ -139,6 +148,7 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
         )
         
         # GRIN-specific parameters
+        self.polymer_train_augmentation = polymer_train_augmentation
         self.l1_penalty = l1_penalty
         self.epochs_to_penalize = epochs_to_penalize
         self.model_class = GRIN
@@ -159,6 +169,184 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
     def _get_model_params(self, checkpoint: Optional[Dict] = None) -> Dict[str, Any]:
         base_params = super()._get_model_params(checkpoint)
         return base_params
+
+    def fit(
+        self,
+        X_train: List[str],
+        y_train: Optional[Union[List, np.ndarray]],
+        X_val: Optional[List[str]] = None,
+        y_val: Optional[Union[List, np.ndarray]] = None,
+        X_unlbl: Optional[List[str]] = None,
+    ) -> "GRINMolecularPredictor":
+        """Fit the model to the training data with optional validation set.
+
+        Parameters
+        ----------
+        X_train : List[str]
+            Training set input molecular structures as SMILES strings
+        y_train : Union[List, np.ndarray]
+            Training set target values for property prediction
+        X_val : List[str], optional
+            Validation set input molecular structures as SMILES strings.
+            If None, training data will be used for validation
+        y_val : Union[List, np.ndarray], optional
+            Validation set target values. Required if X_val is provided
+        X_unlbl : List[str], optional
+            Unlabeled set input molecular structures as SMILES strings.
+            
+        Returns
+        -------
+        self : GRINMolecularPredictor
+            Fitted estimator
+        """
+        if (X_val is None) != (y_val is None):
+            raise ValueError(
+                "Both X_val and y_val must be provided for validation. "
+                f"Got X_val={X_val is not None}, y_val={y_val is not None}"
+            )
+
+        self._initialize_model(self.model_class)
+        self.model.initialize_parameters()
+        optimizer, scheduler = self._setup_optimizers()
+        
+        # Prepare datasets and loaders
+        if self.polymer_train_augmentation is not None:
+            X_train_aug, y_train_aug = SmilesRepeat(self.polymer_train_augmentation).repeat(X_train, y_train)
+            X_train = X_train + X_train_aug
+            if y_train_aug is not None:
+                if isinstance(y_train, np.ndarray):
+                    y_train = np.concatenate([y_train, np.array(y_train_aug)], axis=0)
+                else:
+                    y_train = list(y_train) + list(y_train_aug)
+
+        X_train, y_train = self._validate_inputs(X_train, y_train)
+        train_dataset = self._convert_to_pytorch_data(X_train, y_train)
+        train_loader = DataLoader(
+            train_dataset,
+            batch_size=self.batch_size,
+            shuffle=True,
+            num_workers=0
+        )
+
+        if X_val is None or y_val is None:
+            val_loader = train_loader
+            warnings.warn(
+                "No validation set provided. Using training set for validation. "
+                "This may lead to overfitting.",
+                UserWarning
+            )
+        else:
+            if self.polymer_train_augmentation is not None:
+                X_val_aug, y_val_aug = SmilesRepeat(self.polymer_train_augmentation).repeat(X_val, y_val)
+                X_val = X_val + X_val_aug
+                if y_val_aug is not None:
+                    if isinstance(y_val, np.ndarray):
+                        y_val = np.concatenate([y_val, np.array(y_val_aug)], axis=0)
+                    else:
+                        y_val = list(y_val) + list(y_val_aug)
+
+            X_val, y_val = self._validate_inputs(X_val, y_val)
+            val_dataset = self._convert_to_pytorch_data(X_val, y_val)
+            val_loader = DataLoader(
+                val_dataset,
+                batch_size=self.batch_size,
+                shuffle=False,
+                num_workers=0
+            )
+
+        # Initialize training state
+        self.fitting_loss = []
+        self.fitting_epoch = 0
+        best_state_dict = None
+        best_eval = float('-inf') if self.evaluate_higher_better else float('inf')
+        cnt_wait = 0
+
+        # Calculate total steps for global progress bar
+        steps_per_epoch = len(train_loader)
+        total_steps = self.epochs * steps_per_epoch
+
+        # Initialize global progress bar
+        global_pbar = None
+        if self.verbose == "progress_bar":
+            global_pbar = tqdm(
+                total=total_steps,
+                desc="Training Progress",
+                unit="step",
+                dynamic_ncols=True
+            )
+
+        for epoch in range(self.epochs):
+            # Training phase
+            train_losses = self._train_epoch(train_loader, optimizer, epoch, global_pbar)
+            self.fitting_loss.append(float(np.mean(train_losses)))
+
+            # Validation phase
+            current_eval = self._evaluation_epoch(val_loader)
+            
+            if scheduler:
+                scheduler.step(current_eval)
+            
+            # Model selection (check if current evaluation is better)
+            is_better = (
+                current_eval > best_eval if self.evaluate_higher_better
+                else current_eval < best_eval
+            )
+            
+            if is_better:
+                self.fitting_epoch = epoch
+                best_eval = current_eval
+                best_state_dict = copy.deepcopy(self.model.state_dict()) # Save the best epoch model not the last one
+                cnt_wait = 0
+                log_dict = {
+                        "Epoch": f"{epoch+1}/{self.epochs}",
+                        "Loss": f"{float(np.mean(train_losses)):.4f}",
+                        f"{self.evaluate_name}": f"{best_eval:.4f}",
+                        "Status": "✓ Best"
+                    }
+                if self.verbose == "progress_bar" and global_pbar:
+                    global_pbar.set_postfix(log_dict)
+                elif self.verbose == "print_statement":
+                    print(log_dict)
+            else:
+                cnt_wait += 1
+                log_dict = {
+                        "Epoch": f"{epoch+1}/{self.epochs}",
+                        "Loss": f"{float(np.mean(train_losses)):.4f}",
+                        f"{self.evaluate_name}": f"{current_eval:.4f}",
+                        "Wait": f"{cnt_wait}/{self.patience}"
+                    }
+                if self.verbose == "progress_bar" and global_pbar:
+                    global_pbar.set_postfix(log_dict)
+                elif self.verbose == "print_statement":    
+                    print(log_dict)
+                if cnt_wait > self.patience:
+                    log_dict = {
+                            "Status": "Early Stopped",
+                            "Epoch": f"{epoch+1}/{self.epochs}"
+                        }
+                    if self.verbose == "progress_bar" and global_pbar:
+                        global_pbar.set_postfix(log_dict)
+                        global_pbar.close()
+                    elif self.verbose == "print_stament":
+                        print(log_dict)
+                    break
+
+        # Close global progress bar
+        if global_pbar is not None:
+            global_pbar.close()
+
+        # Restore best model
+        if best_state_dict is not None:
+            self.model.load_state_dict(best_state_dict)
+        else:
+            warnings.warn(
+                "No improvement was achieved during training. "
+                "The model may not be fitted properly.",
+                UserWarning
+            )
+
+        self.is_fitted_ = True
+        return self
 
     def _train_epoch(self, train_loader, optimizer, epoch, global_pbar=None):
         self.model.train()
@@ -187,3 +375,52 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
             losses.append(loss.item())
 
         return losses
+
+    def predict(self, X: List[str], test_augmentation: Optional[int] = None) -> Dict[str, np.ndarray]:
+        """Make predictions using the fitted model.
+
+        Parameters
+        ----------
+        X : List[str]
+            List of SMILES strings to make predictions for
+        test_augmentation : int, optional
+            Number of times to repeat the polymer for making predictions.
+
+        Returns
+        -------
+        Dict[str, np.ndarray]
+            Dictionary containing:
+                - 'prediction': Model predictions (shape: [n_samples, n_tasks])
+
+        """
+        self._check_is_fitted()
+        if test_augmentation is not None:
+            X_aug, _ = SmilesRepeat(test_augmentation).repeat(X)
+            X = X_aug
+
+        # Convert to PyTorch Geometric format and create loader
+        X, _ = self._validate_inputs(X)
+        dataset = self._convert_to_pytorch_data(X)
+        loader = DataLoader(dataset, batch_size=self.batch_size, shuffle=False)
+
+        if self.model is None:
+            raise RuntimeError("Model not initialized")
+        # Make predictions
+        self.model = self.model.to(self.device)
+        self.model.eval()
+        predictions = []
+        with torch.no_grad():
+            if self.verbose == "progress_bar":
+                iterator = tqdm(loader, desc="Predicting")
+            elif self.verbose == "print_statement":
+                print("Predicting...")
+                iterator = loader
+            else:
+                iterator = loader
+            for batch in iterator:
+                batch = batch.to(self.device)
+                out = self.model(batch)
+                predictions.append(out["prediction"].cpu().numpy())
+        return {
+            "prediction": np.concatenate(predictions, axis=0),
+        }

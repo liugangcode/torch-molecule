@@ -33,7 +33,7 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
    conda activate torch_molecule
    ```
 
-2. **Install using pip (v0.1.3)**:
+2. **Install using pip**:
    ```bash
    pip install torch-molecule
    ```
@@ -58,6 +58,7 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 | HFPretrainedMolecularEncoder | transformers |
 | BFGNNMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor | torch-scatter |
+| GRINMolecularPredictor (if enable `repetition_augmentation=True`) | CombineMols |
 
 **For models that require `torch-scatter`**: Install using the following command: `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`, e.g.,
 

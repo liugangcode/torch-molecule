@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "torch_molecule"
-version = "0.1.6.post1"
+version = "0.1.7"
 description = "Deep learning packages for molecular discovery with a simple sklearn-style interface"
 authors = [{name = "Gang Liu", email = "gliu7@nd.edu"}]
 readme = "README.md"

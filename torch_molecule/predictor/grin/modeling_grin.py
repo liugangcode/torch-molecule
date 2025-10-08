@@ -22,13 +22,13 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
 
     References
     ----------
-    - Learning Repetition-Invariant Representations for Polymer Informatics.
+    - Learning Repetition-Invariant Representations for Polymer Informatics. NeurIPS 2025
       https://arxiv.org/pdf/2505.10726
 
     Parameters
     ----------
-    polymer_train_augmentation : int, default=None
-        Number of times to repeat the polymer for training.
+    repetition_augmentation : bool, default=False
+        Whether to enable polymer augmentation for training.
     l1_penalty : float, default=1e-3
         Weight for the L1 penalty.
     epochs_to_penalize : int, default=100
@@ -86,7 +86,7 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
     def __init__(
         self,
         # GRIN-specific parameters
-        polymer_train_augmentation: Optional[int] = None,
+        repetition_augmentation: bool = False,
         l1_penalty: float = 1e-3,
         epochs_to_penalize: int = 100,
         # Core model parameters
@@ -148,10 +148,20 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
         )
         
         # GRIN-specific parameters
-        self.polymer_train_augmentation = polymer_train_augmentation
+        self.repetition_augmentation = repetition_augmentation
         self.l1_penalty = l1_penalty
         self.epochs_to_penalize = epochs_to_penalize
         self.model_class = GRIN
+
+        # Check CombineMols dependency if polymer augmentation is enabled
+        if self.repetition_augmentation:
+            try:
+                from CombineMols.CombineMols import CombineMols
+            except ImportError:
+                raise ImportError(
+                    "CombineMols is required for repetition augmentation for polymer. "
+                    "Please install it using: pip install CombineMols"
+                )
 
     
     @staticmethod
@@ -210,8 +220,8 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
         optimizer, scheduler = self._setup_optimizers()
         
         # Prepare datasets and loaders
-        if self.polymer_train_augmentation is not None:
-            X_train_aug, y_train_aug = SmilesRepeat(self.polymer_train_augmentation).repeat(X_train, y_train)
+        if self.repetition_augmentation:
+            X_train_aug, y_train_aug = SmilesRepeat(2).repeat(X_train, y_train)
             X_train = X_train + X_train_aug
             if y_train_aug is not None:
                 if isinstance(y_train, np.ndarray):
@@ -236,8 +246,8 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
                 UserWarning
             )
         else:
-            if self.polymer_train_augmentation is not None:
-                X_val_aug, y_val_aug = SmilesRepeat(self.polymer_train_augmentation).repeat(X_val, y_val)
+            if self.repetition_augmentation:
+                X_val_aug, y_val_aug = SmilesRepeat(2).repeat(X_val, y_val)
                 X_val = X_val + X_val_aug
                 if y_val_aug is not None:
                     if isinstance(y_val, np.ndarray):
@@ -376,15 +386,15 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
 
         return losses
 
-    def predict(self, X: List[str], test_augmentation: Optional[int] = None) -> Dict[str, np.ndarray]:
+    def predict(self, X: List[str], test_time_augmentation: bool = False) -> Dict[str, np.ndarray]:
         """Make predictions using the fitted model.
 
         Parameters
         ----------
         X : List[str]
             List of SMILES strings to make predictions for
-        test_augmentation : int, optional
-            Number of times to repeat the polymer for making predictions.
+        test_time_augmentation : bool, default=False
+            Whether to enable polymer augmentation for making predictions.
 
         Returns
         -------
@@ -394,8 +404,8 @@ class GRINMolecularPredictor(GNNMolecularPredictor):
 
         """
         self._check_is_fitted()
-        if test_augmentation is not None:
-            X_aug, _ = SmilesRepeat(test_augmentation).repeat(X)
+        if test_time_augmentation:
+            X_aug, _ = SmilesRepeat(2).repeat(X)
             X = X_aug
 
         # Convert to PyTorch Geometric format and create loader

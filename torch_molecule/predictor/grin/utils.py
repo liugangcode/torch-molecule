@@ -2,8 +2,12 @@ from typing import Dict, List, Optional, Union
 import numpy as np
 
 from rdkit import Chem
-from CombineMols.CombineMols import CombineMols
 from rdkit.Chem import Draw
+
+try:
+    from CombineMols.CombineMols import CombineMols
+except ImportError:
+    pass
 
 class SmilesRepeat():
     def __init__(self, repeat_times) -> None:
@@ -121,7 +125,7 @@ class SmilesRepeat():
         # Obtain connection info for future bonds/atoms remove/add
         info = self.get_connection_info(combo)
         if not info:
-            print("************************** No Star Mark! **************************")
+            print(f"************************** No Star Mark for polymer {ori_psmiles} **************************")
             return des_psmiles
 
         # add a new bond between two star symbols and discard these two stars
@@ -144,7 +148,7 @@ class SmilesRepeat():
         ori_mol = self.get_mol(ori_psmiles)
         info = self.get_connection_info(ori_mol)
         if not info or not info["neighbor"]['path']:
-            print(f"************************** No Star Mark: {ori_psmiles} **************************")
+            print(f"************************** No Star Mark for polymer {ori_psmiles} **************************")
             return ori_psmiles
 
         edsmiles = Chem.EditableMol(ori_mol)

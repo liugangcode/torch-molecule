@@ -42,7 +42,7 @@ def test_grin_predictor():
     model = GRINMolecularPredictor(
         num_task=1,
         task_type="regression",
-        polymer_train_augmentation=3,
+        repetition_augmentation=3,
         num_layer=3,
         hidden_size=128,
         batch_size=4,
@@ -58,10 +58,10 @@ def test_grin_predictor():
 
     # 2.2. Prediction test on different repeat times
     print("\n=== Testing model prediction with polymer train augmentation ===")
-    predictions = model.predict(smiles_list, test_augmentation=3)
+    predictions = model.predict(smiles_list, test_time_augmentation=3)
     print(f"Prediction shape: {predictions['prediction'].shape}")
     print(f"Prediction for new polymer repeat times 3: {predictions['prediction']}")
-    predictions = model.predict(smiles_list, test_augmentation=5)
+    predictions = model.predict(smiles_list, test_time_augmentation=5)
     print(f"Prediction for new polymer repeat times 5: {predictions['prediction']}")
 
     # 3. Auto-fitting test with custom parameters

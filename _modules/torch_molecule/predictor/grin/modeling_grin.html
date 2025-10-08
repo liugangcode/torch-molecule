@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>torch_molecule.predictor.grin.modeling_grin - torch-molecule (0.1.5) documentation</title>
+        <title>torch_molecule.predictor.grin.modeling_grin - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -160,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">torch-molecule (0.1.5) documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">torch-molecule (0.1.7) documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -181,7 +181,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
-  <span class="sidebar-brand-text">torch-molecule (0.1.5) documentation</span>
+  <span class="sidebar-brand-text">torch-molecule (0.1.7) documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -254,9 +254,15 @@
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Literal</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Data</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GRIN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">SmilesRepeat</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..gnn.modeling_gnn</span><span class="w"> </span><span class="kn">import</span> <span class="n">GNNMolecularPredictor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">graph_from_smiles</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...utils.search</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ParameterSpec</span><span class="p">,</span>
     <span class="n">ParameterType</span><span class="p">,</span>
@@ -271,11 +277,13 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    - Learning Repetition-Invariant Representations for Polymer Informatics.</span>
+<span class="sd">    - Learning Repetition-Invariant Representations for Polymer Informatics. NeurIPS 2025</span>
 <span class="sd">      https://arxiv.org/pdf/2505.10726</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    repetition_augmentation : bool, default=False</span>
+<span class="sd">        Whether to enable polymer augmentation for training.</span>
 <span class="sd">    l1_penalty : float, default=1e-3</span>
 <span class="sd">        Weight for the L1 penalty.</span>
 <span class="sd">    epochs_to_penalize : int, default=100</span>
@@ -333,6 +341,7 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="c1"># GRIN-specific parameters</span>
+        <span class="n">repetition_augmentation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">l1_penalty</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
         <span class="n">epochs_to_penalize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
         <span class="c1"># Core model parameters</span>
@@ -394,9 +403,20 @@
         <span class="p">)</span>
         
         <span class="c1"># GRIN-specific parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repetition_augmentation</span> <span class="o">=</span> <span class="n">repetition_augmentation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">l1_penalty</span> <span class="o">=</span> <span class="n">l1_penalty</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epochs_to_penalize</span> <span class="o">=</span> <span class="n">epochs_to_penalize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model_class</span> <span class="o">=</span> <span class="n">GRIN</span>
+
+        <span class="c1"># Check CombineMols dependency if polymer augmentation is enabled</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">repetition_augmentation</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">CombineMols.CombineMols</span><span class="w"> </span><span class="kn">import</span> <span class="n">CombineMols</span>
+            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                    <span class="s2">&quot;CombineMols is required for repetition augmentation for polymer. &quot;</span>
+                    <span class="s2">&quot;Please install it using: pip install CombineMols&quot;</span>
+                <span class="p">)</span>
 
     
     <span class="nd">@staticmethod</span>
@@ -414,6 +434,187 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="n">base_params</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_model_params</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">base_params</span>
+
+<div class="viewcode-block" id="GRINMolecularPredictor.fit">
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor.fit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">y_train</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]],</span>
+        <span class="n">X_val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">y_val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">X_unlbl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GRINMolecularPredictor&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the model to the training data with optional validation set.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X_train : List[str]</span>
+<span class="sd">            Training set input molecular structures as SMILES strings</span>
+<span class="sd">        y_train : Union[List, np.ndarray]</span>
+<span class="sd">            Training set target values for property prediction</span>
+<span class="sd">        X_val : List[str], optional</span>
+<span class="sd">            Validation set input molecular structures as SMILES strings.</span>
+<span class="sd">            If None, training data will be used for validation</span>
+<span class="sd">        y_val : Union[List, np.ndarray], optional</span>
+<span class="sd">            Validation set target values. Required if X_val is provided</span>
+<span class="sd">        X_unlbl : List[str], optional</span>
+<span class="sd">            Unlabeled set input molecular structures as SMILES strings.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : GRINMolecularPredictor</span>
+<span class="sd">            Fitted estimator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">X_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">y_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Both X_val and y_val must be provided for validation. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Got X_val=</span><span class="si">{</span><span class="n">X_val</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">, y_val=</span><span class="si">{</span><span class="n">y_val</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_class</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">initialize_parameters</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_optimizers</span><span class="p">()</span>
+        
+        <span class="c1"># Prepare datasets and loaders</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">repetition_augmentation</span><span class="p">:</span>
+            <span class="n">X_train_aug</span><span class="p">,</span> <span class="n">y_train_aug</span> <span class="o">=</span> <span class="n">SmilesRepeat</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span> <span class="o">+</span> <span class="n">X_train_aug</span>
+            <span class="k">if</span> <span class="n">y_train_aug</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                    <span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">y_train</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_train_aug</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">y_train</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">y_train_aug</span><span class="p">)</span>
+
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_inputs</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+        <span class="n">train_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_pytorch_data</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+        <span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">train_dataset</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">X_val</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">y_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">val_loader</span> <span class="o">=</span> <span class="n">train_loader</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;No validation set provided. Using training set for validation. &quot;</span>
+                <span class="s2">&quot;This may lead to overfitting.&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">repetition_augmentation</span><span class="p">:</span>
+                <span class="n">X_val_aug</span><span class="p">,</span> <span class="n">y_val_aug</span> <span class="o">=</span> <span class="n">SmilesRepeat</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">)</span>
+                <span class="n">X_val</span> <span class="o">=</span> <span class="n">X_val</span> <span class="o">+</span> <span class="n">X_val_aug</span>
+                <span class="k">if</span> <span class="n">y_val_aug</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y_val</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                        <span class="n">y_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">y_val</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_val_aug</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">y_val</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">y_val</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">y_val_aug</span><span class="p">)</span>
+
+            <span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_inputs</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">)</span>
+            <span class="n">val_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_pytorch_data</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">)</span>
+            <span class="n">val_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+                <span class="n">val_dataset</span><span class="p">,</span>
+                <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+                <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Initialize training state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitting_loss</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitting_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">best_state_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">best_eval</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_higher_better</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="n">cnt_wait</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Calculate total steps for global progress bar</span>
+        <span class="n">steps_per_epoch</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span>
+        <span class="n">total_steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">*</span> <span class="n">steps_per_epoch</span>
+
+        <span class="c1"># Initialize global progress bar</span>
+        <span class="n">global_pbar</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span><span class="p">:</span>
+            <span class="n">global_pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
+                <span class="n">total</span><span class="o">=</span><span class="n">total_steps</span><span class="p">,</span>
+                <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Training Progress&quot;</span><span class="p">,</span>
+                <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span>
+                <span class="n">dynamic_ncols</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
+            <span class="c1"># Training phase</span>
+            <span class="n">train_losses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train_epoch</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">global_pbar</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitting_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">)))</span>
+
+            <span class="c1"># Validation phase</span>
+            <span class="n">current_eval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluation_epoch</span><span class="p">(</span><span class="n">val_loader</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">scheduler</span><span class="p">:</span>
+                <span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">current_eval</span><span class="p">)</span>
+            
+            <span class="c1"># Model selection (check if current evaluation is better)</span>
+            <span class="n">is_better</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">current_eval</span> <span class="o">&gt;</span> <span class="n">best_eval</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_higher_better</span>
+                <span class="k">else</span> <span class="n">current_eval</span> <span class="o">&lt;</span> <span class="n">best_eval</span>
+            <span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">is_better</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fitting_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+                <span class="n">best_eval</span> <span class="o">=</span> <span class="n">current_eval</span>
+                <span class="n">best_state_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span> <span class="c1"># Save the best epoch model not the last one</span>
+                <span class="n">cnt_wait</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">log_dict</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">))</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">best_eval</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;Status&quot;</span><span class="p">:</span> <span class="s2">&quot;✓ Best&quot;</span>
+                    <span class="p">}</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span> <span class="ow">and</span> <span class="n">global_pbar</span><span class="p">:</span>
+                    <span class="n">global_pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;print_statement&quot;</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cnt_wait</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">log_dict</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">))</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_eval</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;Wait&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cnt_wait</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patience</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">}</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span> <span class="ow">and</span> <span class="n">global_pbar</span><span class="p">:</span>
+                    <span class="n">global_pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;print_statement&quot;</span><span class="p">:</span>    
+                    <span class="nb">print</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">cnt_wait</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">patience</span><span class="p">:</span>
+                    <span class="n">log_dict</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s2">&quot;Status&quot;</span><span class="p">:</span> <span class="s2">&quot;Early Stopped&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">}</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span> <span class="ow">and</span> <span class="n">global_pbar</span><span class="p">:</span>
+                        <span class="n">global_pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
+                        <span class="n">global_pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;print_stament&quot;</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+        <span class="c1"># Close global progress bar</span>
+        <span class="k">if</span> <span class="n">global_pbar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">global_pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># Restore best model</span>
+        <span class="k">if</span> <span class="n">best_state_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_state_dict</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;No improvement was achieved during training. &quot;</span>
+                <span class="s2">&quot;The model may not be fitted properly.&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">global_pbar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
@@ -441,7 +642,59 @@
                 <span class="p">})</span>
             <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
 
-        <span class="k">return</span> <span class="n">losses</span></div>
+        <span class="k">return</span> <span class="n">losses</span>
+
+<div class="viewcode-block" id="GRINMolecularPredictor.predict">
+<a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor.predict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">test_time_augmentation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make predictions using the fitted model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : List[str]</span>
+<span class="sd">            List of SMILES strings to make predictions for</span>
+<span class="sd">        test_time_augmentation : bool, default=False</span>
+<span class="sd">            Whether to enable polymer augmentation for making predictions.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dict[str, np.ndarray]</span>
+<span class="sd">            Dictionary containing:</span>
+<span class="sd">                - &#39;prediction&#39;: Model predictions (shape: [n_samples, n_tasks])</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_is_fitted</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">test_time_augmentation</span><span class="p">:</span>
+            <span class="n">X_aug</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">SmilesRepeat</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">X_aug</span>
+
+        <span class="c1"># Convert to PyTorch Geometric format and create loader</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_inputs</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_pytorch_data</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Model not initialized&quot;</span><span class="p">)</span>
+        <span class="c1"># Make predictions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span><span class="p">:</span>
+                <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Predicting&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;print_statement&quot;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Predicting...&quot;</span><span class="p">)</span>
+                <span class="n">iterator</span> <span class="o">=</span> <span class="n">loader</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">iterator</span> <span class="o">=</span> <span class="n">loader</span>
+            <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+                <span class="n">batch</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+                <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="p">}</span></div>
+</div>
 
 </pre></div>
         </article>
@@ -475,7 +728,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=6fae39ac"></script>
+</div><script src="../../../../_static/documentation_options.js?v=a6319924"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -56,6 +56,10 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 | Model | Required Packages |
 |-------|-------------------|
 | HFPretrainedMolecularEncoder | transformers |
+| HFPretrainedMolecularGenerator | transformers |
+| HFPretrainedMolecularGenerator (MolGen) | transformers, selfies 2.x (3.x not guaranteed) |
+| HFPretrainedMolecularGenerator (GP-MoLFormer) | transformers<=4.56.2 |
+| HFPretrainedMolecularGenerator (Molexar) | transformers, fragment-selfies, molexar |
 | BFGNNMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor (if enable `repetition_augmentation=True`) | CombineMols |
@@ -65,6 +69,12 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 > `pip install torch-scatter -f https://data.pyg.org/whl/torch-2.7.1+cu128.html`
 
 **For models that require `transformers`:** `pip install transformers`
+
+**For MolGen (`selfies`):** `pip install "selfies>=2.1"` (tested on 2.x; 3.x is not guaranteed).
+
+**For GP-MoLFormer:** `pip install "transformers>=4.40,<=4.56.2"`. Do not use this with Molexar in the same environment (Molexar needs `transformers>=5.8`).
+
+**For Molexar:** `pip install fragment-selfies loguru` and `pip install git+https://github.com/fairydance/Molexar.git`.
 
 ## Usage
 

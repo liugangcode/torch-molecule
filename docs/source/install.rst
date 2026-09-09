@@ -66,12 +66,28 @@ Additional Packages
 
 Some models require extra libraries. Install these packages if you use the corresponding model:
 
-+------------------------------+-------------------+
-| Model                        | Required Package  |
-+==============================+===================+
-| HFPretrainedMolecularEncoder | transformers      |
-+------------------------------+-------------------+
-| BFGNNMolecularPredictor      | torch-scatter     |
-+------------------------------+-------------------+
-| GRINMolecularPredictor       | torch-scatter     |
-+------------------------------+-------------------+
++----------------------------------------------+----------------------------------------------+
+| Model                                        | Required Package                             |
++==============================================+==============================================+
+| HFPretrainedMolecularEncoder                 | transformers                                 |
++----------------------------------------------+----------------------------------------------+
+| HFPretrainedMolecularGenerator               | transformers                                 |
++----------------------------------------------+----------------------------------------------+
+| HFPretrainedMolecularGenerator (MolGen)      | transformers, selfies 2.x (3.x not guaranteed)|
++----------------------------------------------+----------------------------------------------+
+| HFPretrainedMolecularGenerator (GP-MoLFormer)| transformers<=4.56.2                         |
++----------------------------------------------+----------------------------------------------+
+| HFPretrainedMolecularGenerator (Molexar)     | transformers, fragment-selfies, molexar      |
++----------------------------------------------+----------------------------------------------+
+| BFGNNMolecularPredictor                      | torch-scatter                                |
++----------------------------------------------+----------------------------------------------+
+| GRINMolecularPredictor                       | torch-scatter                                |
++----------------------------------------------+----------------------------------------------+
+
+**For models that require** ``transformers``: ``pip install transformers``
+
+**For MolGen** (``selfies``): ``pip install "selfies>=2.1"`` (tested on 2.x; 3.x is not guaranteed).
+
+**For GP-MoLFormer:** ``pip install "transformers>=4.40,<=4.56.2"``. Do not use this with Molexar in the same environment (Molexar needs ``transformers>=5.8``).
+
+**For Molexar:** ``pip install fragment-selfies loguru`` and ``pip install git+https://github.com/fairydance/Molexar.git``.

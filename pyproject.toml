@@ -57,6 +57,9 @@ include-package-data = true
 [tool.pytest.ini_options]
 addopts = "--verbose"
 testpaths = ["tests"]
+markers = [
+    "integration: tests that download models or require network access",
+]
 
 [project.optional-dependencies]
 dev = [

@@ -1,6 +1,5 @@
 from unittest.mock import MagicMock
 
-import pytest
 import torch
 
 from torch_molecule.generator.pretrained.families.causal_lm import generate_causal_lm
@@ -41,29 +40,7 @@ def test_generate_causal_lm_bos_path():
     assert outputs == ["SMILES_0", "SMILES_1", "SMILES_2"]
 
 
-def test_generate_causal_lm_scaffold_path():
-    model = _FakeModel()
-    model.generate = MagicMock(return_value=torch.zeros(2, 8, dtype=torch.long))
-
-    outputs = generate_causal_lm(
-        model,
-        _FakeTokenizer(),
-        torch.device("cpu"),
-        n_samples=2,
-        family="gp_molformer",
-        scaffold="c1ccccc1",
-        max_length=12,
-        do_sample=False,
-    )
-    assert outputs == ["SMILES_0", "SMILES_1"]
-    kwargs = model.generate.call_args.kwargs
-    assert kwargs["use_cache"] is False
-    assert kwargs["top_k"] is None
-    # Default tokenize is [BOS, ..., EOS]; IBM drops the trailing special token.
-    assert kwargs["input_ids"].tolist() == [[1, 18, 19], [1, 18, 19]]
-
-
-def test_generate_causal_lm_novomolgen_scaffold_keeps_all_tokens():
+def test_generate_causal_lm_scaffold_keeps_all_tokens():
     model = _FakeModel()
     model.generate = MagicMock(return_value=torch.zeros(2, 8, dtype=torch.long))
 
@@ -85,27 +62,7 @@ def test_generate_causal_lm_novomolgen_scaffold_keeps_all_tokens():
     assert "top_k" not in model.generate.call_args.kwargs
 
 
-def test_generate_causal_lm_gp_molformer_denovo_path():
-    model = _FakeModel()
-    model.generate = MagicMock(return_value=torch.zeros(2, 8, dtype=torch.long))
-
-    outputs = generate_causal_lm(
-        model,
-        _FakeTokenizer(),
-        torch.device("cpu"),
-        n_samples=2,
-        family="gp_molformer",
-        max_length=12,
-        do_sample=True,
-    )
-
-    assert outputs == ["SMILES_0", "SMILES_1"]
-    assert model.generate.call_args.kwargs["num_return_sequences"] == 2
-    assert model.generate.call_args.kwargs["use_cache"] is False
-    assert "input_ids" not in model.generate.call_args.kwargs
-
-
-def test_generate_causal_lm_novomolgen_does_not_force_use_cache_false():
+def test_generate_causal_lm_does_not_force_use_cache_false():
     model = _FakeModel()
     model.generate = MagicMock(return_value=torch.zeros(3, 8, dtype=torch.long))
 

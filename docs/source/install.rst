@@ -73,11 +73,11 @@ Some models require extra libraries. Install these packages if you use the corre
 +----------------------------------------------+----------------------------------------------+
 | HFPretrainedMolecularGenerator               | transformers                                 |
 +----------------------------------------------+----------------------------------------------+
-| HFPretrainedMolecularGenerator (MolGen)      | transformers, selfies 2.x (3.x not guaranteed)|
-+----------------------------------------------+----------------------------------------------+
-| HFPretrainedMolecularGenerator (GP-MoLFormer)| transformers<=4.56.2                         |
+| HFPretrainedMolecularGenerator (MolGen)      | transformers, selfies                         |
 +----------------------------------------------+----------------------------------------------+
 | HFPretrainedMolecularGenerator (Molexar)     | transformers, fragment-selfies, molexar      |
++----------------------------------------------+----------------------------------------------+
+| HFPretrainedMolecularGenerator (SAFE-GPT)    | transformers, safe-mol                       |
 +----------------------------------------------+----------------------------------------------+
 | BFGNNMolecularPredictor                      | torch-scatter                                |
 +----------------------------------------------+----------------------------------------------+
@@ -86,8 +86,8 @@ Some models require extra libraries. Install these packages if you use the corre
 
 **For models that require** ``transformers``: ``pip install transformers``
 
-**For MolGen** (``selfies``): ``pip install "selfies>=2.1"`` (tested on 2.x; 3.x is not guaranteed).
+**For MolGen** (``selfies``): ``pip install "selfies>=2.1"``. Source: `aspuru-guzik-group/selfies <https://github.com/aspuru-guzik-group/selfies>`_.
 
-**For GP-MoLFormer:** ``pip install "transformers>=4.40,<=4.56.2"``. Do not use this with Molexar in the same environment (Molexar needs ``transformers>=5.8``).
+**For Molexar:** ``pip install fragment-selfies loguru`` (`Fragment-SELFIES <https://github.com/fairydance/Fragment-SELFIES>`_) and ``pip install git+https://github.com/fairydance/Molexar.git`` (`Molexar <https://github.com/fairydance/Molexar>`_). Molexar itself requires ``transformers>=5.8``.
 
-**For Molexar:** ``pip install fragment-selfies loguru`` and ``pip install git+https://github.com/fairydance/Molexar.git``.
+**For SAFE-GPT:** ``pip install safe-mol`` (`SAFE <https://github.com/datamol-io/safe>`_).

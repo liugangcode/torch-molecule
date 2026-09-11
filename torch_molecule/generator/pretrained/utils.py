@@ -153,3 +153,116 @@ def fragment_selfies_to_smiles(fragment_selfies_list: List[str]) -> List[str]:
     if n_dropped:
         warnings.warn(f"dropped {n_dropped} invalid Fragment-SELFIES", stacklevel=2)
     return smiles_list
+
+
+def _require_safe():
+    from .compat import ensure_safe_transformers_compat
+
+    ensure_safe_transformers_compat()
+    try:
+        from safe.converter import encode  # noqa: F401
+    except ImportError as exc:
+        raise ImportError(
+            "The 'safe-mol' package is required for SAFE-GPT conversion. "
+            "Install it with `pip install safe-mol`."
+        ) from exc
+
+
+def smiles_to_safe(smiles: List[str]) -> List[str]:
+    """Convert SMILES strings to SAFE representations.
+
+    Parameters
+    ----------
+    smiles : List[str]
+        Input SMILES strings.
+
+    Returns
+    -------
+    List[str]
+        SAFE strings in the same order as the input.
+
+    Raises
+    ------
+    ValueError
+        If a SMILES string is invalid or cannot be encoded as SAFE.
+    """
+    _require_safe()
+    try:
+        from safe._exception import SAFEEncodeError, SAFEFragmentationError
+    except ImportError:
+        from safe.converter import SAFEEncodeError, SAFEFragmentationError  # type: ignore
+    from safe.converter import encode
+
+    safe_list: List[str] = []
+    for idx, smiles_string in enumerate(smiles):
+        mol = Chem.MolFromSmiles(smiles_string)
+        if mol is None:
+            raise ValueError(f"Invalid SMILES at index {idx}: {smiles_string}")
+        canonical = Chem.MolToSmiles(mol)
+        try:
+            try:
+                encoded = encode(canonical, canonical=True, allow_empty=True)
+            except TypeError:
+                encoded = encode(canonical, canonical=True)
+        except (SAFEEncodeError, SAFEFragmentationError) as exc:
+            raise ValueError(
+                f"SMILES at index {idx} is RDKit-valid but not SAFE-encodable: {smiles_string}"
+            ) from exc
+        if not encoded:
+            raise ValueError(
+                f"SMILES at index {idx} is RDKit-valid but not SAFE-encodable: {smiles_string}"
+            )
+        safe_list.append(encoded)
+    return safe_list
+
+
+def safe_to_smiles(safe_list: List[str]) -> List[str]:
+    """Convert SAFE strings to canonical SMILES.
+
+    Entries that cannot be decoded are dropped and a warning is emitted.
+    Unexpected errors such as ``ImportError`` are not swallowed.
+
+    Parameters
+    ----------
+    safe_list : List[str]
+        Input SAFE strings.
+
+    Returns
+    -------
+    List[str]
+        Canonical SMILES strings for entries that decoded successfully.
+    """
+    _require_safe()
+    try:
+        from safe._exception import SAFEDecodeError
+    except ImportError:
+        from safe.converter import SAFEDecodeError  # type: ignore
+    from safe.converter import decode
+
+    smiles_list: List[str] = []
+    n_dropped = 0
+    for safe_string in safe_list:
+        if not safe_string or not str(safe_string).strip():
+            n_dropped += 1
+            continue
+        try:
+            try:
+                decoded = decode(
+                    str(safe_string).replace(" ", ""),
+                    canonical=True,
+                    ignore_errors=False,
+                )
+            except TypeError:
+                decoded = decode(str(safe_string).replace(" ", ""))
+        except SAFEDecodeError:
+            n_dropped += 1
+            continue
+        mol = Chem.MolFromSmiles(decoded) if decoded else None
+        if mol is None:
+            n_dropped += 1
+            continue
+        smiles_list.append(Chem.MolToSmiles(mol))
+
+    if n_dropped:
+        warnings.warn(f"dropped {n_dropped} invalid SAFE", stacklevel=2)
+    return smiles_list

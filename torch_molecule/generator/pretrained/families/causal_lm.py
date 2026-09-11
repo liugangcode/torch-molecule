@@ -31,7 +31,8 @@ def generate_causal_lm(
     n_samples : int
         Number of molecules to generate.
     family : Optional[str], default=None
-        Generator family name. GP-MoLFormer uses a model-specific de novo path.
+        Generator family name. Unused by the standard ``generate()`` path;
+        kept for call-site compatibility.
     max_length : int, default=64
         Maximum generated sequence length passed to ``model.generate``.
     temperature : float, default=1.0
@@ -39,16 +40,15 @@ def generate_causal_lm(
     do_sample : bool, default=True
         Whether to use sampling during generation.
     scaffold : Optional[str], default=None
-        Optional SMILES prefix for scaffold completion. For GP-MoLFormer this
-        should be a *partial* SMILES string (IBM's example is ``c1cccc``);
-        the official tokenizer appends a trailing special token that is then
-        dropped so generation continues the prefix.
+        Optional tokenized prefix. Callers that need a SMILES-to-SAFE
+        conversion (SAFE-GPT) should pass the already-encoded prefix.
 
     Returns
     -------
     List[str]
         Raw decoded strings from the tokenizer (may contain spaces).
     """
+    del family  # dispatch is done by HFPretrainedMolecularGenerator
     pad_token_id = tokenizer.pad_token_id
     if pad_token_id is None:
         pad_token_id = tokenizer.eos_token_id
@@ -60,28 +60,14 @@ def generate_causal_lm(
     }
     if do_sample:
         generate_kwargs["temperature"] = temperature
-    if family == "gp_molformer":
-        # IBM remote code indexes tuple KV caches; transformers 4.56 injects
-        # an empty DynamicCache that crashes prepare_inputs_for_generation.
-        generate_kwargs["use_cache"] = False
-        generate_kwargs["top_k"] = None
-
     generate_kwargs.update(kwargs)
 
     if scaffold:
-        if family == "gp_molformer":
-            # Match IBM/gp-molformer scripts/conditional_generation.py:
-            # tokenize with special tokens, then drop the trailing SEP/EOS.
-            input_ids = tokenizer(scaffold, return_tensors="pt")["input_ids"]
-            if input_ids.shape[1] > 1:
-                input_ids = input_ids[:, :-1]
-        else:
-            encoded = tokenizer(scaffold, return_tensors="pt", add_special_tokens=False)
-            input_ids = encoded["input_ids"]
+        encoded = tokenizer(scaffold, return_tensors="pt", add_special_tokens=False)
+        input_ids = encoded["input_ids"]
         input_ids = input_ids.to(device).expand(n_samples, -1).contiguous()
         generate_kwargs["input_ids"] = input_ids
-    elif family == "gp_molformer":
-        generate_kwargs["num_return_sequences"] = n_samples
+        generate_kwargs["attention_mask"] = torch.ones_like(input_ids)
     else:
         if tokenizer.bos_token_id is None:
             raise ValueError(

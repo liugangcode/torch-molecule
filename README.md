@@ -57,9 +57,9 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 |-------|-------------------|
 | HFPretrainedMolecularEncoder | transformers |
 | HFPretrainedMolecularGenerator | transformers |
-| HFPretrainedMolecularGenerator (MolGen) | transformers, selfies 2.x (3.x not guaranteed) |
-| HFPretrainedMolecularGenerator (GP-MoLFormer) | transformers<=4.56.2 |
-| HFPretrainedMolecularGenerator (Molexar) | transformers, fragment-selfies, molexar |
+| HFPretrainedMolecularGenerator (MolGen) | transformers, [selfies](https://github.com/aspuru-guzik-group/selfies) |
+| HFPretrainedMolecularGenerator (Molexar) | transformers, [fragment-selfies](https://github.com/fairydance/Fragment-SELFIES), [molexar](https://github.com/fairydance/Molexar) |
+| HFPretrainedMolecularGenerator (SAFE-GPT) | transformers, [safe-mol](https://github.com/datamol-io/safe) |
 | BFGNNMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor (if enable `repetition_augmentation=True`) | CombineMols |
@@ -70,11 +70,23 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 
 **For models that require `transformers`:** `pip install transformers`
 
-**For MolGen (`selfies`):** `pip install "selfies>=2.1"` (tested on 2.x; 3.x is not guaranteed).
+**For MolGen (`selfies`):** `pip install "selfies>=2.1"`. Source: [aspuru-guzik-group/selfies](https://github.com/aspuru-guzik-group/selfies).
 
-**For GP-MoLFormer:** `pip install "transformers>=4.40,<=4.56.2"`. Do not use this with Molexar in the same environment (Molexar needs `transformers>=5.8`).
+**For Molexar:** `pip install fragment-selfies loguru` ([Fragment-SELFIES](https://github.com/fairydance/Fragment-SELFIES)) and `pip install git+https://github.com/fairydance/Molexar.git` ([Molexar](https://github.com/fairydance/Molexar)). Molexar itself requires `transformers>=5.8`.
 
-**For Molexar:** `pip install fragment-selfies loguru` and `pip install git+https://github.com/fairydance/Molexar.git`.
+**For SAFE-GPT:** `pip install safe-mol` ([SAFE](https://github.com/datamol-io/safe)).
+
+```python
+from torch_molecule import HFPretrainedMolecularGenerator
+
+model = HFPretrainedMolecularGenerator(
+    repo_id="datamol-io/safe-gpt",
+    generate_max_length=128,
+)
+model.fit()
+print(model.generate(n_samples=5))
+print(model.generate(n_samples=5, scaffold="c1ccccc1"))
+```
 
 ## Usage
 
@@ -206,6 +218,7 @@ new_model.load_from_local("qm9_grea.pt")
 | JTVAE      | [Junction Tree Variational Autoencoder for Molecular Graph Generation. ICML 2018.](https://proceedings.mlr.press/v80/jin18a) |
 | GraphGA    | [A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of Median Molecules. Journal of Chemical Information and Computer Sciences 2004](https://pubs.acs.org/doi/10.1021/ci034290p) |
 | LSTM (SMILES)        | [Long short-term memory (Neural Computation 1997)](https://ieeexplore.ieee.org/abstract/document/6795963) based on SMILES strings |
+| Pretrained | [NovoMolGen](https://huggingface.co/chandar-lab/NovoMolGen_32M_SMILES_BPE): Causal LM pretrained on ZINC-22 for de novo SMILES generation. <br> [MolGen-large](https://huggingface.co/zjunlp/MolGen-large): Seq2Seq SELFIES generator with high chemical validity. <br> [MolGen-large-opt](https://huggingface.co/zjunlp/MolGen-large-opt): MolGen-large fine-tuned for QED / p-logP optimization. <br> [Molexar-10M-base](https://huggingface.co/fairydance/molexar-10m-base): Fragment-SELFIES de novo and fragment-constrained generation. <br> [Molexar-10M-omni](https://huggingface.co/fairydance/molexar-10m-omni): Multi-condition Molexar model for property-guided generation. <br> [SAFE-GPT](https://huggingface.co/datamol-io/safe-gpt): GPT-2 causal LM pretrained on SAFE strings for de novo generation and scaffold-prefix completion. |
 
 ### Representation Models
 

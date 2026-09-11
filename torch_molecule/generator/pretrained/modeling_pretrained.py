@@ -14,6 +14,7 @@ from .finetune import finetune_generator
 from .registry import (
     CAUSAL_LM_FAMILIES,
     MOLEXAR_FAMILIES,
+    SAFE_GPT_FAMILIES,
     SEQ2SEQ_FAMILIES,
     resolve_family,
 )
@@ -29,11 +30,11 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
     Supported generation modes depend on the model family:
 
     - NovoMolGen: de novo SMILES generation from BOS.
-    - GP-MoLFormer: de novo generation and scaffold completion via ``scaffold=``.
     - MolGen-large / MolGen-large-opt: SELFIES seq2seq generation via ``prefix_selfies=``
       or ``scaffold=`` (SMILES converted internally).
     - Molexar: Fragment-SELFIES de novo and fragment-constrained generation via
       ``start_smiles`` / ``start_string`` / ``conditions`` (omni).
+    - SAFE-GPT: GPT-2 causal LM on SAFE strings; de novo and ``scaffold=`` prefix.
 
     Other registered families can be loaded but may raise ``NotImplementedError``
     until later phases are implemented.
@@ -44,11 +45,6 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
 
       repo_id: ``"chandar-lab/NovoMolGen_32M_SMILES_BPE"``
       (https://huggingface.co/chandar-lab/NovoMolGen_32M_SMILES_BPE)
-
-    - GP-MoLFormer: Causal LM for de novo generation and scaffold decoration.
-
-      repo_id: ``"ibm-research/GP-MoLFormer-Uniq"``
-      (https://huggingface.co/ibm-research/GP-MoLFormer-Uniq)
 
     - MolGen-large: Seq2Seq SELFIES generator with high chemical validity.
 
@@ -70,6 +66,12 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
       repo_id: ``"fairydance/molexar-10m-omni"``
       (https://huggingface.co/fairydance/molexar-10m-omni)
 
+    - SAFE-GPT: GPT-2 causal LM pretrained on 1.1B SAFE strings for de novo
+      generation and scaffold-prefix completion.
+
+      repo_id: ``"datamol-io/safe-gpt"``
+      (https://huggingface.co/datamol-io/safe-gpt)
+
     Parameters
     ----------
     repo_id : str
@@ -81,10 +83,9 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
         ``"hf-checkpoint"`` so standard ``model.generate`` works out of the box.
     trust_remote_code : bool, default=False
         Whether to trust remote code when loading from Hugging Face.
-        Automatically enabled for GP-MoLFormer and Molexar.
+        Automatically enabled for Molexar.
     tokenizer_repo_id : Optional[str], default=None
-        Optional Hugging Face repo for the tokenizer. GP-MoLFormer defaults to
-        ``"ibm-research/MoLFormer-XL-both-10pct"``.
+        Optional Hugging Face repo for the tokenizer.
     generate_max_length : int, default=64
         Default ``max_length`` passed to ``generate()``.
     batch_size : int, default=8
@@ -313,17 +314,23 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
             ``do_sample``, and ``scaffold``. For MolGen, use ``prefix_selfies`` or
             ``scaffold`` plus optional ``num_beams``, ``min_length``, and
             ``max_length``. For Molexar, use ``start_smiles``, ``start_string``,
-            ``generation_task``, or ``conditions`` for omni models.
+            ``generation_task``, or ``conditions`` for omni models. For SAFE-GPT,
+            use ``scaffold=`` with a SMILES prefix (converted to SAFE internally).
 
         Returns
         -------
         List[str]
-            Generated SMILES strings. For MolGen and Molexar, invalid decodes
-            are dropped, so the list may be shorter than ``n_samples``.
+            Generated SMILES strings. For MolGen, Molexar, and SAFE-GPT, invalid
+            decodes are dropped, so the list may be shorter than ``n_samples``.
         """
         self._check_is_fitted()
 
         if self._family in CAUSAL_LM_FAMILIES:
+            scaffold = kwargs.pop("scaffold", None)
+            if scaffold is not None and self._family in SAFE_GPT_FAMILIES:
+                from .utils import smiles_to_safe
+
+                scaffold = smiles_to_safe([scaffold])[0]
             raw = generate_causal_lm(
                 self.model,
                 self.tokenizer,
@@ -333,7 +340,7 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
                 max_length=kwargs.pop("max_length", self.generate_max_length),
                 temperature=kwargs.pop("temperature", 1.0),
                 do_sample=kwargs.pop("do_sample", True),
-                scaffold=kwargs.pop("scaffold", None),
+                scaffold=scaffold,
                 **kwargs,
             )
             return self._decode_outputs(raw)
@@ -385,6 +392,10 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
             from .utils import smiles_to_fragment_selfies
 
             return smiles_to_fragment_selfies(smiles)
+        if self._family in SAFE_GPT_FAMILIES:
+            from .utils import smiles_to_safe
+
+            return smiles_to_safe(smiles)
         return smiles
 
     def _resolve_prefix_selfies(self, kwargs: Dict[str, Any]) -> Optional[str]:
@@ -403,9 +414,9 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
     def _decode_outputs(self, outputs: List[str]) -> List[str]:
         """Normalize raw model strings to SMILES.
 
-        MolGen and Molexar drop strings that cannot be decoded. The returned
-        list length is the number of successful SMILES, which may be smaller
-        than ``n_samples``.
+        MolGen, Molexar, and SAFE-GPT drop strings that cannot be decoded. The
+        returned list length is the number of successful SMILES, which may be
+        smaller than ``n_samples``.
         """
         n_attempted = len(outputs)
 
@@ -418,6 +429,10 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
             from .utils import fragment_selfies_to_smiles
 
             smiles = fragment_selfies_to_smiles(outputs)
+        elif self._family in SAFE_GPT_FAMILIES:
+            from .utils import safe_to_smiles
+
+            smiles = safe_to_smiles(outputs)
         else:
             return [output.replace(" ", "") for output in outputs]
 
@@ -431,39 +446,42 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
     def _load_pretrained(self, local_path: Optional[str] = None) -> None:
         import transformers
 
-        from .compat import (
-            ensure_gp_molformer_transformers_compat,
-            ensure_transformers_onnx_compat,
-            patch_gp_molformer_generation_cache,
-        )
-        from .registry import DEFAULT_GP_MOLFORMER_TOKENIZER
-
         if self._family in MOLEXAR_FAMILIES:
             self._load_molexar_pretrained(local_path=local_path)
             return
 
-        if self._family == "gp_molformer":
-            ensure_gp_molformer_transformers_compat()
-            ensure_transformers_onnx_compat()
-
         load_kwargs = self._get_load_kwargs()
         model_cls = self._get_model_class()
         model_source = local_path or self.repo_id
-        tokenizer_repo = local_path or self.repo_id
-        if self._family == "gp_molformer" and local_path is None:
-            tokenizer_repo = self.tokenizer_repo_id or DEFAULT_GP_MOLFORMER_TOKENIZER
+        tokenizer_repo = local_path or self.tokenizer_repo_id or self.repo_id
 
-        self.tokenizer = transformers.AutoTokenizer.from_pretrained(
-            tokenizer_repo,
-            model_max_length=self.max_length,
-            **load_kwargs,
-        )
+        if self._family in SAFE_GPT_FAMILIES:
+            self.tokenizer = self._load_safe_gpt_tokenizer(tokenizer_repo)
+        else:
+            self.tokenizer = transformers.AutoTokenizer.from_pretrained(
+                tokenizer_repo,
+                model_max_length=self.max_length,
+                **load_kwargs,
+            )
         self.model = model_cls.from_pretrained(model_source, **load_kwargs)
-        if self._family == "gp_molformer":
-            patch_gp_molformer_generation_cache(self.model)
         self._setup_tokenizer()
         self.model.to(self.device)
         self.model.eval()
+
+    def _load_safe_gpt_tokenizer(self, tokenizer_repo: str):
+        """Load the custom SAFE tokenizer as a Hugging Face fast tokenizer."""
+        from .utils import _require_safe
+
+        _require_safe()
+        from safe.tokenizer import SAFETokenizer
+
+        tokenizer_kwargs = {}
+        if self.revision is not None:
+            tokenizer_kwargs["revision"] = self.revision
+        safe_tokenizer = SAFETokenizer.from_pretrained(tokenizer_repo, **tokenizer_kwargs)
+        tokenizer = safe_tokenizer.get_pretrained()
+        tokenizer.model_max_length = self.max_length
+        return tokenizer
 
     def _load_molexar_pretrained(self, local_path: Optional[str] = None) -> None:
         from huggingface_hub import snapshot_download
@@ -521,6 +539,9 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
 
         if self._family in SEQ2SEQ_FAMILIES:
             return transformers.AutoModelForSeq2SeqLM
+        if self._family in SAFE_GPT_FAMILIES:
+            # Hub config lists SAFEDoubleHeadsModel; the LM head is standard GPT-2.
+            return transformers.GPT2LMHeadModel
         return transformers.AutoModelForCausalLM
 
     def _get_load_kwargs(self) -> Dict[str, Any]:
@@ -531,12 +552,12 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
         elif self.revision is not None:
             load_kwargs["revision"] = self.revision
 
-        if (
-            self._family in MOLEXAR_FAMILIES
-            or self._family == "gp_molformer"
-            or self.trust_remote_code
-        ):
+        if self._family in MOLEXAR_FAMILIES or self.trust_remote_code:
             load_kwargs["trust_remote_code"] = True
+
+        if self._family in SAFE_GPT_FAMILIES:
+            # Extra property-prediction head in the checkpoint is unused.
+            load_kwargs["ignore_mismatched_sizes"] = True
 
         return load_kwargs
 
@@ -547,6 +568,15 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
             else:
                 self.tokenizer.add_special_tokens({"pad_token": "<pad>"})
                 self.model.resize_token_embeddings(len(self.tokenizer))
+
+        if self._family in SAFE_GPT_FAMILIES:
+            config = getattr(self.model, "config", None)
+            if self.tokenizer.bos_token_id is None and getattr(config, "bos_token_id", None) is not None:
+                self.tokenizer.bos_token_id = config.bos_token_id
+            if self.tokenizer.eos_token_id is None and getattr(config, "eos_token_id", None) is not None:
+                self.tokenizer.eos_token_id = config.eos_token_id
+            if self.tokenizer.pad_token_id is None and getattr(config, "pad_token_id", None) is not None:
+                self.tokenizer.pad_token_id = config.pad_token_id
 
     @staticmethod
     def _require_transformers() -> None:

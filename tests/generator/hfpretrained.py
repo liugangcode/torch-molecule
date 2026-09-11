@@ -7,11 +7,11 @@ from torch_molecule.generator.pretrained.registry import resolve_family
     "repo_id,expected",
     [
         ("chandar-lab/NovoMolGen_32M_SMILES_BPE", "novomolgen"),
-        ("ibm-research/GP-MoLFormer-Uniq", "gp_molformer"),
         ("zjunlp/MolGen-large", "molgen"),
         ("zjunlp/MolGen-large-opt", "molgen"),
         ("fairydance/molexar-10m-base", "molexar"),
         ("fairydance/molexar-10m-omni", "molexar"),
+        ("datamol-io/safe-gpt", "safe_gpt"),
         ("some-user/custom-causal-lm", "causal_lm"),
     ],
 )
@@ -186,74 +186,6 @@ def test_unknown_repo_fallback_warns():
         HFPretrainedMolecularGenerator(repo_id="some-user/custom-causal-lm")
 
 
-def _transformers_supports_gp_molformer() -> bool:
-    pytest.importorskip("transformers")
-    import transformers
-
-    major, minor, _ = map(int, transformers.__version__.split(".")[:3])
-    return major < 5 and (major < 4 or minor < 57)
-
-
-@pytest.mark.integration
-def test_hf_pretrained_generator_gp_molformer_denovo():
-    if not _transformers_supports_gp_molformer():
-        pytest.skip("GP-MoLFormer requires transformers<=4.56.2")
-
-    from torch_molecule import HFPretrainedMolecularGenerator
-
-    model = HFPretrainedMolecularGenerator(
-        repo_id="ibm-research/GP-MoLFormer-Uniq",
-        generate_max_length=128,
-    )
-    model.fit()
-    assert model.is_fitted_ is True
-
-    smiles_list = model.generate(n_samples=2, temperature=1.0)
-    assert isinstance(smiles_list, list)
-    assert len(smiles_list) == 2
-    assert all(isinstance(smiles, str) and smiles for smiles in smiles_list)
-
-
-@pytest.mark.integration
-def test_hf_pretrained_generator_gp_molformer_scaffold():
-    if not _transformers_supports_gp_molformer():
-        pytest.skip("GP-MoLFormer requires transformers<=4.56.2")
-
-    from torch_molecule import HFPretrainedMolecularGenerator
-
-    # IBM's official conditional prompt is a *partial* SMILES, not a closed ring.
-    scaffold = "c1cccc"
-    model = HFPretrainedMolecularGenerator(
-        repo_id="ibm-research/GP-MoLFormer-Uniq",
-        generate_max_length=128,
-    )
-    model.fit()
-
-    smiles_list = model.generate(n_samples=2, scaffold=scaffold, temperature=1.0)
-    assert isinstance(smiles_list, list)
-    assert len(smiles_list) == 2
-    assert all(isinstance(smiles, str) and smiles for smiles in smiles_list)
-    assert all(smiles.startswith(scaffold) for smiles in smiles_list)
-
-
-def test_gp_molformer_transformers_version_guard():
-    pytest.importorskip("transformers")
-    import transformers
-
-    from torch_molecule import HFPretrainedMolecularGenerator
-
-    major, minor, _ = map(int, transformers.__version__.split(".")[:3])
-    model = HFPretrainedMolecularGenerator(
-        repo_id="ibm-research/GP-MoLFormer-Uniq",
-    )
-
-    if major >= 5 or (major == 4 and minor >= 57):
-        with pytest.raises(ImportError, match="transformers<=4.56.2"):
-            model.fit()
-    else:
-        pytest.skip("GP-MoLFormer version guard only applies to transformers>=4.57")
-
-
 def _molexar_available() -> bool:
     try:
         import molexar  # noqa: F401
@@ -380,4 +312,138 @@ def test_hf_pretrained_generator_molgen_scaffold_prefix():
         Chem.MolFromSmiles(smiles) is not None
         and Chem.MolFromSmiles(smiles).HasSubstructMatch(benzene)
         for smiles in smiles_from_scaffold
+    )
+
+
+def _safe_mol_available() -> bool:
+    try:
+        from torch_molecule.generator.pretrained.compat import ensure_safe_transformers_compat
+
+        ensure_safe_transformers_compat()
+        from safe.converter import encode  # noqa: F401
+
+        return True
+    except ImportError:
+        return False
+
+
+def test_smiles_safe_roundtrip():
+    if not _safe_mol_available():
+        pytest.skip("safe-mol not installed")
+
+    from torch_molecule.generator.pretrained.utils import safe_to_smiles, smiles_to_safe
+
+    smiles = ["CCO", "c1ccccc1", "CC(=O)O"]
+    recovered = safe_to_smiles(smiles_to_safe(smiles))
+    assert recovered == smiles
+
+
+def test_smiles_to_safe_invalid_smiles():
+    if not _safe_mol_available():
+        pytest.skip("safe-mol not installed")
+
+    from torch_molecule.generator.pretrained.utils import smiles_to_safe
+
+    with pytest.raises(ValueError, match="Invalid SMILES"):
+        smiles_to_safe(["not-a-smiles"])
+
+
+def test_safe_to_smiles_drops_invalid_entries():
+    if not _safe_mol_available():
+        pytest.skip("safe-mol not installed")
+
+    from torch_molecule.generator.pretrained.utils import safe_to_smiles, smiles_to_safe
+
+    valid = smiles_to_safe(["CCO"])[0]
+    with pytest.warns(UserWarning, match="dropped 2 invalid SAFE"):
+        recovered = safe_to_smiles([valid, "not-valid-safe-[[[", ""])
+    assert recovered == ["CCO"]
+    assert "" not in recovered
+
+
+def test_decode_outputs_safe_gpt_drops_empty_and_warns():
+    pytest.importorskip("transformers")
+    if not _safe_mol_available():
+        pytest.skip("safe-mol not installed")
+
+    from torch_molecule import HFPretrainedMolecularGenerator
+    from torch_molecule.generator.pretrained.utils import smiles_to_safe
+
+    model = HFPretrainedMolecularGenerator(repo_id="datamol-io/safe-gpt")
+    model._family = "safe_gpt"
+    valid = smiles_to_safe(["CCO"])[0]
+    with pytest.warns(UserWarning, match="got 1/2 valid SMILES"):
+        out = model._decode_outputs([valid, "not-a-safe"])
+    assert len(out) == 1
+    assert "" not in out
+
+
+def test_safe_gpt_uses_gpt2_lm_head():
+    pytest.importorskip("transformers")
+
+    from torch_molecule import HFPretrainedMolecularGenerator
+
+    model = HFPretrainedMolecularGenerator(repo_id="datamol-io/safe-gpt")
+    model._family = "safe_gpt"
+    assert model._get_model_class().__name__ == "GPT2LMHeadModel"
+
+
+def test_safe_gpt_known_repo_does_not_warn_unknown():
+    pytest.importorskip("transformers")
+    import warnings
+
+    from torch_molecule import HFPretrainedMolecularGenerator
+
+    with warnings.catch_warnings(record=True) as recorded:
+        warnings.simplefilter("always")
+        HFPretrainedMolecularGenerator(repo_id="datamol-io/safe-gpt")
+    assert not any("Unknown repo_id" in str(item.message) for item in recorded)
+
+
+@pytest.mark.integration
+def test_hf_pretrained_generator_safe_gpt_denovo():
+    pytest.importorskip("transformers")
+    if not _safe_mol_available():
+        pytest.skip("safe-mol not installed")
+    from rdkit import Chem
+
+    from torch_molecule import HFPretrainedMolecularGenerator
+
+    model = HFPretrainedMolecularGenerator(
+        repo_id="datamol-io/safe-gpt",
+        generate_max_length=128,
+    )
+    model.fit()
+    assert model.is_fitted_ is True
+
+    smiles_list = model.generate(n_samples=2, temperature=1.0)
+    assert isinstance(smiles_list, list)
+    assert all(isinstance(smiles, str) and smiles for smiles in smiles_list)
+    assert all(Chem.MolFromSmiles(smiles) is not None for smiles in smiles_list)
+
+
+@pytest.mark.integration
+def test_hf_pretrained_generator_safe_gpt_scaffold():
+    pytest.importorskip("transformers")
+    if not _safe_mol_available():
+        pytest.skip("safe-mol not installed")
+    from rdkit import Chem
+
+    from torch_molecule import HFPretrainedMolecularGenerator
+
+    scaffold = "c1ccccc1"
+    benzene = Chem.MolFromSmiles(scaffold)
+    model = HFPretrainedMolecularGenerator(
+        repo_id="datamol-io/safe-gpt",
+        generate_max_length=128,
+    )
+    model.fit()
+
+    smiles_list = model.generate(n_samples=2, scaffold=scaffold, temperature=1.0)
+    assert isinstance(smiles_list, list)
+    assert all(isinstance(smiles, str) and smiles for smiles in smiles_list)
+    assert all(
+        Chem.MolFromSmiles(smiles) is not None
+        and Chem.MolFromSmiles(smiles).HasSubstructMatch(benzene)
+        for smiles in smiles_list
     )

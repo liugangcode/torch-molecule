@@ -129,15 +129,21 @@ assert molecular_data.target is None
 
 ### Fit a Model
 
-After preparing the dataset, we can easily fit a model similar to how we use sklearn (actually, the coding is even simpler than sklearn, as we still need to do feature engineering in sklearn to convert molecule SMILES into vectors):
+After preparing the dataset, split it, then fit a model with an sklearn-style API (no extra SMILES featurization is required):
 
 ```python
+from torch_molecule.datasets import load_qm9
 from torch_molecule import GREAMolecularPredictor
 
-split = int(0.8 * len(smiles_list))
+data = load_qm9(local_dir='torchmol_data')
+# "random" | "scaffold" | "butina" | "size"
+# scaffold: unseen Bemis-Murcko scaffolds; butina: Tanimoto clusters; size: heavy-atom count
+# Split the full dataset. subsample() is only for local debugging / CI — do not
+# shrink QM9 (or any benchmark) just to make Butina cheaper.
+train, val = data.train_test_split(test_size=0.2, method="scaffold", seed=42)
 
 grea = GREAMolecularPredictor(
-    num_task=num_task,
+    num_task=1,
     task_type="regression",
     evaluate_higher_better=False,
     verbose="progress_bar" #or "print_statement" recommended for jupyter notebooks, or "none"
@@ -145,10 +151,10 @@ grea = GREAMolecularPredictor(
 
 # Fit with automatic hyperparameter tuning with 10 attempts, or implement .fit() with the default/manual hyperparameters
 grea.autofit(
-    X_train=smiles_list[:split],
-    y_train=property_np_array[:split],
-    X_val=smiles_list[split:],
-    y_val=property_np_array[split:],
+    X_train=train.data,
+    y_train=train.target,
+    X_val=val.data,
+    y_val=val.target,
     n_trials=10,
 )
 ```

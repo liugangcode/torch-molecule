@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Tuple
 import numpy as np
 
 @dataclass
@@ -13,6 +13,59 @@ class SMILESDataset:
     """
     data: List[str]
     target: np.ndarray | None
+
+    def subsample(self, n: int, seed: int = 0) -> "SMILESDataset":
+        """Draw a random subset without replacement.
+
+        Intended for local debugging and CI, not as a way to make structure-
+        aware splits cheaper. Do not subsample a benchmark (for example QM9)
+        because Butina is slow or memory-heavy; that changes what the split
+        measures.
+
+        Parameters
+        ----------
+        n : int
+            Number of molecules to keep.
+        seed : int, default=0
+            Random seed.
+        """
+        from .split import subsample
+
+        return subsample(self, n=n, seed=seed)
+
+    def train_test_split(
+        self,
+        test_size: float = 0.2,
+        method: str = "random",
+        seed: int = 42,
+        **kwargs,
+    ) -> Tuple["SMILESDataset", "SMILESDataset"]:
+        """Split into train and holdout ``SMILESDataset`` objects.
+
+        Parameters
+        ----------
+        test_size : float, default=0.2
+            Requested holdout fraction.
+        method : {"random", "scaffold", "butina", "size"}, default="random"
+            Split protocol. ``random`` is an i.i.d. baseline; ``scaffold``
+            holds out unseen Bemis-Murcko scaffolds; ``butina`` holds out
+            unseen Taylor-Butina clusters; ``size`` splits by heavy-atom count.
+        seed : int, default=42
+            Random seed (used by ``random``).
+        **kwargs
+            Extra options forwarded to the splitter (``use_csk`` for scaffold,
+            ``similarity_cutoff`` for butina, ``direction`` / ``mode`` for size).
+
+        Returns
+        -------
+        train, holdout : SMILESDataset
+            The second dataset is intended as validation data for ``fit``.
+        """
+        from .split import train_test_split
+
+        return train_test_split(
+            self, test_size=test_size, method=method, seed=seed, **kwargs
+        )
 
 
 TOXCAST_TASKS = [

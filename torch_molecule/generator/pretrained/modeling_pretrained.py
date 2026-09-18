@@ -87,7 +87,9 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
     tokenizer_repo_id : Optional[str], default=None
         Optional Hugging Face repo for the tokenizer.
     generate_max_length : int, default=64
-        Default ``max_length`` passed to ``generate()``.
+        Default generation length. For causal LMs (NovoMolGen, SAFE-GPT) this is
+        ``max_new_tokens`` so a ``scaffold=`` prefix does not consume the budget.
+        For MolGen this is still decoder ``max_length``.
     batch_size : int, default=8
         Batch size used when fine-tuning on SMILES data.
     epochs : int, default=1
@@ -142,6 +144,7 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
 
         self._family: Optional[str] = None
         self.tokenizer = None
+        self._safe_tokenizer = None
         self._molexar_engine = None
         self._model_local_path: Optional[str] = None
         self.fitting_epoch = -1
@@ -198,12 +201,8 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
         self._check_is_fitted()
         os.makedirs(path, exist_ok=True)
 
-        if self._family in MOLEXAR_FAMILIES:
-            self.model.save_pretrained(path)
-            self.tokenizer.save_pretrained(path)
-        else:
-            self.model.save_pretrained(path)
-            self.tokenizer.save_pretrained(path)
+        self.model.save_pretrained(path)
+        self._save_generator_tokenizer(path)
 
         save_metadata(
             path,
@@ -310,12 +309,14 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
             Number of molecules to generate.
         **kwargs
             Additional arguments forwarded to the family-specific generator.
-            For causal LMs, common options include ``max_length``, ``temperature``,
-            ``do_sample``, and ``scaffold``. For MolGen, use ``prefix_selfies`` or
-            ``scaffold`` plus optional ``num_beams``, ``min_length``, and
-            ``max_length``. For Molexar, use ``start_smiles``, ``start_string``,
-            ``generation_task``, or ``conditions`` for omni models. For SAFE-GPT,
-            use ``scaffold=`` with a SMILES prefix (converted to SAFE internally).
+            For causal LMs, common options include ``max_new_tokens``,
+            ``temperature``, ``do_sample``, and ``scaffold``. ``max_length`` is
+            still accepted as a Hugging Face total-length override. For MolGen,
+            use ``prefix_selfies`` or ``scaffold`` plus optional ``num_beams``,
+            ``min_length``, and ``max_length``. For Molexar, use ``start_smiles``,
+            ``start_string``, ``generation_task``, or ``conditions`` for omni
+            models. For SAFE-GPT, use ``scaffold=`` with a SMILES prefix
+            (converted to SAFE internally).
 
         Returns
         -------
@@ -331,13 +332,24 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
                 from .utils import smiles_to_safe
 
                 scaffold = smiles_to_safe([scaffold])[0]
+            max_new_tokens = kwargs.pop("max_new_tokens", None)
+            max_length = kwargs.pop("max_length", None)
+            if max_new_tokens is not None and max_length is not None:
+                warnings.warn(
+                    "Both max_new_tokens and max_length were passed; using max_new_tokens.",
+                    stacklevel=2,
+                )
+                max_length = None
+            elif max_new_tokens is None and max_length is None:
+                max_new_tokens = self.generate_max_length
             raw = generate_causal_lm(
                 self.model,
                 self.tokenizer,
                 self.device,
                 n_samples,
                 family=self._family,
-                max_length=kwargs.pop("max_length", self.generate_max_length),
+                max_new_tokens=max_new_tokens,
+                max_length=max_length,
                 temperature=kwargs.pop("temperature", 1.0),
                 do_sample=kwargs.pop("do_sample", True),
                 scaffold=scaffold,
@@ -468,6 +480,44 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
         self.model.to(self.device)
         self.model.eval()
 
+    def _uses_safe_tokenizer(self) -> bool:
+        if self._safe_tokenizer is not None:
+            return True
+        if self._family in SAFE_GPT_FAMILIES:
+            return True
+        if self.repo_id is not None and resolve_family(self.repo_id) in SAFE_GPT_FAMILIES:
+            return True
+        return False
+
+    def _save_generator_tokenizer(self, path: str) -> None:
+        """Save the tokenizer. SAFE's custom pre-tokenizer cannot use HF serialization."""
+        if self._uses_safe_tokenizer():
+            self._save_safe_gpt_tokenizer(path)
+            return
+        try:
+            self.tokenizer.save_pretrained(path)
+        except Exception as exc:
+            if "cannot be serialized" not in str(exc):
+                raise
+            self._save_safe_gpt_tokenizer(path)
+
+    def _save_safe_gpt_tokenizer(self, path: str) -> None:
+        """Save the SAFE tokenizer JSON. The HF fast wrapper cannot be serialized."""
+        from .utils import _require_safe
+
+        _require_safe()
+        from safe.tokenizer import SAFETokenizer
+
+        if self._safe_tokenizer is None:
+            tokenizer_kwargs = {}
+            if self.revision is not None:
+                tokenizer_kwargs["revision"] = self.revision
+            self._safe_tokenizer = SAFETokenizer.from_pretrained(
+                self.tokenizer_repo_id or self.repo_id,
+                **tokenizer_kwargs,
+            )
+        self._safe_tokenizer.save_pretrained(path)
+
     def _load_safe_gpt_tokenizer(self, tokenizer_repo: str):
         """Load the custom SAFE tokenizer as a Hugging Face fast tokenizer."""
         from .utils import _require_safe
@@ -478,8 +528,8 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
         tokenizer_kwargs = {}
         if self.revision is not None:
             tokenizer_kwargs["revision"] = self.revision
-        safe_tokenizer = SAFETokenizer.from_pretrained(tokenizer_repo, **tokenizer_kwargs)
-        tokenizer = safe_tokenizer.get_pretrained()
+        self._safe_tokenizer = SAFETokenizer.from_pretrained(tokenizer_repo, **tokenizer_kwargs)
+        tokenizer = self._safe_tokenizer.get_pretrained()
         tokenizer.model_max_length = self.max_length
         return tokenizer
 

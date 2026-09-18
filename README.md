@@ -81,7 +81,6 @@ from torch_molecule import HFPretrainedMolecularGenerator
 
 model = HFPretrainedMolecularGenerator(
     repo_id="datamol-io/safe-gpt",
-    generate_max_length=128,
 )
 model.fit()
 print(model.generate(n_samples=5))

@@ -12,7 +12,8 @@ def generate_causal_lm(
     n_samples: int,
     *,
     family: Optional[str] = None,
-    max_length: int = 64,
+    max_new_tokens: Optional[int] = None,
+    max_length: Optional[int] = None,
     temperature: float = 1.0,
     do_sample: bool = True,
     scaffold: Optional[str] = None,
@@ -33,8 +34,13 @@ def generate_causal_lm(
     family : Optional[str], default=None
         Generator family name. Unused by the standard ``generate()`` path;
         kept for call-site compatibility.
-    max_length : int, default=64
-        Maximum generated sequence length passed to ``model.generate``.
+    max_new_tokens : Optional[int], default=None
+        Maximum number of newly generated tokens. Independent of prefix length,
+        so a long ``scaffold=`` does not consume the generation budget.
+        Used when ``max_length`` is omitted; defaults to 64.
+    max_length : Optional[int], default=None
+        Optional Hugging Face total sequence length (prefix + new tokens).
+        When set without ``max_new_tokens``, this is passed through instead.
     temperature : float, default=1.0
         Sampling temperature.
     do_sample : bool, default=True
@@ -54,10 +60,17 @@ def generate_causal_lm(
         pad_token_id = tokenizer.eos_token_id
 
     generate_kwargs = {
-        "max_length": max_length,
         "do_sample": do_sample,
         "pad_token_id": pad_token_id,
     }
+    # Hugging Face rejects passing both; prefer max_new_tokens unless the caller
+    # explicitly asks for total-length max_length.
+    if max_length is not None and max_new_tokens is None:
+        generate_kwargs["max_length"] = max_length
+    else:
+        generate_kwargs["max_new_tokens"] = (
+            max_new_tokens if max_new_tokens is not None else 64
+        )
     if do_sample:
         generate_kwargs["temperature"] = temperature
     generate_kwargs.update(kwargs)

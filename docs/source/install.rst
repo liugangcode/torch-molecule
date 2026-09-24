@@ -83,6 +83,12 @@ Some models require extra libraries. Install these packages if you use the corre
 +----------------------------------------------+----------------------------------------------+
 | GRINMolecularPredictor                       | torch-scatter                                |
 +----------------------------------------------+----------------------------------------------+
+| GRINMolecularPredictor (``repetition_augmentation=True``) | CombineMols                         |
++----------------------------------------------+----------------------------------------------+
+
+**For models that require** ``torch-scatter``: install with
+``pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html``,
+for example ``pip install torch-scatter -f https://data.pyg.org/whl/torch-2.7.1+cu128.html``.
 
 **For models that require** ``transformers``: ``pip install transformers``
 
@@ -91,3 +97,16 @@ Some models require extra libraries. Install these packages if you use the corre
 **For Molexar:** ``pip install fragment-selfies loguru`` (`Fragment-SELFIES <https://github.com/fairydance/Fragment-SELFIES>`_) and ``pip install git+https://github.com/fairydance/Molexar.git`` (`Molexar <https://github.com/fairydance/Molexar>`_). Molexar itself requires ``transformers>=5.8``.
 
 **For SAFE-GPT:** ``pip install safe-mol`` (`SAFE <https://github.com/datamol-io/safe>`_).
+
+Example (SAFE-GPT pretrained generator):
+
+.. code-block:: python
+
+   from torch_molecule import HFPretrainedMolecularGenerator
+
+   model = HFPretrainedMolecularGenerator(
+       repo_id="datamol-io/safe-gpt",
+   )
+   model.fit()
+   print(model.generate(n_samples=5))
+   print(model.generate(n_samples=5, scaffold="c1ccccc1"))

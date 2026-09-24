@@ -3,6 +3,40 @@ Examples
 
 This section shows how to use the `torch_molecule` library in practice. More examples are available in the `examples <https://github.com/liugangcode/torch-molecule/tree/main/examples/>`_ folder and the `tests <https://github.com/liugangcode/torch-molecule/tree/main/tests/>`_ folder.
 
+Loading Datasets and Splits
+---------------------------
+
+Loaders download (or reuse) data under ``local_dir`` and return a ``SMILESDataset``.
+Use ``train_test_split`` with ``"random"``, ``"scaffold"``, ``"butina"``, or ``"size"``:
+
+.. code-block:: python
+
+   from torch_molecule.datasets import load_qm9, load_zinc250k
+   from torch_molecule import GREAMolecularPredictor
+
+   data = load_qm9(local_dir="torchmol_data")
+   # scaffold: unseen Bemis-Murcko scaffolds; butina: Tanimoto clusters; size: heavy-atom count
+   # Split the full dataset. subsample() is only for local debugging / CI.
+   train, val = data.train_test_split(test_size=0.2, method="scaffold", seed=42)
+
+   grea = GREAMolecularPredictor(
+       num_task=1,
+       task_type="regression",
+       evaluate_higher_better=False,
+       verbose="progress_bar",  # or "print_statement" / "none"
+   )
+   grea.autofit(
+       X_train=train.data,
+       y_train=train.target,
+       X_val=val.data,
+       y_val=val.target,
+       n_trials=10,
+   )
+
+   # Unlabeled datasets (e.g. ZINC250k) have target=None
+   zinc = load_zinc250k(local_dir="torchmol_data")
+   assert zinc.target is None
+
 Molecular Property Prediction Usage
 -----------------------------------
 
@@ -126,42 +160,59 @@ The following example demonstrates how to use the `GraphDITMolecularGenerator` f
 Using Pretrained Checkpoints
 ----------------------------
 
-`torch_molecule` supports loading and saving models via Hugging Face Hub.
+`torch_molecule` supports loading and saving trained predictors via Hugging Face Hub
+(``save_to_hf`` / ``load_from_hf``) or local paths
+(``save_to_local`` / ``load_from_local``).
 
 .. code-block:: python
 
    from torch_molecule import GREAMolecularPredictor
-   from sklearn.metrics import mean_absolute_error
 
-   # huggingface repo_id including the user name and repo name
-   repo_id = "user/repo_id"
+   repo_id = "user/repo_id"  # replace with your Hugging Face username and repo_id
 
-   # Train and push a model to Hugging Face
-   model = GREAMolecularPredictor()
-   model.autofit(
-       X_train=X.tolist(),
-       y_train=y_train,
-       X_val=X_val.tolist(),
-       y_val=y_val,
-       n_trials=100
-   )
-
-   output = model.predict(X_test.tolist())
-   mae = mean_absolute_error(y_test, output['prediction'])
-   metrics = {'MAE': mae}
-
-   model.push_to_huggingface(
+   # Save a trained model to Hugging Face
+   grea.save_to_hf(
        repo_id=repo_id,
-       task_id=f"{task_name}",
-       metrics=metrics,
-       commit_message=f"Upload GREA_{task_name} model with metrics: {metrics}",
-       private=False
+       task_id="qm9_grea",
+       commit_message="Upload qm9_grea",
+       private=False,
    )
 
-   # Load a pretrained model checkpoint
-   model_dir = "local_model_dir_to_save"
+   # Load a pretrained checkpoint from Hugging Face
    model = GREAMolecularPredictor()
-   model.load_model(f"{model_dir}/GREA_{task_name}.pt", repo_id=repo_id)
-   model.set_params(verbose='progress_bar')
-
+   model.load_from_hf(repo_id=repo_id, local_cache=f"{model_dir}/GREA_{task_name}.pt")
+   model.set_params(verbose="none")
    predictions = model.predict(smiles_list)
+
+   # Or save / load locally
+   grea.save_to_local("qm9_grea.pt")
+   new_model = GREAMolecularPredictor()
+   new_model.load_from_local("qm9_grea.pt")
+
+Hugging Face Pretrained Generators
+----------------------------------
+
+Download and run Hub generators (NovoMolGen, MolGen, Molexar, SAFE-GPT) with
+:class:`~torch_molecule.HFPretrainedMolecularGenerator`. Extra packages may be
+required; see :doc:`install`.
+
+.. code-block:: python
+
+   from torch_molecule import HFPretrainedMolecularGenerator
+
+   # SAFE-GPT: de novo and scaffold-constrained generation
+   model = HFPretrainedMolecularGenerator(repo_id="datamol-io/safe-gpt")
+   model.fit()  # download / load the Hub checkpoint
+   print(model.generate(n_samples=5))
+   print(model.generate(n_samples=5, scaffold="c1ccccc1"))
+
+   # Other tested repo_ids include:
+   #   "chandar-lab/NovoMolGen_32M_SMILES_BPE"
+   #   "zjunlp/MolGen-large"
+   #   "zjunlp/MolGen-large-opt"
+   #   "fairydance/molexar-10m-base"
+   #   "fairydance/molexar-10m-omni"
+
+   model.save_to_local("safe_gpt_local")
+   loaded = HFPretrainedMolecularGenerator(repo_id="datamol-io/safe-gpt")
+   loaded.load_from_local("safe_gpt_local")

@@ -21,6 +21,8 @@ The following models support conditional generation (click model name to jump to
      - `MolGPT: Molecular Generation Using a Transformer-Decoder Model <https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600>`_
    * - :class:`LSTMMolecularGenerator <torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator>`
      - LSTM
+   * - :class:`HFPretrainedMolecularGenerator <torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator>`
+     - Hugging Face pretrained generators (NovoMolGen, MolGen, Molexar, SAFE-GPT)
 
 .. rubric:: Training and Generation
 
@@ -110,5 +112,20 @@ Modeling Molecules as Sequences
 .. autoclass:: torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
+   :undoc-members:
+   :show-inheritance:
+
+Pretrained Molecular Generators
+--------------------------------
+
+Hugging Face checkpoints can be loaded for de novo and constrained generation
+via :class:`~torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator`.
+Supported families include NovoMolGen, MolGen, Molexar, and SAFE-GPT. Extra
+packages may be required; see :doc:`../install`.
+
+.. rubric:: Hugging Face Pretrained Generators
+.. autoclass:: torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   :members: fit, generate, save_to_local, load_from_local
    :undoc-members:
    :show-inheritance:

@@ -253,3 +253,42 @@ See the structure of `torch_molecule` with the command `tree -L 2 torch_molecule
 ## Acknowledgements
 
 The project template was adapted from [https://github.com/lwaekfjlk/python-project-template](https://github.com/lwaekfjlk/python-project-template). We thank the authors for their contribution to the open-source community.
+
+This project is initiated and maintained by [Gang Liu](https://liugangcode.github.io/) and [Meng Jiang](http://www.meng-jiang.com/), and would not be possible without the valuable contributions from the open-source community, including the following members:
+
+<table>
+  <tr>
+    <td align="center" width="180px">
+      <a href="https://www.thom-man-hei-matthew.com/">
+        <img src="https://avatars.githubusercontent.com/u/205813056?v=4" width="100px;" alt="Man Hei Matthew Thom"/><br />
+        <sub><b>Man Hei Matthew Thom</b></sub>
+      </a>
+      <br />
+      <sub>Integrating Pretrained Generator (NovoMolGen, MolGen, Molexar, SAFE-GPT), dataset splitting modules</sub>
+    </td>
+    <td align="center" width="180px">
+      <a href="https://scholar.google.com/citations?user=RKiV3FAAAAAJ&hl=en">
+        <img src="https://avatars.githubusercontent.com/u/122834595?v=4" width="100px;" alt="Eric Inae"/><br />
+        <sub><b>Eric Inae</b></sub>
+      </a>
+      <br />
+      <sub>Integrating MoAMa, GraphMAE, AttrMasking, ContextPred, EdgePred</sub>
+    </td>
+    <td align="center" width="180px">
+      <a href="https://yihan226.github.io/">
+        <img src="https://avatars.githubusercontent.com/u/201283026?v=4" width="100px;" alt="Yihan Zhu"/><br />
+        <sub><b>Yihan Zhu</b></sub>
+      </a>
+      <br />
+      <sub>Integrating DeFoG, GRIN, BFGNN, RPGNN, Transformer (SMILES)</sub>
+    </td>
+    <td align="center" width="180px">
+      <a href="https://github.com/monics-hub">
+        <img src="https://avatars.githubusercontent.com/u/148586659?v=4" width="100px;" alt="Monica C. S"/><br />
+        <sub><b>Monica C. S</b></sub>
+      </a>
+      <br />
+      <sub>Debugging and integrating training logs (<a href="https://github.com/liugangcode/torch-molecule/pull/19">#19</a>)</sub>
+    </td>
+  </tr>
+</table>

@@ -56,6 +56,10 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 | Model | Required Packages |
 |-------|-------------------|
 | HFPretrainedMolecularEncoder | transformers |
+| HFPretrainedMolecularGenerator | transformers |
+| HFPretrainedMolecularGenerator (MolGen) | transformers, [selfies](https://github.com/aspuru-guzik-group/selfies) |
+| HFPretrainedMolecularGenerator (Molexar) | transformers, [fragment-selfies](https://github.com/fairydance/Fragment-SELFIES), [molexar](https://github.com/fairydance/Molexar) |
+| HFPretrainedMolecularGenerator (SAFE-GPT) | transformers, [safe-mol](https://github.com/datamol-io/safe) |
 | BFGNNMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor (if enable `repetition_augmentation=True`) | CombineMols |
@@ -65,6 +69,23 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 > `pip install torch-scatter -f https://data.pyg.org/whl/torch-2.7.1+cu128.html`
 
 **For models that require `transformers`:** `pip install transformers`
+
+**For MolGen (`selfies`):** `pip install "selfies>=2.1"`. Source: [aspuru-guzik-group/selfies](https://github.com/aspuru-guzik-group/selfies).
+
+**For Molexar:** `pip install fragment-selfies loguru` ([Fragment-SELFIES](https://github.com/fairydance/Fragment-SELFIES)) and `pip install git+https://github.com/fairydance/Molexar.git` ([Molexar](https://github.com/fairydance/Molexar)). Molexar itself requires `transformers>=5.8`.
+
+**For SAFE-GPT:** `pip install safe-mol` ([SAFE](https://github.com/datamol-io/safe)).
+
+```python
+from torch_molecule import HFPretrainedMolecularGenerator
+
+model = HFPretrainedMolecularGenerator(
+    repo_id="datamol-io/safe-gpt",
+)
+model.fit()
+print(model.generate(n_samples=5))
+print(model.generate(n_samples=5, scaffold="c1ccccc1"))
+```
 
 ## Usage
 
@@ -107,15 +128,21 @@ assert molecular_data.target is None
 
 ### Fit a Model
 
-After preparing the dataset, we can easily fit a model similar to how we use sklearn (actually, the coding is even simpler than sklearn, as we still need to do feature engineering in sklearn to convert molecule SMILES into vectors):
+After preparing the dataset, split it, then fit a model with an sklearn-style API (no extra SMILES featurization is required):
 
 ```python
+from torch_molecule.datasets import load_qm9
 from torch_molecule import GREAMolecularPredictor
 
-split = int(0.8 * len(smiles_list))
+data = load_qm9(local_dir='torchmol_data')
+# "random" | "scaffold" | "butina" | "size"
+# scaffold: unseen Bemis-Murcko scaffolds; butina: Tanimoto clusters; size: heavy-atom count
+# Split the full dataset. subsample() is only for local debugging / CI — do not
+# shrink QM9 (or any benchmark) just to make Butina cheaper.
+train, val = data.train_test_split(test_size=0.2, method="scaffold", seed=42)
 
 grea = GREAMolecularPredictor(
-    num_task=num_task,
+    num_task=1,
     task_type="regression",
     evaluate_higher_better=False,
     verbose="progress_bar" #or "print_statement" recommended for jupyter notebooks, or "none"
@@ -123,10 +150,10 @@ grea = GREAMolecularPredictor(
 
 # Fit with automatic hyperparameter tuning with 10 attempts, or implement .fit() with the default/manual hyperparameters
 grea.autofit(
-    X_train=smiles_list[:split],
-    y_train=property_np_array[:split],
-    X_val=smiles_list[split:],
-    y_val=property_np_array[split:],
+    X_train=train.data,
+    y_train=train.target,
+    X_val=val.data,
+    y_val=val.target,
     n_trials=10,
 )
 ```
@@ -196,6 +223,7 @@ new_model.load_from_local("qm9_grea.pt")
 | JTVAE      | [Junction Tree Variational Autoencoder for Molecular Graph Generation. ICML 2018.](https://proceedings.mlr.press/v80/jin18a) |
 | GraphGA    | [A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of Median Molecules. Journal of Chemical Information and Computer Sciences 2004](https://pubs.acs.org/doi/10.1021/ci034290p) |
 | LSTM (SMILES)        | [Long short-term memory (Neural Computation 1997)](https://ieeexplore.ieee.org/abstract/document/6795963) based on SMILES strings |
+| Pretrained | [NovoMolGen](https://huggingface.co/chandar-lab/NovoMolGen_32M_SMILES_BPE): Causal LM pretrained on ZINC-22 for de novo SMILES generation. <br> [MolGen-large](https://huggingface.co/zjunlp/MolGen-large): Seq2Seq SELFIES generator with high chemical validity. <br> [MolGen-large-opt](https://huggingface.co/zjunlp/MolGen-large-opt): MolGen-large fine-tuned for QED / p-logP optimization. <br> [Molexar-10M-base](https://huggingface.co/fairydance/molexar-10m-base): Fragment-SELFIES de novo and fragment-constrained generation. <br> [Molexar-10M-omni](https://huggingface.co/fairydance/molexar-10m-omni): Multi-condition Molexar model for property-guided generation. <br> [SAFE-GPT](https://huggingface.co/datamol-io/safe-gpt): GPT-2 causal LM pretrained on SAFE strings for de novo generation and scaffold-prefix completion. |
 
 ### Representation Models
 
@@ -225,3 +253,42 @@ See the structure of `torch_molecule` with the command `tree -L 2 torch_molecule
 ## Acknowledgements
 
 The project template was adapted from [https://github.com/lwaekfjlk/python-project-template](https://github.com/lwaekfjlk/python-project-template). We thank the authors for their contribution to the open-source community.
+
+This project is initiated and maintained by [Gang Liu](https://liugangcode.github.io/) and [Meng Jiang](http://www.meng-jiang.com/), and would not be possible without the valuable contributions from the open-source community, including the following members:
+
+<table>
+  <tr>
+    <td align="center" width="180px">
+      <a href="https://www.thom-man-hei-matthew.com/">
+        <img src="https://avatars.githubusercontent.com/u/205813056?v=4" width="100px;" alt="Man Hei Matthew Thom"/><br />
+        <sub><b>Man Hei Matthew Thom</b></sub>
+      </a>
+      <br />
+      <sub>Integrating Pretrained Generator (NovoMolGen, MolGen, Molexar, SAFE-GPT), dataset splitting modules</sub>
+    </td>
+    <td align="center" width="180px">
+      <a href="https://scholar.google.com/citations?user=RKiV3FAAAAAJ&hl=en">
+        <img src="https://avatars.githubusercontent.com/u/122834595?v=4" width="100px;" alt="Eric Inae"/><br />
+        <sub><b>Eric Inae</b></sub>
+      </a>
+      <br />
+      <sub>Integrating MoAMa, GraphMAE, AttrMasking, ContextPred, EdgePred</sub>
+    </td>
+    <td align="center" width="180px">
+      <a href="https://yihan226.github.io/">
+        <img src="https://avatars.githubusercontent.com/u/201283026?v=4" width="100px;" alt="Yihan Zhu"/><br />
+        <sub><b>Yihan Zhu</b></sub>
+      </a>
+      <br />
+      <sub>Integrating DeFoG, GRIN, BFGNN, RPGNN, Transformer (SMILES)</sub>
+    </td>
+    <td align="center" width="180px">
+      <a href="https://github.com/monics-hub">
+        <img src="https://avatars.githubusercontent.com/u/148586659?v=4" width="100px;" alt="Monica C. S"/><br />
+        <sub><b>Monica C. S</b></sub>
+      </a>
+      <br />
+      <sub>Debugging and integrating training logs (<a href="https://github.com/liugangcode/torch-molecule/pull/19">#19</a>)</sub>
+    </td>
+  </tr>
+</table>

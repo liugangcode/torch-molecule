@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.generator.graph_ga.oracle - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -259,7 +259,7 @@
 <div class="viewcode-block" id="Oracle">
 <a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_ga.oracle.Oracle">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Oracle</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The default Oracle class for scoring molecules in GraphGA.</span>
+<span class="w">    </span><span class="sd">"""The default Oracle class for scoring molecules in GraphGA.</span>
 <span class="sd">    </span>
 <span class="sd">    This class wraps predictive models (like RandomForestRegressor) to score molecules</span>
 <span class="sd">    based on their properties. It handles conversion of SMILES to fingerprints.</span>
@@ -271,14 +271,14 @@
 <span class="sd">        If None, RandomForestRegressors will be created when fit is called.</span>
 <span class="sd">    num_task : int, default=1</span>
 <span class="sd">        Number of properties to predict.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="n">models</span> <span class="k">if</span> <span class="n">models</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">RandomForestRegressor</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_task</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span> <span class="o">=</span> <span class="n">num_task</span> <span class="k">if</span> <span class="n">models</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">)</span>
         
     <span class="k">def</span><span class="w"> </span><span class="nf">_convert_to_fingerprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert SMILES or RDKit molecules to fingerprints.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert SMILES or RDKit molecules to fingerprints."""</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">molecules</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">getmorganfingerprint</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span> <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
@@ -287,7 +287,7 @@
 <div class="viewcode-block" id="Oracle.fit">
 <a class="viewcode-back" href="../../../../api/generator.html#torch_molecule.generator.graph_ga.oracle.Oracle.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the underlying models with training data.</span>
+<span class="w">        </span><span class="sd">"""Fit the underlying models with training data.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -300,7 +300,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        self : Oracle</span>
 <span class="sd">            Fitted oracle.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">X_train_fp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_fingerprint</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
         
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">):</span>
@@ -313,7 +313,7 @@
 
     
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="p">,</span> <span class="n">target_values</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Score molecules based on their predicted properties.</span>
+<span class="w">        </span><span class="sd">"""Score molecules based on their predicted properties.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -326,7 +326,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        List[float]</span>
 <span class="sd">            Scores for each molecule.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_fingerprint</span><span class="p">(</span><span class="n">molecules</span><span class="p">)</span>
         <span class="n">scores_list</span> <span class="o">=</span> <span class="p">[]</span>
         
@@ -383,8 +383,8 @@
     </aside>
   </div>
 </div><script src="../../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

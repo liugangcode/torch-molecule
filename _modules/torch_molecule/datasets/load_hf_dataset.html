@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.datasets.load_hf_dataset - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -265,9 +265,9 @@
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">SMILES_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;smiles&quot;</span>
+    <span class="n">SMILES_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"smiles"</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Load dataset from Hugging Face Hub.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -281,7 +281,7 @@
 <span class="sd">    target_cols : List[str]</span>
 <span class="sd">        List of target column names</span>
 <span class="sd">    SMILES_col : str, optional</span>
-<span class="sd">        Name of the SMILES column, by default &quot;smiles&quot;</span>
+<span class="sd">        Name of the SMILES column, by default "smiles"</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -289,68 +289,68 @@
 <span class="sd">        - smiles_list: List of SMILES strings</span>
 <span class="sd">        - property_numpy: 2D numpy array with properties (rows=molecules, cols=targets)</span>
 <span class="sd">        - local_dir: Path where the data is saved</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">local_dir</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found existing file at </span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Found existing file at </span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">local_dir</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading dataset from Hugging Face Hub...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Downloading dataset from Hugging Face Hub..."</span><span class="p">)</span>
         <span class="c1"># Download the dataset from Hugging Face Hub</span>
         <span class="n">downloaded_file</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span>
             <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
             <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
             <span class="n">local_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">local_dir</span><span class="p">),</span>
-            <span class="n">repo_type</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span>
+            <span class="n">repo_type</span><span class="o">=</span><span class="s2">"dataset"</span>
         <span class="p">)</span>
         
         <span class="c1"># If the downloaded file has a different name, rename it to match local_dir</span>
         <span class="k">if</span> <span class="n">downloaded_file</span> <span class="o">!=</span> <span class="n">local_dir</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">downloaded_file</span><span class="p">,</span> <span class="n">local_dir</span><span class="p">)</span>
         
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset downloaded and saved to </span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset downloaded and saved to </span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     
     <span class="c1"># Determine if file is compressed based on extension</span>
-    <span class="n">is_compressed</span> <span class="o">=</span> <span class="n">local_dir</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.gz&#39;</span><span class="p">)</span>
+    <span class="n">is_compressed</span> <span class="o">=</span> <span class="n">local_dir</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'.gz'</span><span class="p">)</span>
     
     <span class="c1"># Read CSV file (handle both compressed and uncompressed)</span>
     <span class="k">if</span> <span class="n">is_compressed</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">local_dir</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">local_dir</span><span class="p">,</span> <span class="s1">'rt'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
             
             <span class="c1"># Get column names from the first row</span>
             <span class="n">columns</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">fieldnames</span>
             <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;CSV file appears to be empty or malformed&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"CSV file appears to be empty or malformed"</span><span class="p">)</span>
             
             <span class="c1"># Check if SMILES column exists</span>
             <span class="k">if</span> <span class="n">SMILES_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SMILES column &#39;</span><span class="si">{</span><span class="n">SMILES_col</span><span class="si">}</span><span class="s2">&#39; not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SMILES column '</span><span class="si">{</span><span class="n">SMILES_col</span><span class="si">}</span><span class="s2">' not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             
             <span class="c1"># Check if target columns exist</span>
             <span class="n">missing_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">target_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">missing_cols</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target columns </span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s2"> not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Target columns </span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s2"> not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             
             <span class="c1"># Read all rows</span>
             <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_dir</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_dir</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
             
             <span class="c1"># Get column names from the first row</span>
             <span class="n">columns</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">fieldnames</span>
             <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;CSV file appears to be empty or malformed&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"CSV file appears to be empty or malformed"</span><span class="p">)</span>
             
             <span class="c1"># Check if SMILES column exists</span>
             <span class="k">if</span> <span class="n">SMILES_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SMILES column &#39;</span><span class="si">{</span><span class="n">SMILES_col</span><span class="si">}</span><span class="s2">&#39; not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SMILES column '</span><span class="si">{</span><span class="n">SMILES_col</span><span class="si">}</span><span class="s2">' not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             
             <span class="c1"># Check if target columns exist</span>
             <span class="n">missing_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">target_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">missing_cols</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target columns </span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s2"> not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Target columns </span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s2"> not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             
             <span class="c1"># Read all rows</span>
             <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
@@ -366,7 +366,7 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="c1"># Convert to float, handle potential missing values</span>
                 <span class="n">value_str</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">value_str</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="n">value_str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">,</span> <span class="s1">&#39;na&#39;</span><span class="p">,</span> <span class="s1">&#39;null&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">value_str</span> <span class="o">==</span> <span class="s1">''</span> <span class="ow">or</span> <span class="n">value_str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'nan'</span><span class="p">,</span> <span class="s1">'na'</span><span class="p">,</span> <span class="s1">'null'</span><span class="p">,</span> <span class="s1">'none'</span><span class="p">]:</span>
                     <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value_str</span><span class="p">)</span>
@@ -385,11 +385,11 @@
 <div class="viewcode-block" id="load_qm9">
 <a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_qm9">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_qm9</span><span class="p">(</span>
-    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
-    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gap&quot;</span><span class="p">],</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"torchmol_data"</span><span class="p">,</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"gap"</span><span class="p">],</span>
     <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Load QM9 dataset from Hugging Face Hub.</span>
 
 <span class="sd">    Source: http://quantum-machine.org/datasets/</span>
@@ -397,9 +397,9 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    local_dir : str, optional</span>
-<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">        Path where the data should be saved, by default "torchmol_data"</span>
 <span class="sd">    target_cols : List[str], optional</span>
-<span class="sd">        List of target column names, by default [&quot;gap&quot;]</span>
+<span class="sd">        List of target column names, by default ["gap"]</span>
 <span class="sd">    return_local_data_path : bool, optional</span>
 <span class="sd">        Whether to return the local data path, by default False</span>
 <span class="sd">    </span>
@@ -411,13 +411,13 @@
 <span class="sd">        If return_local_data_path is True:</span>
 <span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
-        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/QM9&quot;</span><span class="p">,</span>
-        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;qm9.csv&quot;</span><span class="p">,</span>
-        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/qm9.csv&quot;</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">"liuganghuggingface/QM9"</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">"qm9.csv"</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/qm9.csv"</span><span class="p">,</span>
         <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
-        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">"smiles"</span>
     <span class="p">)</span>
     <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
@@ -429,21 +429,21 @@
 <div class="viewcode-block" id="load_chembl2k">
 <a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_chembl2k">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_chembl2k</span><span class="p">(</span>
-    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
-    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ABCB1&quot;</span><span class="p">,</span> <span class="s2">&quot;ABL1&quot;</span><span class="p">,</span> <span class="s2">&quot;ADRA1D&quot;</span><span class="p">,</span> <span class="s2">&quot;ADRA2B&quot;</span><span class="p">,</span> <span class="s2">&quot;ADRB2&quot;</span><span class="p">,</span> <span class="s2">&quot;CA12&quot;</span><span class="p">,</span> <span class="s2">&quot;CA2&quot;</span><span class="p">,</span> <span class="s2">&quot;CA9&quot;</span><span class="p">,</span> <span class="s2">&quot;CACNA1H&quot;</span><span class="p">,</span> <span class="s2">&quot;CDK2&quot;</span><span class="p">,</span> <span class="s2">&quot;CHRM1&quot;</span><span class="p">,</span> <span class="s2">&quot;CHRM3&quot;</span><span class="p">,</span> <span class="s2">&quot;CHRM4&quot;</span><span class="p">,</span> <span class="s2">&quot;CNR1&quot;</span><span class="p">,</span> <span class="s2">&quot;CYP1A2&quot;</span><span class="p">,</span> <span class="s2">&quot;CYP2C19&quot;</span><span class="p">,</span> <span class="s2">&quot;CYP2C9&quot;</span><span class="p">,</span> <span class="s2">&quot;CYP2D6&quot;</span><span class="p">,</span> <span class="s2">&quot;CYP3A4&quot;</span><span class="p">,</span> <span class="s2">&quot;DRD2&quot;</span><span class="p">,</span> <span class="s2">&quot;DRD3&quot;</span><span class="p">,</span> <span class="s2">&quot;DRD4&quot;</span><span class="p">,</span> <span class="s2">&quot;EGFR&quot;</span><span class="p">,</span> <span class="s2">&quot;ESR1&quot;</span><span class="p">,</span> <span class="s2">&quot;FLT1&quot;</span><span class="p">,</span> <span class="s2">&quot;HRH1&quot;</span><span class="p">,</span> <span class="s2">&quot;HTR1A&quot;</span><span class="p">,</span> <span class="s2">&quot;HTR2A&quot;</span><span class="p">,</span> <span class="s2">&quot;HTR2B&quot;</span><span class="p">,</span> <span class="s2">&quot;HTR2C&quot;</span><span class="p">,</span> <span class="s2">&quot;HTR6&quot;</span><span class="p">,</span> <span class="s2">&quot;KCNH2&quot;</span><span class="p">,</span> <span class="s2">&quot;KDR&quot;</span><span class="p">,</span> <span class="s2">&quot;LCK&quot;</span><span class="p">,</span> <span class="s2">&quot;MCL1&quot;</span><span class="p">,</span> <span class="s2">&quot;OPRK1&quot;</span><span class="p">,</span> <span class="s2">&quot;PPARG&quot;</span><span class="p">,</span> <span class="s2">&quot;PTGS1&quot;</span><span class="p">,</span> <span class="s2">&quot;SIGMAR1&quot;</span><span class="p">,</span> <span class="s2">&quot;SLC6A2&quot;</span><span class="p">,</span> <span class="s2">&quot;SLC6A4&quot;</span><span class="p">],</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"torchmol_data"</span><span class="p">,</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"ABCB1"</span><span class="p">,</span> <span class="s2">"ABL1"</span><span class="p">,</span> <span class="s2">"ADRA1D"</span><span class="p">,</span> <span class="s2">"ADRA2B"</span><span class="p">,</span> <span class="s2">"ADRB2"</span><span class="p">,</span> <span class="s2">"CA12"</span><span class="p">,</span> <span class="s2">"CA2"</span><span class="p">,</span> <span class="s2">"CA9"</span><span class="p">,</span> <span class="s2">"CACNA1H"</span><span class="p">,</span> <span class="s2">"CDK2"</span><span class="p">,</span> <span class="s2">"CHRM1"</span><span class="p">,</span> <span class="s2">"CHRM3"</span><span class="p">,</span> <span class="s2">"CHRM4"</span><span class="p">,</span> <span class="s2">"CNR1"</span><span class="p">,</span> <span class="s2">"CYP1A2"</span><span class="p">,</span> <span class="s2">"CYP2C19"</span><span class="p">,</span> <span class="s2">"CYP2C9"</span><span class="p">,</span> <span class="s2">"CYP2D6"</span><span class="p">,</span> <span class="s2">"CYP3A4"</span><span class="p">,</span> <span class="s2">"DRD2"</span><span class="p">,</span> <span class="s2">"DRD3"</span><span class="p">,</span> <span class="s2">"DRD4"</span><span class="p">,</span> <span class="s2">"EGFR"</span><span class="p">,</span> <span class="s2">"ESR1"</span><span class="p">,</span> <span class="s2">"FLT1"</span><span class="p">,</span> <span class="s2">"HRH1"</span><span class="p">,</span> <span class="s2">"HTR1A"</span><span class="p">,</span> <span class="s2">"HTR2A"</span><span class="p">,</span> <span class="s2">"HTR2B"</span><span class="p">,</span> <span class="s2">"HTR2C"</span><span class="p">,</span> <span class="s2">"HTR6"</span><span class="p">,</span> <span class="s2">"KCNH2"</span><span class="p">,</span> <span class="s2">"KDR"</span><span class="p">,</span> <span class="s2">"LCK"</span><span class="p">,</span> <span class="s2">"MCL1"</span><span class="p">,</span> <span class="s2">"OPRK1"</span><span class="p">,</span> <span class="s2">"PPARG"</span><span class="p">,</span> <span class="s2">"PTGS1"</span><span class="p">,</span> <span class="s2">"SIGMAR1"</span><span class="p">,</span> <span class="s2">"SLC6A2"</span><span class="p">,</span> <span class="s2">"SLC6A4"</span><span class="p">],</span>
     <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Load ChEMBL2K dataset from Hugging Face Hub.</span>
 
-<span class="sd">    ChEMBL2K is introduced from &quot;Learning Molecular Representation in a Cell&quot; (ICLR 2025)</span>
+<span class="sd">    ChEMBL2K is introduced from "Learning Molecular Representation in a Cell" (ICLR 2025)</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    local_dir : str, optional</span>
-<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">        Path where the data should be saved, by default "torchmol_data"</span>
 <span class="sd">    target_cols : List[str], optional</span>
-<span class="sd">        List of target column names, by default [&quot;ABCB1&quot;, &quot;ABL1&quot;, &quot;ADRA1D&quot;, &quot;ADRA2B&quot;, &quot;ADRB2&quot;, &quot;CA12&quot;, &quot;CA2&quot;, &quot;CA9&quot;, &quot;CACNA1H&quot;, &quot;CDK2&quot;, &quot;CHRM1&quot;, &quot;CHRM3&quot;, &quot;CHRM4&quot;, &quot;CNR1&quot;, &quot;CYP1A2&quot;, &quot;CYP2C19&quot;, &quot;CYP2C9&quot;, &quot;CYP2D6&quot;, &quot;CYP3A4&quot;, &quot;DRD2&quot;, &quot;DRD3&quot;, &quot;DRD4&quot;, &quot;EGFR&quot;, &quot;ESR1&quot;, &quot;FLT1&quot;, &quot;HRH1&quot;, &quot;HTR1A&quot;, &quot;HTR2A&quot;, &quot;HTR2B&quot;, &quot;HTR2C&quot;, &quot;HTR6&quot;, &quot;KCNH2&quot;, &quot;KDR&quot;, &quot;LCK&quot;, &quot;MCL1&quot;, &quot;OPRK1&quot;, &quot;PPARG&quot;, &quot;PTGS1&quot;, &quot;SIGMAR1&quot;, &quot;SLC6A2&quot;, &quot;SLC6A4&quot;]</span>
+<span class="sd">        List of target column names, by default ["ABCB1", "ABL1", "ADRA1D", "ADRA2B", "ADRB2", "CA12", "CA2", "CA9", "CACNA1H", "CDK2", "CHRM1", "CHRM3", "CHRM4", "CNR1", "CYP1A2", "CYP2C19", "CYP2C9", "CYP2D6", "CYP3A4", "DRD2", "DRD3", "DRD4", "EGFR", "ESR1", "FLT1", "HRH1", "HTR1A", "HTR2A", "HTR2B", "HTR2C", "HTR6", "KCNH2", "KDR", "LCK", "MCL1", "OPRK1", "PPARG", "PTGS1", "SIGMAR1", "SLC6A2", "SLC6A4"]</span>
 <span class="sd">    return_local_data_path : bool, optional</span>
 <span class="sd">        Whether to return the local data path, by default False</span>
 <span class="sd">    </span>
@@ -455,13 +455,13 @@
 <span class="sd">        If return_local_data_path is True:</span>
 <span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
-        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/InfoAlign-Data&quot;</span><span class="p">,</span>
-        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;chembl2k_raw/assays.csv.gz&quot;</span><span class="p">,</span>
-        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/cheml2k.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">"liuganghuggingface/InfoAlign-Data"</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">"chembl2k_raw/assays.csv.gz"</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/cheml2k.csv.gz"</span><span class="p">,</span>
         <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
-        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">"smiles"</span>
     <span class="p">)</span>
     <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
@@ -474,21 +474,21 @@
 <div class="viewcode-block" id="load_broad6k">
 <a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_broad6k">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_broad6k</span><span class="p">(</span>
-    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
-    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;220_692&quot;</span><span class="p">,</span> <span class="s2">&quot;221_693&quot;</span><span class="p">,</span> <span class="s2">&quot;231_703&quot;</span><span class="p">,</span> <span class="s2">&quot;233_706&quot;</span><span class="p">,</span> <span class="s2">&quot;234_707&quot;</span><span class="p">,</span> <span class="s2">&quot;235_708&quot;</span><span class="p">,</span> <span class="s2">&quot;238_712&quot;</span><span class="p">,</span> <span class="s2">&quot;239_713&quot;</span><span class="p">,</span> <span class="s2">&quot;240_714&quot;</span><span class="p">,</span> <span class="s2">&quot;241_715&quot;</span><span class="p">,</span> <span class="s2">&quot;242_716&quot;</span><span class="p">,</span> <span class="s2">&quot;243_717&quot;</span><span class="p">,</span> <span class="s2">&quot;244_718&quot;</span><span class="p">,</span> <span class="s2">&quot;246_720&quot;</span><span class="p">,</span> <span class="s2">&quot;247_721&quot;</span><span class="p">,</span> <span class="s2">&quot;248_722&quot;</span><span class="p">,</span> <span class="s2">&quot;249_724&quot;</span><span class="p">,</span> <span class="s2">&quot;251_727&quot;</span><span class="p">,</span> <span class="s2">&quot;260_738&quot;</span><span class="p">,</span> <span class="s2">&quot;264_742&quot;</span><span class="p">,</span> <span class="s2">&quot;265_743&quot;</span><span class="p">,</span> <span class="s2">&quot;267_745&quot;</span><span class="p">,</span> <span class="s2">&quot;268_746&quot;</span><span class="p">,</span> <span class="s2">&quot;269_747&quot;</span><span class="p">,</span> <span class="s2">&quot;270_748&quot;</span><span class="p">,</span> <span class="s2">&quot;274_752&quot;</span><span class="p">,</span> <span class="s2">&quot;275_754&quot;</span><span class="p">,</span> <span class="s2">&quot;276_755&quot;</span><span class="p">,</span> <span class="s2">&quot;277_756&quot;</span><span class="p">,</span> <span class="s2">&quot;278_757&quot;</span><span class="p">,</span> <span class="s2">&quot;279_758&quot;</span><span class="p">,</span> <span class="s2">&quot;280_759&quot;</span><span class="p">],</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"torchmol_data"</span><span class="p">,</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"220_692"</span><span class="p">,</span> <span class="s2">"221_693"</span><span class="p">,</span> <span class="s2">"231_703"</span><span class="p">,</span> <span class="s2">"233_706"</span><span class="p">,</span> <span class="s2">"234_707"</span><span class="p">,</span> <span class="s2">"235_708"</span><span class="p">,</span> <span class="s2">"238_712"</span><span class="p">,</span> <span class="s2">"239_713"</span><span class="p">,</span> <span class="s2">"240_714"</span><span class="p">,</span> <span class="s2">"241_715"</span><span class="p">,</span> <span class="s2">"242_716"</span><span class="p">,</span> <span class="s2">"243_717"</span><span class="p">,</span> <span class="s2">"244_718"</span><span class="p">,</span> <span class="s2">"246_720"</span><span class="p">,</span> <span class="s2">"247_721"</span><span class="p">,</span> <span class="s2">"248_722"</span><span class="p">,</span> <span class="s2">"249_724"</span><span class="p">,</span> <span class="s2">"251_727"</span><span class="p">,</span> <span class="s2">"260_738"</span><span class="p">,</span> <span class="s2">"264_742"</span><span class="p">,</span> <span class="s2">"265_743"</span><span class="p">,</span> <span class="s2">"267_745"</span><span class="p">,</span> <span class="s2">"268_746"</span><span class="p">,</span> <span class="s2">"269_747"</span><span class="p">,</span> <span class="s2">"270_748"</span><span class="p">,</span> <span class="s2">"274_752"</span><span class="p">,</span> <span class="s2">"275_754"</span><span class="p">,</span> <span class="s2">"276_755"</span><span class="p">,</span> <span class="s2">"277_756"</span><span class="p">,</span> <span class="s2">"278_757"</span><span class="p">,</span> <span class="s2">"279_758"</span><span class="p">,</span> <span class="s2">"280_759"</span><span class="p">],</span>
     <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Load Broad6K dataset from Hugging Face Hub. </span>
 
-<span class="sd">    Broad6K is introduced from &quot;Learning Molecular Representation in a Cell&quot; (ICLR 2025)</span>
+<span class="sd">    Broad6K is introduced from "Learning Molecular Representation in a Cell" (ICLR 2025)</span>
 
 <span class="sd">    TODO: replace the column names with the original names</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    local_dir : str, optional</span>
-<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">        Path where the data should be saved, by default "torchmol_data"</span>
 <span class="sd">    target_cols : List[str], optional</span>
 <span class="sd">        List of target column names, by default all tasks</span>
 <span class="sd">    return_local_data_path : bool, optional</span>
@@ -502,13 +502,13 @@
 <span class="sd">        If return_local_data_path is True:</span>
 <span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
-        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/InfoAlign-Data&quot;</span><span class="p">,</span>
-        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;broad6k_raw/assays.csv.gz&quot;</span><span class="p">,</span>
-        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/broad6k.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">"liuganghuggingface/InfoAlign-Data"</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">"broad6k_raw/assays.csv.gz"</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/broad6k.csv.gz"</span><span class="p">,</span>
         <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
-        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">"smiles"</span>
     <span class="p">)</span>
     <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
@@ -521,11 +521,11 @@
 <div class="viewcode-block" id="load_toxcast">
 <a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_toxcast">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_toxcast</span><span class="p">(</span>
-    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"torchmol_data"</span><span class="p">,</span>
     <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">TOXCAST_TASKS</span><span class="p">,</span>
     <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Load ToxCast dataset from Hugging Face Hub.</span>
 
 <span class="sd">    Source: https://www.epa.gov/comptox-tools/exploring-toxcast-data</span>
@@ -533,7 +533,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    local_dir : str, optional</span>
-<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">        Path where the data should be saved, by default "torchmol_data"</span>
 <span class="sd">    target_cols : List[str], optional</span>
 <span class="sd">        List of target column names, by default all tasks</span>
 <span class="sd">    return_local_data_path : bool, optional</span>
@@ -547,13 +547,13 @@
 <span class="sd">        If return_local_data_path is True:</span>
 <span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
-        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/toxcast&quot;</span><span class="p">,</span>
-        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;toxcast_data.csv.gz&quot;</span><span class="p">,</span>
-        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/toxcast.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">"liuganghuggingface/toxcast"</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">"toxcast_data.csv.gz"</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/toxcast.csv.gz"</span><span class="p">,</span>
         <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
-        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">"smiles"</span>
     <span class="p">)</span>
     <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
@@ -567,11 +567,11 @@
 <div class="viewcode-block" id="load_admet">
 <a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_admet">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_admet</span><span class="p">(</span>
-    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
-    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AMES&quot;</span><span class="p">,</span><span class="s2">&quot;BBB_Martins&quot;</span><span class="p">,</span><span class="s2">&quot;Bioavailability_Ma&quot;</span><span class="p">,</span><span class="s2">&quot;CYP1A2_Veith&quot;</span><span class="p">,</span><span class="s2">&quot;CYP2C19_Veith&quot;</span><span class="p">,</span><span class="s2">&quot;CYP2C9_Substrate_CarbonMangels&quot;</span><span class="p">,</span><span class="s2">&quot;CYP2C9_Veith&quot;</span><span class="p">,</span><span class="s2">&quot;CYP2D6_Substrate_CarbonMangels&quot;</span><span class="p">,</span><span class="s2">&quot;CYP2D6_Veith&quot;</span><span class="p">,</span><span class="s2">&quot;CYP3A4_Substrate_CarbonMangels&quot;</span><span class="p">,</span><span class="s2">&quot;CYP3A4_Veith&quot;</span><span class="p">,</span><span class="s2">&quot;Caco2_Wang&quot;</span><span class="p">,</span><span class="s2">&quot;Carcinogens_Lagunin&quot;</span><span class="p">,</span><span class="s2">&quot;Clearance_Hepatocyte_AZ&quot;</span><span class="p">,</span><span class="s2">&quot;Clearance_Microsome_AZ&quot;</span><span class="p">,</span><span class="s2">&quot;ClinTox&quot;</span><span class="p">,</span><span class="s2">&quot;DILI&quot;</span><span class="p">,</span><span class="s2">&quot;HIA_Hou&quot;</span><span class="p">,</span><span class="s2">&quot;Half_Life_Obach&quot;</span><span class="p">,</span><span class="s2">&quot;HydrationFreeEnergy_FreeSolv&quot;</span><span class="p">,</span><span class="s2">&quot;LD50_Zhu&quot;</span><span class="p">,</span><span class="s2">&quot;Lipophilicity_AstraZeneca&quot;</span><span class="p">,</span><span class="s2">&quot;NR-AR-LBD&quot;</span><span class="p">,</span><span class="s2">&quot;NR-AR&quot;</span><span class="p">,</span><span class="s2">&quot;NR-AhR&quot;</span><span class="p">,</span><span class="s2">&quot;NR-Aromatase&quot;</span><span class="p">,</span><span class="s2">&quot;NR-ER-LBD&quot;</span><span class="p">,</span><span class="s2">&quot;NR-ER&quot;</span><span class="p">,</span><span class="s2">&quot;NR-PPAR-gamma&quot;</span><span class="p">,</span><span class="s2">&quot;PAMPA_NCATS&quot;</span><span class="p">,</span><span class="s2">&quot;PPBR_AZ&quot;</span><span class="p">,</span><span class="s2">&quot;Pgp_Broccatelli&quot;</span><span class="p">,</span><span class="s2">&quot;SR-ARE&quot;</span><span class="p">,</span><span class="s2">&quot;SR-ATAD5&quot;</span><span class="p">,</span><span class="s2">&quot;SR-HSE&quot;</span><span class="p">,</span><span class="s2">&quot;SR-MMP&quot;</span><span class="p">,</span><span class="s2">&quot;SR-p53&quot;</span><span class="p">,</span><span class="s2">&quot;Skin_Reaction&quot;</span><span class="p">,</span><span class="s2">&quot;Solubility_AqSolDB&quot;</span><span class="p">,</span><span class="s2">&quot;VDss_Lombardo&quot;</span><span class="p">,</span><span class="s2">&quot;hERG&quot;</span><span class="p">],</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"torchmol_data"</span><span class="p">,</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"AMES"</span><span class="p">,</span><span class="s2">"BBB_Martins"</span><span class="p">,</span><span class="s2">"Bioavailability_Ma"</span><span class="p">,</span><span class="s2">"CYP1A2_Veith"</span><span class="p">,</span><span class="s2">"CYP2C19_Veith"</span><span class="p">,</span><span class="s2">"CYP2C9_Substrate_CarbonMangels"</span><span class="p">,</span><span class="s2">"CYP2C9_Veith"</span><span class="p">,</span><span class="s2">"CYP2D6_Substrate_CarbonMangels"</span><span class="p">,</span><span class="s2">"CYP2D6_Veith"</span><span class="p">,</span><span class="s2">"CYP3A4_Substrate_CarbonMangels"</span><span class="p">,</span><span class="s2">"CYP3A4_Veith"</span><span class="p">,</span><span class="s2">"Caco2_Wang"</span><span class="p">,</span><span class="s2">"Carcinogens_Lagunin"</span><span class="p">,</span><span class="s2">"Clearance_Hepatocyte_AZ"</span><span class="p">,</span><span class="s2">"Clearance_Microsome_AZ"</span><span class="p">,</span><span class="s2">"ClinTox"</span><span class="p">,</span><span class="s2">"DILI"</span><span class="p">,</span><span class="s2">"HIA_Hou"</span><span class="p">,</span><span class="s2">"Half_Life_Obach"</span><span class="p">,</span><span class="s2">"HydrationFreeEnergy_FreeSolv"</span><span class="p">,</span><span class="s2">"LD50_Zhu"</span><span class="p">,</span><span class="s2">"Lipophilicity_AstraZeneca"</span><span class="p">,</span><span class="s2">"NR-AR-LBD"</span><span class="p">,</span><span class="s2">"NR-AR"</span><span class="p">,</span><span class="s2">"NR-AhR"</span><span class="p">,</span><span class="s2">"NR-Aromatase"</span><span class="p">,</span><span class="s2">"NR-ER-LBD"</span><span class="p">,</span><span class="s2">"NR-ER"</span><span class="p">,</span><span class="s2">"NR-PPAR-gamma"</span><span class="p">,</span><span class="s2">"PAMPA_NCATS"</span><span class="p">,</span><span class="s2">"PPBR_AZ"</span><span class="p">,</span><span class="s2">"Pgp_Broccatelli"</span><span class="p">,</span><span class="s2">"SR-ARE"</span><span class="p">,</span><span class="s2">"SR-ATAD5"</span><span class="p">,</span><span class="s2">"SR-HSE"</span><span class="p">,</span><span class="s2">"SR-MMP"</span><span class="p">,</span><span class="s2">"SR-p53"</span><span class="p">,</span><span class="s2">"Skin_Reaction"</span><span class="p">,</span><span class="s2">"Solubility_AqSolDB"</span><span class="p">,</span><span class="s2">"VDss_Lombardo"</span><span class="p">,</span><span class="s2">"hERG"</span><span class="p">],</span>
     <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Load ADMET dataset from Hugging Face Hub.</span>
 <span class="sd">    </span>
 <span class="sd">    Source: https://github.com/swansonk14/admet_ai/blob/main/admet_ai/resources/data/admet.csv</span>
@@ -579,7 +579,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    local_dir : str, optional</span>
-<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">        Path where the data should be saved, by default "torchmol_data"</span>
 <span class="sd">    target_cols : List[str], optional</span>
 <span class="sd">        List of target column names, by default all tasks</span>
 <span class="sd">    return_local_data_path : bool, optional</span>
@@ -593,13 +593,13 @@
 <span class="sd">        If return_local_data_path is True:</span>
 <span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
-        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/admet&quot;</span><span class="p">,</span>
-        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;admet.csv&quot;</span><span class="p">,</span>
-        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/admet.csv&quot;</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">"liuganghuggingface/admet"</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">"admet.csv"</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/admet.csv"</span><span class="p">,</span>
         <span class="n">target_cols</span><span class="o">=</span><span class="n">target_cols</span><span class="p">,</span>
-        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">"smiles"</span>
     <span class="p">)</span>
     <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">property_numpy</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
@@ -608,17 +608,19 @@
         <span class="k">return</span> <span class="n">molecular_dataset</span></div>
 
 
+<div class="viewcode-block" id="load_zinc250k">
+<a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_zinc250k">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_zinc250k</span><span class="p">(</span>
-    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;torchmol_data&quot;</span><span class="p">,</span>
+    <span class="n">local_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"torchmol_data"</span><span class="p">,</span>
     <span class="n">return_local_data_path</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Load ZINC250K dataset from Hugging Face Hub.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    local_dir : str, optional</span>
-<span class="sd">        Path where the data should be saved, by default &quot;torchmol_data&quot;</span>
+<span class="sd">        Path where the data should be saved, by default "torchmol_data"</span>
 <span class="sd">    return_local_data_path : bool, optional</span>
 <span class="sd">        Whether to return the local data path, by default False</span>
 
@@ -630,19 +632,20 @@
 <span class="sd">        If return_local_data_path is True:</span>
 <span class="sd">            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - local_data_path: Path where the data is saved</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_numpy</span><span class="p">,</span> <span class="n">local_data_path</span> <span class="o">=</span> <span class="n">_load_from_hf</span><span class="p">(</span>
-        <span class="n">repo_id</span><span class="o">=</span><span class="s2">&quot;liuganghuggingface/zinc250k&quot;</span><span class="p">,</span>
-        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;zinc.csv.gz&quot;</span><span class="p">,</span>
-        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/zinc250k.csv.gz&quot;</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s2">"liuganghuggingface/zinc250k"</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">"zinc.csv.gz"</span><span class="p">,</span>
+        <span class="n">local_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">local_dir</span><span class="si">}</span><span class="s2">/zinc250k.csv.gz"</span><span class="p">,</span>
         <span class="n">target_cols</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">&quot;smiles&quot;</span>
+        <span class="n">SMILES_col</span><span class="o">=</span><span class="s2">"smiles"</span>
     <span class="p">)</span>
     <span class="n">molecular_dataset</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_local_data_path</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">molecular_dataset</span><span class="p">,</span> <span class="n">local_data_path</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">molecular_dataset</span>
+        <span class="k">return</span> <span class="n">molecular_dataset</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -676,8 +679,8 @@
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

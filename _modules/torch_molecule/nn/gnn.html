@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.nn.gnn - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -272,7 +272,7 @@
 <div class="viewcode-block" id="AtomEncoder">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.AtomEncoder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AtomEncoder</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encodes atom features into a fixed-size vector representation.</span>
+<span class="w">    </span><span class="sd">"""Encodes atom features into a fixed-size vector representation.</span>
 <span class="sd">    </span>
 <span class="sd">    This module converts categorical atom features into embeddings and combines them</span>
 <span class="sd">    to create a unified atom representation.</span>
@@ -288,7 +288,7 @@
 <span class="sd">    these embeddings are summed to produce the final representation.</span>
 <span class="sd">    The embedding weights are initialized using Xavier uniform initialization</span>
 <span class="sd">    with max_norm=1 constraint.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">AtomEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         
@@ -302,7 +302,7 @@
 <div class="viewcode-block" id="AtomEncoder.forward">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.AtomEncoder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform atom features into embeddings.</span>
+<span class="w">        </span><span class="sd">"""Transform atom features into embeddings.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -314,7 +314,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        torch.Tensor</span>
 <span class="sd">            Atom embeddings of shape [num_atoms, hidden_size].</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">x_embedding</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">x_embedding</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_embedding_list</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">x</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span>
@@ -326,7 +326,7 @@
 <div class="viewcode-block" id="BondEncoder">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.BondEncoder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BondEncoder</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encodes bond features into a fixed-size vector representation.</span>
+<span class="w">    </span><span class="sd">"""Encodes bond features into a fixed-size vector representation.</span>
 <span class="sd">    </span>
 <span class="sd">    This module converts categorical bond features into embeddings and combines them</span>
 <span class="sd">    to create a unified bond representation.</span>
@@ -342,7 +342,7 @@
 <span class="sd">    these embeddings are summed to produce the final representation.</span>
 <span class="sd">    The embedding weights are initialized using Xavier uniform initialization</span>
 <span class="sd">    with max_norm=1 constraint.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BondEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         
@@ -356,7 +356,7 @@
 <div class="viewcode-block" id="BondEncoder.forward">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.BondEncoder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform bond features into embeddings.</span>
+<span class="w">        </span><span class="sd">"""Transform bond features into embeddings.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -368,7 +368,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        torch.Tensor</span>
 <span class="sd">            Bond embeddings of shape [num_bonds, hidden_size].</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">bond_embedding</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">edge_attr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">bond_embedding</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bond_embedding_list</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">edge_attr</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span>
@@ -381,10 +381,10 @@
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GINConv">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GINConv</span><span class="p">(</span><span class="n">MessagePassing</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">            hidden_size (int): node embedding dimensionality</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">GINConv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggr</span> <span class="o">=</span> <span class="s2">&quot;add&quot;</span><span class="p">)</span>
+<span class="sd">        '''</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GINConv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggr</span> <span class="o">=</span> <span class="s2">"add"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">output_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">output_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
 
@@ -419,7 +419,7 @@
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GCNConv">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GCNConv</span><span class="p">(</span><span class="n">MessagePassing</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">GCNConv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggr</span><span class="o">=</span><span class="s1">&#39;add&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GCNConv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggr</span><span class="o">=</span><span class="s1">'add'</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">output_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">output_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
 
@@ -437,7 +437,7 @@
         <span class="c1">#edge_weight = torch.ones((edge_index.size(1), ), device=edge_index.device)</span>
         <span class="n">deg</span> <span class="o">=</span> <span class="n">degree</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">deg_inv_sqrt</span> <span class="o">=</span> <span class="n">deg</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">deg_inv_sqrt</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">deg_inv_sqrt</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="n">norm</span> <span class="o">=</span> <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">*</span> <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
 
@@ -494,10 +494,10 @@
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GINConv_BF.aggregate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_has_torch_scatter</span> <span class="ow">or</span> <span class="n">scatter_min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">"BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`."</span><span class="p">)</span>
 
         <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">scatter_min</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="n">dim_size</span><span class="p">)</span>
-        <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">return</span> <span class="n">out</span></div>
 </div>
 
@@ -530,7 +530,7 @@
         <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">edge_index</span>
         <span class="n">deg</span> <span class="o">=</span> <span class="n">degree</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">x_lin</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x_lin</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">deg_inv_sqrt</span> <span class="o">=</span> <span class="n">deg</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">deg_inv_sqrt</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">deg_inv_sqrt</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">*</span> <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
 
         <span class="n">agg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span>
@@ -553,10 +553,10 @@
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GCNConv_BF.aggregate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_has_torch_scatter</span> <span class="ow">or</span> <span class="n">scatter_min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">"BFGNN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`."</span><span class="p">)</span>
 
         <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">scatter_min</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="n">dim_size</span><span class="p">)</span>
-        <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">return</span> <span class="n">out</span></div>
 </div>
 
@@ -601,10 +601,10 @@
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GINConv_GRIN.aggregate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_has_torch_scatter</span> <span class="ow">or</span> <span class="n">scatter_min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">"GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`."</span><span class="p">)</span>
 
         <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">scatter_max</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="n">dim_size</span><span class="p">)</span>
-        <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">return</span> <span class="n">out</span></div>
 </div>
 
@@ -639,7 +639,7 @@
         <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">edge_index</span>
         <span class="n">deg</span> <span class="o">=</span> <span class="n">degree</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">x_lin</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x_lin</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">deg_inv_sqrt</span> <span class="o">=</span> <span class="n">deg</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">deg_inv_sqrt</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">deg_inv_sqrt</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">*</span> <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
 
         <span class="n">edge_emb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bond_encoder</span><span class="p">(</span><span class="n">edge_attr</span><span class="p">)</span>
@@ -664,10 +664,10 @@
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GCNConv_GRIN.aggregate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_has_torch_scatter</span> <span class="ow">or</span> <span class="n">scatter_min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">"GRIN requires `torch_scatter` package. Please install it via `pip install torch-scatter -f https://data.pyg.org/whl/torch-$</span><span class="si">{TORCH}</span><span class="s2">+$</span><span class="si">{CUDA}</span><span class="s2">.html`."</span><span class="p">)</span>
 
         <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">scatter_max</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_size</span><span class="o">=</span><span class="n">dim_size</span><span class="p">)</span>
-        <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">return</span> <span class="n">out</span></div>
 </div>
 
@@ -676,16 +676,16 @@
 <div class="viewcode-block" id="GNN_node">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GNN_node">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GNN_node</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Output:</span>
 <span class="sd">        node representations</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_layer</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">drop_ratio</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">JK</span> <span class="o">=</span> <span class="s2">&quot;last&quot;</span><span class="p">,</span> <span class="n">residual</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">gnn_name</span> <span class="o">=</span> <span class="s1">&#39;gin&#39;</span><span class="p">,</span> <span class="n">norm_layer</span> <span class="o">=</span> <span class="s1">&#39;batch_norm&#39;</span><span class="p">,</span> <span class="n">encode_atom</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">algorithm_aligned</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_layer</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">drop_ratio</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">JK</span> <span class="o">=</span> <span class="s2">"last"</span><span class="p">,</span> <span class="n">residual</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">gnn_name</span> <span class="o">=</span> <span class="s1">'gin'</span><span class="p">,</span> <span class="n">norm_layer</span> <span class="o">=</span> <span class="s1">'batch_norm'</span><span class="p">,</span> <span class="n">encode_atom</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">algorithm_aligned</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">            hidden_size (int): node embedding dimensionality</span>
 <span class="sd">            num_layer (int): number of GNN message passing layers</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">GNN_node</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span> <span class="o">=</span> <span class="n">num_layer</span>
@@ -697,7 +697,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">encode_atom</span> <span class="o">=</span> <span class="n">encode_atom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_aligned</span> <span class="o">=</span> <span class="n">algorithm_aligned</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of GNN layers must be greater than 1.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Number of GNN layers must be greater than 1."</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">atom_encoder</span> <span class="o">=</span> <span class="n">AtomEncoder</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bond_encoder</span> <span class="o">=</span> <span class="n">BondEncoder</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">)</span>
@@ -707,43 +707,43 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layer</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">gnn_name</span> <span class="o">==</span> <span class="s1">&#39;gin&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">&#39;bf&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">gnn_name</span> <span class="o">==</span> <span class="s1">'gin'</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">'bf'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GINConv_BF</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-                <span class="k">elif</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">&#39;mst&#39;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">'mst'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GINConv_GRIN</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GINConv</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">gnn_name</span> <span class="o">==</span> <span class="s1">&#39;gcn&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">&#39;bf&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">gnn_name</span> <span class="o">==</span> <span class="s1">'gcn'</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">'bf'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GCNConv_BF</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-                <span class="k">elif</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">&#39;mst&#39;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">'mst'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GCNConv_GRIN</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GCNConv</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Undefined GNN type called </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gnn_name</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Undefined GNN type called </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gnn_name</span><span class="p">))</span>
 
-            <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;batch&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;notrack&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'batch'</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'notrack'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">track_running_stats</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;instance&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'instance'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">InstanceNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;layer&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'layer'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;graph&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'graph'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GraphNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;size&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'size'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GraphSizeNorm</span><span class="p">())</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;pair&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'pair'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PairNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;group&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'group'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DiffGroupNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Undefined normalization layer called </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_layer</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;size&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Undefined normalization layer called </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_layer</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'size'</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph_size_norm</span> <span class="o">=</span> <span class="n">GraphSizeNorm</span><span class="p">()</span>
 
     <span class="c1"># def forward(self, batched_data):</span>
@@ -759,7 +759,7 @@
             <span class="c1"># Case 2: separate inputs</span>
             <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">,</span> <span class="n">batch</span> <span class="o">=</span> <span class="n">args</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;forward expects either 1 batched_data argument or 4 separate arguments (x, edge_index, edge_attr, batch)&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"forward expects either 1 batched_data argument or 4 separate arguments (x, edge_index, edge_attr, batch)"</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_atom</span><span class="p">:</span>
             <span class="n">h_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">atom_encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
@@ -767,11 +767,11 @@
             <span class="n">h_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span><span class="p">):</span>
             <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">[</span><span class="n">layer</span><span class="p">](</span><span class="n">h_list</span><span class="p">[</span><span class="n">layer</span><span class="p">],</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;batch&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'batch'</span><span class="p">:</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="p">[</span><span class="n">layer</span><span class="p">](</span><span class="n">h</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="p">[</span><span class="n">layer</span><span class="p">](</span><span class="n">h</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;size&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'size'</span><span class="p">:</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_size_norm</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">layer</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
@@ -786,9 +786,9 @@
             <span class="n">h_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
 
         <span class="c1">### Different implementations of Jk-concat</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">JK</span> <span class="o">==</span> <span class="s2">&quot;last&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">JK</span> <span class="o">==</span> <span class="s2">"last"</span><span class="p">:</span>
             <span class="n">node_representation</span> <span class="o">=</span> <span class="n">h_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">JK</span> <span class="o">==</span> <span class="s2">&quot;sum&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">JK</span> <span class="o">==</span> <span class="s2">"sum"</span><span class="p">:</span>
             <span class="n">node_representation</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="n">node_representation</span> <span class="o">+=</span> <span class="n">h_list</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span>
@@ -801,14 +801,14 @@
 <div class="viewcode-block" id="GNN_node_Virtualnode">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.gnn.GNN_node_Virtualnode">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GNN_node_Virtualnode</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Output:</span>
 <span class="sd">        node representations</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_layer</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">drop_ratio</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">JK</span> <span class="o">=</span> <span class="s2">&quot;last&quot;</span><span class="p">,</span> <span class="n">residual</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">gnn_name</span> <span class="o">=</span> <span class="s1">&#39;gin&#39;</span><span class="p">,</span> <span class="n">norm_layer</span> <span class="o">=</span> <span class="s1">&#39;batch_norm&#39;</span><span class="p">,</span> <span class="n">encode_atom</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">algorithm_aligned</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_layer</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">drop_ratio</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">JK</span> <span class="o">=</span> <span class="s2">"last"</span><span class="p">,</span> <span class="n">residual</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">gnn_name</span> <span class="o">=</span> <span class="s1">'gin'</span><span class="p">,</span> <span class="n">norm_layer</span> <span class="o">=</span> <span class="s1">'batch_norm'</span><span class="p">,</span> <span class="n">encode_atom</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">algorithm_aligned</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">            hidden_size (int): node embedding dimensionality</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">GNN_node_Virtualnode</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span> <span class="o">=</span> <span class="n">num_layer</span>
@@ -820,7 +820,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">encode_atom</span> <span class="o">=</span> <span class="n">encode_atom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_aligned</span> <span class="o">=</span> <span class="n">algorithm_aligned</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of GNN layers must be greater than 1.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Number of GNN layers must be greater than 1."</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">atom_encoder</span> <span class="o">=</span> <span class="n">AtomEncoder</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bond_encoder</span> <span class="o">=</span> <span class="n">BondEncoder</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">)</span>
@@ -838,43 +838,43 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mlp_virtualnode_list</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layer</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">gnn_name</span> <span class="o">==</span> <span class="s1">&#39;gin&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">&#39;bf&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">gnn_name</span> <span class="o">==</span> <span class="s1">'gin'</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">'bf'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GINConv_BF</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-                <span class="k">elif</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">&#39;mst&#39;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">'mst'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GINConv_GRIN</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GINConv</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">gnn_name</span> <span class="o">==</span> <span class="s1">&#39;gcn&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">&#39;bf&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">gnn_name</span> <span class="o">==</span> <span class="s1">'gcn'</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">'bf'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GCNConv_BF</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-                <span class="k">elif</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">&#39;mst&#39;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">algorithm_aligned</span> <span class="o">==</span> <span class="s1">'mst'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GCNConv_GRIN</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GCNConv</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Undefined GNN type called </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gnn_name</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Undefined GNN type called </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gnn_name</span><span class="p">))</span>
             
-            <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;batch&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;notrack&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'batch'</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'notrack'</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">track_running_stats</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">affine</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;instance&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'instance'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">InstanceNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;layer&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'layer'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;graph&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'graph'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GraphNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;size&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'size'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GraphSizeNorm</span><span class="p">())</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;pair&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'pair'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PairNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;group&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'group'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DiffGroupNorm</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Undefined normalization layer called </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_layer</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;size&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Undefined normalization layer called </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">norm_layer</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'size'</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph_size_norm</span> <span class="o">=</span> <span class="n">GraphSizeNorm</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layer</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mlp_virtualnode_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">hidden_size</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">hidden_size</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span> \
@@ -892,7 +892,7 @@
             <span class="c1"># Case 2: separate inputs</span>
             <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">,</span> <span class="n">batch</span> <span class="o">=</span> <span class="n">args</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;forward expects either 1 batched_data argument or 4 separate arguments (x, edge_index, edge_attr, batch)&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"forward expects either 1 batched_data argument or 4 separate arguments (x, edge_index, edge_attr, batch)"</span><span class="p">)</span>
         <span class="c1">### virtual node embeddings for graphs</span>
         <span class="n">virtualnode_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">virtualnode_embedding</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">edge_index</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">edge_index</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
 
@@ -905,11 +905,11 @@
             <span class="n">h_list</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="n">h_list</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">+</span> <span class="n">virtualnode_embedding</span><span class="p">[</span><span class="n">batch</span><span class="p">]</span>
             <span class="c1">### Message passing among graph nodes</span>
             <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">[</span><span class="n">layer</span><span class="p">](</span><span class="n">h_list</span><span class="p">[</span><span class="n">layer</span><span class="p">],</span> <span class="n">edge_index</span><span class="p">,</span> <span class="n">edge_attr</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;batch&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'batch'</span><span class="p">:</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="p">[</span><span class="n">layer</span><span class="p">](</span><span class="n">h</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_norms</span><span class="p">[</span><span class="n">layer</span><span class="p">](</span><span class="n">h</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;size&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'size'</span><span class="p">:</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_size_norm</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">layer</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
@@ -933,9 +933,9 @@
                     <span class="n">virtualnode_embedding</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mlp_virtualnode_list</span><span class="p">[</span><span class="n">layer</span><span class="p">](</span><span class="n">virtualnode_embedding_temp</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_ratio</span><span class="p">,</span> <span class="n">training</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">)</span>
 
         <span class="c1">### Different implementations of Jk-concat</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">JK</span> <span class="o">==</span> <span class="s2">&quot;last&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">JK</span> <span class="o">==</span> <span class="s2">"last"</span><span class="p">:</span>
             <span class="n">node_representation</span> <span class="o">=</span> <span class="n">h_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">JK</span> <span class="o">==</span> <span class="s2">&quot;sum&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">JK</span> <span class="o">==</span> <span class="s2">"sum"</span><span class="p">:</span>
             <span class="n">node_representation</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="n">node_representation</span> <span class="o">+=</span> <span class="n">h_list</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span>
@@ -976,8 +976,8 @@
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

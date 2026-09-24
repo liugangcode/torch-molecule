@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.nn.embedder - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -258,7 +258,7 @@
 <div class="viewcode-block" id="TimestepEmbedder">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.TimestepEmbedder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TimestepEmbedder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Embeds scalar timesteps into vector representations using a sinusoidal embedding</span>
 <span class="sd">    followed by a multilayer perceptron (MLP).</span>
 <span class="sd">    </span>
@@ -268,7 +268,7 @@
 <span class="sd">        Output dimension of the MLP embedding.</span>
 <span class="sd">    frequency_embedding_size : int, optional</span>
 <span class="sd">        Size of the input frequency embedding, by default 256.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">frequency_embedding_size</span><span class="o">=</span><span class="mi">256</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -283,7 +283,7 @@
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.TimestepEmbedder.timestep_embedding">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">timestep_embedding</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">max_period</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Create sinusoidal timestep embeddings.</span>
 
 <span class="sd">        :param t: a 1-D Tensor of N indices, one per batch element.</span>
@@ -291,7 +291,7 @@
 <span class="sd">        :param dim: the dimension of the output.</span>
 <span class="sd">        :param max_period: controls the minimum frequency of the embeddings.</span>
 <span class="sd">        :return: an (N, D) Tensor of positional embeddings.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># https://github.com/openai/glide-text2im/blob/main/glide_text2im/nn.py</span>
         <span class="n">half</span> <span class="o">=</span> <span class="n">dim</span> <span class="o">//</span> <span class="mi">2</span>
         <span class="n">freqs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
@@ -307,7 +307,7 @@
 <div class="viewcode-block" id="TimestepEmbedder.forward">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.TimestepEmbedder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Forward pass for timestep embedding.</span>
 
 <span class="sd">        Parameters</span>
@@ -319,7 +319,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        torch.Tensor</span>
 <span class="sd">            The final embedded representation of shape (N, hidden_size).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">t_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep_embedding</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequency_embedding_size</span><span class="p">)</span>
         <span class="n">t_emb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">t_freq</span><span class="p">)</span>
@@ -330,7 +330,7 @@
 <div class="viewcode-block" id="CategoricalEmbedder">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.CategoricalEmbedder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CategoricalEmbedder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Embeds categorical conditions (e.g., data source labels) into vector representations.</span>
 <span class="sd">    Supports label dropout for classifier-free guidance.</span>
 
@@ -342,7 +342,7 @@
 <span class="sd">        Size of the embedding vectors.</span>
 <span class="sd">    dropout_prob : float</span>
 <span class="sd">        Probability of label dropout.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">use_cfg_embedding</span> <span class="o">=</span> <span class="n">dropout_prob</span> <span class="o">&gt;</span> <span class="mi">0</span>
@@ -353,7 +353,7 @@
 <div class="viewcode-block" id="CategoricalEmbedder.forward">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.CategoricalEmbedder.forward">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">force_drop_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Forward pass for categorical embedding with optional label dropout.</span>
 
 <span class="sd">        Parameters</span>
@@ -369,7 +369,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        torch.Tensor</span>
 <span class="sd">            Embedded label representations, with optional noise added during training.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">long</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="n">use_dropout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout_prob</span> <span class="o">&gt;</span> <span class="mi">0</span>
@@ -395,7 +395,7 @@
 <div class="viewcode-block" id="ClusterContinuousEmbedder">
 <a class="viewcode-back" href="../../../api/nn.html#torch_molecule.nn.embedder.ClusterContinuousEmbedder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ClusterContinuousEmbedder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Embeds continuous input features into vector representations using a multilayer perceptron (MLP).</span>
 <span class="sd">    Supports optional embedding dropout for classifier-free guidance.</span>
 
@@ -408,7 +408,7 @@
 <span class="sd">    dropout_prob : float</span>
 <span class="sd">        Probability of embedding dropout, used for classifier-free guidance.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">dropout_prob</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">use_cfg_embedding</span> <span class="o">=</span> <span class="n">dropout_prob</span> <span class="o">&gt;</span> <span class="mi">0</span>
@@ -488,8 +488,8 @@
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

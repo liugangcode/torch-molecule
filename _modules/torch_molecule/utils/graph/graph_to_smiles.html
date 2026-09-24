@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.utils.graph.graph_to_smiles - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -253,7 +253,7 @@
           <h1>Source code for torch_molecule.utils.graph.graph_to_smiles</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span><span class="p">,</span> <span class="n">RDLogger</span>
 
-<span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s2">&quot;rdApp.*&quot;</span><span class="p">)</span>
+<span class="n">RDLogger</span><span class="o">.</span><span class="n">DisableLog</span><span class="p">(</span><span class="s2">"rdApp.*"</span><span class="p">)</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
@@ -314,7 +314,7 @@
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># Fallback to RDKit&#39;s MolToSmiles if everything else fails</span>
+                <span class="c1"># Fallback to RDKit's MolToSmiles if everything else fails</span>
                 <span class="n">fallback_smiles</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">mol_init</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">fallback_smiles</span><span class="p">:</span>
                     <span class="n">smiles_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fallback_smiles</span><span class="p">)</span>
@@ -330,14 +330,14 @@
 <a class="viewcode-back" href="../../../../api/utils.html#torch_molecule.utils.graph.graph_to_smiles.build_molecule_with_partial_charges">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">build_molecule_with_partial_charges</span><span class="p">(</span><span class="n">atom_types</span><span class="p">,</span> <span class="n">edge_types</span><span class="p">,</span> <span class="n">atom_decoder</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">building new molecule&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">building new molecule"</span><span class="p">)</span>
 
     <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">RWMol</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atom_types</span><span class="p">:</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">atom_decoder</span><span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">item</span><span class="p">()])</span>
         <span class="n">mol</span><span class="o">.</span><span class="n">AddAtom</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Atom added: &quot;</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">atom_decoder</span><span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">item</span><span class="p">()])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Atom added: "</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">atom_decoder</span><span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">item</span><span class="p">()])</span>
 
     <span class="n">edge_types</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">edge_types</span><span class="p">)</span>
     <span class="n">all_bonds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">edge_types</span><span class="p">)</span>
@@ -351,7 +351,7 @@
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="s2">&quot;bond added:&quot;</span><span class="p">,</span>
+                    <span class="s2">"bond added:"</span><span class="p">,</span>
                     <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
                     <span class="n">bond</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
                     <span class="n">edge_types</span><span class="p">[</span><span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bond</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
@@ -361,7 +361,7 @@
             <span class="c1"># not support [O-], [N-], [S-], [NH+] etc.</span>
             <span class="n">flag</span><span class="p">,</span> <span class="n">atomid_valence</span> <span class="o">=</span> <span class="n">check_valency</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;flag, valence&quot;</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">atomid_valence</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"flag, valence"</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">atomid_valence</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
@@ -370,10 +370,10 @@
                     <span class="n">v</span> <span class="o">=</span> <span class="n">atomid_valence</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                     <span class="n">an</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">()</span>
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;atomic num of atom with a large valence&quot;</span><span class="p">,</span> <span class="n">an</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">"atomic num of atom with a large valence"</span><span class="p">,</span> <span class="n">an</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">an</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">ATOM_VALENCY</span><span class="p">[</span><span class="n">an</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                         <span class="n">mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">SetFormalCharge</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                        <span class="c1"># print(&quot;Formal charge added&quot;)</span>
+                        <span class="c1"># print("Formal charge added")</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">continue</span>
     <span class="k">return</span> <span class="n">mol</span></div>
@@ -424,7 +424,7 @@
                     <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                         <span class="n">mol</span><span class="o">.</span><span class="n">AddBond</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">bond_dict</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="c1"># print(f&quot;An error occurred in correction: {e}&quot;)</span>
+                <span class="c1"># print(f"An error occurred in correction: {e}")</span>
                 <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">no_correct</span>
     <span class="k">return</span> <span class="n">mol</span><span class="p">,</span> <span class="n">no_correct</span></div>
 
@@ -446,9 +446,9 @@
 <div class="viewcode-block" id="get_mol">
 <a class="viewcode-back" href="../../../../api/utils.html#torch_molecule.utils.graph.graph_to_smiles.get_mol">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_mol</span><span class="p">(</span><span class="n">smiles_or_mol</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Loads SMILES/molecule into RDKit&#39;s object</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Loads SMILES/molecule into RDKit's object</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">smiles_or_mol</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">smiles_or_mol</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -486,12 +486,12 @@
         <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">e</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"#"</span><span class="p">)</span>
         <span class="n">e_sub</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="n">p</span><span class="p">:]</span>
-        <span class="n">atomid_valence</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\d+&quot;</span><span class="p">,</span> <span class="n">e_sub</span><span class="p">)))</span>
+        <span class="n">atomid_valence</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\d+"</span><span class="p">,</span> <span class="n">e_sub</span><span class="p">)))</span>
         <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">atomid_valence</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="c1"># print(f&quot;An unexpected error occurred: {e}&quot;)</span>
+        <span class="c1"># print(f"An unexpected error occurred: {e}")</span>
         <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[]</span></div>
 
 
@@ -586,7 +586,7 @@
                     <span class="n">combined_mol</span> <span class="o">=</span> <span class="n">new_mol</span>
                     <span class="k">break</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># Continue if the inner loop didn&#39;t break (no valid connection found for atom1)</span>
+                <span class="c1"># Continue if the inner loop didn't break (no valid connection found for atom1)</span>
                 <span class="k">continue</span>
             <span class="c1"># Break if the inner loop did break (valid connection found)</span>
             <span class="k">break</span>
@@ -629,8 +629,8 @@
     </aside>
   </div>
 </div><script src="../../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

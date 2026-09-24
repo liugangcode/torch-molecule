@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Datasets Overview" href="dataset.html"><link rel="prev" title="Installation" href="install.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>Examples - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -260,6 +260,38 @@
           <section id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h1>
 <p>This section shows how to use the <cite>torch_molecule</cite> library in practice. More examples are available in the <a class="reference external" href="https://github.com/liugangcode/torch-molecule/tree/main/examples/">examples</a> folder and the <a class="reference external" href="https://github.com/liugangcode/torch-molecule/tree/main/tests/">tests</a> folder.</p>
+<section id="loading-datasets-and-splits">
+<h2>Loading Datasets and Splits<a class="headerlink" href="#loading-datasets-and-splits" title="Link to this heading">¶</a></h2>
+<p>Loaders download (or reuse) data under <code class="docutils literal notranslate"><span class="pre">local_dir</span></code> and return a <code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code>.
+Use <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code> with <code class="docutils literal notranslate"><span class="pre">&quot;random&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;scaffold&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;butina&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;size&quot;</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_qm9</span><span class="p">,</span> <span class="n">load_zinc250k</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GREAMolecularPredictor</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_qm9</span><span class="p">(</span><span class="n">local_dir</span><span class="o">=</span><span class="s2">"torchmol_data"</span><span class="p">)</span>
+<span class="c1"># scaffold: unseen Bemis-Murcko scaffolds; butina: Tanimoto clusters; size: heavy-atom count</span>
+<span class="c1"># Split the full dataset. subsample() is only for local debugging / CI.</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"scaffold"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">grea</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
+    <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">task_type</span><span class="o">=</span><span class="s2">"regression"</span><span class="p">,</span>
+    <span class="n">evaluate_higher_better</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="s2">"progress_bar"</span><span class="p">,</span>  <span class="c1"># or "print_statement" / "none"</span>
+<span class="p">)</span>
+<span class="n">grea</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
+    <span class="n">X_train</span><span class="o">=</span><span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">y_train</span><span class="o">=</span><span class="n">train</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+    <span class="n">X_val</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">y_val</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+    <span class="n">n_trials</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Unlabeled datasets (e.g. ZINC250k) have target=None</span>
+<span class="n">zinc</span> <span class="o">=</span> <span class="n">load_zinc250k</span><span class="p">(</span><span class="n">local_dir</span><span class="o">=</span><span class="s2">"torchmol_data"</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">zinc</span><span class="o">.</span><span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</section>
 <section id="molecular-property-prediction-usage">
 <h2>Molecular Property Prediction Usage<a class="headerlink" href="#molecular-property-prediction-usage" title="Link to this heading">¶</a></h2>
 <p>The following example demonstrates how to use the <cite>GREAMolecularPredictor</cite>:</p>
@@ -268,38 +300,38 @@
 
 <span class="c1"># Define search parameters</span>
 <span class="n">search_GNN</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;gnn_type&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;gin-virtual&quot;</span><span class="p">,</span> <span class="s2">&quot;gcn-virtual&quot;</span><span class="p">,</span> <span class="s2">&quot;gin&quot;</span><span class="p">,</span> <span class="s2">&quot;gcn&quot;</span><span class="p">]),</span>
-    <span class="s2">&quot;norm_layer&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;batch_norm&quot;</span><span class="p">,</span> <span class="s2">&quot;layer_norm&quot;</span><span class="p">]),</span>
-    <span class="s2">&quot;graph_pooling&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]),</span>
-    <span class="s2">&quot;augmented_feature&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;maccs,morgan&quot;</span><span class="p">,</span> <span class="s2">&quot;maccs&quot;</span><span class="p">,</span> <span class="s2">&quot;morgan&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]),</span>
-    <span class="s2">&quot;num_layer&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
-    <span class="s2">&quot;hidden_size&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">512</span><span class="p">)),</span>
-    <span class="s2">&quot;drop_ratio&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
-    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)),</span>
-    <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)),</span>
+    <span class="s2">"gnn_type"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">"gin-virtual"</span><span class="p">,</span> <span class="s2">"gcn-virtual"</span><span class="p">,</span> <span class="s2">"gin"</span><span class="p">,</span> <span class="s2">"gcn"</span><span class="p">]),</span>
+    <span class="s2">"norm_layer"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">"batch_norm"</span><span class="p">,</span> <span class="s2">"layer_norm"</span><span class="p">]),</span>
+    <span class="s2">"graph_pooling"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">"mean"</span><span class="p">,</span> <span class="s2">"sum"</span><span class="p">,</span> <span class="s2">"max"</span><span class="p">]),</span>
+    <span class="s2">"augmented_feature"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">"maccs,morgan"</span><span class="p">,</span> <span class="s2">"maccs"</span><span class="p">,</span> <span class="s2">"morgan"</span><span class="p">,</span> <span class="kc">None</span><span class="p">]),</span>
+    <span class="s2">"num_layer"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
+    <span class="s2">"hidden_size"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">512</span><span class="p">)),</span>
+    <span class="s2">"drop_ratio"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+    <span class="s2">"learning_rate"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)),</span>
+    <span class="s2">"weight_decay"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)),</span>
 <span class="p">}</span>
 
 <span class="n">search_GREA</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)),</span>
+    <span class="s2">"gamma"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)),</span>
     <span class="o">**</span><span class="n">search_GNN</span>
 <span class="p">}</span>
 
 <span class="c1"># Train GREA model</span>
 <span class="n">grea_model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
     <span class="n">num_task</span><span class="o">=</span><span class="n">num_task</span><span class="p">,</span>
-    <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;regression&quot;</span><span class="p">,</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;GREA_multitask&quot;</span><span class="p">,</span>
+    <span class="n">task_type</span><span class="o">=</span><span class="s2">"regression"</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">"GREA_multitask"</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
     <span class="n">epochs</span><span class="o">=</span><span class="n">N_epoch</span><span class="p">,</span>
-    <span class="n">evaluate_criterion</span><span class="o">=</span><span class="s1">&#39;r2&#39;</span><span class="p">,</span>
+    <span class="n">evaluate_criterion</span><span class="o">=</span><span class="s1">'r2'</span><span class="p">,</span>
     <span class="n">evaluate_higher_better</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;progress_bar&#39;</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="s1">'progress_bar'</span>
 <span class="p">)</span>
 
 <span class="c1"># Fit the model</span>
-<span class="n">X_train</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">,</span> <span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">]</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'C1=CC=CC=C1'</span><span class="p">,</span> <span class="s1">'C1=CC=CC=C1'</span><span class="p">]</span>
 <span class="n">y_train</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">]]</span>
-<span class="n">X_val</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">,</span> <span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">]</span>
+<span class="n">X_val</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'C1=CC=CC=C1'</span><span class="p">,</span> <span class="s1">'C1=CC=CC=C1'</span><span class="p">]</span>
 <span class="n">y_val</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">]]</span>
 <span class="n">N_trial</span> <span class="o">=</span> <span class="mi">100</span>
 
@@ -320,17 +352,17 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphDITMolecularGenerator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
 
-<span class="n">property_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;logP&#39;</span><span class="p">]</span>
-<span class="n">train_smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">,</span> <span class="s1">&#39;C1=CC=CC=C1&#39;</span><span class="p">]</span>
+<span class="n">property_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'logP'</span><span class="p">]</span>
+<span class="n">train_smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'C1=CC=CC=C1'</span><span class="p">,</span> <span class="s1">'C1=CC=CC=C1'</span><span class="p">]</span>
 <span class="n">train_property_array</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
 <span class="n">test_property_array</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">]]</span>
 
 <span class="c1"># Initialize the generator model</span>
 <span class="n">model_cond</span> <span class="o">=</span> <span class="n">GraphDITMolecularGenerator</span><span class="p">(</span>
-    <span class="n">task_type</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;regression&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">property_names</span><span class="p">),</span>
+    <span class="n">task_type</span><span class="o">=</span><span class="p">[</span><span class="s1">'regression'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">property_names</span><span class="p">),</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
     <span class="n">drop_condition</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;progress_bar&#39;</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="s1">'progress_bar'</span><span class="p">,</span>
     <span class="n">epochs</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -354,10 +386,10 @@
     <span class="n">invalid_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">generated_smiles_list</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)]</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">invalid_indices</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;All SMILES valid after </span><span class="si">{</span><span class="n">retry</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> attempts&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"All SMILES valid after </span><span class="si">{</span><span class="n">retry</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> attempts"</span><span class="p">)</span>
         <span class="k">break</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retry </span><span class="si">{</span><span class="n">retry</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: Regenerating </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">invalid_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> invalid molecules&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Retry </span><span class="si">{</span><span class="n">retry</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: Regenerating </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">invalid_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> invalid molecules"</span><span class="p">)</span>
 
     <span class="c1"># Extract properties for invalid molecules</span>
     <span class="n">invalid_properties</span> <span class="o">=</span> <span class="n">test_property_array</span><span class="p">[</span><span class="n">invalid_indices</span><span class="p">]</span>
@@ -370,48 +402,63 @@
         <span class="n">generated_smiles_list</span><span class="p">[</span><span class="n">new_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_smiles</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">retry</span> <span class="o">==</span> <span class="n">max_retries</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Last iteration</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reached maximum retries (</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">). </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">invalid_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> molecules still invalid.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reached maximum retries (</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">). </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">invalid_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> molecules still invalid."</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="using-pretrained-checkpoints">
 <h2>Using Pretrained Checkpoints<a class="headerlink" href="#using-pretrained-checkpoints" title="Link to this heading">¶</a></h2>
-<p><cite>torch_molecule</cite> supports loading and saving models via Hugging Face Hub.</p>
+<p><cite>torch_molecule</cite> supports loading and saving trained predictors via Hugging Face Hub
+(<code class="docutils literal notranslate"><span class="pre">save_to_hf</span></code> / <code class="docutils literal notranslate"><span class="pre">load_from_hf</span></code>) or local paths
+(<code class="docutils literal notranslate"><span class="pre">save_to_local</span></code> / <code class="docutils literal notranslate"><span class="pre">load_from_local</span></code>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GREAMolecularPredictor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_absolute_error</span>
 
-<span class="c1"># huggingface repo_id including the user name and repo name</span>
-<span class="n">repo_id</span> <span class="o">=</span> <span class="s2">&quot;user/repo_id&quot;</span>
+<span class="n">repo_id</span> <span class="o">=</span> <span class="s2">"user/repo_id"</span>  <span class="c1"># replace with your Hugging Face username and repo_id</span>
 
-<span class="c1"># Train and push a model to Hugging Face</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">()</span>
-<span class="n">model</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
-    <span class="n">X_train</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-    <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
-    <span class="n">X_val</span><span class="o">=</span><span class="n">X_val</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-    <span class="n">y_val</span><span class="o">=</span><span class="n">y_val</span><span class="p">,</span>
-    <span class="n">n_trials</span><span class="o">=</span><span class="mi">100</span>
-<span class="p">)</span>
-
-<span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-<span class="n">mae</span> <span class="o">=</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">])</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;MAE&#39;</span><span class="p">:</span> <span class="n">mae</span><span class="p">}</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">push_to_huggingface</span><span class="p">(</span>
+<span class="c1"># Save a trained model to Hugging Face</span>
+<span class="n">grea</span><span class="o">.</span><span class="n">save_to_hf</span><span class="p">(</span>
     <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
-    <span class="n">task_id</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">task_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span>
-    <span class="n">commit_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Upload GREA_</span><span class="si">{</span><span class="n">task_name</span><span class="si">}</span><span class="s2"> model with metrics: </span><span class="si">{</span><span class="n">metrics</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="n">private</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">task_id</span><span class="o">=</span><span class="s2">"qm9_grea"</span><span class="p">,</span>
+    <span class="n">commit_message</span><span class="o">=</span><span class="s2">"Upload qm9_grea"</span><span class="p">,</span>
+    <span class="n">private</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="c1"># Load a pretrained model checkpoint</span>
-<span class="n">model_dir</span> <span class="o">=</span> <span class="s2">&quot;local_model_dir_to_save&quot;</span>
+<span class="c1"># Load a pretrained checkpoint from Hugging Face</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">()</span>
-<span class="n">model</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_dir</span><span class="si">}</span><span class="s2">/GREA_</span><span class="si">{</span><span class="n">task_name</span><span class="si">}</span><span class="s2">.pt&quot;</span><span class="p">,</span> <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;progress_bar&#39;</span><span class="p">)</span>
-
+<span class="n">model</span><span class="o">.</span><span class="n">load_from_hf</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">local_cache</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">model_dir</span><span class="si">}</span><span class="s2">/GREA_</span><span class="si">{</span><span class="n">task_name</span><span class="si">}</span><span class="s2">.pt"</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="s2">"none"</span><span class="p">)</span>
 <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
+
+<span class="c1"># Or save / load locally</span>
+<span class="n">grea</span><span class="o">.</span><span class="n">save_to_local</span><span class="p">(</span><span class="s2">"qm9_grea.pt"</span><span class="p">)</span>
+<span class="n">new_model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">()</span>
+<span class="n">new_model</span><span class="o">.</span><span class="n">load_from_local</span><span class="p">(</span><span class="s2">"qm9_grea.pt"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="hugging-face-pretrained-generators">
+<h2>Hugging Face Pretrained Generators<a class="headerlink" href="#hugging-face-pretrained-generators" title="Link to this heading">¶</a></h2>
+<p>Download and run Hub generators (NovoMolGen, MolGen, Molexar, SAFE-GPT) with
+<code class="xref py py-class docutils literal notranslate"><span class="pre">HFPretrainedMolecularGenerator</span></code>. Extra packages may be
+required; see <a class="reference internal" href="install.html"><span class="doc">Installation</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">HFPretrainedMolecularGenerator</span>
+
+<span class="c1"># SAFE-GPT: de novo and scaffold-constrained generation</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">HFPretrainedMolecularGenerator</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="s2">"datamol-io/safe-gpt"</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>  <span class="c1"># download / load the Hub checkpoint</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scaffold</span><span class="o">=</span><span class="s2">"c1ccccc1"</span><span class="p">))</span>
+
+<span class="c1"># Other tested repo_ids include:</span>
+<span class="c1">#   "chandar-lab/NovoMolGen_32M_SMILES_BPE"</span>
+<span class="c1">#   "zjunlp/MolGen-large"</span>
+<span class="c1">#   "zjunlp/MolGen-large-opt"</span>
+<span class="c1">#   "fairydance/molexar-10m-base"</span>
+<span class="c1">#   "fairydance/molexar-10m-omni"</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">save_to_local</span><span class="p">(</span><span class="s2">"safe_gpt_local"</span><span class="p">)</span>
+<span class="n">loaded</span> <span class="o">=</span> <span class="n">HFPretrainedMolecularGenerator</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="s2">"datamol-io/safe-gpt"</span><span class="p">)</span>
+<span class="n">loaded</span><span class="o">.</span><span class="n">load_from_local</span><span class="p">(</span><span class="s2">"safe_gpt_local"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -473,9 +520,11 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Examples</a><ul>
+<li><a class="reference internal" href="#loading-datasets-and-splits">Loading Datasets and Splits</a></li>
 <li><a class="reference internal" href="#molecular-property-prediction-usage">Molecular Property Prediction Usage</a></li>
 <li><a class="reference internal" href="#molecular-generator-usage">Molecular Generator Usage</a></li>
 <li><a class="reference internal" href="#using-pretrained-checkpoints">Using Pretrained Checkpoints</a></li>
+<li><a class="reference internal" href="#hugging-face-pretrained-generators">Hugging Face Pretrained Generators</a></li>
 </ul>
 </li>
 </ul>
@@ -488,8 +537,8 @@
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=a6319924"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

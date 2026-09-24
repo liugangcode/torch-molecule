@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Examples" href="example.html"><link rel="prev" title="torch-molecule documentation" href="index.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>Installation - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -313,25 +313,23 @@ conda<span class="w"> </span>activate<span class="w"> </span>torch_molecule
 <section id="additional-packages">
 <h2>Additional Packages<a class="headerlink" href="#additional-packages" title="Link to this heading">¶</a></h2>
 <p>Some models require extra libraries. Install these packages if you use the corresponding model:</p>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Model</p></th>
-<th class="head"><p>Required Package</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>HFPretrainedMolecularEncoder</p></td>
-<td><p>transformers</p></td>
-</tr>
-<tr class="row-odd"><td><p>BFGNNMolecularPredictor</p></td>
-<td><p>torch-scatter</p></td>
-</tr>
-<tr class="row-even"><td><p>GRINMolecularPredictor</p></td>
-<td><p>torch-scatter</p></td>
-</tr>
-</tbody>
-</table>
+<p><strong>For models that require</strong> <code class="docutils literal notranslate"><span class="pre">torch-scatter</span></code>: install with
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">torch-scatter</span> <span class="pre">-f</span> <span class="pre">https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html</span></code>,
+for example <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">torch-scatter</span> <span class="pre">-f</span> <span class="pre">https://data.pyg.org/whl/torch-2.7.1+cu128.html</span></code>.</p>
+<p><strong>For models that require</strong> <code class="docutils literal notranslate"><span class="pre">transformers</span></code>: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">transformers</span></code></p>
+<p><strong>For MolGen</strong> (<code class="docutils literal notranslate"><span class="pre">selfies</span></code>): <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;selfies&gt;=2.1&quot;</span></code>. Source: <a class="reference external" href="https://github.com/aspuru-guzik-group/selfies">aspuru-guzik-group/selfies</a>.</p>
+<p><strong>For Molexar:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fragment-selfies</span> <span class="pre">loguru</span></code> (<a class="reference external" href="https://github.com/fairydance/Fragment-SELFIES">Fragment-SELFIES</a>) and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/fairydance/Molexar.git</span></code> (<a class="reference external" href="https://github.com/fairydance/Molexar">Molexar</a>). Molexar itself requires <code class="docutils literal notranslate"><span class="pre">transformers&gt;=5.8</span></code>.</p>
+<p><strong>For SAFE-GPT:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">safe-mol</span></code> (<a class="reference external" href="https://github.com/datamol-io/safe">SAFE</a>).</p>
+<p>Example (SAFE-GPT pretrained generator):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">HFPretrainedMolecularGenerator</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">HFPretrainedMolecularGenerator</span><span class="p">(</span>
+    <span class="n">repo_id</span><span class="o">=</span><span class="s2">"datamol-io/safe-gpt"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scaffold</span><span class="o">=</span><span class="s2">"c1ccccc1"</span><span class="p">))</span>
+</pre></div>
 </div>
 </section>
 </section>
@@ -412,8 +410,8 @@ conda<span class="w"> </span>activate<span class="w"> </span>torch_molecule
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=a6319924"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="prev" title="Utility Functions" href="api/utils.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>Project Overview - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -263,15 +263,19 @@
 <p>Main components:</p>
 <ol class="arabic simple">
 <li><p><strong>Predictive Models</strong>
-- ✔ GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR
-- ✔ SMILES-based LSTM/Transformers
+- ✔ GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR, SSR
+- ✔ GRIN, BFGNN, RPGNN
+- ✔ SMILES-based LSTM / Transformers
 - ⏳ More models</p></li>
 <li><p><strong>Generative Models</strong>
-- ✔ Graph DiT, GraphGA, DiGress, MolGPT
-- ⏳ GDSS and more</p></li>
+- ✔ Graph DiT, GraphGA, DiGress, GDSS, JTVAE, MolGPT, LSTM
+- ✔ DeFoG
+- ✔ Hugging Face pretrained generators: NovoMolGen, MolGen, Molexar, SAFE-GPT
+- ⏳ More models</p></li>
 <li><p><strong>Representation Models</strong>
-- ✔ MoAMa, AttrMasking, ContextPred, EdgePred, InfoGraph
-- ⏳ more models and pretrained checkpoints</p></li>
+- ✔ MoAMa, GraphMAE, AttrMasking, ContextPred, EdgePred, InfoGraph, Supervised
+- ✔ Hugging Face pretrained encoders (ChemBERTa, ChemGPT, and related checkpoints)
+- ⏳ More models and pretrained checkpoints</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -282,6 +286,7 @@
 <h1>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading">¶</a></h1>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>torch_molecule
 ├── base
+├── datasets
 ├── encoder
 ├── generator
 ├── nn
@@ -293,6 +298,14 @@
 <section id="acknowledgements">
 <h1>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Link to this heading">¶</a></h1>
 <p>This project was adapted from <a class="reference external" href="https://github.com/lwaekfjlk/python-project-template">python-project-template</a>.</p>
+<section id="contributors">
+<h2>Contributors<a class="headerlink" href="#contributors" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Man Hei Matthew Thom</strong>: Pretrained Generator (NovoMolGen, MolGen, Molexar, SAFE-GPT), dataset splitting modules</p></li>
+<li><p><strong>Eric Inae</strong>: MoAMa, GraphMAE, AttrMasking, ContextPred, EdgePred</p></li>
+<li><p><strong>Yihan Zhu</strong>: DeFoG, GRIN, BFGNN, RPGNN, Transformer (SMILES)</p></li>
+</ul>
+</section>
 </section>
 
         </article>
@@ -337,8 +350,8 @@
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=a6319924"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

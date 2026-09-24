@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Model Overview" href="overview.html"><link rel="prev" title="Examples" href="example.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>Datasets Overview - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -259,7 +259,12 @@
         <article role="main" id="furo-main-content">
           <section id="datasets-overview">
 <h1>Datasets Overview<a class="headerlink" href="#datasets-overview" title="Link to this heading">¶</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">torch-molecule</span></code> provide easy access to a wide range of datasets (locally or from Hugging Face Hub).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">torch-molecule</span></code> package provides easy access to a wide range of datasets
+(locally or from the Hugging Face Hub). Loaders return a
+<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">SMILESDataset</span></code></a> with <code class="docutils literal notranslate"><span class="pre">.data</span></code>
+(SMILES strings) and <code class="docutils literal notranslate"><span class="pre">.target</span></code> (property array, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for unlabeled sets).</p>
+<section id="built-in-loaders">
+<h2>Built-in loaders<a class="headerlink" href="#built-in-loaders" title="Link to this heading">¶</a></h2>
 <p class="rubric">QM9</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.datasets.load_qm9">
@@ -289,7 +294,7 @@
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[SMILESDataset, str] or SMILESDataset</p>
+<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -323,7 +328,7 @@
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[SMILESDataset, str] or SMILESDataset</p>
+<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -358,7 +363,7 @@
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[SMILESDataset, str] or SMILESDataset</p>
+<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -392,7 +397,7 @@
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[SMILESDataset, str] or SMILESDataset</p>
+<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -426,7 +431,7 @@
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[SMILESDataset, str] or SMILESDataset</p>
+<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -434,7 +439,7 @@
 <p class="rubric">Gas Permeability for polymers</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.datasets.load_gasperm">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_gasperm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['CH4',</span> <span class="pre">'CO2',</span> <span class="pre">'H2',</span> <span class="pre">'N2',</span> <span class="pre">'O2']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SMILESDataset</span></span></span><a class="reference internal" href="_modules/torch_molecule/datasets/load_local_csv.html#load_gasperm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_gasperm" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_gasperm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['CH4',</span> <span class="pre">'CO2',</span> <span class="pre">'H2',</span> <span class="pre">'N2',</span> <span class="pre">'O2']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><span class="pre">SMILESDataset</span></a></span></span><a class="reference internal" href="_modules/torch_molecule/datasets/load_local_csv.html#load_gasperm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_gasperm" title="Link to this definition">¶</a></dt>
 <dd><p>Load gas permeability dataset from local CSV.gz file within torch_molecule package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -446,11 +451,137 @@
 - target: np.ndarray</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>SMILESDataset</p>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
 </dd>
 </dl>
 </dd></dl>
 
+<p class="rubric">ZINC250k (unlabeled; generation / screening)</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.datasets.load_zinc250k">
+<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_zinc250k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_local_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/load_hf_dataset.html#load_zinc250k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_zinc250k" title="Link to this definition">¶</a></dt>
+<dd><p>Load ZINC250K dataset from Hugging Face Hub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path where the data should be saved, by default “torchmol_data”</p></li>
+<li><p><strong>return_local_data_path</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the local data path, by default False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>If return_local_data_path is False:</dt><dd><ul class="simple">
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
+</ul>
+</dd>
+<dt>If return_local_data_path is True:</dt><dd><ul class="simple">
+<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
+<li><p>local_data_path: Path where the data is saved</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="smilesdataset-and-splitting">
+<h2><code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code> and splitting<a class="headerlink" href="#smilesdataset-and-splitting" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.constant.</span></span><span class="sig-name descname"><span class="pre">SMILESDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Data class for storing molecular SMILES dataset with input and target data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.data" title="Link to this definition">¶</a></dt>
+<dd><p>Input data (e.g., list of SMILES strings)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.target">
+<span class="sig-name descname"><span class="pre">target</span></span><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.target" title="Link to this definition">¶</a></dt>
+<dd><p>Target property values as 2D numpy array (rows=molecules, cols=targets) or None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.subsample">
+<span class="sig-name descname"><span class="pre">subsample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><span class="pre">SMILESDataset</span></a></span></span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset.subsample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.subsample" title="Link to this definition">¶</a></dt>
+<dd><p>Draw a random subset without replacement.</p>
+<p>Intended for local debugging and CI, not as a way to make structure-
+aware splits cheaper. Do not subsample a benchmark (for example QM9)
+because Butina is slow or memory-heavy; that changes what the split
+measures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – Number of molecules to keep.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=0</em>) – Random seed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.train_test_split">
+<span class="sig-name descname"><span class="pre">train_test_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'random'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><span class="pre">SMILESDataset</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><span class="pre">SMILESDataset</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset.train_test_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.train_test_split" title="Link to this definition">¶</a></dt>
+<dd><p>Split into train and holdout <code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code> objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test_size</strong> (<em>float</em><em>, </em><em>default=0.2</em>) – Requested holdout fraction.</p></li>
+<li><p><strong>method</strong> (<em>{&quot;random&quot;</em><em>, </em><em>&quot;scaffold&quot;</em><em>, </em><em>&quot;butina&quot;</em><em>, </em><em>&quot;size&quot;}</em><em>, </em><em>default=&quot;random&quot;</em>) – Split protocol. <code class="docutils literal notranslate"><span class="pre">random</span></code> is an i.i.d. baseline; <code class="docutils literal notranslate"><span class="pre">scaffold</span></code>
+holds out unseen Bemis-Murcko scaffolds; <code class="docutils literal notranslate"><span class="pre">butina</span></code> holds out
+unseen Taylor-Butina clusters; <code class="docutils literal notranslate"><span class="pre">size</span></code> splits by heavy-atom count.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=42</em>) – Random seed (used by <code class="docutils literal notranslate"><span class="pre">random</span></code>).</p></li>
+<li><p><strong>**kwargs</strong> – Extra options forwarded to the splitter (<code class="docutils literal notranslate"><span class="pre">use_csk</span></code> for scaffold,
+<code class="docutils literal notranslate"><span class="pre">similarity_cutoff</span></code> for butina, <code class="docutils literal notranslate"><span class="pre">direction</span></code> / <code class="docutils literal notranslate"><span class="pre">mode</span></code> for size).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>train, holdout</strong> – The second dataset is intended as validation data for <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>Supported <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code> methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;random&quot;</span></code>: i.i.d. baseline split</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;scaffold&quot;</span></code>: hold out unseen Bemis-Murcko scaffolds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;butina&quot;</span></code>: hold out unseen Taylor-Butina clusters (Morgan / Tanimoto)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;size&quot;</span></code>: split by heavy-atom count</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_qm9</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_qm9</span><span class="p">(</span><span class="n">local_dir</span><span class="o">=</span><span class="s2">"torchmol_data"</span><span class="p">)</span>
+<span class="c1"># Split the full dataset. subsample() is only for local debugging / CI —</span>
+<span class="c1"># do not shrink a benchmark just to make Butina cheaper.</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"scaffold"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_np_array</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">train</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+</section>
 </section>
 
         </article>
@@ -509,12 +640,26 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Datasets Overview</a><ul>
+<li><a class="reference internal" href="#built-in-loaders">Built-in loaders</a><ul>
 <li><a class="reference internal" href="#torch_molecule.datasets.load_qm9"><code class="docutils literal notranslate"><span class="pre">load_qm9()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.datasets.load_chembl2k"><code class="docutils literal notranslate"><span class="pre">load_chembl2k()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.datasets.load_broad6k"><code class="docutils literal notranslate"><span class="pre">load_broad6k()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.datasets.load_toxcast"><code class="docutils literal notranslate"><span class="pre">load_toxcast()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.datasets.load_admet"><code class="docutils literal notranslate"><span class="pre">load_admet()</span></code></a></li>
 <li><a class="reference internal" href="#torch_molecule.datasets.load_gasperm"><code class="docutils literal notranslate"><span class="pre">load_gasperm()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.datasets.load_zinc250k"><code class="docutils literal notranslate"><span class="pre">load_zinc250k()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#smilesdataset-and-splitting"><code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code> and splitting</a><ul>
+<li><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset"><code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code></a><ul>
+<li><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset.data"><code class="docutils literal notranslate"><span class="pre">SMILESDataset.data</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset.target"><code class="docutils literal notranslate"><span class="pre">SMILESDataset.target</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset.subsample"><code class="docutils literal notranslate"><span class="pre">SMILESDataset.subsample()</span></code></a></li>
+<li><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset.train_test_split"><code class="docutils literal notranslate"><span class="pre">SMILESDataset.train_test_split()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -527,8 +672,8 @@
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=a6319924"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

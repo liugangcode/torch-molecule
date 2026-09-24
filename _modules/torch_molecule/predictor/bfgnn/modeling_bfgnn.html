@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.predictor.bfgnn.modeling_bfgnn - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -266,7 +266,7 @@
 <div class="viewcode-block" id="BFGNNMolecularPredictor">
 <a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BFGNNMolecularPredictor</span><span class="p">(</span><span class="n">GNNMolecularPredictor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements algorithm alignment of Bellman-Ford algorithm with GNN.</span>
+<span class="w">    </span><span class="sd">"""This predictor implements algorithm alignment of Bellman-Ford algorithm with GNN.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -279,23 +279,23 @@
 <span class="sd">        L1 regularization penalty strength for feature selection.</span>
 <span class="sd">    num_task : int, default=1</span>
 <span class="sd">        Number of prediction tasks.</span>
-<span class="sd">    task_type : str, default=&quot;regression&quot;</span>
-<span class="sd">        Type of prediction task, either &quot;regression&quot; or &quot;classification&quot;.</span>
+<span class="sd">    task_type : str, default="regression"</span>
+<span class="sd">        Type of prediction task, either "regression" or "classification".</span>
 <span class="sd">    num_layer : int, default=5</span>
 <span class="sd">        Number of GNN layers.</span>
 <span class="sd">    hidden_size : int, default=300</span>
 <span class="sd">        Dimension of hidden node features.</span>
-<span class="sd">    gnn_type : str, default=&quot;gin-virtual&quot;</span>
-<span class="sd">        Type of GNN architecture to use. One of [&quot;gin-virtual&quot;, &quot;gcn-virtual&quot;, &quot;gin&quot;, &quot;gcn&quot;].</span>
+<span class="sd">    gnn_type : str, default="gin-virtual"</span>
+<span class="sd">        Type of GNN architecture to use. One of ["gin-virtual", "gcn-virtual", "gin", "gcn"].</span>
 <span class="sd">    drop_ratio : float, default=0.5</span>
 <span class="sd">        Dropout probability.</span>
-<span class="sd">    norm_layer : str, default=&quot;batch_norm&quot;</span>
-<span class="sd">        Type of normalization layer to use. One of [&quot;batch_norm&quot;, &quot;layer_norm&quot;, &quot;instance_norm&quot;, &quot;graph_norm&quot;, &quot;size_norm&quot;, &quot;pair_norm&quot;].</span>
-<span class="sd">    graph_pooling : str, default=&quot;sum&quot;</span>
-<span class="sd">        Method for aggregating node features to graph-level representations. One of [&quot;sum&quot;, &quot;mean&quot;, &quot;max&quot;].</span>
+<span class="sd">    norm_layer : str, default="batch_norm"</span>
+<span class="sd">        Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].</span>
+<span class="sd">    graph_pooling : str, default="sum"</span>
+<span class="sd">        Method for aggregating node features to graph-level representations. One of ["sum", "mean", "max"].</span>
 <span class="sd">    augmented_feature : list or None, default=None</span>
 <span class="sd">        Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.</span>
-<span class="sd">        Examples like [&quot;morgan&quot;, &quot;maccs&quot;] or None.</span>
+<span class="sd">        Examples like ["morgan", "maccs"] or None.</span>
 <span class="sd">    batch_size : int, default=128</span>
 <span class="sd">        Number of samples per batch for training.</span>
 <span class="sd">    epochs : int, default=500</span>
@@ -320,9 +320,9 @@
 <span class="sd">        Factor by which to reduce learning rate when plateau is reached.</span>
 <span class="sd">    scheduler_patience : int, default=5</span>
 <span class="sd">        Number of epochs with no improvement after which learning rate will be reduced.</span>
-<span class="sd">    verbose : str, default=&quot;none&quot;</span>
-<span class="sd">        Whether to display progress info. Options are: &quot;none&quot;, &quot;progress_bar&quot;, &quot;print_statement&quot;. If any other, &quot;none&quot; is automatically chosen.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    verbose : str, default="none"</span>
+<span class="sd">        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.</span>
+<span class="sd">    """</span>
     
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -330,15 +330,15 @@
         <span class="n">l1_penalty</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
         <span class="c1"># Core model parameters</span>
         <span class="n">num_task</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">task_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;regression&quot;</span><span class="p">,</span>
+        <span class="n">task_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"regression"</span><span class="p">,</span>
         <span class="c1"># GNN architecture parameters</span>
         <span class="n">num_layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">hidden_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-        <span class="n">gnn_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gin-virtual&quot;</span><span class="p">,</span>
+        <span class="n">gnn_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"gin-virtual"</span><span class="p">,</span>
         <span class="n">drop_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">norm_layer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;batch_norm&quot;</span><span class="p">,</span>
-        <span class="n">graph_pooling</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span>
-        <span class="n">augmented_feature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;morgan&quot;</span><span class="p">,</span> <span class="s2">&quot;maccs&quot;</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">norm_layer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"batch_norm"</span><span class="p">,</span>
+        <span class="n">graph_pooling</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"sum"</span><span class="p">,</span>
+        <span class="n">augmented_feature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"morgan"</span><span class="p">,</span> <span class="s2">"maccs"</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="c1"># Training parameters</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
         <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
@@ -355,9 +355,9 @@
         <span class="n">evaluate_criterion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">evaluate_higher_better</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="c1"># General parameters</span>
-        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"none"</span><span class="p">,</span>
         <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;BFGNNMolecularPredictor&quot;</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"BFGNNMolecularPredictor"</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">num_task</span><span class="o">=</span><span class="n">num_task</span><span class="p">,</span>
@@ -393,11 +393,11 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="n">GNNMolecularPredictor</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span>
-            <span class="s2">&quot;l1_penalty&quot;</span><span class="p">,</span>
+            <span class="s2">"l1_penalty"</span><span class="p">,</span>
         <span class="p">]</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_default_search_space</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">search_space</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_default_search_space</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">search_space</span><span class="p">[</span><span class="s2">&quot;l1_penalty&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">search_space</span><span class="p">[</span><span class="s2">"l1_penalty"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">search_space</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -421,9 +421,9 @@
             <span class="k">if</span> <span class="n">global_pbar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">global_pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
                 <span class="n">global_pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span>
-                    <span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Batch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">step</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="s2">"Epoch"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"Batch"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">step</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"Loss"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">})</span>
             <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
 
@@ -462,8 +462,8 @@
     </aside>
   </div>
 </div><script src="../../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.predictor.sgir.modeling_sgir - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -272,7 +272,7 @@
 <div class="viewcode-block" id="SGIRMolecularPredictor">
 <a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.sgir.modeling_sgir.SGIRMolecularPredictor">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SGIRMolecularPredictor</span><span class="p">(</span><span class="n">GREAMolecularPredictor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements SGIR for semi-supervised graph imbalanced regression.</span>
+<span class="w">    </span><span class="sd">"""This predictor implements SGIR for semi-supervised graph imbalanced regression.</span>
 
 <span class="sd">    It trains the GREA model based on pseudo-labeling and data augmentation.</span>
 
@@ -302,23 +302,23 @@
 <span class="sd">        GREA-specific parameter that penalize the size of the rationales (ratio between the number of nodes in the rationales and the number of nodes in the original graph).</span>
 <span class="sd">    num_task : int, default=1</span>
 <span class="sd">        Number of prediction tasks. SGIR currently only supports regression tasks with 1 task.</span>
-<span class="sd">    task_type : str, default=&quot;regression&quot;</span>
-<span class="sd">        Type of prediction task, either &quot;regression&quot; or &quot;classification&quot;.</span>
+<span class="sd">    task_type : str, default="regression"</span>
+<span class="sd">        Type of prediction task, either "regression" or "classification".</span>
 <span class="sd">    num_layer : int, default=5</span>
 <span class="sd">        Number of GNN layers.</span>
 <span class="sd">    hidden_size : int, default=300</span>
 <span class="sd">        Dimension of hidden node features.</span>
-<span class="sd">    gnn_type : str, default=&quot;gin-virtual&quot;</span>
-<span class="sd">        Type of GNN architecture to use. One of [&quot;gin-virtual&quot;, &quot;gcn-virtual&quot;, &quot;gin&quot;, &quot;gcn&quot;].</span>
+<span class="sd">    gnn_type : str, default="gin-virtual"</span>
+<span class="sd">        Type of GNN architecture to use. One of ["gin-virtual", "gcn-virtual", "gin", "gcn"].</span>
 <span class="sd">    drop_ratio : float, default=0.5</span>
 <span class="sd">        Dropout probability.</span>
-<span class="sd">    norm_layer : str, default=&quot;batch_norm&quot;</span>
-<span class="sd">        Type of normalization layer to use. One of [&quot;batch_norm&quot;, &quot;layer_norm&quot;, &quot;instance_norm&quot;, &quot;graph_norm&quot;, &quot;size_norm&quot;, &quot;pair_norm&quot;].</span>
-<span class="sd">    graph_pooling : str, default=&quot;sum&quot;</span>
-<span class="sd">        Method for aggregating node features to graph-level representations. One of [&quot;sum&quot;, &quot;mean&quot;, &quot;max&quot;].</span>
+<span class="sd">    norm_layer : str, default="batch_norm"</span>
+<span class="sd">        Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].</span>
+<span class="sd">    graph_pooling : str, default="sum"</span>
+<span class="sd">        Method for aggregating node features to graph-level representations. One of ["sum", "mean", "max"].</span>
 <span class="sd">    augmented_feature : list or None, default=None</span>
 <span class="sd">        Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.</span>
-<span class="sd">        Examples like [&quot;morgan&quot;, &quot;maccs&quot;] or None.</span>
+<span class="sd">        Examples like ["morgan", "maccs"] or None.</span>
 <span class="sd">    batch_size : int, default=128</span>
 <span class="sd">        Number of samples per batch for training.</span>
 <span class="sd">    epochs : int, default=500</span>
@@ -343,13 +343,13 @@
 <span class="sd">        Factor by which to reduce learning rate when plateau is reached.</span>
 <span class="sd">    scheduler_patience : int, default=5</span>
 <span class="sd">        Number of epochs with no improvement after which learning rate will be reduced.</span>
-<span class="sd">    verbose : str, default=&quot;none&quot;</span>
-<span class="sd">        Whether to display progress info. Options are: &quot;none&quot;, &quot;progress_bar&quot;, &quot;print_statement&quot;. If any other, &quot;none&quot; is automatically chosen.</span>
+<span class="sd">    verbose : str, default="none"</span>
+<span class="sd">        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.</span>
 <span class="sd">    device : torch.device or str, optional</span>
 <span class="sd">        Device to run the model on. If None, will auto-detect GPU or use CPU.</span>
-<span class="sd">    model_name : str, default=&quot;SGIRMolecularPredictor&quot;</span>
+<span class="sd">    model_name : str, default="SGIRMolecularPredictor"</span>
 <span class="sd">        Name identifier for the model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -364,15 +364,15 @@
         <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
         <span class="c1"># Core model parameters</span>
         <span class="n">num_task</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">task_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;regression&quot;</span><span class="p">,</span>
+        <span class="n">task_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"regression"</span><span class="p">,</span>
         <span class="c1"># GNN architecture parameters</span>
         <span class="n">num_layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">hidden_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-        <span class="n">gnn_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gin-virtual&quot;</span><span class="p">,</span>
+        <span class="n">gnn_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"gin-virtual"</span><span class="p">,</span>
         <span class="n">drop_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">norm_layer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;batch_norm&quot;</span><span class="p">,</span>
-        <span class="n">graph_pooling</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span>
-        <span class="n">augmented_feature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;morgan&quot;</span><span class="p">,</span> <span class="s2">&quot;maccs&quot;</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">norm_layer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"batch_norm"</span><span class="p">,</span>
+        <span class="n">graph_pooling</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"sum"</span><span class="p">,</span>
+        <span class="n">augmented_feature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"morgan"</span><span class="p">,</span> <span class="s2">"maccs"</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="c1"># Training parameters</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
         <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
@@ -389,9 +389,9 @@
         <span class="n">evaluate_criterion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">evaluate_higher_better</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="c1"># General parameters</span>
-        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"none"</span><span class="p">,</span>
         <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;SGIRMolecularPredictor&quot;</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"SGIRMolecularPredictor"</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span>
@@ -430,24 +430,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">label_logscale</span> <span class="o">=</span> <span class="n">label_logscale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lw_aug</span> <span class="o">=</span> <span class="n">lw_aug</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">task_type</span> <span class="o">!=</span> <span class="s2">&quot;regression&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;SGIR only supports regression tasks with 1 task&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">task_type</span> <span class="o">!=</span> <span class="s2">"regression"</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"SGIR only supports regression tasks with 1 task"</span><span class="p">)</span>
     
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_names</span><span class="p">():</span>
         <span class="n">grea_params</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;num_anchor&quot;</span><span class="p">,</span> <span class="s2">&quot;warmup_epoch&quot;</span><span class="p">,</span> <span class="s2">&quot;labeling_interval&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;augmentation_interval&quot;</span><span class="p">,</span> <span class="s2">&quot;top_quantile&quot;</span><span class="p">,</span> <span class="s2">&quot;label_logscale&quot;</span><span class="p">,</span> <span class="s2">&quot;lw_aug&quot;</span>
+            <span class="s2">"num_anchor"</span><span class="p">,</span> <span class="s2">"warmup_epoch"</span><span class="p">,</span> <span class="s2">"labeling_interval"</span><span class="p">,</span>
+            <span class="s2">"augmentation_interval"</span><span class="p">,</span> <span class="s2">"top_quantile"</span><span class="p">,</span> <span class="s2">"label_logscale"</span><span class="p">,</span> <span class="s2">"lw_aug"</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="n">grea_params</span> <span class="o">+</span> <span class="n">GREAMolecularPredictor</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_default_search_space</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">search_space</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_default_search_space</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">search_space</span><span class="p">[</span><span class="s2">&quot;num_anchor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
-        <span class="n">search_space</span><span class="p">[</span><span class="s2">&quot;labeling_interval&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
-        <span class="n">search_space</span><span class="p">[</span><span class="s2">&quot;augmentation_interval&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
-        <span class="n">search_space</span><span class="p">[</span><span class="s2">&quot;top_quantile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
-        <span class="n">search_space</span><span class="p">[</span><span class="s2">&quot;lw_aug&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">search_space</span><span class="p">[</span><span class="s2">"num_anchor"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+        <span class="n">search_space</span><span class="p">[</span><span class="s2">"labeling_interval"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+        <span class="n">search_space</span><span class="p">[</span><span class="s2">"augmentation_interval"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+        <span class="n">search_space</span><span class="p">[</span><span class="s2">"top_quantile"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+        <span class="n">search_space</span><span class="p">[</span><span class="s2">"lw_aug"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">search_space</span>
 
 <div class="viewcode-block" id="SGIRMolecularPredictor.fit">
@@ -459,15 +459,15 @@
         <span class="n">X_val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">y_val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">X_unlbl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SGIRMolecularPredictor&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the model to training data with optional validation set.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"SGIRMolecularPredictor"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Fit the model to training data with optional validation set.</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">X_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">y_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;X_val and y_val must both be provided for validation&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"X_val and y_val must both be provided for validation"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">X_unlbl</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;X_unlbl (unlabeled SMILES strings) must be provided in SGIR&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"X_unlbl (unlabeled SMILES strings) must be provided in SGIR"</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_unlbl</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;X_unlbl (unlabeled SMILES strings) must not be empty&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"X_unlbl (unlabeled SMILES strings) must not be empty"</span><span class="p">)</span>
 
         <span class="c1"># Initialize model and optimization</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_class</span><span class="p">)</span>
@@ -490,7 +490,7 @@
         <span class="k">if</span> <span class="n">X_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">val_loader</span> <span class="o">=</span> <span class="n">train_loader</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;No validation set provided. Using training set for validation.&quot;</span><span class="p">,</span>
+                <span class="s2">"No validation set provided. Using training set for validation."</span><span class="p">,</span>
                 <span class="ne">UserWarning</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -508,7 +508,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fitting_loss</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fitting_epoch</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">best_state_dict</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">best_eval</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_higher_better</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="n">best_eval</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'-inf'</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_higher_better</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)</span>
         <span class="n">cnt_wait</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># Calculate total steps for global progress bar</span>
@@ -517,11 +517,11 @@
         
         <span class="c1"># Initialize global progress bar</span>
         <span class="n">global_pbar</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"progress_bar"</span><span class="p">:</span>
             <span class="n">global_pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
                 <span class="n">total</span><span class="o">=</span><span class="n">total_steps</span><span class="p">,</span>
-                <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;SGIR Training Progress&quot;</span><span class="p">,</span>
-                <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span>
+                <span class="n">desc</span><span class="o">=</span><span class="s2">"SGIR Training Progress"</span><span class="p">,</span>
+                <span class="n">unit</span><span class="o">=</span><span class="s2">"step"</span><span class="p">,</span>
                 <span class="n">dynamic_ncols</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">leave</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
@@ -566,33 +566,33 @@
                     <span class="n">best_state_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span> <span class="c1">#Save the best epoch model not the last one</span>
                     <span class="n">cnt_wait</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="n">log_dict</span> <span class="o">=</span> <span class="p">{</span>
-                            <span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="s2">&quot;Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">best_eval</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="s2">&quot;Status&quot;</span><span class="p">:</span> <span class="s2">&quot;✓ Best&quot;</span>
+                            <span class="s2">"Epoch"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                            <span class="s2">"Loss"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_name</span><span class="si">}</span><span class="s2">"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">best_eval</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                            <span class="s2">"Status"</span><span class="p">:</span> <span class="s2">"✓ Best"</span>
                     <span class="p">}</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span> <span class="ow">and</span> <span class="n">global_pbar</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"progress_bar"</span> <span class="ow">and</span> <span class="n">global_pbar</span><span class="p">:</span>
                         <span class="n">global_pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;print_statement&quot;</span><span class="p">:</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"print_statement"</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">cnt_wait</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">log_dict</span> <span class="o">=</span> <span class="p">{</span>
-                            <span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="s2">&quot;Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_eval</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="s2">&quot;Wait&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cnt_wait</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patience</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="s2">"Epoch"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                            <span class="s2">"Loss"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_name</span><span class="si">}</span><span class="s2">"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">current_eval</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                            <span class="s2">"Wait"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">cnt_wait</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patience</span><span class="si">}</span><span class="s2">"</span>
                         <span class="p">}</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span> <span class="ow">and</span> <span class="n">global_pbar</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"progress_bar"</span> <span class="ow">and</span> <span class="n">global_pbar</span><span class="p">:</span>
                         <span class="n">global_pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;print_statement&quot;</span><span class="p">:</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"print_statement"</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">cnt_wait</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">patience</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"progress_bar"</span><span class="p">:</span>
                             <span class="k">if</span> <span class="n">global_pbar</span><span class="p">:</span>
                                 <span class="n">global_pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span>
-                                    <span class="s2">&quot;Status&quot;</span><span class="p">:</span> <span class="s2">&quot;Early Stopped&quot;</span><span class="p">,</span>
-                                    <span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span>
+                                    <span class="s2">"Status"</span><span class="p">:</span> <span class="s2">"Early Stopped"</span><span class="p">,</span>
+                                    <span class="s2">"Epoch"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">"</span>
                                 <span class="p">})</span>
                         <span class="k">break</span>
         <span class="k">finally</span><span class="p">:</span>
@@ -605,7 +605,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_state_dict</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;No improvement achieved during training.&quot;</span><span class="p">,</span>
+                <span class="s2">"No improvement achieved during training."</span><span class="p">,</span>
                 <span class="ne">UserWarning</span>
             <span class="p">)</span>
 
@@ -614,7 +614,7 @@
 
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">augmented_dataset</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">global_pbar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Training logic for one epoch.</span>
+<span class="w">        </span><span class="sd">"""Training logic for one epoch.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            train_loader: DataLoader containing training data</span>
@@ -625,12 +625,12 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of loss values for each training step</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">if</span> <span class="n">augmented_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">lw_aug</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">aug_reps</span> <span class="o">=</span> <span class="n">augmented_dataset</span><span class="p">[</span><span class="s1">&#39;representations&#39;</span><span class="p">]</span>
-            <span class="n">aug_targets</span> <span class="o">=</span> <span class="n">augmented_dataset</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span>
+            <span class="n">aug_reps</span> <span class="o">=</span> <span class="n">augmented_dataset</span><span class="p">[</span><span class="s1">'representations'</span><span class="p">]</span>
+            <span class="n">aug_targets</span> <span class="o">=</span> <span class="n">augmented_dataset</span><span class="p">[</span><span class="s1">'labels'</span><span class="p">]</span>
             <span class="n">random_inds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randperm</span><span class="p">(</span><span class="n">aug_reps</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
             <span class="n">aug_reps</span> <span class="o">=</span> <span class="n">aug_reps</span><span class="p">[</span><span class="n">random_inds</span><span class="p">]</span>
             <span class="n">aug_targets</span> <span class="o">=</span> <span class="n">aug_targets</span><span class="p">[</span><span class="n">random_inds</span><span class="p">]</span>
@@ -672,11 +672,11 @@
             <span class="k">if</span> <span class="n">global_pbar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">global_pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
                 <span class="n">global_pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span>
-                    <span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Batch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">batch_idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Total Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;(Pseudo)Labeled Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Lx</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Aug Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Laug</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="s2">"Epoch"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"Batch"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">batch_idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"Total Loss"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"(Pseudo)Labeled Loss"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">Lx</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"Aug Loss"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">Laug</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">})</span>
 
         <span class="k">return</span> <span class="n">losses</span></div>
@@ -714,8 +714,8 @@
     </aside>
   </div>
 </div><script src="../../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

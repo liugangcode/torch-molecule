@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.datasets.load_local_csv - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -265,7 +265,7 @@
     <span class="n">input_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Generic function to load data from local CSV.gz file within torch_molecule package.</span>
 <span class="sd">    </span>
 <span class="sd">    Args:</span>
@@ -278,25 +278,25 @@
 <span class="sd">            Dataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - data: List[str]</span>
 <span class="sd">            - target: np.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_file_path</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_file_path</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset not found at </span><span class="si">{</span><span class="n">data_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset not found at </span><span class="si">{</span><span class="n">data_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     
-    <span class="c1"># print(f&quot;Loading dataset from {data_path}&quot;)</span>
+    <span class="c1"># print(f"Loading dataset from {data_path}")</span>
     
     <span class="n">input_data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">property_data</span> <span class="o">=</span> <span class="p">[]</span>
     
-    <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">'rt'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">csv_reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         
         <span class="c1"># Check if required columns exist</span>
         <span class="n">all_required_cols</span> <span class="o">=</span> <span class="n">input_cols</span> <span class="o">+</span> <span class="n">target_cols</span>
         <span class="n">missing_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">all_required_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">csv_reader</span><span class="o">.</span><span class="n">fieldnames</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">missing_cols</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Required columns </span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s2"> not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">csv_reader</span><span class="o">.</span><span class="n">fieldnames</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Required columns </span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s2"> not found in dataset. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">csv_reader</span><span class="o">.</span><span class="n">fieldnames</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         
         <span class="c1"># Read data</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv_reader</span><span class="p">:</span>
@@ -310,7 +310,7 @@
                 <span class="k">try</span><span class="p">:</span>
                     <span class="c1"># Convert to float, handle empty strings or None</span>
                     <span class="n">value</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s1">''</span> <span class="ow">or</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="n">property_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">property_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
@@ -324,22 +324,22 @@
 <div class="viewcode-block" id="load_gasperm">
 <a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.load_gasperm">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_gasperm</span><span class="p">(</span>
-    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CH4&quot;</span><span class="p">,</span> <span class="s2">&quot;CO2&quot;</span><span class="p">,</span> <span class="s2">&quot;H2&quot;</span><span class="p">,</span> <span class="s2">&quot;N2&quot;</span><span class="p">,</span> <span class="s2">&quot;O2&quot;</span><span class="p">],</span>
+    <span class="n">target_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"CH4"</span><span class="p">,</span> <span class="s2">"CO2"</span><span class="p">,</span> <span class="s2">"H2"</span><span class="p">,</span> <span class="s2">"N2"</span><span class="p">,</span> <span class="s2">"O2"</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SMILESDataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Load gas permeability dataset from local CSV.gz file within torch_molecule package.</span>
 <span class="sd">    </span>
 <span class="sd">    Args:</span>
-<span class="sd">        target_cols (List[str]): List of target column names. Default is [&quot;CH4&quot;, &quot;CO2&quot;, &quot;H2&quot;, &quot;N2&quot;, &quot;O2&quot;]</span>
+<span class="sd">        target_cols (List[str]): List of target column names. Default is ["CH4", "CO2", "H2", "N2", "O2"]</span>
 <span class="sd">    </span>
 <span class="sd">    Returns:</span>
 <span class="sd">        SMILESDataset: </span>
 <span class="sd">            Dataset object with data (SMILES strings) and target (property values) attributes</span>
 <span class="sd">            - data: List[str]</span>
 <span class="sd">            - target: np.ndarray</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">input_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SMILES&quot;</span><span class="p">]</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;polymer_gas_permeability.csv.gz&quot;</span>
+<span class="sd">    """</span>
+    <span class="n">input_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"SMILES"</span><span class="p">]</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s2">"polymer_gas_permeability.csv.gz"</span>
     
     <span class="n">input_data</span><span class="p">,</span> <span class="n">property_numpy</span> <span class="o">=</span> <span class="n">_load_from_local_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">input_cols</span><span class="p">,</span> <span class="n">target_cols</span><span class="p">)</span>
     <span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">]</span>
@@ -379,8 +379,8 @@
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

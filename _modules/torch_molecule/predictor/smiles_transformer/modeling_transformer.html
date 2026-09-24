@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.predictor.smiles_transformer.modeling_transformer - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -266,21 +266,21 @@
 <span class="c1"># Dictionary mapping parameter names to their types and ranges</span>
 <span class="n">DEFAULT_TRANSFORMER_SEARCH_SPACES</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ParameterSpec</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># Integer-valued parameters</span>
-    <span class="s2">&quot;hidden_size&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">256</span><span class="p">)),</span>
-    <span class="s2">&quot;n_heads&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)),</span>
-    <span class="s2">&quot;num_layers&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)),</span>
-    <span class="s2">&quot;dim_feedforward&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">512</span><span class="p">)),</span>
+    <span class="s2">"hidden_size"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">256</span><span class="p">)),</span>
+    <span class="s2">"n_heads"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)),</span>
+    <span class="s2">"num_layers"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)),</span>
+    <span class="s2">"dim_feedforward"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">512</span><span class="p">)),</span>
     <span class="c1"># Float-valued parameters with log scale</span>
-    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)),</span>
-    <span class="s2">&quot;weight_decay&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)),</span>
-    <span class="s2">&quot;dropout&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
-    <span class="s2">&quot;scheduler_factor&quot;</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+    <span class="s2">"learning_rate"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)),</span>
+    <span class="s2">"weight_decay"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)),</span>
+    <span class="s2">"dropout"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+    <span class="s2">"scheduler_factor"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
 <span class="p">}</span>
 
 <div class="viewcode-block" id="SMILESTransformerMolecularPredictor">
 <a class="viewcode-back" href="../../../../api/predictor.html#torch_molecule.predictor.smiles_transformer.modeling_transformer.SMILESTransformerMolecularPredictor">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SMILESTransformerMolecularPredictor</span><span class="p">(</span><span class="n">LSTMMolecularPredictor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This predictor implements a Transformer model for SMILES-based molecular property predictions.</span>
+<span class="w">    </span><span class="sd">"""This predictor implements a Transformer model for SMILES-based molecular property predictions.</span>
 <span class="sd">    </span>
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -291,12 +291,12 @@
 <span class="sd">    ----------</span>
 <span class="sd">    device : torch.device or str, optional</span>
 <span class="sd">        Device to run the model on. If None, will auto-detect GPU or use CPU.</span>
-<span class="sd">    model_name : str, default=&quot;SMILESTransformerMolecularPredictor&quot;</span>
+<span class="sd">    model_name : str, default="SMILESTransformerMolecularPredictor"</span>
 <span class="sd">        Name identifier for the model.</span>
 <span class="sd">    num_task : int, default=1</span>
 <span class="sd">        Number of prediction tasks.</span>
-<span class="sd">    task_type : str, default=&quot;regression&quot;</span>
-<span class="sd">        Type of prediction task, either &quot;regression&quot; or &quot;classification&quot;.</span>
+<span class="sd">    task_type : str, default="regression"</span>
+<span class="sd">        Type of prediction task, either "regression" or "classification".</span>
 <span class="sd">    input_dim : int, default=54</span>
 <span class="sd">        Size of vocabulary for SMILES tokenization.</span>
 <span class="sd">    hidden_size : int, default=128</span>
@@ -333,13 +333,13 @@
 <span class="sd">        Factor by which to reduce learning rate when plateau is reached.</span>
 <span class="sd">    scheduler_patience : int, default=5</span>
 <span class="sd">        Number of epochs with no improvement after which learning rate will be reduced.</span>
-<span class="sd">    verbose : str, default=&quot;none&quot;</span>
-<span class="sd">        Whether to display progress info. Options are: &quot;none&quot;, &quot;progress_bar&quot;, &quot;print_statement&quot;. If any other, &quot;none&quot; is automatically chosen.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    verbose : str, default="none"</span>
+<span class="sd">        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">num_task</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">task_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;regression&quot;</span><span class="p">,</span>
+        <span class="n">task_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"regression"</span><span class="p">,</span>
         <span class="c1"># Transformer-specific parameters</span>
         <span class="n">input_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">54</span><span class="p">,</span>
         <span class="n">hidden_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
@@ -359,9 +359,9 @@
         <span class="n">use_lr_scheduler</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">scheduler_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
         <span class="n">scheduler_patience</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
-        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"none"</span><span class="p">,</span>
         <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;SMILESTransformerMolecularPredictor&quot;</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"SMILESTransformerMolecularPredictor"</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
@@ -396,52 +396,52 @@
 
         <span class="c1"># Validate n_heads is compatible with hidden_size</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_heads</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;hidden_size (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="si">}</span><span class="s2">) must be divisible by n_heads (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_heads</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"hidden_size (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="si">}</span><span class="s2">) must be divisible by n_heads (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_heads</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
         
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get parameter names for the estimator.</span>
+<span class="w">        </span><span class="sd">"""Get parameter names for the estimator.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        List[str]</span>
 <span class="sd">            List of parameter names that can be used for model configuration.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="c1"># Model Hyperparameters</span>
-            <span class="s2">&quot;num_task&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;task_type&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;input_dim&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;n_heads&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;num_layers&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;dim_feedforward&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;max_input_len&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;dropout&quot;</span><span class="p">,</span>
+            <span class="s2">"num_task"</span><span class="p">,</span>
+            <span class="s2">"task_type"</span><span class="p">,</span>
+            <span class="s2">"input_dim"</span><span class="p">,</span>
+            <span class="s2">"hidden_size"</span><span class="p">,</span>
+            <span class="s2">"n_heads"</span><span class="p">,</span>
+            <span class="s2">"num_layers"</span><span class="p">,</span>
+            <span class="s2">"dim_feedforward"</span><span class="p">,</span>
+            <span class="s2">"max_input_len"</span><span class="p">,</span>
+            <span class="s2">"dropout"</span><span class="p">,</span>
             <span class="c1"># Training Parameters</span>
-            <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;epochs&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;weight_decay&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;patience&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;loss_criterion&quot;</span><span class="p">,</span>
+            <span class="s2">"batch_size"</span><span class="p">,</span>
+            <span class="s2">"epochs"</span><span class="p">,</span>
+            <span class="s2">"learning_rate"</span><span class="p">,</span>
+            <span class="s2">"weight_decay"</span><span class="p">,</span>
+            <span class="s2">"patience"</span><span class="p">,</span>
+            <span class="s2">"loss_criterion"</span><span class="p">,</span>
             <span class="c1"># Evaluation Parameters</span>
-            <span class="s2">&quot;evaluate_name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;evaluate_criterion&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;evaluate_higher_better&quot;</span><span class="p">,</span>
+            <span class="s2">"evaluate_name"</span><span class="p">,</span>
+            <span class="s2">"evaluate_criterion"</span><span class="p">,</span>
+            <span class="s2">"evaluate_higher_better"</span><span class="p">,</span>
             <span class="c1"># Scheduler Parameters</span>
-            <span class="s2">&quot;use_lr_scheduler&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;scheduler_factor&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;scheduler_patience&quot;</span><span class="p">,</span>
+            <span class="s2">"use_lr_scheduler"</span><span class="p">,</span>
+            <span class="s2">"scheduler_factor"</span><span class="p">,</span>
+            <span class="s2">"scheduler_patience"</span><span class="p">,</span>
             <span class="c1"># Other Parameters</span>
-            <span class="s2">&quot;fitting_epoch&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;fitting_loss&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;device&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;verbose&quot;</span>
+            <span class="s2">"fitting_epoch"</span><span class="p">,</span>
+            <span class="s2">"fitting_loss"</span><span class="p">,</span>
+            <span class="s2">"device"</span><span class="p">,</span>
+            <span class="s2">"verbose"</span>
         <span class="p">]</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get model parameters from checkpoint or current instance.</span>
+<span class="w">        </span><span class="sd">"""Get model parameters from checkpoint or current instance.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -452,38 +452,38 @@
 <span class="sd">        -------</span>
 <span class="sd">        Dict[str, Any]</span>
 <span class="sd">            Dictionary of model parameters</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;hyperparameters&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">checkpoint</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Checkpoint missing &#39;hyperparameters&#39; key&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">"hyperparameters"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">checkpoint</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Checkpoint missing 'hyperparameters' key"</span><span class="p">)</span>
                 
-            <span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s2">&quot;hyperparameters&quot;</span><span class="p">]</span>
+            <span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s2">"hyperparameters"</span><span class="p">]</span>
             
 
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;num_task&quot;</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;num_task&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">),</span>
-                <span class="s2">&quot;input_dim&quot;</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;input_dim&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span><span class="p">),</span>
-                <span class="s2">&quot;hidden_size&quot;</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">),</span>
-                <span class="s2">&quot;n_heads&quot;</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;n_heads&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_heads</span><span class="p">),</span>
-                <span class="s2">&quot;num_layers&quot;</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;num_layers&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">),</span>
-                <span class="s2">&quot;dim_feedforward&quot;</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dim_feedforward&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_feedforward</span><span class="p">),</span>
-                <span class="s2">&quot;max_input_len&quot;</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_input_len&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_input_len</span><span class="p">),</span>
-                <span class="s2">&quot;dropout&quot;</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dropout&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">),</span>
+                <span class="s2">"num_task"</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"num_task"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">),</span>
+                <span class="s2">"input_dim"</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input_dim"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span><span class="p">),</span>
+                <span class="s2">"hidden_size"</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"hidden_size"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">),</span>
+                <span class="s2">"n_heads"</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_heads"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_heads</span><span class="p">),</span>
+                <span class="s2">"num_layers"</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"num_layers"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">),</span>
+                <span class="s2">"dim_feedforward"</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dim_feedforward"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_feedforward</span><span class="p">),</span>
+                <span class="s2">"max_input_len"</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"max_input_len"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_input_len</span><span class="p">),</span>
+                <span class="s2">"dropout"</span><span class="p">:</span> <span class="n">hyperparameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dropout"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">),</span>
             <span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;num_task&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">,</span>
-                <span class="s2">&quot;input_dim&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span><span class="p">,</span>
-                <span class="s2">&quot;hidden_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span>
-                <span class="s2">&quot;n_heads&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_heads</span><span class="p">,</span>
-                <span class="s2">&quot;num_layers&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">,</span>
-                <span class="s2">&quot;dim_feedforward&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_feedforward</span><span class="p">,</span>
-                <span class="s2">&quot;max_input_len&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_input_len</span><span class="p">,</span>
-                <span class="s2">&quot;dropout&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">,</span>
+                <span class="s2">"num_task"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_task</span><span class="p">,</span>
+                <span class="s2">"input_dim"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_dim</span><span class="p">,</span>
+                <span class="s2">"hidden_size"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span>
+                <span class="s2">"n_heads"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_heads</span><span class="p">,</span>
+                <span class="s2">"num_layers"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">,</span>
+                <span class="s2">"dim_feedforward"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_feedforward</span><span class="p">,</span>
+                <span class="s2">"max_input_len"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_input_len</span><span class="p">,</span>
+                <span class="s2">"dropout"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">,</span>
             <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setup optimization components including optimizer and learning rate scheduler.</span>
+<span class="w">        </span><span class="sd">"""Setup optimization components including optimizer and learning rate scheduler.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -491,7 +491,7 @@
 <span class="sd">            A tuple containing:</span>
 <span class="sd">            - The configured optimizer</span>
 <span class="sd">            - The learning rate scheduler (if enabled, else None)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
             <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
@@ -502,7 +502,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_lr_scheduler</span><span class="p">:</span>
             <span class="n">scheduler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">ReduceLROnPlateau</span><span class="p">(</span>
                 <span class="n">optimizer</span><span class="p">,</span>
-                <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;min&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_higher_better</span> <span class="k">else</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s1">'min'</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_higher_better</span> <span class="k">else</span> <span class="s1">'max'</span><span class="p">,</span>
                 <span class="n">factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler_factor</span><span class="p">,</span>
                 <span class="n">patience</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler_patience</span><span class="p">,</span>
             <span class="p">)</span>
@@ -510,8 +510,8 @@
         <span class="k">return</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">scheduler</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_default_search_space</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the default hyperparameter search space.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get the default hyperparameter search space.</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">DEFAULT_TRANSFORMER_SEARCH_SPACES</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
 
 </pre></div>
@@ -547,8 +547,8 @@
     </aside>
   </div>
 </div><script src="../../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

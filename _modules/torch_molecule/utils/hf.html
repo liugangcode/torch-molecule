@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.utils.hf - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -265,12 +265,12 @@
     <span class="n">new_task_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">num_params</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merge task-specific configuration and maintain version history.</span>
+<span class="w">    </span><span class="sd">"""Merge task-specific configuration and maintain version history.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    task_id : str</span>
-<span class="sd">        Task identifier (e.g., &#39;O2&#39;, &#39;N2&#39;)</span>
+<span class="sd">        Task identifier (e.g., 'O2', 'N2')</span>
 <span class="sd">    existing_config : Dict</span>
 <span class="sd">        Existing configuration dictionary</span>
 <span class="sd">    new_task_config : Dict</span>
@@ -282,41 +282,41 @@
 <span class="sd">    -------</span>
 <span class="sd">    Dict</span>
 <span class="sd">        Updated configuration with task history</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">merged</span> <span class="o">=</span> <span class="n">existing_config</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">tasks_config</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">tasks_config</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tasks"</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">task_config</span> <span class="o">=</span> <span class="n">tasks_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">task_id</span><span class="p">,</span> <span class="p">{</span>
-        <span class="s2">&quot;versions&quot;</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">&quot;current_version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.0&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;date_added&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+        <span class="s2">"versions"</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">"current_version"</span><span class="p">:</span> <span class="s2">"0.0.0"</span><span class="p">,</span>
+        <span class="s2">"date_added"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
     <span class="p">})</span>
     
     <span class="c1"># Update task version history</span>
-    <span class="n">current_version</span> <span class="o">=</span> <span class="n">task_config</span><span class="p">[</span><span class="s2">&quot;current_version&quot;</span><span class="p">]</span>
-    <span class="n">version_parts</span> <span class="o">=</span> <span class="n">current_version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="n">current_version</span> <span class="o">=</span> <span class="n">task_config</span><span class="p">[</span><span class="s2">"current_version"</span><span class="p">]</span>
+    <span class="n">version_parts</span> <span class="o">=</span> <span class="n">current_version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)</span>
     <span class="n">version_parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">version_parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">new_version</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">version_parts</span><span class="p">)</span>
+    <span class="n">new_version</span> <span class="o">=</span> <span class="s1">'.'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">version_parts</span><span class="p">)</span>
     
     <span class="c1"># Archive current version if it exists</span>
-    <span class="k">if</span> <span class="n">task_config</span><span class="p">[</span><span class="s2">&quot;versions&quot;</span><span class="p">]:</span>
-        <span class="n">task_config</span><span class="p">[</span><span class="s2">&quot;versions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">current_version</span><span class="p">,</span>
-            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
-            <span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="n">task_config</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">task_config</span><span class="p">[</span><span class="s2">"versions"</span><span class="p">]:</span>
+        <span class="n">task_config</span><span class="p">[</span><span class="s2">"versions"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">"version"</span><span class="p">:</span> <span class="n">current_version</span><span class="p">,</span>
+            <span class="s2">"date"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+            <span class="s2">"config"</span><span class="p">:</span> <span class="n">task_config</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="p">})</span>
     
     <span class="c1"># Update task config</span>
     <span class="n">task_config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-        <span class="s2">&quot;current_version&quot;</span><span class="p">:</span> <span class="n">new_version</span><span class="p">,</span>
-        <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
-        <span class="s2">&quot;num_parameters&quot;</span><span class="p">:</span> <span class="n">num_params</span><span class="p">,</span>
+        <span class="s2">"current_version"</span><span class="p">:</span> <span class="n">new_version</span><span class="p">,</span>
+        <span class="s2">"last_updated"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+        <span class="s2">"num_parameters"</span><span class="p">:</span> <span class="n">num_params</span><span class="p">,</span>
         <span class="o">**</span><span class="n">new_task_config</span>
     <span class="p">})</span>
     
     <span class="c1"># Update tasks configuration</span>
     <span class="n">tasks_config</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_config</span>
-    <span class="n">merged</span><span class="p">[</span><span class="s2">&quot;tasks&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tasks_config</span>
-    <span class="n">merged</span><span class="p">[</span><span class="s2">&quot;last_updated&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="n">merged</span><span class="p">[</span><span class="s2">"tasks"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tasks_config</span>
+    <span class="n">merged</span><span class="p">[</span><span class="s2">"last_updated"</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
     
     <span class="k">return</span> <span class="n">merged</span></div>
 
@@ -324,7 +324,7 @@
 <div class="viewcode-block" id="get_existing_repo_data">
 <a class="viewcode-back" href="../../../api/utils.html#torch_molecule.utils.hf.get_existing_repo_data">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_existing_repo_data</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get existing repository data from HuggingFace Hub.</span>
+<span class="w">    </span><span class="sd">"""Get existing repository data from HuggingFace Hub.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -337,28 +337,28 @@
 <span class="sd">    -------</span>
 <span class="sd">    Tuple[bool, Dict, str]</span>
 <span class="sd">        Tuple containing (repo_exists, existing_config, existing_readme)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">repo_exists</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">existing_config</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">existing_readme</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">existing_readme</span> <span class="o">=</span> <span class="s2">""</span>
     
     <span class="k">try</span><span class="p">:</span>
         <span class="n">config_path</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span>
             <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
-            <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;config.json&quot;</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="s2">"config.json"</span><span class="p">,</span>
             <span class="n">token</span><span class="o">=</span><span class="n">token</span>
         <span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">existing_config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="n">repo_exists</span> <span class="o">=</span> <span class="kc">True</span>
         
         <span class="k">try</span><span class="p">:</span>
             <span class="n">readme_path</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span>
                 <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
-                <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;README.md&quot;</span><span class="p">,</span>
+                <span class="n">filename</span><span class="o">=</span><span class="s2">"README.md"</span><span class="p">,</span>
                 <span class="n">token</span><span class="o">=</span><span class="n">token</span>
             <span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">readme_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">readme_path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">existing_readme</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
@@ -377,9 +377,9 @@
     <span class="n">tasks_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">model_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
     <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">existing_readme</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">existing_readme</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a model card for multiple tasks.</span>
+<span class="w">    </span><span class="sd">"""Create a model card for multiple tasks.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -400,22 +400,22 @@
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
 <span class="sd">        Generated model card content</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Create tasks summary table</span>
-    <span class="n">tasks_table</span> <span class="o">=</span> <span class="s2">&quot;| Task | Version | Last Updated | Parameters | Metrics |</span><span class="se">\n</span><span class="s2">&quot;</span>
-    <span class="n">tasks_table</span> <span class="o">+=</span> <span class="s2">&quot;|------|---------|--------------|------------|----------|</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">tasks_table</span> <span class="o">=</span> <span class="s2">"| Task | Version | Last Updated | Parameters | Metrics |</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="n">tasks_table</span> <span class="o">+=</span> <span class="s2">"|------|---------|--------------|------------|----------|</span><span class="se">\n</span><span class="s2">"</span>
     
     <span class="k">for</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">task_info</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tasks_config</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-        <span class="n">metrics</span> <span class="o">=</span> <span class="n">task_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="n">metrics_str</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">task_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"metrics"</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">metrics_str</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
         <span class="n">tasks_table</span> <span class="o">+=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;| </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">&#39;current_version&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> | &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">&#39;last_updated&#39;</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2"> | &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">&#39;num_parameters&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">metrics_str</span><span class="si">}</span><span class="s2"> |</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"| </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">'current_version'</span><span class="p">]</span><span class="si">}</span><span class="s2"> | "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">'last_updated'</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2"> | "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">'num_parameters'</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">metrics_str</span><span class="si">}</span><span class="s2"> |</span><span class="se">\n</span><span class="s2">"</span>
         <span class="p">)</span>
 
 <span class="c1"># - molecular-property-prediction</span>
-    <span class="n">readme_content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;---</span>
+    <span class="n">readme_content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""---</span>
 <span class="s2">tags:</span>
 <span class="s2">- torch_molecule</span>
 <span class="s2">library_name: torch_molecule</span>
@@ -426,7 +426,7 @@
 <span class="s2">## Model Description</span>
 <span class="s2">- **Model Type**: </span><span class="si">{</span><span class="n">model_class</span><span class="si">}</span>
 <span class="s2">- **Framework**: torch_molecule</span>
-<span class="s2">- **Last Updated**: </span><span class="si">{</span><span class="n">model_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;last_updated&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">- **Last Updated**: </span><span class="si">{</span><span class="n">model_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'last_updated'</span><span class="p">,</span><span class="w"> </span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span>
 
 <span class="s2">## Task Summary</span>
 <span class="si">{</span><span class="n">tasks_table</span><span class="si">}</span>
@@ -439,8 +439,8 @@
 <span class="s2"># Load model for specific task</span>
 <span class="s2">model = </span><span class="si">{</span><span class="n">model_class</span><span class="si">}</span><span class="s2">()</span>
 <span class="s2">model.load(</span>
-<span class="s2">    &quot;local_model_dir/</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">.pt&quot;,</span>
-<span class="s2">    repo=&quot;</span><span class="si">{</span><span class="n">repo_id</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="s2">    "local_model_dir/</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">.pt",</span>
+<span class="s2">    repo="</span><span class="si">{</span><span class="n">repo_id</span><span class="si">}</span><span class="s2">"</span>
 <span class="s2">)</span>
 
 <span class="s2"># For predictor: Make predictions</span>
@@ -453,42 +453,42 @@
 
 <span class="s2">## Tasks Details</span>
 
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">"""</span>
     <span class="c1"># Add detailed task sections (latest version only, excluding fitting_loss)</span>
     <span class="k">for</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">task_info</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tasks_config</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
         <span class="c1"># Filter out fitting_loss from config</span>
-        <span class="n">task_config</span> <span class="o">=</span> <span class="n">task_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="k">if</span> <span class="s1">&#39;fitting_loss&#39;</span> <span class="ow">in</span> <span class="n">task_config</span><span class="p">:</span>
-            <span class="k">del</span> <span class="n">task_config</span><span class="p">[</span><span class="s1">&#39;fitting_loss&#39;</span><span class="p">]</span>
+        <span class="n">task_config</span> <span class="o">=</span> <span class="n">task_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'config'</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">'fitting_loss'</span> <span class="ow">in</span> <span class="n">task_config</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">task_config</span><span class="p">[</span><span class="s1">'fitting_loss'</span><span class="p">]</span>
         
-        <span class="n">readme_content</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">readme_content</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">### </span><span class="si">{</span><span class="n">task_id</span><span class="si">}</span><span class="s2"> Task</span>
-<span class="s2">- **Current Version**: </span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">&#39;current_version&#39;</span><span class="p">]</span><span class="si">}</span>
-<span class="s2">- **Last Updated**: </span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">&#39;last_updated&#39;</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span>
-<span class="s2">- **Parameters**: </span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">&#39;num_parameters&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span>
+<span class="s2">- **Current Version**: </span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">'current_version'</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">- **Last Updated**: </span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">'last_updated'</span><span class="p">][:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">- **Parameters**: </span><span class="si">{</span><span class="n">task_info</span><span class="p">[</span><span class="s1">'num_parameters'</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span>
 <span class="s2">- **Configuration**:</span>
 <span class="s2">```python</span>
 <span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">task_config</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span>
 <span class="s2">```</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">"""</span>
 
     <span class="c1"># Preserve custom sections from existing README</span>
     <span class="c1"># if existing_readme:</span>
     <span class="c1">#     try:</span>
-    <span class="c1">#         custom_sections = &quot;&quot;</span>
-    <span class="c1">#         split_points = [&quot;## Tasks Details&quot;, &quot;## Usage&quot;]</span>
+    <span class="c1">#         custom_sections = ""</span>
+    <span class="c1">#         split_points = ["## Tasks Details", "## Usage"]</span>
     <span class="c1">#         for split_point in split_points:</span>
     <span class="c1">#             if split_point in existing_readme:</span>
     <span class="c1">#                 parts = existing_readme.split(split_point)</span>
-    <span class="c1">#                 if len(parts) &gt; 1 and &quot;##&quot; in parts[1]:</span>
-    <span class="c1">#                     custom_sections = parts[1].split(&quot;##&quot;, 1)[1]</span>
-    <span class="c1">#                     custom_sections = &quot;##&quot; + custom_sections</span>
+    <span class="c1">#                 if len(parts) &gt; 1 and "##" in parts[1]:</span>
+    <span class="c1">#                     custom_sections = parts[1].split("##", 1)[1]</span>
+    <span class="c1">#                     custom_sections = "##" + custom_sections</span>
     <span class="c1">#                     break</span>
             
     <span class="c1">#         if custom_sections:</span>
-    <span class="c1">#             readme_content += f&quot;\n{custom_sections}&quot;</span>
+    <span class="c1">#             readme_content += f"\n{custom_sections}"</span>
     <span class="c1">#     except Exception as e:</span>
-    <span class="c1">#         print(f&quot;Warning: Error preserving custom README sections: {e}&quot;)</span>
+    <span class="c1">#         print(f"Warning: Error preserving custom README sections: {e}")</span>
 
     <span class="k">return</span> <span class="n">readme_content</span></div>
 
@@ -525,8 +525,8 @@
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

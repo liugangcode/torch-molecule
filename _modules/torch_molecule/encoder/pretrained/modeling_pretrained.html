@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.encoder.pretrained.modeling_pretrained - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -261,26 +261,26 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">...base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMolecularEncoder</span>
     
 <span class="n">known_repos</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;entropy/gpt2_zinc_87m&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;entropy/roberta_zinc_480m&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;ncfrey/ChemGPT-1.2B&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;ncfrey/ChemGPT-19M&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;ncfrey/ChemGPT-4.7M&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;DeepChem/ChemBERTa-77M-MTR&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;DeepChem/ChemBERTa-77M-MLM&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;DeepChem/ChemBERTa-10M-MTR&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;DeepChem/ChemBERTa-10M-MLM&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;DeepChem/ChemBERTa-5M-MLM&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;DeepChem/ChemBERTa-5M-MTR&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;unikei/bert-base-smiles&quot;</span><span class="p">,</span>
-    <span class="s1">&#39;seyonec/ChemBERTa-zinc-base-v1&#39;</span>
+    <span class="s2">"entropy/gpt2_zinc_87m"</span><span class="p">,</span> 
+    <span class="s2">"entropy/roberta_zinc_480m"</span><span class="p">,</span> 
+    <span class="s2">"ncfrey/ChemGPT-1.2B"</span><span class="p">,</span> 
+    <span class="s2">"ncfrey/ChemGPT-19M"</span><span class="p">,</span> 
+    <span class="s2">"ncfrey/ChemGPT-4.7M"</span><span class="p">,</span>
+    <span class="s2">"DeepChem/ChemBERTa-77M-MTR"</span><span class="p">,</span> 
+    <span class="s2">"DeepChem/ChemBERTa-77M-MLM"</span><span class="p">,</span>
+    <span class="s2">"DeepChem/ChemBERTa-10M-MTR"</span><span class="p">,</span> 
+    <span class="s2">"DeepChem/ChemBERTa-10M-MLM"</span><span class="p">,</span>
+    <span class="s2">"DeepChem/ChemBERTa-5M-MLM"</span><span class="p">,</span> 
+    <span class="s2">"DeepChem/ChemBERTa-5M-MTR"</span><span class="p">,</span>
+    <span class="s2">"unikei/bert-base-smiles"</span><span class="p">,</span>
+    <span class="s1">'seyonec/ChemBERTa-zinc-base-v1'</span>
 <span class="p">]</span>
 
-<span class="n">known_add_bos_eos_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;entropy/gpt2_zinc_87m&quot;</span><span class="p">]</span>
+<span class="n">known_add_bos_eos_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"entropy/gpt2_zinc_87m"</span><span class="p">]</span>
 <div class="viewcode-block" id="HFPretrainedMolecularEncoder">
 <a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">HFPretrainedMolecularEncoder</span><span class="p">(</span><span class="n">BaseMolecularEncoder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements Hugging Face pretrained transformer models as molecular encoders.</span>
+<span class="w">    </span><span class="sd">"""Implements Hugging Face pretrained transformer models as molecular encoders.</span>
 
 <span class="sd">    This class provides an interface to use pretrained transformer models from Hugging Face</span>
 <span class="sd">    as molecular encoders. It handles tokenization and encoding of molecular representations.</span>
@@ -290,46 +290,46 @@
 <span class="sd">    - ChemGPT series (1.2B/19M/4.7M): GPT-Neo based models pretrained on PubChem10M dataset with SELFIES strings.</span>
 <span class="sd">      Output dimension: 2048.</span>
 
-<span class="sd">      repo_id: &quot;ncfrey/ChemGPT-1.2B&quot; (https://huggingface.co/ncfrey/ChemGPT-1.2B)</span>
+<span class="sd">      repo_id: "ncfrey/ChemGPT-1.2B" (https://huggingface.co/ncfrey/ChemGPT-1.2B)</span>
 
-<span class="sd">      repo_id: &quot;ncfrey/ChemGPT-19M&quot; (https://huggingface.co/ncfrey/ChemGPT-19M)</span>
+<span class="sd">      repo_id: "ncfrey/ChemGPT-19M" (https://huggingface.co/ncfrey/ChemGPT-19M)</span>
 <span class="sd">      </span>
-<span class="sd">      repo_id: &quot;ncfrey/ChemGPT-4.7M&quot; (https://huggingface.co/ncfrey/ChemGPT-4.7M)</span>
+<span class="sd">      repo_id: "ncfrey/ChemGPT-4.7M" (https://huggingface.co/ncfrey/ChemGPT-4.7M)</span>
 
 <span class="sd">    - GPT2-ZINC-87M: GPT-2 based model (87M parameters) pretrained on ZINC dataset with ~480M SMILES strings.</span>
 <span class="sd">      Output dimension: 768.</span>
 
-<span class="sd">      repo_id: &quot;entropy/gpt2_zinc_87m&quot; (https://huggingface.co/entropy/gpt2_zinc_87m)</span>
+<span class="sd">      repo_id: "entropy/gpt2_zinc_87m" (https://huggingface.co/entropy/gpt2_zinc_87m)</span>
 <span class="sd">    </span>
 <span class="sd">    - RoBERTa-ZINC-480M: RoBERTa based model (102M parameters) pretrained on ZINC dataset with ~480M SMILES strings.</span>
 <span class="sd">      Output dimension: 768.</span>
 
-<span class="sd">      repo_id: &quot;entropy/roberta_zinc_480m&quot; (https://huggingface.co/entropy/roberta_zinc_480m)</span>
+<span class="sd">      repo_id: "entropy/roberta_zinc_480m" (https://huggingface.co/entropy/roberta_zinc_480m)</span>
 
 <span class="sd">    - ChemBERTa series: Available in multiple sizes (77M/10M/5M) and training objectives (MTR/MLM).</span>
 <span class="sd">      Output dimension: 384.</span>
 
-<span class="sd">      repo_id: &quot;DeepChem/ChemBERTa-77M-MTR&quot; (https://huggingface.co/DeepChem/ChemBERTa-77M-MTR)</span>
+<span class="sd">      repo_id: "DeepChem/ChemBERTa-77M-MTR" (https://huggingface.co/DeepChem/ChemBERTa-77M-MTR)</span>
 <span class="sd">      </span>
-<span class="sd">      repo_id: &quot;DeepChem/ChemBERTa-77M-MLM&quot; (https://huggingface.co/DeepChem/ChemBERTa-77M-MLM)</span>
+<span class="sd">      repo_id: "DeepChem/ChemBERTa-77M-MLM" (https://huggingface.co/DeepChem/ChemBERTa-77M-MLM)</span>
 <span class="sd">      </span>
-<span class="sd">      repo_id: &quot;DeepChem/ChemBERTa-10M-MTR&quot; (https://huggingface.co/DeepChem/ChemBERTa-10M-MTR)</span>
+<span class="sd">      repo_id: "DeepChem/ChemBERTa-10M-MTR" (https://huggingface.co/DeepChem/ChemBERTa-10M-MTR)</span>
 <span class="sd">      </span>
-<span class="sd">      repo_id: &quot;DeepChem/ChemBERTa-10M-MLM&quot; (https://huggingface.co/DeepChem/ChemBERTa-10M-MLM)</span>
+<span class="sd">      repo_id: "DeepChem/ChemBERTa-10M-MLM" (https://huggingface.co/DeepChem/ChemBERTa-10M-MLM)</span>
 <span class="sd">      </span>
-<span class="sd">      repo_id: &quot;DeepChem/ChemBERTa-5M-MLM&quot; (https://huggingface.co/DeepChem/ChemBERTa-5M-MLM)</span>
+<span class="sd">      repo_id: "DeepChem/ChemBERTa-5M-MLM" (https://huggingface.co/DeepChem/ChemBERTa-5M-MLM)</span>
 
-<span class="sd">      repo_id: &quot;DeepChem/ChemBERTa-5M-MTR&quot; (https://huggingface.co/DeepChem/ChemBERTa-5M-MTR)</span>
+<span class="sd">      repo_id: "DeepChem/ChemBERTa-5M-MTR" (https://huggingface.co/DeepChem/ChemBERTa-5M-MTR)</span>
 
 <span class="sd">    - UniKi/bert-base-smiles: BERT model pretrained on SMILES strings.</span>
 <span class="sd">      Output dimension: 768.</span>
 
-<span class="sd">      repo_id: &quot;unikei/bert-base-smiles&quot; (https://huggingface.co/unikei/bert-base-smiles)</span>
+<span class="sd">      repo_id: "unikei/bert-base-smiles" (https://huggingface.co/unikei/bert-base-smiles)</span>
 
 <span class="sd">    - ChemBERTa-zinc-base-v1: RoBERTa model pretrained on ZINC dataset with ~100k SMILES strings.</span>
 <span class="sd">      Output dimension: 384.</span>
 
-<span class="sd">      repo_id: &quot;seyonec/ChemBERTa-zinc-base-v1&quot; (https://huggingface.co/seyonec/ChemBERTa-zinc-base-v1)</span>
+<span class="sd">      repo_id: "seyonec/ChemBERTa-zinc-base-v1" (https://huggingface.co/seyonec/ChemBERTa-zinc-base-v1)</span>
 
 <span class="sd">    Other models accessible through the transformers library have not been explicitly tested but may still be compatible with this interface.</span>
 
@@ -343,14 +343,14 @@
 <span class="sd">        Batch size used when encoding multiple molecules.</span>
 <span class="sd">    add_bos_eos : Optional[bool], default=None</span>
 <span class="sd">        Whether to add beginning/end of sequence tokens. If None, models in known_add_bos_eos_list will be set to True.</span>
-<span class="sd">        The current known_add_bos_eos_list includes: [&quot;entropy/gpt2_zinc_87m&quot;].</span>
-<span class="sd">    verbose : str, default=&quot;none&quot;</span>
-<span class="sd">        Whether to display progress info. Options are: &quot;none&quot;, &quot;progress_bar&quot;, &quot;print_statement&quot;. If any other, &quot;none&quot; is automatically chosen.</span>
+<span class="sd">        The current known_add_bos_eos_list includes: ["entropy/gpt2_zinc_87m"].</span>
+<span class="sd">    verbose : str, default="none"</span>
+<span class="sd">        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.</span>
 <span class="sd">    device : Optional[Union[torch.device, str]], default=None</span>
 <span class="sd">        Device to run the model on (CPU or GPU).</span>
-<span class="sd">    model_name : str, default=&quot;HFPretrainedMolecularEncoder&quot;</span>
+<span class="sd">    model_name : str, default="HFPretrainedMolecularEncoder"</span>
 <span class="sd">        Name identifier for the model instance.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> 
@@ -360,8 +360,8 @@
         <span class="n">add_bos_eos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;HFPretrainedMolecularEncoder&quot;</span><span class="p">,</span>
-        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span> 
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"HFPretrainedMolecularEncoder"</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"none"</span><span class="p">,</span> 
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         
@@ -375,56 +375,56 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fitting_loss</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">known_repos</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown repo_id: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">}</span><span class="s2">. The class will try to load the model from HuggingFace, but it might fail.&quot;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown repo_id: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">}</span><span class="s2">. The class will try to load the model from HuggingFace, but it might fail."</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get parameter names for the estimator.</span>
+<span class="w">        </span><span class="sd">"""Get parameter names for the estimator.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        List[str]</span>
 <span class="sd">            List of parameter names that can be used for model configuration.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;repo_id&quot;</span><span class="p">,</span> <span class="s2">&quot;max_length&quot;</span><span class="p">,</span> <span class="s2">&quot;model_name&quot;</span><span class="p">,</span> <span class="s2">&quot;add_bos_eos&quot;</span><span class="p">]</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">"repo_id"</span><span class="p">,</span> <span class="s2">"max_length"</span><span class="p">,</span> <span class="s2">"model_name"</span><span class="p">,</span> <span class="s2">"add_bos_eos"</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;PretrainedMolecularEncoder does not support model parameters.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"PretrainedMolecularEncoder does not support model parameters."</span><span class="p">)</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;PretrainedMolecularEncoder does not support training.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"PretrainedMolecularEncoder does not support training."</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;PretrainedMolecularEncoder does not support training.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"PretrainedMolecularEncoder does not support training."</span><span class="p">)</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">save_to_local</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;PretrainedMolecularEncoder does not support saving to local.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"PretrainedMolecularEncoder does not support saving to local."</span><span class="p">)</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">load_from_local</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;PretrainedMolecularEncoder does not support loading from local.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"PretrainedMolecularEncoder does not support loading from local."</span><span class="p">)</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">save_to_hf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;PretrainedMolecularEncoder does not support saving to huggingface.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"PretrainedMolecularEncoder does not support saving to huggingface."</span><span class="p">)</span>
     
 <div class="viewcode-block" id="HFPretrainedMolecularEncoder.load_from_hf">
 <a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.load_from_hf">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load_from_hf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The same as fit()&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""The same as fit()"""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span></div>
 
     
 <div class="viewcode-block" id="HFPretrainedMolecularEncoder.load">
 <a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.load">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The same as fit()&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""The same as fit()"""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="HFPretrainedMolecularEncoder.fit">
 <a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.fit">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;HFPretrainedMolecularEncoder&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the pretrained model from HuggingFace.&quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;repo_id is not set&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"HFPretrainedMolecularEncoder"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Load the pretrained model from HuggingFace."""</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"repo_id is not set"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_transformers</span><span class="p">()</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
@@ -442,50 +442,50 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">add_special_tokens</span><span class="p">({</span><span class="s1">&#39;pad_token&#39;</span><span class="p">:</span> <span class="s1">&#39;[PAD]&#39;</span><span class="p">})</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">add_special_tokens</span><span class="p">({</span><span class="s1">'pad_token'</span><span class="p">:</span> <span class="s1">'[PAD]'</span><span class="p">})</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">resize_token_embeddings</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_bos_eos</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">bos_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">add_special_tokens</span><span class="p">({</span><span class="s1">&#39;bos_token&#39;</span><span class="p">:</span> <span class="s1">&#39;[BOS]&#39;</span><span class="p">})</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">add_special_tokens</span><span class="p">({</span><span class="s1">'bos_token'</span><span class="p">:</span> <span class="s1">'[BOS]'</span><span class="p">})</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">add_special_tokens</span><span class="p">({</span><span class="s1">&#39;eos_token&#39;</span><span class="p">:</span> <span class="s1">&#39;[EOS]&#39;</span><span class="p">})</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">add_special_tokens</span><span class="p">({</span><span class="s1">'eos_token'</span><span class="p">:</span> <span class="s1">'[EOS]'</span><span class="p">})</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">resize_token_embeddings</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">))</span>
 
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;BOS and EOS tokens are not found in the tokenizer. They are added to the tokenizer since add_bos_eos is set to True.&quot;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"BOS and EOS tokens are not found in the tokenizer. They are added to the tokenizer since add_bos_eos is set to True."</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">collator</span> <span class="o">=</span> <span class="n">transformers</span><span class="o">.</span><span class="n">DataCollatorWithPadding</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collator</span> <span class="o">=</span> <span class="n">transformers</span><span class="o">.</span><span class="n">DataCollatorWithPadding</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">'pt'</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>        
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="HFPretrainedMolecularEncoder.encode">
 <a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.encode">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">return_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;np&quot;</span><span class="p">,</span> <span class="s2">&quot;pt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pt&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode molecules into vector representations.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">return_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"np"</span><span class="p">,</span> <span class="s2">"pt"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pt"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Encode molecules into vector representations.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        X : List[str]</span>
 <span class="sd">            List of SMILES strings</span>
-<span class="sd">        return_type : Literal[&quot;np&quot;, &quot;pt&quot;], default=&quot;pt&quot;</span>
+<span class="sd">        return_type : Literal["np", "pt"], default="pt"</span>
 <span class="sd">            Return type of the representations</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        representations : ndarray or torch.Tensor</span>
 <span class="sd">            Molecular representations</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_require_transformers</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_is_fitted</span><span class="p">()</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_inputs</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_rdkit_mol</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         
         <span class="c1"># Process in batches</span>
         <span class="n">all_embeddings</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;print_statement&quot;</span><span class="p">:</span>
-            <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Encoding molecules&quot;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"progress_bar"</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"print_statement"</span><span class="p">:</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Encoding molecules"</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Encoding molecules&quot;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Encoding molecules"</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
             <span class="n">batch_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
             
@@ -504,9 +504,9 @@
                 <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">,</span> <span class="n">output_hidden_states</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             
             <span class="c1"># get all attributes of outputs</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;outputs&#39;</span><span class="p">,</span> <span class="n">outputs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'outputs'</span><span class="p">,</span> <span class="n">outputs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
             <span class="c1"># Extract embeddings based on model type</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="s1">&#39;hidden_states&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="s1">'hidden_states'</span><span class="p">):</span>
                 <span class="c1"># For models that return a named tuple</span>
                 <span class="n">full_embeddings</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">hidden_states</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -517,7 +517,7 @@
                 <span class="n">full_embeddings</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">last_hidden_state</span>
             
             <span class="c1"># Apply attention mask to get meaningful embeddings</span>
-            <span class="n">mask</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">]</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">'attention_mask'</span><span class="p">]</span>
             <span class="n">batch_embeddings</span> <span class="o">=</span> <span class="p">((</span><span class="n">full_embeddings</span> <span class="o">*</span> <span class="n">mask</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> 
                           <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
             
@@ -526,7 +526,7 @@
         <span class="c1"># Concatenate all batch embeddings</span>
         <span class="n">embeddings</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">all_embeddings</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         
-        <span class="k">return</span> <span class="n">embeddings</span> <span class="k">if</span> <span class="n">return_type</span> <span class="o">==</span> <span class="s2">&quot;pt&quot;</span> <span class="k">else</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="n">embeddings</span> <span class="k">if</span> <span class="n">return_type</span> <span class="o">==</span> <span class="s2">"pt"</span> <span class="k">else</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
 
 
     <span class="nd">@staticmethod</span>
@@ -535,8 +535,8 @@
             <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>  <span class="c1"># noqa: F401</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-                <span class="s2">&quot;The &#39;transformers&#39; package is required for PretrainedMolecularEncoder. &quot;</span>
-                <span class="s2">&quot;Please install it using `pip install transformers`.&quot;</span>
+                <span class="s2">"The 'transformers' package is required for PretrainedMolecularEncoder. "</span>
+                <span class="s2">"Please install it using `pip install transformers`."</span>
             <span class="p">)</span></div>
 
 </pre></div>
@@ -572,8 +572,8 @@
     </aside>
   </div>
 </div><script src="../../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

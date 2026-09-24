@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.encoder.edgepred.modeling_edgepred - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -271,7 +271,7 @@
 <div class="viewcode-block" id="EdgePredMolecularEncoder">
 <a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">EdgePredMolecularEncoder</span><span class="p">(</span><span class="n">BaseMolecularEncoder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This encoder implements a GNN-based model for molecular representation learning</span>
+<span class="w">    </span><span class="sd">"""This encoder implements a GNN-based model for molecular representation learning</span>
 <span class="sd">    using the edge prediction.</span>
 <span class="sd">    </span>
 <span class="sd">    References</span>
@@ -287,11 +287,11 @@
 <span class="sd">        Dimension of hidden node features.</span>
 <span class="sd">    drop_ratio : float, default=0.5</span>
 <span class="sd">        Dropout probability.</span>
-<span class="sd">    norm_layer : str, default=&quot;batch_norm&quot;</span>
-<span class="sd">        Type of normalization layer to use. One of [&quot;batch_norm&quot;, &quot;layer_norm&quot;, &quot;instance_norm&quot;, &quot;graph_norm&quot;, &quot;size_norm&quot;, &quot;pair_norm&quot;].</span>
-<span class="sd">    encoder_type : str, default=&quot;gin-virtual&quot;</span>
+<span class="sd">    norm_layer : str, default="batch_norm"</span>
+<span class="sd">        Type of normalization layer to use. One of ["batch_norm", "layer_norm", "instance_norm", "graph_norm", "size_norm", "pair_norm"].</span>
+<span class="sd">    encoder_type : str, default="gin-virtual"</span>
 <span class="sd">        Type of GNN architecture to use.</span>
-<span class="sd">    readout : str, default=&quot;sum&quot;</span>
+<span class="sd">    readout : str, default="sum"</span>
 <span class="sd">        Method for aggregating node features to obtain graph-level representations.</span>
 <span class="sd">    batch_size : int, default=128</span>
 <span class="sd">        Number of samples per batch for training.</span>
@@ -309,22 +309,22 @@
 <span class="sd">        Factor by which to reduce learning rate when plateau is reached.</span>
 <span class="sd">    scheduler_patience : int, default=5</span>
 <span class="sd">        Number of epochs with no improvement after which learning rate will be reduced.</span>
-<span class="sd">    verbose : str, default=&quot;none&quot;</span>
-<span class="sd">        Whether to display progress info. Options are: &quot;none&quot;, &quot;progress_bar&quot;, &quot;print_statement&quot;. If any other, &quot;none&quot; is automatically chosen.</span>
+<span class="sd">    verbose : str, default="none"</span>
+<span class="sd">        Whether to display progress info. Options are: "none", "progress_bar", "print_statement". If any other, "none" is automatically chosen.</span>
 <span class="sd">    device : Optional[Union[torch.device, str]], default=None</span>
 <span class="sd">        Device to run the model on (CPU or GPU).</span>
-<span class="sd">    model_name : str, default=&quot;EdgePredMolecularEncoder&quot;</span>
+<span class="sd">    model_name : str, default="EdgePredMolecularEncoder"</span>
 <span class="sd">        Name of the encoder model.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">num_layer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> 
         <span class="n">hidden_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> 
         <span class="n">drop_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> 
-        <span class="n">norm_layer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;batch_norm&quot;</span><span class="p">,</span> 
-        <span class="n">encoder_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gin-virtual&quot;</span><span class="p">,</span> 
-        <span class="n">readout</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> 
+        <span class="n">norm_layer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"batch_norm"</span><span class="p">,</span> 
+        <span class="n">encoder_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"gin-virtual"</span><span class="p">,</span> 
+        <span class="n">readout</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"sum"</span><span class="p">,</span> 
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> 
         <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> 
         <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span> 
@@ -333,9 +333,9 @@
         <span class="n">use_lr_scheduler</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
         <span class="n">scheduler_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> 
         <span class="n">scheduler_patience</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> 
-        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span> 
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"none"</span><span class="p">,</span> 
         <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;EdgePredMolecularEncoder&quot;</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"EdgePredMolecularEncoder"</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span> <span class="o">=</span> <span class="n">num_layer</span>
@@ -357,9 +357,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model_class</span> <span class="o">=</span> <span class="n">GNN</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ALLOWABLE_ENCODER_MODELS</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid encoder_model: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder_type</span><span class="si">}</span><span class="s2">. Currently only </span><span class="si">{</span><span class="n">ALLOWABLE_ENCODER_MODELS</span><span class="si">}</span><span class="s2"> are supported.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid encoder_model: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder_type</span><span class="si">}</span><span class="s2">. Currently only </span><span class="si">{</span><span class="n">ALLOWABLE_ENCODER_MODELS</span><span class="si">}</span><span class="s2"> are supported."</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ALLOWABLE_ENCODER_READOUTS</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid encoder_readout: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="si">}</span><span class="s2">. Currently only </span><span class="si">{</span><span class="n">ALLOWABLE_ENCODER_READOUTS</span><span class="si">}</span><span class="s2"> are supported.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid encoder_readout: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="si">}</span><span class="s2">. Currently only </span><span class="si">{</span><span class="n">ALLOWABLE_ENCODER_READOUTS</span><span class="si">}</span><span class="s2"> are supported."</span><span class="p">)</span>
         
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_param_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -367,26 +367,26 @@
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;num_layer&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span><span class="p">,</span>
-            <span class="s2">&quot;hidden_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span>
-            <span class="s2">&quot;encoder_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_type</span><span class="p">,</span>
-            <span class="s2">&quot;drop_ratio&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_ratio</span><span class="p">,</span>
-            <span class="s2">&quot;norm_layer&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="p">,</span>
-            <span class="s2">&quot;readout&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="p">,</span>
+            <span class="s2">"num_layer"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layer</span><span class="p">,</span>
+            <span class="s2">"hidden_size"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span>
+            <span class="s2">"encoder_type"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_type</span><span class="p">,</span>
+            <span class="s2">"drop_ratio"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_ratio</span><span class="p">,</span>
+            <span class="s2">"norm_layer"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_layer</span><span class="p">,</span>
+            <span class="s2">"readout"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">readout</span><span class="p">,</span>
         <span class="p">}</span>
         
         <span class="k">if</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;hyperparameters&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">checkpoint</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Checkpoint missing &#39;hyperparameters&#39; key&quot;</span><span class="p">)</span>
-            <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s2">&quot;hyperparameters&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="k">if</span> <span class="s2">"hyperparameters"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">checkpoint</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Checkpoint missing 'hyperparameters' key"</span><span class="p">)</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s2">"hyperparameters"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             
         <span class="k">return</span> <span class="n">params</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_convert_to_pytorch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert numpy arrays to PyTorch Geometric data format.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span><span class="p">:</span>
-            <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Converting molecules to graphs&quot;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<span class="w">        </span><span class="sd">"""Convert numpy arrays to PyTorch Geometric data format.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"progress_bar"</span><span class="p">:</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Converting molecules to graphs"</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">iterator</span> <span class="o">=</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
@@ -394,34 +394,34 @@
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">smiles_or_mol</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
             <span class="n">graph</span> <span class="o">=</span> <span class="n">graph_from_smiles</span><span class="p">(</span><span class="n">smiles_or_mol</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="n">g</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span> <span class="o">=</span> <span class="n">graph</span><span class="p">[</span><span class="s2">&quot;num_nodes&quot;</span><span class="p">]</span>
-            <span class="n">g</span><span class="o">.</span><span class="n">edge_index</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;edge_index&quot;</span><span class="p">])</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">num_nodes</span> <span class="o">=</span> <span class="n">graph</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">]</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">edge_index</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="s2">"edge_index"</span><span class="p">])</span>
 
-            <span class="k">del</span> <span class="n">graph</span><span class="p">[</span><span class="s2">&quot;num_nodes&quot;</span><span class="p">]</span>
-            <span class="k">del</span> <span class="n">graph</span><span class="p">[</span><span class="s2">&quot;edge_index&quot;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">graph</span><span class="p">[</span><span class="s2">"num_nodes"</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">graph</span><span class="p">[</span><span class="s2">"edge_index"</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">graph</span><span class="p">[</span><span class="s2">&quot;edge_feat&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">g</span><span class="o">.</span><span class="n">edge_attr</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;edge_feat&quot;</span><span class="p">])</span>
-                <span class="k">del</span> <span class="n">graph</span><span class="p">[</span><span class="s2">&quot;edge_feat&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">graph</span><span class="p">[</span><span class="s2">"edge_feat"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">edge_attr</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="s2">"edge_feat"</span><span class="p">])</span>
+                <span class="k">del</span> <span class="n">graph</span><span class="p">[</span><span class="s2">"edge_feat"</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">graph</span><span class="p">[</span><span class="s2">&quot;node_feat&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">g</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="s2">&quot;node_feat&quot;</span><span class="p">])</span>
-                <span class="k">del</span> <span class="n">graph</span><span class="p">[</span><span class="s2">&quot;node_feat&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">graph</span><span class="p">[</span><span class="s2">"node_feat"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">g</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="s2">"node_feat"</span><span class="p">])</span>
+                <span class="k">del</span> <span class="n">graph</span><span class="p">[</span><span class="s2">"node_feat"</span><span class="p">]</span>
 
             <span class="n">pyg_graph_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">pyg_graph_list</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setup optimization components including optimizer and learning rate scheduler.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Setup optimization components including optimizer and learning rate scheduler.</span>
+<span class="sd">        """</span>
 
         <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_decay</span><span class="p">)</span>
         <span class="n">scheduler</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_lr_scheduler</span><span class="p">:</span>
             <span class="n">scheduler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="n">ReduceLROnPlateau</span><span class="p">(</span>
                 <span class="n">optimizer</span><span class="p">,</span>
-                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">"min"</span><span class="p">,</span>
                 <span class="n">factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler_factor</span><span class="p">,</span>
                 <span class="n">patience</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler_patience</span><span class="p">,</span>
                 <span class="n">min_lr</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
@@ -436,8 +436,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">X_train</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EdgePredMolecularEncoder&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the model to the training data with optional validation set.</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"EdgePredMolecularEncoder"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Fit the model to the training data with optional validation set.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -447,7 +447,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        self : EdgePredMolecularEncoder</span>
 <span class="sd">            Fitted estimator</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_class</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">initialize_parameters</span><span class="p">()</span>
@@ -469,8 +469,8 @@
         
         <span class="c1"># Initialize global progress bar</span>
         <span class="n">global_pbar</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;progress_bar&quot;</span><span class="p">:</span>
-            <span class="n">global_pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Training Progress&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"progress_bar"</span><span class="p">:</span>
+            <span class="n">global_pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Training Progress"</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
             <span class="c1"># Training phase</span>
@@ -487,7 +487,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">global_pbar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Training logic for one epoch.</span>
+<span class="w">        </span><span class="sd">"""Training logic for one epoch.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            train_loader: DataLoader containing training data</span>
@@ -497,7 +497,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of loss values for each training step</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
         <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -513,35 +513,35 @@
 
             <span class="c1"># Update global progress bar</span>
             <span class="n">log_dict</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;Epoch&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Step&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">step</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Loss&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="s2">"Epoch"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"Step"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">step</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="s2">"Loss"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">}</span>
             <span class="k">if</span> <span class="n">global_pbar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">global_pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
                 <span class="n">global_pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">&quot;print_statement&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="s2">"print_statement"</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">log_dict</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">losses</span>
 
 <div class="viewcode-block" id="EdgePredMolecularEncoder.encode">
 <a class="viewcode-back" href="../../../../api/encoder.html#torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder.encode">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">return_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;np&quot;</span><span class="p">,</span> <span class="s2">&quot;pt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pt&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encode molecules into vector representations.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">return_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"np"</span><span class="p">,</span> <span class="s2">"pt"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"pt"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Encode molecules into vector representations.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        X : List[str]</span>
 <span class="sd">            List of SMILES strings</span>
-<span class="sd">        return_type : Literal[&quot;np&quot;, &quot;pt&quot;], default=&quot;pt&quot;</span>
+<span class="sd">        return_type : Literal["np", "pt"], default="pt"</span>
 <span class="sd">            Return type of the representations</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        representations : ndarray or torch.Tensor</span>
 <span class="sd">            Molecular representations</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_is_fitted</span><span class="p">()</span>
 
         <span class="c1"># Convert to PyTorch Geometric format and create loader</span>
@@ -550,21 +550,21 @@
         <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Model not initialized&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Model not initialized"</span><span class="p">)</span>
 
         <span class="c1"># Generate encodings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
         <span class="n">encodings</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">!=</span> <span class="s2">&quot;progress_bar&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">!=</span> <span class="s2">"progress_bar"</span><span class="p">):</span>
                 <span class="n">batch</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
                 <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
-                <span class="n">encodings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">&quot;graph&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
+                <span class="n">encodings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">"graph"</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
 
         <span class="c1"># Concatenate and convert to requested format</span>
         <span class="n">encodings</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">encodings</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">encodings</span> <span class="k">if</span> <span class="n">return_type</span> <span class="o">==</span> <span class="s2">&quot;pt&quot;</span> <span class="k">else</span> <span class="n">encodings</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="n">encodings</span> <span class="k">if</span> <span class="n">return_type</span> <span class="o">==</span> <span class="s2">"pt"</span> <span class="k">else</span> <span class="n">encodings</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
 </div>
 
 </pre></div>
@@ -600,8 +600,8 @@
     </aside>
   </div>
 </div><script src="../../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.nn.attention - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -275,13 +275,13 @@
             <span class="n">norm_layer</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="k">assert</span> <span class="n">dim</span> <span class="o">%</span> <span class="n">num_head</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;dim should be divisible by num_head&#39;</span>
+        <span class="k">assert</span> <span class="n">dim</span> <span class="o">%</span> <span class="n">num_head</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'dim should be divisible by num_head'</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_head</span> <span class="o">=</span> <span class="n">num_head</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span> <span class="o">=</span> <span class="n">dim</span> <span class="o">//</span> <span class="n">num_head</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span> <span class="o">**</span> <span class="o">-</span><span class="mf">0.5</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fast_attn</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="p">,</span> <span class="s1">&#39;scaled_dot_product_attention&#39;</span><span class="p">)</span>  <span class="c1"># FIXME</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">fast_attn</span><span class="p">,</span> <span class="s2">&quot;scaled_dot_product_attention Not implemented&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fast_attn</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="p">,</span> <span class="s1">'scaled_dot_product_attention'</span><span class="p">)</span>  <span class="c1"># FIXME</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">fast_attn</span><span class="p">,</span> <span class="s2">"scaled_dot_product_attention Not implemented"</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">qkv</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="n">qkv_bias</span><span class="p">)</span>
 
@@ -353,8 +353,8 @@
     </aside>
   </div>
 </div><script src="../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

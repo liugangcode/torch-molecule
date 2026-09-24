@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
         <title>torch_molecule.utils.graph.features - torch-molecule (0.1.7) documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d111a655" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -255,82 +255,82 @@
 <span class="n">allowable_features</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># atom types: 1-118, 119 is masked atom, 120 is misc (e.g. * for polymers)</span>
     <span class="c1"># index: 0-117, 118, 119</span>
-    <span class="s1">&#39;possible_atomic_num_list&#39;</span> <span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">120</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;misc&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;possible_chirality_list&#39;</span> <span class="p">:</span> <span class="p">[</span>
-        <span class="s1">&#39;CHI_UNSPECIFIED&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;CHI_TETRAHEDRAL_CW&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;CHI_TETRAHEDRAL_CCW&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;CHI_OTHER&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;misc&#39;</span>
+    <span class="s1">'possible_atomic_num_list'</span> <span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">120</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="s1">'misc'</span><span class="p">],</span>
+    <span class="s1">'possible_chirality_list'</span> <span class="p">:</span> <span class="p">[</span>
+        <span class="s1">'CHI_UNSPECIFIED'</span><span class="p">,</span>
+        <span class="s1">'CHI_TETRAHEDRAL_CW'</span><span class="p">,</span>
+        <span class="s1">'CHI_TETRAHEDRAL_CCW'</span><span class="p">,</span>
+        <span class="s1">'CHI_OTHER'</span><span class="p">,</span>
+        <span class="s1">'misc'</span>
     <span class="p">],</span>
-    <span class="s1">&#39;possible_degree_list&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;misc&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;possible_formal_charge_list&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;misc&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;possible_numH_list&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;misc&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;possible_number_radical_e_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;misc&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;possible_hybridization_list&#39;</span> <span class="p">:</span> <span class="p">[</span>
-        <span class="s1">&#39;SP&#39;</span><span class="p">,</span> <span class="s1">&#39;SP2&#39;</span><span class="p">,</span> <span class="s1">&#39;SP3&#39;</span><span class="p">,</span> <span class="s1">&#39;SP3D&#39;</span><span class="p">,</span> <span class="s1">&#39;SP3D2&#39;</span><span class="p">,</span> <span class="s1">&#39;misc&#39;</span>
+    <span class="s1">'possible_degree_list'</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'misc'</span><span class="p">],</span>
+    <span class="s1">'possible_formal_charge_list'</span> <span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'misc'</span><span class="p">],</span>
+    <span class="s1">'possible_numH_list'</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">'misc'</span><span class="p">],</span>
+    <span class="s1">'possible_number_radical_e_list'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'misc'</span><span class="p">],</span>
+    <span class="s1">'possible_hybridization_list'</span> <span class="p">:</span> <span class="p">[</span>
+        <span class="s1">'SP'</span><span class="p">,</span> <span class="s1">'SP2'</span><span class="p">,</span> <span class="s1">'SP3'</span><span class="p">,</span> <span class="s1">'SP3D'</span><span class="p">,</span> <span class="s1">'SP3D2'</span><span class="p">,</span> <span class="s1">'misc'</span>
         <span class="p">],</span>
-    <span class="s1">&#39;possible_is_aromatic_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span>
-    <span class="s1">&#39;possible_is_in_ring_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span>
-    <span class="s1">&#39;possible_bond_type_list&#39;</span> <span class="p">:</span> <span class="p">[</span>
-        <span class="s1">&#39;SINGLE&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;DOUBLE&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;TRIPLE&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;AROMATIC&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;misc&#39;</span>
+    <span class="s1">'possible_is_aromatic_list'</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span>
+    <span class="s1">'possible_is_in_ring_list'</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span>
+    <span class="s1">'possible_bond_type_list'</span> <span class="p">:</span> <span class="p">[</span>
+        <span class="s1">'SINGLE'</span><span class="p">,</span>
+        <span class="s1">'DOUBLE'</span><span class="p">,</span>
+        <span class="s1">'TRIPLE'</span><span class="p">,</span>
+        <span class="s1">'AROMATIC'</span><span class="p">,</span>
+        <span class="s1">'misc'</span>
     <span class="p">],</span>
-    <span class="s1">&#39;possible_bond_stereo_list&#39;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s1">&#39;STEREONONE&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;STEREOZ&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;STEREOE&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;STEREOCIS&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;STEREOTRANS&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;STEREOANY&#39;</span><span class="p">,</span>
+    <span class="s1">'possible_bond_stereo_list'</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">'STEREONONE'</span><span class="p">,</span>
+        <span class="s1">'STEREOZ'</span><span class="p">,</span>
+        <span class="s1">'STEREOE'</span><span class="p">,</span>
+        <span class="s1">'STEREOCIS'</span><span class="p">,</span>
+        <span class="s1">'STEREOTRANS'</span><span class="p">,</span>
+        <span class="s1">'STEREOANY'</span><span class="p">,</span>
     <span class="p">],</span> 
-    <span class="s1">&#39;possible_is_conjugated_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span>
+    <span class="s1">'possible_is_conjugated_list'</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span>
 <span class="p">}</span>
 
 <div class="viewcode-block" id="safe_index">
 <a class="viewcode-back" href="../../../../api/utils.html#torch_molecule.utils.graph.features.safe_index">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">safe_index</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Return index of element e in list l. If e is not present, return the last index</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">l</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span></div>
 
 <span class="c1"># # miscellaneous case</span>
-<span class="c1"># i = safe_index(allowable_features[&#39;possible_atomic_num_list&#39;], &#39;asdf&#39;)</span>
-<span class="c1"># assert allowable_features[&#39;possible_atomic_num_list&#39;][i] == &#39;misc&#39;</span>
+<span class="c1"># i = safe_index(allowable_features['possible_atomic_num_list'], 'asdf')</span>
+<span class="c1"># assert allowable_features['possible_atomic_num_list'][i] == 'misc'</span>
 <span class="c1"># # normal case</span>
-<span class="c1"># i = safe_index(allowable_features[&#39;possible_atomic_num_list&#39;], 2)</span>
-<span class="c1"># assert allowable_features[&#39;possible_atomic_num_list&#39;][i] == 2</span>
+<span class="c1"># i = safe_index(allowable_features['possible_atomic_num_list'], 2)</span>
+<span class="c1"># assert allowable_features['possible_atomic_num_list'][i] == 2</span>
 
 <div class="viewcode-block" id="atom_to_feature_vector">
 <a class="viewcode-back" href="../../../../api/utils.html#torch_molecule.utils.graph.features.atom_to_feature_vector">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">atom_to_feature_vector</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Converts rdkit atom object to feature list of indices</span>
 <span class="sd">    :param mol: rdkit atom object</span>
 <span class="sd">    :return: list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">atom_feature</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_atomic_num_list&#39;</span><span class="p">],</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">()),</span>
-            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_chirality_list&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetChiralTag</span><span class="p">())),</span>
-            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_degree_list&#39;</span><span class="p">],</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetTotalDegree</span><span class="p">()),</span>
-            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_formal_charge_list&#39;</span><span class="p">],</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetFormalCharge</span><span class="p">()),</span>
-            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_numH_list&#39;</span><span class="p">],</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetTotalNumHs</span><span class="p">()),</span>
-            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_number_radical_e_list&#39;</span><span class="p">],</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetNumRadicalElectrons</span><span class="p">()),</span>
-            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_hybridization_list&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetHybridization</span><span class="p">())),</span>
-            <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_is_aromatic_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetIsAromatic</span><span class="p">()),</span>
-            <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_is_in_ring_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">IsInRing</span><span class="p">()),</span>
+            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_atomic_num_list'</span><span class="p">],</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetAtomicNum</span><span class="p">()),</span>
+            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_chirality_list'</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetChiralTag</span><span class="p">())),</span>
+            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_degree_list'</span><span class="p">],</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetTotalDegree</span><span class="p">()),</span>
+            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_formal_charge_list'</span><span class="p">],</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetFormalCharge</span><span class="p">()),</span>
+            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_numH_list'</span><span class="p">],</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetTotalNumHs</span><span class="p">()),</span>
+            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_number_radical_e_list'</span><span class="p">],</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetNumRadicalElectrons</span><span class="p">()),</span>
+            <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_hybridization_list'</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetHybridization</span><span class="p">())),</span>
+            <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_is_aromatic_list'</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">GetIsAromatic</span><span class="p">()),</span>
+            <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_is_in_ring_list'</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">IsInRing</span><span class="p">()),</span>
             <span class="p">]</span>
     <span class="k">return</span> <span class="n">atom_feature</span></div>
 
 <span class="c1"># from rdkit import Chem</span>
-<span class="c1"># mol = Chem.MolFromSmiles(&#39;Cl[C@H](/C=C/C)Br&#39;)</span>
+<span class="c1"># mol = Chem.MolFromSmiles('Cl[C@H](/C=C/C)Br')</span>
 <span class="c1"># atom = mol.GetAtomWithIdx(1)  # chiral carbon</span>
 <span class="c1"># atom_feature = atom_to_feature_vector(atom)</span>
 <span class="c1"># assert atom_feature == [5, 2, 4, 5, 1, 0, 2, 0, 0]</span>
@@ -340,30 +340,30 @@
 <a class="viewcode-back" href="../../../../api/utils.html#torch_molecule.utils.graph.features.get_atom_feature_dims">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_atom_feature_dims</span><span class="p">():</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="p">[</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_atomic_num_list&#39;</span><span class="p">],</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_chirality_list&#39;</span><span class="p">],</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_degree_list&#39;</span><span class="p">],</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_formal_charge_list&#39;</span><span class="p">],</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_numH_list&#39;</span><span class="p">],</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_number_radical_e_list&#39;</span><span class="p">],</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_hybridization_list&#39;</span><span class="p">],</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_is_aromatic_list&#39;</span><span class="p">],</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_is_in_ring_list&#39;</span><span class="p">]</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_atomic_num_list'</span><span class="p">],</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_chirality_list'</span><span class="p">],</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_degree_list'</span><span class="p">],</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_formal_charge_list'</span><span class="p">],</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_numH_list'</span><span class="p">],</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_number_radical_e_list'</span><span class="p">],</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_hybridization_list'</span><span class="p">],</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_is_aromatic_list'</span><span class="p">],</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_is_in_ring_list'</span><span class="p">]</span>
         <span class="p">]))</span></div>
 
 
 <div class="viewcode-block" id="bond_to_feature_vector">
 <a class="viewcode-back" href="../../../../api/utils.html#torch_molecule.utils.graph.features.bond_to_feature_vector">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">bond_to_feature_vector</span><span class="p">(</span><span class="n">bond</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Converts rdkit bond object to feature list of indices</span>
 <span class="sd">    :param mol: rdkit bond object</span>
 <span class="sd">    :return: list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">bond_feature</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_bond_type_list&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetBondType</span><span class="p">())),</span>
-                <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_bond_stereo_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetStereo</span><span class="p">())),</span>
-                <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_is_conjugated_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetIsConjugated</span><span class="p">()),</span>
+                <span class="n">safe_index</span><span class="p">(</span><span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_bond_type_list'</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetBondType</span><span class="p">())),</span>
+                <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_bond_stereo_list'</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetStereo</span><span class="p">())),</span>
+                <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_is_conjugated_list'</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">bond</span><span class="o">.</span><span class="n">GetIsConjugated</span><span class="p">()),</span>
             <span class="p">]</span>
     <span class="k">return</span> <span class="n">bond_feature</span></div>
 
@@ -376,9 +376,9 @@
 <a class="viewcode-back" href="../../../../api/utils.html#torch_molecule.utils.graph.features.get_bond_feature_dims">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_bond_feature_dims</span><span class="p">():</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="p">[</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_bond_type_list&#39;</span><span class="p">],</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_bond_stereo_list&#39;</span><span class="p">],</span>
-        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_is_conjugated_list&#39;</span><span class="p">]</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_bond_type_list'</span><span class="p">],</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_bond_stereo_list'</span><span class="p">],</span>
+        <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_is_conjugated_list'</span><span class="p">]</span>
         <span class="p">]))</span></div>
 
 
@@ -396,30 +396,30 @@
     <span class="n">is_in_ring_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_feature</span>
 
     <span class="n">feature_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;atomic_num&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_atomic_num_list&#39;</span><span class="p">][</span><span class="n">atomic_num_idx</span><span class="p">],</span>
-        <span class="s1">&#39;chirality&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_chirality_list&#39;</span><span class="p">][</span><span class="n">chirality_idx</span><span class="p">],</span>
-        <span class="s1">&#39;degree&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_degree_list&#39;</span><span class="p">][</span><span class="n">degree_idx</span><span class="p">],</span>
-        <span class="s1">&#39;formal_charge&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_formal_charge_list&#39;</span><span class="p">][</span><span class="n">formal_charge_idx</span><span class="p">],</span>
-        <span class="s1">&#39;num_h&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_numH_list&#39;</span><span class="p">][</span><span class="n">num_h_idx</span><span class="p">],</span>
-        <span class="s1">&#39;num_rad_e&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_number_radical_e_list&#39;</span><span class="p">][</span><span class="n">number_radical_e_idx</span><span class="p">],</span>
-        <span class="s1">&#39;hybridization&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_hybridization_list&#39;</span><span class="p">][</span><span class="n">hybridization_idx</span><span class="p">],</span>
-        <span class="s1">&#39;is_aromatic&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_is_aromatic_list&#39;</span><span class="p">][</span><span class="n">is_aromatic_idx</span><span class="p">],</span>
-        <span class="s1">&#39;is_in_ring&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_is_in_ring_list&#39;</span><span class="p">][</span><span class="n">is_in_ring_idx</span><span class="p">]</span>
+        <span class="s1">'atomic_num'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_atomic_num_list'</span><span class="p">][</span><span class="n">atomic_num_idx</span><span class="p">],</span>
+        <span class="s1">'chirality'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_chirality_list'</span><span class="p">][</span><span class="n">chirality_idx</span><span class="p">],</span>
+        <span class="s1">'degree'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_degree_list'</span><span class="p">][</span><span class="n">degree_idx</span><span class="p">],</span>
+        <span class="s1">'formal_charge'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_formal_charge_list'</span><span class="p">][</span><span class="n">formal_charge_idx</span><span class="p">],</span>
+        <span class="s1">'num_h'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_numH_list'</span><span class="p">][</span><span class="n">num_h_idx</span><span class="p">],</span>
+        <span class="s1">'num_rad_e'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_number_radical_e_list'</span><span class="p">][</span><span class="n">number_radical_e_idx</span><span class="p">],</span>
+        <span class="s1">'hybridization'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_hybridization_list'</span><span class="p">][</span><span class="n">hybridization_idx</span><span class="p">],</span>
+        <span class="s1">'is_aromatic'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_is_aromatic_list'</span><span class="p">][</span><span class="n">is_aromatic_idx</span><span class="p">],</span>
+        <span class="s1">'is_in_ring'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_is_in_ring_list'</span><span class="p">][</span><span class="n">is_in_ring_idx</span><span class="p">]</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">feature_dict</span></div>
 
 <span class="c1"># # uses same atom_feature as atom_to_feature_vector test</span>
 <span class="c1"># atom_feature_dict = atom_feature_vector_to_dict(atom_feature)</span>
-<span class="c1"># assert atom_feature_dict[&#39;atomic_num&#39;] == 6</span>
-<span class="c1"># assert atom_feature_dict[&#39;chirality&#39;] == &#39;CHI_TETRAHEDRAL_CCW&#39;</span>
-<span class="c1"># assert atom_feature_dict[&#39;degree&#39;] == 4</span>
-<span class="c1"># assert atom_feature_dict[&#39;formal_charge&#39;] == 0</span>
-<span class="c1"># assert atom_feature_dict[&#39;num_h&#39;] == 1</span>
-<span class="c1"># assert atom_feature_dict[&#39;num_rad_e&#39;] == 0</span>
-<span class="c1"># assert atom_feature_dict[&#39;hybridization&#39;] == &#39;SP3&#39;</span>
-<span class="c1"># assert atom_feature_dict[&#39;is_aromatic&#39;] == False</span>
-<span class="c1"># assert atom_feature_dict[&#39;is_in_ring&#39;] == False</span>
+<span class="c1"># assert atom_feature_dict['atomic_num'] == 6</span>
+<span class="c1"># assert atom_feature_dict['chirality'] == 'CHI_TETRAHEDRAL_CCW'</span>
+<span class="c1"># assert atom_feature_dict['degree'] == 4</span>
+<span class="c1"># assert atom_feature_dict['formal_charge'] == 0</span>
+<span class="c1"># assert atom_feature_dict['num_h'] == 1</span>
+<span class="c1"># assert atom_feature_dict['num_rad_e'] == 0</span>
+<span class="c1"># assert atom_feature_dict['hybridization'] == 'SP3'</span>
+<span class="c1"># assert atom_feature_dict['is_aromatic'] == False</span>
+<span class="c1"># assert atom_feature_dict['is_in_ring'] == False</span>
 
 <div class="viewcode-block" id="bond_feature_vector_to_dict">
 <a class="viewcode-back" href="../../../../api/utils.html#torch_molecule.utils.graph.features.bond_feature_vector_to_dict">[docs]</a>
@@ -429,18 +429,18 @@
     <span class="n">is_conjugated_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">bond_feature</span>
 
     <span class="n">feature_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;bond_type&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_bond_type_list&#39;</span><span class="p">][</span><span class="n">bond_type_idx</span><span class="p">],</span>
-        <span class="s1">&#39;bond_stereo&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_bond_stereo_list&#39;</span><span class="p">][</span><span class="n">bond_stereo_idx</span><span class="p">],</span>
-        <span class="s1">&#39;is_conjugated&#39;</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">&#39;possible_is_conjugated_list&#39;</span><span class="p">][</span><span class="n">is_conjugated_idx</span><span class="p">]</span>
+        <span class="s1">'bond_type'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_bond_type_list'</span><span class="p">][</span><span class="n">bond_type_idx</span><span class="p">],</span>
+        <span class="s1">'bond_stereo'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_bond_stereo_list'</span><span class="p">][</span><span class="n">bond_stereo_idx</span><span class="p">],</span>
+        <span class="s1">'is_conjugated'</span><span class="p">:</span> <span class="n">allowable_features</span><span class="p">[</span><span class="s1">'possible_is_conjugated_list'</span><span class="p">][</span><span class="n">is_conjugated_idx</span><span class="p">]</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">feature_dict</span></div>
 
 <span class="c1"># # uses same bond as bond_to_feature_vector test</span>
 <span class="c1"># bond_feature_dict = bond_feature_vector_to_dict(bond_feature)</span>
-<span class="c1"># assert bond_feature_dict[&#39;bond_type&#39;] == &#39;DOUBLE&#39;</span>
-<span class="c1"># assert bond_feature_dict[&#39;bond_stereo&#39;] == &#39;STEREOE&#39;</span>
-<span class="c1"># assert bond_feature_dict[&#39;is_conjugated&#39;] == False</span>
+<span class="c1"># assert bond_feature_dict['bond_type'] == 'DOUBLE'</span>
+<span class="c1"># assert bond_feature_dict['bond_stereo'] == 'STEREOE'</span>
+<span class="c1"># assert bond_feature_dict['is_conjugated'] == False</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllChem</span>
 
@@ -489,8 +489,8 @@
     </aside>
   </div>
 </div><script src="../../../../_static/documentation_options.js?v=a6319924"></script>
-    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

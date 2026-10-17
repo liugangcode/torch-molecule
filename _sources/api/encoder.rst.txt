@@ -5,12 +5,9 @@ The encoder models inherit from the :class:`BaseMolecularEncoder <torch_molecule
 
 .. rubric:: Training and Encoding
 
-- ``fit(X, **kwargs)``: Pretrain the model on given data, where X contains SMILES strings
+- ``fit(...)``: Train an encoder or load pretrained weights; see each model's requirements
 
-  Not implemented for:
-  - N/A
-
-- ``encode(X, **kwargs)``: Encode new SMILES strings and return a dictionary containing encoded representations
+- ``encode(X, **kwargs)``: Encode SMILES strings into a NumPy array or PyTorch tensor
 
 .. rubric:: Model Persistence
 
@@ -82,6 +79,12 @@ Supervised Pretraining for Molecules
    :members: fit, encode
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :undoc-members:
+   :show-inheritance:
+
+.. rubric:: SAND Shape Aware Neural Descriptor
+
+.. autoclass:: torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder
+   :members: fit, encode, load_from_pretrained, save_to_local, load_from_local
    :show-inheritance:
 
 Pretrained Molecular Encoders

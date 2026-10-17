@@ -52,6 +52,7 @@ include-package-data = true
     "**/*.yaml",
     "**/*.json",
     "datasets/data/*",
+    "encoder/sand/LICENSE",
 ]
 
 [tool.pytest.ini_options]

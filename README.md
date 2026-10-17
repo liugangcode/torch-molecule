@@ -27,10 +27,11 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 
 ## Installation
 
-1. **Create a Conda environment**:
+1. **Create a mamba environment**:
    ```bash
-   conda create --name torch_molecule python=3.11.7
-   conda activate torch_molecule
+   micromamba create --name torch-molecule --channel conda-forge python=3.12 pip
+   eval "$(micromamba shell hook --shell bash)"
+   micromamba activate torch-molecule
    ```
 
 2. **Install using pip**:
@@ -99,7 +100,7 @@ print(model.generate(n_samples=5, scaffold="c1ccccc1"))
 | broad6k | Bioactive molecules with drug-like properties | `load_broad6k` |
 | toxcast | Toxicity of chemical compounds | `load_toxcast` |
 | admet | Chemical absorption, distribution, metabolism, excretion, and toxicity | `load_admet` |
-| gasperm | Six gas permeability properties for polymeric materials | `load_gasperm` |
+| gasperm | Five gas permeability properties for polymeric materials | `load_gasperm` |
 | zinc250k | A common subset of ZINC dataset, which does not have labels and could be used for unconditional generation or virtual screening | `load_zinc250k` |
 
 ```python
@@ -137,8 +138,6 @@ from torch_molecule import GREAMolecularPredictor
 data = load_qm9(local_dir='torchmol_data')
 # "random" | "scaffold" | "butina" | "size"
 # scaffold: unseen Bemis-Murcko scaffolds; butina: Tanimoto clusters; size: heavy-atom count
-# Split the full dataset. subsample() is only for local debugging / CI — do not
-# shrink QM9 (or any benchmark) just to make Butina cheaper.
 train, val = data.train_test_split(test_size=0.2, method="scaffold", seed=42)
 
 grea = GREAMolecularPredictor(
@@ -177,7 +176,7 @@ grea.save_to_hf(
 
 # Load a pretrained checkpoint from Hugging Face
 model = GREAMolecularPredictor()
-model.load_from_hf(repo_id=repo_id, local_cache=f"{model_dir}/GREA_{task_name}.pt")
+model.load_from_hf(repo_id=repo_id, local_cache="GREAMolecularPredictor.pt")
 
 # Adjust model parameters and make predictions
 model.set_params(verbose='none')
@@ -229,6 +228,7 @@ new_model.load_from_local("qm9_grea.pt")
 
 | Model        | Reference           |
 |--------------|---------------------|
+| SAND | [Learning Compressed Shape-Aware Molecular Representations for Virtual Screening. ICML 2026](https://proceedings.mlr.press/v306/winter26a.html) |
 | MoAMa        | [Motif-aware Attribute Masking for Molecular Graph Pre-training. LoG 2024](https://arxiv.org/abs/2309.04589) |
 | GraphMAE        | [GraphMAE: Self-Supervised Masked Graph Autoencoders. KDD 2022](https://arxiv.org/abs/2205.10803) |
 | AttrMasking  | [Strategies for Pre-training Graph Neural Networks. ICLR 2020](https://arxiv.org/abs/1905.12265) |
@@ -236,19 +236,7 @@ new_model.load_from_local("qm9_grea.pt")
 | EdgePred     | [Strategies for Pre-training Graph Neural Networks. ICLR 2020](https://arxiv.org/abs/1905.12265) |
 | InfoGraph    | [InfoGraph: Unsupervised and Semi-supervised Graph-Level Representation Learning via Mutual Information Maximization. ICLR 2020](https://arxiv.org/abs/1908.01000) |
 | Supervised   | Supervised pretraining |
-| Pretrained   | [GPT2-ZINC-87M](https://huggingface.co/entropy/gpt2_zinc_87m): GPT-2 based model (87M parameters) pretrained on ZINC dataset with ~480M SMILES strings. <br> [RoBERTa-ZINC-480M](https://huggingface.co/entropy/roberta_zinc_480m): RoBERTa based model (102M parameters) pretrained on ZINC dataset with ~480M SMILES strings. <br> [UniKi/bert-base-smiles](https://huggingface.co/unikei/bert-base-smiles): BERT model pretrained on SMILES strings. <br> [ChemBERTa-zinc-base-v1](https://huggingface.co/seyonec/ChemBERTa-zinc-base-v1): RoBERTa model pretrained on ZINC dataset with ~100k SMILES strings. <br> ChemBERTa series: Available in multiple sizes and training objectives (MLM/MTR). [ChemBERTa-5M-MLM](https://huggingface.co/DeepChem/ChemBERTa-5M-MLM), [ChemBERTa-5M-MTR](https://huggingface.co/DeepChem/ChemBERTa-5M-MTR), [ChemBERTa-10M-MLM](https://huggingface.co/DeepChem/ChemBERTa-10M-MLM), [ChemBERTa-10M-MTR](https://huggingface.co/DeepChem/ChemBERTa-10M-MTR), [ChemBERTa-77M-MLM](https://huggingface.co/DeepChem/ChemBERTa-77M-MLM), [ChemBERTa-77M-MTR](https://huggingface.co/DeepChem/ChemBERTa-77M-MTR). <br> ChemGPT series: GPT-Neo based models pretrained on PubChem10M dataset with SELFIES strings. [ChemGPT-1.2B](https://huggingface.co/ncfrey/ChemGPT-1.2B), [ChemGPT-4.7B](https://huggingface.co/ncfrey/ChemGPT-4.7M), [ChemGPT-19B](https://huggingface.co/ncfrey/ChemGPT-19M). |
-
-<!-- ## Project Structure
-
-See the structure of `torch_molecule` with the command `tree -L 2 torch_molecule -I '__pycache__|*.pyc|*.pyo|.git|old*'` -->
-
-<!-- ## Plan
-
-1. **Predictive Models**: Done: GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR. SMILES-based LSTM/Transformers. TODO more
-2. **Generative Models**: Done: Graph DiT, GraphGA, DiGress, GDS, MolGPT TODO: more
-3. **Representation Models**: Done: MoAMa, AttrMasking, ContextPred, EdgePred. Many pretrained models from HF. TODO: checkpoints, more  -->
-
-<!-- > **Note**: This project is in active development, and features may change. -->
+| Pretrained   | [GPT2-ZINC-87M](https://huggingface.co/entropy/gpt2_zinc_87m): GPT-2 based model (87M parameters) pretrained on ZINC dataset with ~480M SMILES strings. <br> [RoBERTa-ZINC-480M](https://huggingface.co/entropy/roberta_zinc_480m): RoBERTa based model (102M parameters) pretrained on ZINC dataset with ~480M SMILES strings. <br> [UniKi/bert-base-smiles](https://huggingface.co/unikei/bert-base-smiles): BERT model pretrained on SMILES strings. <br> [ChemBERTa-zinc-base-v1](https://huggingface.co/seyonec/ChemBERTa-zinc-base-v1): RoBERTa model pretrained on ZINC dataset with ~100k SMILES strings. <br> ChemBERTa series: Available in multiple sizes and training objectives (MLM/MTR). [ChemBERTa-5M-MLM](https://huggingface.co/DeepChem/ChemBERTa-5M-MLM), [ChemBERTa-5M-MTR](https://huggingface.co/DeepChem/ChemBERTa-5M-MTR), [ChemBERTa-10M-MLM](https://huggingface.co/DeepChem/ChemBERTa-10M-MLM), [ChemBERTa-10M-MTR](https://huggingface.co/DeepChem/ChemBERTa-10M-MTR), [ChemBERTa-77M-MLM](https://huggingface.co/DeepChem/ChemBERTa-77M-MLM), [ChemBERTa-77M-MTR](https://huggingface.co/DeepChem/ChemBERTa-77M-MTR). <br> ChemGPT series: GPT-Neo based models pretrained on PubChem10M dataset with SELFIES strings. [ChemGPT-1.2B](https://huggingface.co/ncfrey/ChemGPT-1.2B), [ChemGPT-4.7M](https://huggingface.co/ncfrey/ChemGPT-4.7M), [ChemGPT-19M](https://huggingface.co/ncfrey/ChemGPT-19M). |
 
 ## Acknowledgements
 

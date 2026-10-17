@@ -25,6 +25,7 @@ from .encoder.contextpred import ContextPredMolecularEncoder
 from .encoder.edgepred import EdgePredMolecularEncoder
 from .encoder.infograph import InfoGraphMolecularEncoder
 from .encoder.pretrained import HFPretrainedMolecularEncoder
+from .encoder.sand import SANDMolecularEncoder
 """
 generator module
 """
@@ -61,6 +62,7 @@ __all__ = [
     'EdgePredMolecularEncoder',
     'InfoGraphMolecularEncoder',
     'HFPretrainedMolecularEncoder',
+    'SANDMolecularEncoder',
     # generators
     'GraphDITMolecularGenerator',
     'DigressMolecularGenerator',

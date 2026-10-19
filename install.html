@@ -313,6 +313,45 @@ conda<span class="w"> </span>activate<span class="w"> </span>torch_molecule
 <section id="additional-packages">
 <h2>Additional Packages<a class="headerlink" href="#additional-packages" title="Link to this heading">¶</a></h2>
 <p>Some models require extra libraries. Install these packages if you use the corresponding model:</p>
+<div class="table-wrapper docutils container" id="id1">
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Optional dependencies</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Required packages</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HFPretrainedMolecularEncoder</p></td>
+<td><p>transformers</p></td>
+</tr>
+<tr class="row-odd"><td><p>HFPretrainedMolecularGenerator</p></td>
+<td><p>transformers</p></td>
+</tr>
+<tr class="row-even"><td><p>HFPretrainedMolecularGenerator (MolGen)</p></td>
+<td><p>transformers, selfies</p></td>
+</tr>
+<tr class="row-odd"><td><p>HFPretrainedMolecularGenerator (Molexar)</p></td>
+<td><p>transformers, fragment-selfies, molexar</p></td>
+</tr>
+<tr class="row-even"><td><p>HFPretrainedMolecularGenerator (SAFE-GPT)</p></td>
+<td><p>transformers, safe-mol</p></td>
+</tr>
+<tr class="row-odd"><td><p>GenMolMolecularGenerator</p></td>
+<td><p>transformers, safe-mol</p></td>
+</tr>
+<tr class="row-even"><td><p>BFGNNMolecularPredictor</p></td>
+<td><p>torch-scatter</p></td>
+</tr>
+<tr class="row-odd"><td><p>GRINMolecularPredictor</p></td>
+<td><p>torch-scatter</p></td>
+</tr>
+<tr class="row-even"><td><p>GRINMolecularPredictor (<code class="docutils literal notranslate"><span class="pre">repetition_augmentation=True</span></code>)</p></td>
+<td><p>CombineMols</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p><strong>For models that require</strong> <code class="docutils literal notranslate"><span class="pre">torch-scatter</span></code>: install with
 <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">torch-scatter</span> <span class="pre">-f</span> <span class="pre">https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html</span></code>,
 for example <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">torch-scatter</span> <span class="pre">-f</span> <span class="pre">https://data.pyg.org/whl/torch-2.7.1+cu128.html</span></code>.</p>
@@ -320,6 +359,8 @@ for example <code class="docutils literal notranslate"><span class="pre">pip</sp
 <p><strong>For MolGen</strong> (<code class="docutils literal notranslate"><span class="pre">selfies</span></code>): <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;selfies&gt;=2.1&quot;</span></code>. Source: <a class="reference external" href="https://github.com/aspuru-guzik-group/selfies">aspuru-guzik-group/selfies</a>.</p>
 <p><strong>For Molexar:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fragment-selfies</span> <span class="pre">loguru</span></code> (<a class="reference external" href="https://github.com/fairydance/Fragment-SELFIES">Fragment-SELFIES</a>) and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/fairydance/Molexar.git</span></code> (<a class="reference external" href="https://github.com/fairydance/Molexar">Molexar</a>). Molexar itself requires <code class="docutils literal notranslate"><span class="pre">transformers&gt;=5.8</span></code>.</p>
 <p><strong>For SAFE-GPT:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">safe-mol</span></code> (<a class="reference external" href="https://github.com/datamol-io/safe">SAFE</a>).</p>
+<p><strong>For GenMol (Python 3.11+):</strong> From the source checkout, run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;.[genmol]&quot;</span></code>.
+This installs <code class="docutils literal notranslate"><span class="pre">transformers==4.57.1</span></code> and <code class="docutils literal notranslate"><span class="pre">safe-mol&gt;=0.2.1,&lt;0.3</span></code>; <code class="docutils literal notranslate"><span class="pre">datasets</span></code> is not required.</p>
 <p>Example (SAFE-GPT pretrained generator):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">HFPretrainedMolecularGenerator</span>
 

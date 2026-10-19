@@ -66,25 +66,29 @@ Additional Packages
 
 Some models require extra libraries. Install these packages if you use the corresponding model:
 
-+----------------------------------------------+----------------------------------------------+
-| Model                                        | Required Package                             |
-+==============================================+==============================================+
-| HFPretrainedMolecularEncoder                 | transformers                                 |
-+----------------------------------------------+----------------------------------------------+
-| HFPretrainedMolecularGenerator               | transformers                                 |
-+----------------------------------------------+----------------------------------------------+
-| HFPretrainedMolecularGenerator (MolGen)      | transformers, selfies                         |
-+----------------------------------------------+----------------------------------------------+
-| HFPretrainedMolecularGenerator (Molexar)     | transformers, fragment-selfies, molexar      |
-+----------------------------------------------+----------------------------------------------+
-| HFPretrainedMolecularGenerator (SAFE-GPT)    | transformers, safe-mol                       |
-+----------------------------------------------+----------------------------------------------+
-| BFGNNMolecularPredictor                      | torch-scatter                                |
-+----------------------------------------------+----------------------------------------------+
-| GRINMolecularPredictor                       | torch-scatter                                |
-+----------------------------------------------+----------------------------------------------+
-| GRINMolecularPredictor (``repetition_augmentation=True``) | CombineMols                         |
-+----------------------------------------------+----------------------------------------------+
+.. list-table:: Optional dependencies
+   :header-rows: 1
+
+   * - Model
+     - Required packages
+   * - HFPretrainedMolecularEncoder
+     - transformers
+   * - HFPretrainedMolecularGenerator
+     - transformers
+   * - HFPretrainedMolecularGenerator (MolGen)
+     - transformers, selfies
+   * - HFPretrainedMolecularGenerator (Molexar)
+     - transformers, fragment-selfies, molexar
+   * - HFPretrainedMolecularGenerator (SAFE-GPT)
+     - transformers, safe-mol
+   * - GenMolMolecularGenerator
+     - transformers, safe-mol
+   * - BFGNNMolecularPredictor
+     - torch-scatter
+   * - GRINMolecularPredictor
+     - torch-scatter
+   * - GRINMolecularPredictor (``repetition_augmentation=True``)
+     - CombineMols
 
 **For models that require** ``torch-scatter``: install with
 ``pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html``,
@@ -97,6 +101,9 @@ for example ``pip install torch-scatter -f https://data.pyg.org/whl/torch-2.7.1+
 **For Molexar:** ``pip install fragment-selfies loguru`` (`Fragment-SELFIES <https://github.com/fairydance/Fragment-SELFIES>`_) and ``pip install git+https://github.com/fairydance/Molexar.git`` (`Molexar <https://github.com/fairydance/Molexar>`_). Molexar itself requires ``transformers>=5.8``.
 
 **For SAFE-GPT:** ``pip install safe-mol`` (`SAFE <https://github.com/datamol-io/safe>`_).
+
+**For GenMol (Python 3.11+):** From the source checkout, run ``pip install ".[genmol]"``.
+This installs ``transformers==4.57.1`` and ``safe-mol>=0.2.1,<0.3``; ``datasets`` is not required.
 
 Example (SAFE-GPT pretrained generator):
 

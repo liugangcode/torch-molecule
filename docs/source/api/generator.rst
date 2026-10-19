@@ -19,6 +19,8 @@ The following models support conditional generation (click model name to jump to
      - Graph Genetic Algorithm with Random Forests
    * - :class:`MolGPTMolecularGenerator <torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator>`
      - `MolGPT: Molecular Generation Using a Transformer-Decoder Model <https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600>`_
+   * - :class:`GenMolMolecularGenerator <torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator>`
+     - `GenMol: A Drug Discovery Generalist with Discrete Diffusion <https://proceedings.mlr.press/v267/lee25o.html>`_ (scaffold conditioning)
    * - :class:`LSTMMolecularGenerator <torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator>`
      - LSTM
    * - :class:`HFPretrainedMolecularGenerator <torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator>`
@@ -26,8 +28,8 @@ The following models support conditional generation (click model name to jump to
 
 .. rubric:: Training and Generation
 
-- ``fit(X, **kwargs)``: Train the model on given data, where X contains SMILES strings (y should be provided for conditional generation)
-- ``generate(n_samples, **kwargs)``: Generate new molecules and return a list of SMILES strings (y should be provided for conditional generation)
+- ``fit(X, **kwargs)``: Train the model on SMILES strings. Property-conditioned models also accept target values.
+- ``generate(n_samples, **kwargs)``: Generate molecules as SMILES strings, with optional conditions supported by the selected model.
 
 .. rubric:: Model Persistence
 
@@ -100,6 +102,19 @@ Modeling Molecules as Graphs
 
 Modeling Molecules as Sequences
 --------------------------------
+
+.. rubric:: GenMol for De Novo and Scaffold-Conditioned Molecular Generation
+
+GenMol trains on SMILES strings and generates molecules using masked diffusion
+over SAFE fragments. Pass ``scaffold="c1ccccc1"`` to ``generate()`` to retain a
+benzene substructure in generated molecules. Install its optional packages with
+``pip install ".[genmol]"`` from the source checkout.
+
+.. autoclass:: torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator
+   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   :members: fit, generate, load_from_pretrained
+   :undoc-members:
+   :show-inheritance:
 
 .. rubric:: MolGPT for Unconditional/Multi-Conditional Molecular Generation
 .. autoclass:: torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator

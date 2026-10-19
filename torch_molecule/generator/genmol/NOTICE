@@ -1,0 +1,13 @@
+GenMol and BioNeMo masked diffusion components
+Copyright (c) 2024-2025 NVIDIA CORPORATION & AFFILIATES.
+https://github.com/NVIDIA-BioNeMo/genmol
+https://github.com/NVIDIA/bionemo-framework
+
+SAFE-GPT tokenizer and SAFE conversion interfaces
+https://huggingface.co/datamol-io/safe-gpt
+https://github.com/datamol-io/safe
+
+MDLM diffusion and exponential moving average implementation
+https://github.com/kuleshov-group/mdlm
+
+These components are distributed under Apache-2.0; see LICENSE.

@@ -53,6 +53,8 @@ include-package-data = true
     "**/*.json",
     "datasets/data/*",
     "encoder/sand/LICENSE",
+    "generator/genmol/LICENSE",
+    "generator/genmol/NOTICE",
 ]
 
 [tool.pytest.ini_options]
@@ -63,6 +65,10 @@ markers = [
 ]
 
 [project.optional-dependencies]
+genmol = [
+    "transformers==4.57.1",
+    "safe-mol>=0.2.1,<0.3",
+]
 dev = [
     "pytest>=7.0",
     "black",

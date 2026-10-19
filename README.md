@@ -61,6 +61,7 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 | HFPretrainedMolecularGenerator (MolGen) | transformers, [selfies](https://github.com/aspuru-guzik-group/selfies) |
 | HFPretrainedMolecularGenerator (Molexar) | transformers, [fragment-selfies](https://github.com/fairydance/Fragment-SELFIES), [molexar](https://github.com/fairydance/Molexar) |
 | HFPretrainedMolecularGenerator (SAFE-GPT) | transformers, [safe-mol](https://github.com/datamol-io/safe) |
+| GenMolMolecularGenerator | transformers, [safe-mol](https://github.com/datamol-io/safe) |
 | BFGNNMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor | torch-scatter |
 | GRINMolecularPredictor (if enable `repetition_augmentation=True`) | CombineMols |
@@ -76,6 +77,8 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
 **For Molexar:** `pip install fragment-selfies loguru` ([Fragment-SELFIES](https://github.com/fairydance/Fragment-SELFIES)) and `pip install git+https://github.com/fairydance/Molexar.git` ([Molexar](https://github.com/fairydance/Molexar)). Molexar itself requires `transformers>=5.8`.
 
 **For SAFE-GPT:** `pip install safe-mol` ([SAFE](https://github.com/datamol-io/safe)).
+
+**For GenMol (Python 3.11+):** From the source checkout, run `pip install ".[genmol]"`. This installs `transformers==4.57.1` and `safe-mol>=0.2.1,<0.3`; `datasets` is not required.
 
 ```python
 from torch_molecule import HFPretrainedMolecularGenerator
@@ -214,6 +217,7 @@ new_model.load_from_local("qm9_grea.pt")
 
 | Model      | Reference           |
 |------------|---------------------|
+| GenMol     | [GenMol: A Drug Discovery Generalist with Discrete Diffusion. ICML 2025](https://proceedings.mlr.press/v267/lee25o.html) |
 | DeFoG      | [DeFoG: Discrete Flow Matching for Graph Generation. ICML 2025](https://openreview.net/pdf?id=KPRIwWhqAZ) |
 | Graph DiT  | [Graph Diffusion Transformers for Multi-Conditional Molecular Generation. NeurIPS 2024](https://openreview.net/forum?id=cfrDLD1wfO) |
 | DiGress    | [DiGress: Discrete Denoising Diffusion for Graph Generation. ICLR 2023](https://openreview.net/forum?id=UaAD-Nu86WX) |

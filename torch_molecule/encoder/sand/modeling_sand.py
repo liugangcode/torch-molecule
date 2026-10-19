@@ -1,6 +1,5 @@
 """SAND molecular encoder."""
 
-from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
 import numpy as np
@@ -227,16 +226,7 @@ class SANDMolecularEncoder(BaseMolecularEncoder):
         if checkpoint is None:
             params = {name: getattr(self, name) for name in _MODEL_PARAMS}
         else:
-            hyperparameters = checkpoint["hyperparameters"]
-            missing = set(_MODEL_PARAMS) - hyperparameters.keys()
-            if missing:
-                raise ValueError(
-                    "SAND checkpoint requires explicit model hyperparameters. "
-                    "Earlier experimental YAML-config checkpoints need conversion before loading. "
-                    f"Missing: {sorted(missing)}"
-                )
-            params = {name: hyperparameters[name] for name in _MODEL_PARAMS}
-        self._validate_feature_vocab(params)
+            params = {name: checkpoint["hyperparameters"][name] for name in _MODEL_PARAMS}
         return params
 
     def load_from_local(self, path: str) -> None:
@@ -244,82 +234,47 @@ class SANDMolecularEncoder(BaseMolecularEncoder):
         previous = self.__dict__.copy()
         try:
             super().load_from_local(path)
-            self._validate_hyperparameters()
         except Exception:
             self.__dict__.clear()
             self.__dict__.update(previous)
             raise
 
-    @staticmethod
-    def _validate_feature_vocab(params):
-        for name, minimum in (("num_atom_features", 62), ("num_edge_features", 16)):
-            if type(params[name]) is not int or params[name] < minimum:
-                raise ValueError(f"{name} must be at least {minimum} for the fixed RDKit features.")
-
-    def _validate_batch_size(self):
-        if type(self.batch_size) is not int or self.batch_size < 1:
-            raise ValueError("batch_size must be a positive integer.")
-
     def _validate_hyperparameters(self):
-        self._validate_batch_size()
         for name in (
+            "batch_size",
             "num_layer",
             "hidden_size",
             "emb_dim",
-            "num_atom_features",
-            "num_edge_features",
             "num_ivf_quantizers",
             "num_pq_quantizers",
             "ivf_codebook_size",
             "epochs",
             "decay_iters",
         ):
-            if type(getattr(self, name)) is not int or getattr(self, name) < 1:
+            if getattr(self, name) < 1:
                 raise ValueError(f"{name} must be a positive integer.")
-        self._validate_feature_vocab(self.__dict__)
+        for name, minimum in (("num_atom_features", 62), ("num_edge_features", 16)):
+            if getattr(self, name) < minimum:
+                raise ValueError(f"{name} must be at least {minimum} for the fixed RDKit features.")
         if self.encoder_type not in ("gine", "gatv2", "gps"):
             raise ValueError("encoder_type must be gine, gatv2, or gps.")
         if self.encoder_type != "gine" and self.hidden_size % 4:
             raise ValueError("hidden_size must be divisible by 4 for gatv2/gps attention heads.")
-        for name in ("quantize_emb", "normalize_shared_emb"):
-            if type(getattr(self, name)) is not bool:
-                raise ValueError(f"{name} must be a bool.")
         if self.quantize_emb and (
             self.emb_dim % self.num_ivf_quantizers or self.emb_dim % self.num_pq_quantizers
         ):
             raise ValueError(
                 "emb_dim must be divisible by num_ivf_quantizers and num_pq_quantizers."
             )
-        if type(self.uniformity_num_matches) is not int or self.uniformity_num_matches != 1:
+        if self.uniformity_num_matches != 1:
             raise ValueError("uniformity_num_matches must be 1 for query/match pairs.")
-        if type(self.warmup_iters) is not int or not 0 <= self.warmup_iters < self.decay_iters:
-            raise ValueError("warmup_iters must be an integer in [0, decay_iters).")
-        positive = ("learning_rate", "regularization_strength", "grad_clip_value")
-        nonnegative = (
-            "min_lr",
-            "weight_decay",
-            "similarity_loss_weight",
-            "uniformity_loss_weight",
-            "ivf_loss_weight",
-            "pq_loss_weight",
-            "ivf_threshold_ema_dead_code",
-            "ivf_ema_decay",
-        )
-        for name in positive + nonnegative + ("uniformity_margin",):
-            value = getattr(self, name)
-            if value is None and name == "grad_clip_value":
-                continue
-            if (
-                not isinstance(value, (int, float))
-                or isinstance(value, bool)
-                or not np.isfinite(value)
-                or (name in positive and value <= 0)
-                or (name in nonnegative and value < 0)
-            ):
-                raise ValueError(f"{name} must be a finite number within its valid range.")
-        if self.min_lr > self.learning_rate:
-            raise ValueError("min_lr must not exceed learning_rate.")
-        if self.ivf_ema_decay >= 1:
+        if not 0 <= self.warmup_iters < self.decay_iters:
+            raise ValueError("warmup_iters must be in [0, decay_iters).")
+        if self.learning_rate <= 0 or self.regularization_strength <= 0:
+            raise ValueError("learning_rate and regularization_strength must be positive.")
+        if self.grad_clip_value is not None and self.grad_clip_value <= 0:
+            raise ValueError("grad_clip_value must be positive or None.")
+        if not 0 <= self.ivf_ema_decay < 1:
             raise ValueError("ivf_ema_decay must be in [0, 1).")
         weights = [self.similarity_loss_weight, self.uniformity_loss_weight]
         if self.quantize_emb:
@@ -366,10 +321,7 @@ class SANDMolecularEncoder(BaseMolecularEncoder):
             raise ValueError("pairs must be an integer array of shape (M, 2), with M >= 2.")
         if np.any(pair_indices < 0) or np.any(pair_indices >= len(X_train)):
             raise ValueError("pairs indices must be within X_train.")
-        try:
-            scores = np.asarray(y_train, dtype=np.float32)
-        except (TypeError, ValueError) as error:
-            raise ValueError("y_train must contain numeric similarity scores.") from error
+        scores = np.asarray(y_train, dtype=np.float32)
         if scores.ndim != 1 or len(scores) != len(pair_indices) or not np.isfinite(scores).all():
             raise ValueError("y_train must be a finite 1D score array matching pairs.")
         if np.all(scores == scores[0]):
@@ -377,7 +329,6 @@ class SANDMolecularEncoder(BaseMolecularEncoder):
                 "y_train must contain at least two different scores for native rank loss."
             )
 
-        self.device = torch.device(self.device)
         from torch.utils.data import DataLoader
 
         from .dataloader import PairBatchSampler, SANDMolecularGraphDataset
@@ -420,12 +371,6 @@ class SANDMolecularEncoder(BaseMolecularEncoder):
         """Configure AdamW."""
         return self.model.configure_optimizers(), None
 
-    @staticmethod
-    def _check_finite(tensors, stage):
-        checks = [torch.isfinite(tensor).all() for tensor in tensors]
-        if checks and not torch.stack(checks).all():
-            raise FloatingPointError(f"SAND has non-finite {stage}.")
-
     def _train_epoch(self, train_loader, optimizer, epoch=0, global_pbar=None):
         """Train one epoch."""
         self.model.train()
@@ -440,29 +385,9 @@ class SANDMolecularEncoder(BaseMolecularEncoder):
                     "pair similarities or degenerate training molecules."
                 )
             loss.backward()
-            self._check_finite(
-                (
-                    parameter.grad
-                    for parameter in self.model.parameters()
-                    if parameter.grad is not None
-                ),
-                "gradients",
-            )
             if self.grad_clip_value is not None:
-                torch.nn.utils.clip_grad_norm_(
-                    self.model.parameters(), self.grad_clip_value, error_if_nonfinite=True
-                )
+                torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip_value)
             optimizer.step()
-            self._check_finite(self.model.state_dict().values(), "model state after optimizer step")
-            self._check_finite(
-                (
-                    value
-                    for state in optimizer.state.values()
-                    for name, value in state.items()
-                    if name != "step" and isinstance(value, torch.Tensor)
-                ),
-                "optimizer state after optimizer step",
-            )
             # Preserve post-step scheduling: the first update uses the peak rate.
             self.model.update_lr(optimizer, self._global_step)
             self._global_step += 1
@@ -492,17 +417,15 @@ class SANDMolecularEncoder(BaseMolecularEncoder):
         self : SANDMolecularEncoder
             Encoder with loaded weights.
         """
-        if not Path(checkpoint_path).is_file():
-            raise FileNotFoundError(checkpoint_path)
         self._validate_hyperparameters()
+        checkpoint = torch.load(checkpoint_path, map_location=self.device, weights_only=True)
         self.is_fitted_ = False
         self.fitting_loss = []
         self.fitting_epoch = 0
         self._global_step = 0
         self._initialize_model(self.model_class)
-        checkpoint = torch.load(checkpoint_path, map_location=self.device, weights_only=True)
         self.model.load_state_dict(checkpoint["state_dict"])
-        self.model.to(self.device).eval()
+        self.model.eval()
         self.is_fitted_ = True
         return self
 
@@ -513,7 +436,6 @@ class SANDMolecularEncoder(BaseMolecularEncoder):
         self._check_is_fitted()
         if return_type not in ("np", "pt"):
             raise ValueError("return_type must be 'np' or 'pt'.")
-        self._validate_batch_size()
         X, _ = self._validate_inputs(X, return_rdkit_mol=False)
         if not X:
             raise ValueError("X must contain at least one SMILES string.")

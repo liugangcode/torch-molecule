@@ -4,13 +4,18 @@ Build from the repository root in the project environment:
 
 ```bash
 micromamba run -n torch-molecule python -m pip install -r docs/requirements.txt
-micromamba run -n torch-molecule sphinx-build -b html -W --keep-going docs/source artifacts/docs/html
-micromamba run -n torch-molecule python -m http.server 8000 --directory artifacts/docs/html
+micromamba run -n torch-molecule sphinx-build -b html -W --keep-going docs/source docs/build/html
+micromamba run -n torch-molecule python -m http.server 8000 --directory docs/build/html
 ```
 
 `micromamba run -n torch-molecule make -C docs html` writes to the same
-`artifacts/docs/html` directory. Rebuild after changing or pulling documentation;
+`docs/build/html` directory. Rebuild after changing or pulling documentation;
 the HTTP server serves the generated files without rebuilding them.
+
+On a push to `main`, GitHub Actions installs the documentation dependencies,
+builds `docs/build/html`, and publishes that directory to the `gh-pages` branch.
+Generated HTML can remain ignored: the workflow creates it from the tracked
+source files before publishing.
 
 ## Add a model reference
 
@@ -68,7 +73,8 @@ rebuilds. The template also works with Sphinx's text builder.
 After a change, run the strict build above and inspect a class, a method, and a
 dataset page at phone and desktop widths. Check long names, nested parameter
 descriptions, return values, examples, and light/dark themes. Keep screenshots,
-builds, and other review output under `artifacts/`.
+logs, and other review output under `artifacts/`; the website build stays in
+`docs/build/html`.
 
 This structure follows PyTorch's use of [autodoc API pages](https://github.com/pytorch/pytorch/blob/main/docs/source/nn.init.rst)
 and [Sphinx templates](https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html#customizing-templates).

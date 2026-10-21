@@ -115,7 +115,7 @@ From the repository root, inside the project environment:
 .. code-block:: bash
 
    python -m pip install -r docs/requirements.txt
-   python -m sphinx -b html docs/source artifacts/docs/html
-   python -m http.server 8000 --directory artifacts/docs/html
+   python -m sphinx -b html docs/source docs/build/html
+   python -m http.server 8000 --directory docs/build/html
 
 Open ``http://localhost:8000`` to browse the local documentation.

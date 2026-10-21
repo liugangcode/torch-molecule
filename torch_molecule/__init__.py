@@ -38,6 +38,7 @@ from .generator.lstm import LSTMMolecularGenerator
 from .generator.molgpt import MolGPTMolecularGenerator
 from .generator.defog import DeFoGMolecularGenerator
 from .generator.genmol import GenMolMolecularGenerator
+from .generator.demodiff import DemoDiffMolecularGenerator
 from .generator.pretrained import HFPretrainedMolecularGenerator
 
 __all__ = [
@@ -74,5 +75,6 @@ __all__ = [
     'LSTMMolecularGenerator',
     'DeFoGMolecularGenerator',
     'GenMolMolecularGenerator',
+    'DemoDiffMolecularGenerator',
     'HFPretrainedMolecularGenerator',
 ]

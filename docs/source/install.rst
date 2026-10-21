@@ -8,23 +8,24 @@ Installation Steps
 
 Follow these steps in order. 
 
-Create a Conda Environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Create a Mamba Environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
-   conda create --name torch_molecule python=3.11.7
-   conda activate torch_molecule
+   micromamba create --name torch-molecule --channel conda-forge python=3.12 pip
+   eval "$(micromamba shell hook --shell bash)"
+   micromamba activate torch-molecule
 
 a. Install via pip
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
    pip install torch-molecule
 
 b. Install from Source (Latest Version)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
@@ -38,7 +39,7 @@ Then install:
    pip install .
 
 c. Editable Installation for Development
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To work on the code directly, install in "editable" mode.
 

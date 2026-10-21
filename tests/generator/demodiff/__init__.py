@@ -1,0 +1,1 @@
+"""DemoDiff generator tests."""

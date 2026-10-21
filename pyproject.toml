@@ -55,6 +55,7 @@ include-package-data = true
     "encoder/sand/LICENSE",
     "generator/genmol/LICENSE",
     "generator/genmol/NOTICE",
+    "generator/demodiff/assets/*",
 ]
 
 [tool.pytest.ini_options]

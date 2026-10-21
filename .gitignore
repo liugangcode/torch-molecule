@@ -160,6 +160,9 @@ cython_debug/
 #.idea/
 
 # New
+# Machine-local links to generated files on the data disk.
+/storage
+/torchmol_data
 private/
 scripts/*
 !scripts/run_examples.sh
@@ -172,3 +175,4 @@ tools/
 **/*.bak
 procedure.txt
 dev/
+/artifacts/

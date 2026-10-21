@@ -52,6 +52,43 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
    pip install .
    ```
 
+### Storage on this development machine
+
+This checkout stays in `/home/ubuntu/projects/torch-molecule`; generated files
+use the separate disk mounted at `/data`. The local `storage` symbolic link points
+to `/data/ubuntu/projects/torch-molecule`, with `datasets/`, `models/`,
+`checkpoints/` and `outputs/` beneath it. The `torchmol_data` link points to that
+dataset directory, so examples using `local_dir="torchmol_data"` from the
+repository root also write to the data disk. These links are ignored by Git and
+must be configured separately in another checkout.
+
+For scripts and notebooks run from any directory, use explicit paths:
+
+```python
+import os
+from pathlib import Path
+from torch_molecule.datasets import load_qm9
+
+storage = Path(os.environ.get("PROJECT_DATA_ROOT", "/data/ubuntu/projects")) / "torch-molecule"
+(storage / "datasets").mkdir(parents=True, exist_ok=True)
+(storage / "checkpoints").mkdir(parents=True, exist_ok=True)
+data = load_qm9(local_dir=str(storage / "datasets"))
+
+# After fitting your model:
+# model.save_to_local(str(storage / "checkpoints" / "model.pt"))
+```
+
+Save experiment results under `storage/outputs/` and explicitly downloaded model
+directories under `storage/models/`. A relative filename such as `model.pt`
+still writes to the process's current directory, so choose an explicit output
+path in new examples.
+
+`~/.config/project-storage.sh`, loaded by `~/.bashrc`, sets `PROJECT_DATA_ROOT`,
+redirects package and model caches to `/data/ubuntu/cache`, and keeps named mamba
+environments under `/data/ubuntu/envs`. Open a new terminal or source that file
+before starting Python or a notebook kernel. Continue using the dedicated
+`torch-molecule` mamba environment for this project.
+
 ### Additional Packages
 
 | Model | Required Packages |
@@ -93,7 +130,7 @@ print(model.generate(n_samples=5, scaffold="c1ccccc1"))
 
 ## Usage
 
-> More examples can be found in the `examples` and `tests` folders.
+> More examples can be found in the `examples` folder.
 
 `torch-molecule` supports applications in broad domains from chemistry, biology, to materials science. To get started, you can load prepared datasets from `torch_molecule.datasets` (updated after v0.1.3):
 | Dataset | Description | Function |
@@ -217,6 +254,7 @@ new_model.load_from_local("qm9_grea.pt")
 
 | Model      | Reference           |
 |------------|---------------------|
+| DemoDiff   | [Graph Diffusion Transformers are In-Context Molecular Designers. ICLR 2026](https://openreview.net/forum?id=lJ87GN5zJc) |
 | GenMol     | [GenMol: A Drug Discovery Generalist with Discrete Diffusion. ICML 2025](https://proceedings.mlr.press/v267/lee25o.html) |
 | DeFoG      | [DeFoG: Discrete Flow Matching for Graph Generation. ICML 2025](https://openreview.net/pdf?id=KPRIwWhqAZ) |
 | Graph DiT  | [Graph Diffusion Transformers for Multi-Conditional Molecular Generation. NeurIPS 2024](https://openreview.net/forum?id=cfrDLD1wfO) |

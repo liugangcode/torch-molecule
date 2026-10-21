@@ -35,6 +35,35 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   if (!/Mac|iPhone|iPad/.test(navigator.platform)) document.querySelector(".tm-search kbd").textContent = "Ctrl K";
 
+  const drawerLabels = [...document.querySelectorAll(".nav-overlay-icon, .toc-overlay-icon")];
+  drawerLabels.forEach((label) => {
+    const toggle = document.getElementById(label.htmlFor);
+    label.tabIndex = 0;
+    label.setAttribute("role", "button");
+    label.setAttribute("aria-label", label.htmlFor === "__navigation" ? "Toggle documentation navigation" : "Toggle page contents");
+    const sync = () => label.setAttribute("aria-expanded", String(toggle.checked));
+    sync();
+    toggle.addEventListener("change", sync);
+    label.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        label.click();
+      }
+    });
+  });
+  const closeDrawers = () => {
+    document.querySelectorAll(".sidebar-toggle:checked").forEach((toggle) => {
+      toggle.checked = false;
+      toggle.dispatchEvent(new Event("change"));
+    });
+  };
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeDrawers();
+  });
+  document.querySelectorAll(".toc-drawer a, .sidebar-drawer a").forEach((link) => {
+    link.addEventListener("click", closeDrawers);
+  });
+
   const tabs = [...document.querySelectorAll('.tm-code-tabs [role="tab"]')];
   const activateTab = (selected) => {
     tabs.forEach((tab) => {
@@ -88,5 +117,9 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => copy(button, pre.textContent));
     pre.parentElement.append(button);
   });
-  document.querySelectorAll("article pre, article table.docutils").forEach((element) => { element.tabIndex = 0; });
+  document.querySelectorAll("article pre, .table-wrapper").forEach((element) => { element.tabIndex = 0; });
+  document.querySelectorAll(".table-wrapper").forEach((element) => {
+    element.setAttribute("role", "region");
+    element.setAttribute("aria-label", element.querySelector("caption")?.textContent.trim() || "Reference table");
+  });
 });

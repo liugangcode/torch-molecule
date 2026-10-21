@@ -8,6 +8,10 @@ micromamba run -n torch-molecule sphinx-build -b html -W --keep-going docs/sourc
 micromamba run -n torch-molecule python -m http.server 8000 --directory artifacts/docs/html
 ```
 
+`micromamba run -n torch-molecule make -C docs html` writes to the same
+`artifacts/docs/html` directory. Rebuild after changing or pulling documentation;
+the HTTP server serves the generated files without rebuilding them.
+
 ## Add a model reference
 
 Create `docs/source/api/models/MyMolecularPredictor.rst`:

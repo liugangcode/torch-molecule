@@ -11,6 +11,7 @@
 {% else %}
 <nav class="tm-breadcrumb" aria-label="Breadcrumb">
   <a href="{{ pathto('index') }}">Home</a><span aria-hidden="true">/</span>
+  {% for parent in parents %}<a href="{{ parent.link|e }}">{{ parent.title|striptags }}</a><span aria-hidden="true">/</span>{% endfor %}
   <span>{{ title|striptags }}</span>
 </nav>
 {{ super() }}

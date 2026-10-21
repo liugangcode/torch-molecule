@@ -90,7 +90,7 @@ need the labels or pairs described below.
      - :download:`Supervised example <../../examples/encoder/supervised.py>`
    * - :class:`SAND <torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder>`
      - Pairwise similarity scores; dense or compressed molecular descriptors.
-     - :doc:`API and input format <api/encoder>`
+     - :doc:`API and input format <api/models/SANDMolecularEncoder>`
    * - :class:`Hugging Face <torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder>`
      - Load a pretrained sequence encoder, such as ChemBERTa or ChemGPT.
      - :download:`Pretrained encoder example <../../examples/encoder/hfpretrained.py>`
@@ -114,7 +114,7 @@ different purposes and have different input formats.
      - :download:`DemoDiff example <../../examples/generation/demodiff.py>`
    * - :class:`GenMol <torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator>`
      - Masked diffusion over SAFE fragments, optionally retaining a supplied scaffold.
-     - :doc:`API and usage <api/generator>`
+     - :doc:`API and usage <api/models/GenMolMolecularGenerator>`
    * - :class:`GraphDiT <torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator>`
      - Graph diffusion transformer with optional property labels.
      - :download:`GraphDiT example <../../examples/generation/graphdit.py>`

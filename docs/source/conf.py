@@ -8,6 +8,7 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).parent / "_ext"))
 metadata = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]
 
 project = "torch-molecule"
@@ -15,7 +16,12 @@ author = "Gang Liu"
 copyright = f"2025–{date.today().year}, {author}"
 release = metadata["version"]
 version = release
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx.ext.viewcode"]
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx.ext.viewcode", "api_reference"]
+add_module_names = False
+toc_object_entries = False
+autodoc_typehints = "description"
+autodoc_typehints_description_target = "all"
+autodoc_typehints_format = "short"
 templates_path = ["_templates"]
 exclude_patterns = []
 html_theme = "furo"

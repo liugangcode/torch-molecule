@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const followReference = () => {
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target?.classList.contains("tm-api-redirect")) location.replace(target.href);
+  };
+  followReference();
+  window.addEventListener("hashchange", followReference);
   const menu = document.querySelector(".tm-menu-toggle");
   const navigation = document.querySelector(".tm-navigation");
   const search = document.querySelector(".tm-search input");

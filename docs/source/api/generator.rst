@@ -3,7 +3,7 @@ Generator API
 
 Fit a model on SMILES with ``fit(...)`` and sample molecules with
 ``generate(...)``. Conditional inputs and sample-count arguments differ by
-model; use the signatures below when switching methods.
+model; use each model’s reference page when switching methods.
 
 .. list-table:: Generation and conditioning
    :header-rows: 1
@@ -41,140 +41,99 @@ Graph GA does not support Hugging Face uploads or downloads.
 See the :doc:`model catalog <../models>` for method summaries and links to
 examples. Optional dependencies are listed in :doc:`../install`.
 
-Graph models
-------------
 
-.. rubric:: DemoDiff: generation with demonstrations
-
-DemoDiff trains on SMILES and optionally uses other molecules as demonstrations.
-In ``fit()``, ``contexts[i]`` lists indices of other training molecules for target
-``i``; in ``generate()``, ``contexts`` contains demonstration SMILES. Supply
-``score`` as normalized values in [0, 1], with higher values meaning more
-target-like demonstrations. The target's score is fixed to 1 internally.
-Use the same score definition in training and generation. The local example
-uses Morgan fingerprint Tanimoto similarity: 1 means identical fingerprints
-and 0 means no shared fingerprint bits. During generation, scores describe the
-demonstrations in the desired task; they do not guarantee measured similarities
-of generated molecules. Omit both ``contexts`` and ``score`` for
-unconditional training or generation. No additional packages are required.
-
-.. code-block:: python
-
-   from torch_molecule import DemoDiffMolecularGenerator
-
-   smiles = ["CCOCCN", "c1ccccc1CCO", "CC(=O)NCCO"]
-   model = DemoDiffMolecularGenerator(
-       num_layer=2, hidden_size=64, num_head=4,
-       diffusion_steps=50, epochs=20, batch_size=3,
-   )
-   model.fit(
-       smiles,
-       contexts=[[1], [0], [0, 1]],
-       score=[[0.8], [0.8], [0.6, 0.7]],
-   )
-   generated = model.generate(
-       n_samples=10, contexts=[smiles[0]], score=[0.8],
-   )
-
-The scores above are illustrative. Demonstrations guide generation;
-they are not guaranteed substructures. The tokenizer can lose stereochemistry
-and formal charges, while polymer attachment atoms are supported.
-Retrain checkpoints previously trained with distance values and a target score of 0.
-
-.. autoclass:: torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :members: fit, generate
-   :undoc-members:
-   :show-inheritance:
-
-.. rubric:: GraphDiT: graph diffusion transformers
-.. autoclass:: torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :members: fit, generate
-   :undoc-members:
-   :show-inheritance:
-
-.. rubric:: DeFoG: discrete flow matching
-.. autoclass:: torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :members: fit, generate
-   :undoc-members:
-   :show-inheritance:
-
-.. rubric:: Graph GA: genetic search
-.. autoclass:: torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, save_to_hf, load_from_hf
-   :members: fit, generate
-   :undoc-members:
-   :show-inheritance:
-   
-.. automodule:: torch_molecule.generator.graph_ga.oracle
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. rubric:: DiGress: discrete graph diffusion
-.. autoclass:: torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, model_class, dataset_info, model_name
-   :members: fit, generate
-   :undoc-members:
-   :show-inheritance:
-
-.. rubric:: GDSS: score-based graph diffusion
-.. autoclass:: torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :members: fit, generate
-   :undoc-members:
-   :show-inheritance:
-
-.. rubric:: JT-VAE: junction-tree variational autoencoding
-.. autoclass:: torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :members: fit, generate
-   :undoc-members:
-   :show-inheritance:
-
-Sequence models
+Model reference
 ---------------
 
-.. rubric:: GenMol: masked diffusion over SAFE fragments
+.. list-table::
+   :header-rows: 1
+   :widths: 42 58
 
-GenMol trains on SMILES strings and generates molecules using masked diffusion
-over SAFE fragments. Pass ``scaffold="c1ccccc1"`` to ``generate()`` to retain a
-benzene substructure in generated molecules. Install its optional packages with
-``pip install ".[genmol]"`` from the source checkout.
+   * - Class
+     - Purpose
+   * - :class:`DemoDiffMolecularGenerator <torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator>`
+     - Graph diffusion with optional molecular demonstrations and normalized ``score`` values.
 
-.. autoclass:: torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :members: fit, generate, load_from_pretrained
-   :undoc-members:
-   :show-inheritance:
+   * - :class:`GraphDITMolecularGenerator <torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator>`
+     - Graph diffusion transformer with optional property labels.
 
-.. rubric:: MolGPT: autoregressive SMILES generation
-.. autoclass:: torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :members: fit, generate
-   :undoc-members:
-   :show-inheritance:
+   * - :class:`DeFoGMolecularGenerator <torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator>`
+     - Discrete graph flow matching with optional property labels.
 
-.. rubric:: LSTM: recurrent SMILES generation
-.. autoclass:: torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :members: fit, generate
-   :undoc-members:
-   :show-inheritance:
+   * - :class:`GraphGAMolecularGenerator <torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator>`
+     - Genetic search using property labels or a scoring oracle.
 
-Pretrained generators
----------------------
+   * - :class:`DigressMolecularGenerator <torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator>`
+     - Unconditional discrete graph diffusion.
 
-Hugging Face checkpoints can be loaded for de novo and constrained generation
-via :class:`~torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator`.
-Supported families include NovoMolGen, MolGen, Molexar, and SAFE-GPT. Extra
-packages may be required; see :doc:`../install`.
+   * - :class:`GDSSMolecularGenerator <torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator>`
+     - Unconditional score-based graph diffusion.
 
-.. rubric:: Hugging Face Pretrained Generators
-.. autoclass:: torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :members: fit, generate, save_to_local, load_from_local
-   :undoc-members:
-   :show-inheritance:
+   * - :class:`JTVAEMolecularGenerator <torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator>`
+     - Unconditional junction-tree variational autoencoding.
+
+   * - :class:`GenMolMolecularGenerator <torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator>`
+     - Masked diffusion over SAFE fragments, optionally retaining a supplied scaffold.
+
+   * - :class:`MolGPTMolecularGenerator <torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator>`
+     - Autoregressive SMILES transformer with optional properties and scaffold tokens.
+
+   * - :class:`LSTMMolecularGenerator <torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator>`
+     - Recurrent SMILES generation with optional property labels.
+
+   * - :class:`HFPretrainedMolecularGenerator <torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator>`
+     - NovoMolGen, MolGen, Molexar, or SAFE-GPT checkpoints; constraints depend on the model family.
+
+.. toctree::
+   :hidden:
+
+   DemoDiff <models/DemoDiffMolecularGenerator>
+   GraphDiT <models/GraphDITMolecularGenerator>
+   DeFoG <models/DeFoGMolecularGenerator>
+   Graph GA <models/GraphGAMolecularGenerator>
+   DiGress <models/DigressMolecularGenerator>
+   GDSS <models/GDSSMolecularGenerator>
+   JT-VAE <models/JTVAEMolecularGenerator>
+   GenMol <models/GenMolMolecularGenerator>
+   MolGPT <models/MolGPTMolecularGenerator>
+   LSTM <models/LSTMMolecularGenerator>
+   Hugging Face <models/HFPretrainedMolecularGenerator>
+
+.. raw:: html
+
+   <a class="tm-api-redirect" id="torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator" href="models/DemoDiffMolecularGenerator.html#torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator">DemoDiffMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator.fit" href="models/DemoDiffMolecularGenerator.html#torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator.fit">DemoDiffMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator.generate" href="models/DemoDiffMolecularGenerator.html#torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator.generate">DemoDiffMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator" href="models/GraphDITMolecularGenerator.html#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator">GraphDITMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator.fit" href="models/GraphDITMolecularGenerator.html#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator.fit">GraphDITMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator.generate" href="models/GraphDITMolecularGenerator.html#torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator.generate">GraphDITMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator" href="models/DeFoGMolecularGenerator.html#torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator">DeFoGMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator.fit" href="models/DeFoGMolecularGenerator.html#torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator.fit">DeFoGMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator.generate" href="models/DeFoGMolecularGenerator.html#torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator.generate">DeFoGMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator" href="models/GraphGAMolecularGenerator.html#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator">GraphGAMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.fit" href="models/GraphGAMolecularGenerator.html#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.fit">GraphGAMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.generate" href="models/GraphGAMolecularGenerator.html#torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.generate">GraphGAMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator" href="models/DigressMolecularGenerator.html#torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator">DigressMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator.fit" href="models/DigressMolecularGenerator.html#torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator.fit">DigressMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator.generate" href="models/DigressMolecularGenerator.html#torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator.generate">DigressMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator" href="models/GDSSMolecularGenerator.html#torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator">GDSSMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator.fit" href="models/GDSSMolecularGenerator.html#torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator.fit">GDSSMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator.generate" href="models/GDSSMolecularGenerator.html#torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator.generate">GDSSMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator" href="models/JTVAEMolecularGenerator.html#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator">JTVAEMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.fit" href="models/JTVAEMolecularGenerator.html#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.fit">JTVAEMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.generate" href="models/JTVAEMolecularGenerator.html#torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.generate">JTVAEMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator" href="models/GenMolMolecularGenerator.html#torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator">GenMolMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator.fit" href="models/GenMolMolecularGenerator.html#torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator.fit">GenMolMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator.generate" href="models/GenMolMolecularGenerator.html#torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator.generate">GenMolMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator.load_from_pretrained" href="models/GenMolMolecularGenerator.html#torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator.load_from_pretrained">GenMolMolecularGenerator.load_from_pretrained reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator" href="models/MolGPTMolecularGenerator.html#torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator">MolGPTMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator.fit" href="models/MolGPTMolecularGenerator.html#torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator.fit">MolGPTMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator.generate" href="models/MolGPTMolecularGenerator.html#torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator.generate">MolGPTMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator" href="models/LSTMMolecularGenerator.html#torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator">LSTMMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.fit" href="models/LSTMMolecularGenerator.html#torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.fit">LSTMMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.generate" href="models/LSTMMolecularGenerator.html#torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.generate">LSTMMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator" href="models/HFPretrainedMolecularGenerator.html#torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator">HFPretrainedMolecularGenerator reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator.fit" href="models/HFPretrainedMolecularGenerator.html#torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator.fit">HFPretrainedMolecularGenerator.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator.generate" href="models/HFPretrainedMolecularGenerator.html#torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator.generate">HFPretrainedMolecularGenerator.generate reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator.save_to_local" href="models/HFPretrainedMolecularGenerator.html#torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator.save_to_local">HFPretrainedMolecularGenerator.save_to_local reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator.load_from_local" href="models/HFPretrainedMolecularGenerator.html#torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator.load_from_local">HFPretrainedMolecularGenerator.load_from_local reference</a>

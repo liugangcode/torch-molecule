@@ -97,36 +97,58 @@ benchmarks on the intended dataset and split rather than a debugging subset.
 Loader reference
 ----------------
 
-.. rubric:: QM9 — quantum chemical properties
+Choose a loader for its parameters, return values, and a usage example.
 
-.. autofunction:: torch_molecule.datasets.load_qm9
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
 
-.. rubric:: ChEMBL2k — bioactive molecules
+   * - Function
+     - Dataset
+   * - :func:`load_qm9 <torch_molecule.datasets.load_qm9>`
+     - QM9 — quantum chemical properties
 
-.. autofunction:: torch_molecule.datasets.load_chembl2k
+   * - :func:`load_chembl2k <torch_molecule.datasets.load_chembl2k>`
+     - ChEMBL2k — bioactive molecules
 
-.. rubric:: Broad6k — bioactive molecules
+   * - :func:`load_broad6k <torch_molecule.datasets.load_broad6k>`
+     - Broad6k — bioactive molecules
 
-.. autofunction:: torch_molecule.datasets.load_broad6k
+   * - :func:`load_toxcast <torch_molecule.datasets.load_toxcast>`
+     - ToxCast — toxicity assays
 
-.. rubric:: ToxCast — toxicity assays
+   * - :func:`load_admet <torch_molecule.datasets.load_admet>`
+     - ADMET — pharmacokinetic and toxicity properties
 
-.. autofunction:: torch_molecule.datasets.load_toxcast
+   * - :func:`load_gasperm <torch_molecule.datasets.load_gasperm>`
+     - Gas permeability — polymer properties
 
-.. rubric:: ADMET — pharmacokinetic and toxicity properties
+   * - :func:`load_zinc250k <torch_molecule.datasets.load_zinc250k>`
+     - ZINC250k — unlabeled molecules
 
-.. autofunction:: torch_molecule.datasets.load_admet
+.. toctree::
+   :hidden:
 
-.. rubric:: Gas permeability — polymer properties
-
-.. autofunction:: torch_molecule.datasets.load_gasperm
-
-.. rubric:: ZINC250k — unlabeled molecules
-
-.. autofunction:: torch_molecule.datasets.load_zinc250k
+   api/datasets/load_qm9
+   api/datasets/load_chembl2k
+   api/datasets/load_broad6k
+   api/datasets/load_toxcast
+   api/datasets/load_admet
+   api/datasets/load_gasperm
+   api/datasets/load_zinc250k
 
 Dataset interface
 -----------------
 
 .. autoclass:: torch_molecule.datasets.constant.SMILESDataset
    :members: subsample, train_test_split
+
+.. raw:: html
+
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_qm9" href="api/datasets/load_qm9.html#torch_molecule.datasets.load_qm9">load_qm9 reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_chembl2k" href="api/datasets/load_chembl2k.html#torch_molecule.datasets.load_chembl2k">load_chembl2k reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_broad6k" href="api/datasets/load_broad6k.html#torch_molecule.datasets.load_broad6k">load_broad6k reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_toxcast" href="api/datasets/load_toxcast.html#torch_molecule.datasets.load_toxcast">load_toxcast reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_admet" href="api/datasets/load_admet.html#torch_molecule.datasets.load_admet">load_admet reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_gasperm" href="api/datasets/load_gasperm.html#torch_molecule.datasets.load_gasperm">load_gasperm reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_zinc250k" href="api/datasets/load_zinc250k.html#torch_molecule.datasets.load_zinc250k">load_zinc250k reference</a>

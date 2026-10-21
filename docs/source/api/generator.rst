@@ -38,7 +38,7 @@ Use ``save_to_local(path)`` and ``load_from_local(path)`` to save and restore
 trained models. Additional persistence methods are documented in :doc:`base`;
 Graph GA does not support Hugging Face uploads or downloads.
 
-See the :doc:`model catalog <../models>` for method summaries and links to
+See the :doc:`model collection <../models>` for method summaries and links to
 examples. Optional dependencies are listed in :doc:`../install`.
 
 

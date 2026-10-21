@@ -18,7 +18,7 @@ loads an existing checkpoint with ``fit()``.
    * - ``save_to_local(path)`` / ``load_from_local(path)``
      - Save or restore a trained model.
 
-Compare all 9 encoders in the :doc:`model catalog <../models>`. See
+Compare all 9 encoders in the :doc:`model collection <../models>`. See
 :doc:`../install` for optional pretrained-model dependencies.
 
 

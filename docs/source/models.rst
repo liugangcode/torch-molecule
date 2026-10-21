@@ -1,5 +1,5 @@
-Model catalog
-=============
+Model collection
+================
 
 Choose from **31 model classes** for property prediction, molecular representations,
 and generation. Models accept SMILES strings and handle their own graph or sequence

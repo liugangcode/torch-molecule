@@ -20,7 +20,7 @@ each class for its output fields and task-specific options.
    * - ``save_to_local(path)`` / ``load_from_local(path)``
      - Save or restore a trained model.
 
-Compare all 11 predictors in the :doc:`model catalog <../models>`. Checkpoint
+Compare all 11 predictors in the :doc:`model collection <../models>`. Checkpoint
 and Hugging Face methods are documented in :doc:`base`.
 
 

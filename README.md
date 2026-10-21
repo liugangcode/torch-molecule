@@ -91,31 +91,21 @@ before starting Python or a notebook kernel. Continue using the dedicated
 
 ### Additional Packages
 
-| Model | Required Packages |
-|-------|-------------------|
-| HFPretrainedMolecularEncoder | transformers |
-| HFPretrainedMolecularGenerator | transformers |
-| HFPretrainedMolecularGenerator (MolGen) | transformers, [selfies](https://github.com/aspuru-guzik-group/selfies) |
-| HFPretrainedMolecularGenerator (Molexar) | transformers, [fragment-selfies](https://github.com/fairydance/Fragment-SELFIES), [molexar](https://github.com/fairydance/Molexar) |
-| HFPretrainedMolecularGenerator (SAFE-GPT) | transformers, [safe-mol](https://github.com/datamol-io/safe) |
-| GenMolMolecularGenerator | transformers, [safe-mol](https://github.com/datamol-io/safe) |
-| BFGNNMolecularPredictor | torch-scatter |
-| GRINMolecularPredictor | torch-scatter |
-| GRINMolecularPredictor (if enable `repetition_augmentation=True`) | CombineMols |
+Optional model requirements install as pip extras, e.g. `pip install "torch-molecule[molgen]"` (or `pip install ".[molgen]"` from a source checkout):
 
-**For models that require `torch-scatter`**: Install using the following command: `pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html`, e.g.,
+| Extra | Installs | For |
+|-------|----------|-----|
+| `hf` | transformers | HFPretrainedMolecularEncoder, HFPretrainedMolecularGenerator |
+| `molgen` | transformers, selfies>=2.1 | MolGen |
+| `molexar` | transformers>=5.8, loguru | Molexar; also install [Fragment-SELFIES](https://github.com/fairydance/Fragment-SELFIES) and [Molexar](https://github.com/fairydance/Molexar) from their repositories (not on PyPI) |
+| `safe` | transformers, safe-mol | SAFE-GPT |
+| `genmol` | transformers==4.57.1, safe-mol>=0.2.1,<0.3 | GenMol (Python 3.11+) |
+| `scatter` | torch-scatter | BFGNN, GRIN |
+| `grin` | torch-scatter, CombineMols | GRIN with `repetition_augmentation=True` |
 
-> `pip install torch-scatter -f https://data.pyg.org/whl/torch-2.7.1+cu128.html`
+`torch-scatter` wheels match your torch and CUDA build, so pass the PyG index, e.g.
 
-**For models that require `transformers`:** `pip install transformers`
-
-**For MolGen (`selfies`):** `pip install "selfies>=2.1"`. Source: [aspuru-guzik-group/selfies](https://github.com/aspuru-guzik-group/selfies).
-
-**For Molexar:** `pip install fragment-selfies loguru` ([Fragment-SELFIES](https://github.com/fairydance/Fragment-SELFIES)) and `pip install git+https://github.com/fairydance/Molexar.git` ([Molexar](https://github.com/fairydance/Molexar)). Molexar itself requires `transformers>=5.8`.
-
-**For SAFE-GPT:** `pip install safe-mol` ([SAFE](https://github.com/datamol-io/safe)).
-
-**For GenMol (Python 3.11+):** From the source checkout, run `pip install ".[genmol]"`. This installs `transformers==4.57.1` and `safe-mol>=0.2.1,<0.3`; `datasets` is not required.
+> `pip install "torch-molecule[scatter]" -f https://data.pyg.org/whl/torch-2.7.1+cu128.html`
 
 ```python
 from torch_molecule import HFPretrainedMolecularGenerator

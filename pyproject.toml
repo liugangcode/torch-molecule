@@ -66,6 +66,14 @@ markers = [
 ]
 
 [project.optional-dependencies]
+# Optional model requirements, as listed under "Additional Packages" in the README.
+# torch-scatter needs the PyG wheel index for your torch/CUDA build (see README).
+scatter = ["torch-scatter"]
+grin = ["torch-scatter", "CombineMols"]
+hf = ["transformers"]
+molgen = ["transformers", "selfies>=2.1"]
+molexar = ["transformers>=5.8", "loguru"]  # plus Fragment-SELFIES and Molexar, not on PyPI
+safe = ["transformers", "safe-mol"]
 genmol = [
     "transformers==4.57.1",
     "safe-mol>=0.2.1,<0.3",

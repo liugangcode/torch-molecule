@@ -90,20 +90,23 @@ the core project dependencies.
 
    python -m pip install -e ".[genmol]"
 
-**Hugging Face models.** Install the packages required by your chosen checkpoint.
-For example, SAFE-GPT uses:
+**Hugging Face models.** Install the extra for your chosen checkpoint:
+``hf`` (transformers only), ``molgen``, ``molexar``, or ``safe``. For example,
+SAFE-GPT uses:
 
 .. code-block:: bash
 
-   python -m pip install transformers safe-mol
+   python -m pip install "torch-molecule[safe]"
 
-For Molexar, follow the package instructions in the
-`Molexar repository <https://github.com/fairydance/Molexar>`_ and
-`Fragment-SELFIES repository <https://github.com/fairydance/Fragment-SELFIES>`_.
+Molexar and Fragment-SELFIES are not on PyPI; after the ``molexar`` extra,
+install them from the
+`Molexar <https://github.com/fairydance/Molexar>`_ and
+`Fragment-SELFIES <https://github.com/fairydance/Fragment-SELFIES>`_ repositories.
 Use a separate environment when checkpoint dependencies conflict with another
 model's version requirements.
 
-**Graph scatter operations.** Select a ``torch-scatter`` wheel matching your
+**Graph scatter operations.** Install the ``scatter`` extra (``grin`` adds
+``CombineMols``) with a ``torch-scatter`` wheel matching your
 installed PyTorch and CUDA versions using the
 `PyTorch Geometric installation guide <https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html>`_.
 

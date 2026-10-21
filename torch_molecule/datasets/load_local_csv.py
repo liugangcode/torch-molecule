@@ -72,16 +72,19 @@ def load_gasperm(
     target_cols: List[str] = ["CH4", "CO2", "H2", "N2", "O2"],
 ) -> SMILESDataset:
     """
-    Load gas permeability dataset from local CSV.gz file within torch_molecule package.
-    
-    Args:
-        target_cols (List[str]): List of target column names. Default is ["CH4", "CO2", "H2", "N2", "O2"]
-    
-    Returns:
-        SMILESDataset: 
-            Dataset object with data (SMILES strings) and target (property values) attributes
-            - data: List[str]
-            - target: np.ndarray
+    Load polymer gas-permeability measurements included with the package.
+
+    Parameters
+    ----------
+    target_cols : list of str, default=['CH4', 'CO2', 'H2', 'N2', 'O2']
+        Target columns to select, in the desired output order.
+
+    Returns
+    -------
+    dataset : SMILESDataset
+        ``data`` is a list of SMILES strings. ``target`` is a NumPy array
+        of shape ``(n_molecules, len(target_cols))``, with ``NaN`` for
+        missing measurements.
     """
     input_cols = ["SMILES"]
     filename = "polymer_gas_permeability.csv.gz"

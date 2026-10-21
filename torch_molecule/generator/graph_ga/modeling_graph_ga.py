@@ -20,7 +20,7 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
     References
     ----------
     - A Graph-Based Genetic Algorithm and Its Application to the Multiobjective Evolution of 
-    Median Molecules. Journal of Chemical Information and Computer Sciences. https://pubs.acs.org/doi/10.1021/ci034290p
+      Median Molecules. Journal of Chemical Information and Computer Sciences. https://pubs.acs.org/doi/10.1021/ci034290p
     - Implementation: https://github.com/wenhao-gao/mol_opt
 
     Parameters
@@ -123,8 +123,9 @@ class GraphGAMolecularGenerator(BaseMolecularGenerator):
             
             For a customized oracle, it should be a Callable object, i.e., ``oracle(X, y)``.
             Please properly wrap your oracle to take two inputs:
-              - a list of ``rdkit.Chem.rdchem.Mol`` objects and 
-              - a (1, num_task) numpy array of target values that all the molecules in the list target to achieve. Take care of NaN values if any.
+
+            - a list of ``rdkit.Chem.rdchem.Mol`` objects and
+            - a (1, num_task) numpy array of target values that all the molecules in the list target to achieve. Take care of NaN values if any.
             
             Scores for different tasks should be aggregated, i.e., mean or sum. The return should be a list of scores (float).
             Smaller scores mean closer to the target goal.

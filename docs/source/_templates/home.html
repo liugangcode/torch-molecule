@@ -1,0 +1,117 @@
+<div class="tm-home">
+  <section class="tm-hero" aria-labelledby="tm-hero-title">
+    <div class="tm-hero-copy">
+      <div class="tm-eyebrow"><span class="tm-status-dot"></span> Open-source molecular machine learning</div>
+      <h1 id="tm-hero-title">Molecular learning.<br><em>Made accessible.</em></h1>
+      <p class="tm-hero-description">Predict properties, learn representations, and generate molecules with a familiar Python interface.</p>
+      <div class="tm-actions">
+        <a class="tm-button tm-primary" href="{{ pathto('install') }}">Get started <span aria-hidden="true">↗</span></a>
+        <a class="tm-button tm-secondary" href="{{ pathto('models') }}">Explore the models <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="tm-install"><span aria-hidden="true">$</span><code>pip install torch-molecule</code><button class="tm-copy" data-copy-text="pip install torch-molecule" aria-label="Copy installation command">Copy</button></div>
+      <p class="tm-install-note">Working with the newest models? <a href="{{ pathto('install') }}#install-from-source">Install from source.</a></p>
+    </div>
+    <figure class="tm-molecule-panel">
+      <div class="tm-panel-label"><span>SMALL MOLECULES. LARGE POSSIBILITIES.</span><span aria-hidden="true">↗</span></div>
+      <img src="{{ pathto('_static/molecular-graph.svg', 1) }}" width="500" height="380" alt="Aspirin represented as a molecular graph, with atoms as nodes and bonds as edges."/>
+      <figcaption><code>SMILES</code><span aria-hidden="true">→</span><code>PyTorch</code><span aria-hidden="true">→</span><span>Your next experiment</span></figcaption>
+    </figure>
+  </section>
+
+  <div class="tm-facts" aria-label="Project overview">
+    <span><strong>{{ model_total }}</strong> model classes</span>
+    <span><strong>3</strong> core tasks</span>
+    <span><strong>SMILES</strong> as input</span>
+    <span><strong>PyTorch</strong> at the core</span>
+    <a href="{{ pathto('additional') }}">MIT licensed <span aria-hidden="true">↗</span></a>
+  </div>
+
+  <section class="tm-section" aria-labelledby="tm-tasks-title">
+    <div class="tm-section-heading"><div><p class="tm-eyebrow">A toolkit for your next question</p><h2 id="tm-tasks-title">Start with what you want to do.</h2></div><a class="tm-text-link" href="{{ pathto('models') }}">All models <span aria-hidden="true">↗</span></a></div>
+    <div class="tm-task-grid">
+      <a class="tm-task-card" href="{{ pathto('api/predictor') }}">
+        <div class="tm-card-top"><span class="tm-card-number">01 / PROPERTY PREDICTION</span><span aria-hidden="true">↗</span></div>
+        <svg class="tm-task-art" viewBox="0 0 230 72" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 58H216M20 62V9" opacity=".25"/><path d="m35 49 35-12 40 5 39-25 47-3"/></g><g fill="currentColor"><circle cx="35" cy="49" r="3"/><circle cx="70" cy="37" r="3"/><circle cx="110" cy="42" r="3"/><circle cx="149" cy="17" r="3"/><circle cx="196" cy="14" r="3"/></g></svg>
+        <h3>Predict</h3><p>Connect molecular structure to properties. Train regression and classification models.</p>
+        <div class="tm-card-models">GNN <span>·</span> GREA <span>·</span> GRIN</div><div class="tm-card-bottom">{{ model_counts.predictors }} predictors <span>Explore the API →</span></div>
+      </a>
+      <a class="tm-task-card" href="{{ pathto('api/encoder') }}">
+        <div class="tm-card-top"><span class="tm-card-number">02 / REPRESENTATION LEARNING</span><span aria-hidden="true">↗</span></div>
+        <svg class="tm-task-art" viewBox="0 0 230 72" aria-hidden="true"><g fill="currentColor"><circle cx="37" cy="22" r="4"/><circle cx="53" cy="39" r="4" opacity=".7"/><circle cx="28" cy="46" r="4" opacity=".4"/><circle cx="66" cy="20" r="4" opacity=".6"/><circle cx="83" cy="41" r="4" opacity=".3"/><circle cx="147" cy="39" r="4"/><circle cx="164" cy="18" r="4" opacity=".6"/><circle cx="180" cy="35" r="4" opacity=".4"/><circle cx="165" cy="54" r="4" opacity=".7"/><circle cx="197" cy="53" r="4" opacity=".3"/></g><path d="M8 56C5 7 78-6 96 31S18 86 8 56ZM125 42c0-50 85-43 88 2s-86 38-88-2Z" fill="none" stroke="currentColor" stroke-dasharray="3 5" opacity=".35"/></svg>
+        <h3>Encode</h3><p>Turn molecules into useful vectors for similarity search and downstream learning.</p>
+        <div class="tm-card-models">GraphMAE <span>·</span> MoAmA <span>·</span> SAND</div><div class="tm-card-bottom">{{ model_counts.encoders }} encoders <span>Explore the API →</span></div>
+      </a>
+      <a class="tm-task-card" href="{{ pathto('api/generator') }}">
+        <div class="tm-card-top"><span class="tm-card-number">03 / MOLECULAR GENERATION</span><span aria-hidden="true">↗</span></div>
+        <svg class="tm-task-art" viewBox="0 0 230 72" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="m23 21 19-10 19 10v23L42 55 23 44ZM61 21l20-10 19 10M61 44l20 11"/><path d="M114 34h24m-7-6 7 6-7 6" opacity=".45"/><path d="m162 21 19-10 19 10v23l-19 11-19-11ZM200 21l20-10M200 44l20 11M162 21l-10-9"/></g><g fill="currentColor"><circle cx="81" cy="55" r="4"/><circle cx="100" cy="21" r="4"/><circle cx="220" cy="11" r="4"/><circle cx="152" cy="12" r="4"/></g></svg>
+        <h3>Generate</h3><p>Explore chemical space with graph diffusion, sequence models, and molecular search.</p>
+        <div class="tm-card-models">GraphDiT <span>·</span> GenMol <span>·</span> DemoDiff</div><div class="tm-card-bottom">{{ model_counts.generators }} generators <span>Explore the API →</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="tm-section tm-code-section" aria-labelledby="tm-code-title">
+    <div class="tm-code-intro"><p class="tm-eyebrow">Less setup. More science.</p><h2 id="tm-code-title">A familiar interface.<br>A molecular input.</h2><p>Start with SMILES. Configure a model, call <code>fit()</code>, and put it to work.</p><p>Explicit parameters, CPU and GPU support, and local checkpoints keep your experiments in your hands.</p><a class="tm-text-link" href="{{ pathto('example') }}">Follow the quickstart <span aria-hidden="true">↗</span></a><p class="tm-code-note">These small examples demonstrate the API. Use a larger dataset and held-out evaluation for your research.</p></div>
+    <div class="tm-code-window">
+      <div class="tm-code-bar"><div class="tm-code-tabs" role="tablist" aria-label="Choose a task example"><button id="tm-tab-predict" role="tab" aria-selected="true" aria-controls="tm-example-predict">Predict</button><button id="tm-tab-encode" role="tab" aria-selected="false" aria-controls="tm-example-encode" tabindex="-1">Encode</button><button id="tm-tab-generate" role="tab" aria-selected="false" aria-controls="tm-example-generate" tabindex="-1">Generate</button></div><button class="tm-copy tm-code-copy" aria-label="Copy Python example">Copy</button></div>
+      <div id="tm-example-predict" role="tabpanel" aria-labelledby="tm-tab-predict" tabindex="0">
+<pre><code><span class="tm-kw">from</span> torch_molecule <span class="tm-kw">import</span> GNNMolecularPredictor
+
+smiles = [<span class="tm-str">"CCO"</span>, <span class="tm-str">"CCCO"</span>, <span class="tm-str">"c1ccccc1"</span>, <span class="tm-str">"CCOC(C)=O"</span>]
+mass = [[46.07], [60.10], [78.11], [88.11]]
+
+model = GNNMolecularPredictor(
+    num_task=1, task_type=<span class="tm-str">"regression"</span>,
+    num_layer=2, hidden_size=64, epochs=10,
+)
+model.fit(smiles, mass)
+result = model.predict([<span class="tm-str">"CCCCO"</span>])
+<span class="tm-kw">print</span>(result[<span class="tm-str">"prediction"</span>])</code></pre>
+      </div>
+      <div id="tm-example-encode" role="tabpanel" aria-labelledby="tm-tab-encode" tabindex="0">
+<pre><code><span class="tm-kw">from</span> torch_molecule <span class="tm-kw">import</span> AttrMaskMolecularEncoder
+
+smiles = [<span class="tm-str">"CCO"</span>, <span class="tm-str">"CCCO"</span>, <span class="tm-str">"c1ccccc1"</span>, <span class="tm-str">"CCOC(C)=O"</span>]
+
+encoder = AttrMaskMolecularEncoder(
+    num_layer=2,
+    hidden_size=64,
+    epochs=10,
+)
+encoder.fit(smiles)
+embeddings = encoder.encode(smiles)
+<span class="tm-kw">print</span>(embeddings.shape)</code></pre>
+      </div>
+      <div id="tm-example-generate" role="tabpanel" aria-labelledby="tm-tab-generate" tabindex="0">
+<pre><code><span class="tm-kw">from</span> torch_molecule <span class="tm-kw">import</span> DemoDiffMolecularGenerator
+
+smiles = [<span class="tm-str">"CCO"</span>, <span class="tm-str">"CCCO"</span>, <span class="tm-str">"c1ccccc1"</span>, <span class="tm-str">"CCOC(C)=O"</span>]
+
+model = DemoDiffMolecularGenerator(
+    num_layer=2, hidden_size=64, num_head=4,
+    diffusion_steps=20, epochs=25,
+    learning_rate=1e-3,
+)
+model.fit(smiles)
+molecules = model.generate(n_samples=5)
+<span class="tm-kw">print</span>(molecules)</code></pre>
+      </div>
+      <div class="tm-code-status"><span><span class="tm-status-dot"></span> Python · train from scratch</span><a href="{{ pathto('install') }}">Installation guide ↗</a></div>
+    </div>
+  </section>
+
+  <section class="tm-section tm-recent" aria-labelledby="tm-recent-title">
+    <div class="tm-section-heading"><div><p class="tm-eyebrow">In the current source</p><h2 id="tm-recent-title">More ways to explore molecules.</h2></div><a class="tm-text-link" href="{{ pathto('models') }}">Browse the model collection <span aria-hidden="true">↗</span></a></div>
+    <div class="tm-method-list">
+      <a href="{{ pathto('api/models/DemoDiffMolecularGenerator') }}"><span class="tm-method-tag">Generation</span><h3>DemoDiff</h3><p>Guide graph diffusion with demonstration molecules and similarity scores.</p><span class="tm-method-arrow" aria-hidden="true">↗</span></a>
+      <a href="{{ pathto('api/models/GenMolMolecularGenerator') }}"><span class="tm-method-tag">Generation</span><h3>GenMol</h3><p>Generate SAFE sequences with masked diffusion and optional scaffolds.</p><span class="tm-method-arrow" aria-hidden="true">↗</span></a>
+      <a href="{{ pathto('api/models/SANDMolecularEncoder') }}"><span class="tm-method-tag">Representation</span><h3>SAND</h3><p>Learn molecular embeddings from pairs and their similarity scores.</p><span class="tm-method-arrow" aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <section class="tm-resources" aria-labelledby="tm-resources-title">
+    <div><p class="tm-eyebrow">Built for research. Ready to use.</p><h2 id="tm-resources-title">Find your next step.</h2><p>From a first experiment to a closer look at the implementation.</p></div>
+    <div class="tm-resource-links"><a href="{{ pathto('overview') }}"><span><strong>User guide</strong><small>Choose a workflow and understand the API.</small></span><span aria-hidden="true">↗</span></a><a href="{{ pathto('dataset') }}"><span><strong>Datasets</strong><small>Load molecular data and create evaluation splits.</small></span><span aria-hidden="true">↗</span></a><a href="{{ pathto('additional') }}"><span><strong>Contribute</strong><small>Report an issue or bring a new method to the project.</small></span><span aria-hidden="true">↗</span></a></div>
+  </section>
+  <div id="tm-copy-status" class="tm-sr-only" role="status" aria-live="polite"></div>
+</div>

@@ -1,59 +1,154 @@
-Datasets Overview
-====================================================
+Datasets
+========
 
-The ``torch-molecule`` package provides easy access to a wide range of datasets
-(locally or from the Hugging Face Hub). Loaders return a
-:class:`~torch_molecule.datasets.constant.SMILESDataset` with ``.data``
-(SMILES strings) and ``.target`` (property array, or ``None`` for unlabeled sets).
+Model inputs are lists of SMILES strings. For supervised prediction, add a
+numerical target array with shape ``(n_molecules, n_tasks)``. Dataset loaders
+return a :class:`~torch_molecule.datasets.constant.SMILESDataset` with ``data``
+and ``target`` attributes; unlabeled datasets have ``target=None``.
 
-Built-in loaders
-----------------
+Load a dataset
+--------------
 
-.. rubric:: QM9
-.. autofunction:: torch_molecule.datasets.load_qm9
-
-.. rubric:: ChEMBL2k (a small subset from ChEMBL database)
-.. autofunction:: torch_molecule.datasets.load_chembl2k
-
-.. rubric:: Broad6k
-.. autofunction:: torch_molecule.datasets.load_broad6k
-
-.. rubric:: ToxCast (The US EPA Toxicity Forecaster program)
-.. autofunction:: torch_molecule.datasets.load_toxcast
-
-.. rubric:: ADMET (absorption-distribution-metabolism-excretion-toxicity)
-.. autofunction:: torch_molecule.datasets.load_admet
-
-.. rubric:: Gas Permeability for polymers
-.. autofunction:: torch_molecule.datasets.load_gasperm
-
-.. rubric:: ZINC250k (unlabeled; generation / screening)
-.. autofunction:: torch_molecule.datasets.load_zinc250k
-
-``SMILESDataset`` and splitting
--------------------------------
-
-.. autoclass:: torch_molecule.datasets.constant.SMILESDataset
-   :members: subsample, train_test_split
-   :undoc-members:
-   :show-inheritance:
-
-Supported ``train_test_split`` methods:
-
-- ``"random"``: i.i.d. baseline split
-- ``"scaffold"``: hold out unseen Bemis-Murcko scaffolds
-- ``"butina"``: hold out unseen Taylor-Butina clusters (Morgan / Tanimoto)
-- ``"size"``: split by heavy-atom count
-
-Example:
+QM9 and the other Hub datasets download on first use and reuse files in your
+chosen directory. Select properties with ``target_cols``.
 
 .. code-block:: python
 
    from torch_molecule.datasets import load_qm9
 
-   data = load_qm9(local_dir="torchmol_data")
-   # Split the full dataset. subsample() is only for local debugging / CI —
-   # do not shrink a benchmark just to make Butina cheaper.
-   train, val = data.train_test_split(test_size=0.2, method="scaffold", seed=42)
+   data = load_qm9(
+       local_dir="artifacts/datasets/qm9",
+       target_cols=["homo", "lumo", "gap"],
+   )
+   print(len(data.data))
+   print(data.target.shape)  # (n_molecules, 3)
 
-   smiles_list, property_np_array = train.data, train.target
+The polymer gas-permeability dataset is included with the package:
+
+.. code-block:: python
+
+   from torch_molecule.datasets import load_gasperm
+
+   data = load_gasperm(target_cols=["CO2", "N2"])
+   print(data.target.shape)  # (n_polymers, 2)
+
+Bring your own data
+-------------------
+
+Pass SMILES directly to a model, or wrap them in ``SMILESDataset`` to use the
+built-in splitting tools. For an unlabeled CSV with a ``smiles`` column:
+
+.. code-block:: python
+
+   import csv
+   from torch_molecule.datasets import SMILESDataset
+
+   with open("data/molecule100.csv", newline="") as handle:
+       smiles = [row["smiles"] for row in csv.DictReader(handle)]
+
+   data = SMILESDataset(data=smiles, target=None)
+
+The source checkout includes ``data/molecule100.csv`` and ``data/polymer100.csv``
+for small local examples. Both contain SMILES; the polymer dataset uses ``*``
+attachment atoms. Check the selected model's support for polymer inputs and
+attachment atoms before using it for polymer generation.
+
+Choose a split
+--------------
+
+.. code-block:: python
+
+   from torch_molecule.datasets import load_gasperm
+
+   data = load_gasperm(target_cols=["CO2"])
+   train, validation = data.train_test_split(
+       test_size=0.2,
+       method="random",
+       seed=42,
+   )
+
+Pass ``train.data`` and ``train.target`` to ``fit``; supply the validation data
+through ``X_val`` and ``y_val`` when the model supports them. Keep a separate
+test set for a final performance estimate.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 45 33
+
+   * - Method
+     - Holdout strategy
+     - Useful for
+   * - ``random``
+     - Randomly assign molecules to each split
+     - An initial baseline
+   * - ``scaffold``
+     - Keep Bemis–Murcko scaffold groups separate
+     - Testing on unseen molecular scaffolds
+   * - ``butina``
+     - Separate clusters based on Morgan fingerprint Tanimoto similarity
+     - Testing on different structural neighborhoods
+   * - ``size``
+     - Split by heavy-atom count
+     - Testing transfer across molecular sizes
+
+Use ``subsample(n=100, seed=42)`` for a quick local experiment. Evaluate
+benchmarks on the intended dataset and split rather than a debugging subset.
+
+Loader reference
+----------------
+
+Choose a loader for its parameters, return values, and a usage example.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Function
+     - Dataset
+   * - :func:`load_qm9 <torch_molecule.datasets.load_qm9>`
+     - QM9 — quantum chemical properties
+
+   * - :func:`load_chembl2k <torch_molecule.datasets.load_chembl2k>`
+     - ChEMBL2k — bioactive molecules
+
+   * - :func:`load_broad6k <torch_molecule.datasets.load_broad6k>`
+     - Broad6k — bioactive molecules
+
+   * - :func:`load_toxcast <torch_molecule.datasets.load_toxcast>`
+     - ToxCast — toxicity assays
+
+   * - :func:`load_admet <torch_molecule.datasets.load_admet>`
+     - ADMET — pharmacokinetic and toxicity properties
+
+   * - :func:`load_gasperm <torch_molecule.datasets.load_gasperm>`
+     - Gas permeability — polymer properties
+
+   * - :func:`load_zinc250k <torch_molecule.datasets.load_zinc250k>`
+     - ZINC250k — unlabeled molecules
+
+.. toctree::
+   :hidden:
+
+   api/datasets/load_qm9
+   api/datasets/load_chembl2k
+   api/datasets/load_broad6k
+   api/datasets/load_toxcast
+   api/datasets/load_admet
+   api/datasets/load_gasperm
+   api/datasets/load_zinc250k
+
+Dataset interface
+-----------------
+
+.. autoclass:: torch_molecule.datasets.constant.SMILESDataset
+   :members: subsample, train_test_split
+
+.. raw:: html
+
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_qm9" href="api/datasets/load_qm9.html#torch_molecule.datasets.load_qm9">load_qm9 reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_chembl2k" href="api/datasets/load_chembl2k.html#torch_molecule.datasets.load_chembl2k">load_chembl2k reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_broad6k" href="api/datasets/load_broad6k.html#torch_molecule.datasets.load_broad6k">load_broad6k reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_toxcast" href="api/datasets/load_toxcast.html#torch_molecule.datasets.load_toxcast">load_toxcast reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_admet" href="api/datasets/load_admet.html#torch_molecule.datasets.load_admet">load_admet reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_gasperm" href="api/datasets/load_gasperm.html#torch_molecule.datasets.load_gasperm">load_gasperm reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.datasets.load_zinc250k" href="api/datasets/load_zinc250k.html#torch_molecule.datasets.load_zinc250k">load_zinc250k reference</a>

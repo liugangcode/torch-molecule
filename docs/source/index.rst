@@ -1,48 +1,46 @@
-.. image:: ../../assets/logo.png
-   :align: center
+:hide-toc:
 
-torch-molecule documentation
-============================
+torch-molecule
+==============
 
-Welcome to the torch-molecule. torch-molecule is a deep learning package designed for molecular discovery. 
+Molecular machine learning with a familiar Python interface. Predict molecular
+properties, learn representations, and generate molecules from SMILES with PyTorch.
 
-It offers a user-friendly interface similar to `sklearn`, and includes model checkpoints for efficient deployment and benchmarking across various molecular tasks. The package currently focuses on three main components:
-
-- Predictors: Molecular property prediction models that make predictions (regression or classification) based on molecular graphs.
-- Generators: Molecular graph generators that generate new molecules.
-- Encoders: Molecular graph encoders that convert molecular graphs into a vector representation.
+.. meta::
+   :description: Open-source molecular machine learning in Python. Explore property prediction, representation learning, and molecular generation with torch-molecule.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Getting Started:
+   :caption: Get started
    :hidden:
 
    install
-   example
-   dataset
    overview
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Main Components:
-   :hidden:
-
-   api/predictor
-   api/generator
-   api/encoder
+   example
 
 .. toctree::
    :maxdepth: 1
-   :caption: API for utilities:
+   :caption: Explore
    :hidden:
 
-   api/nn
+   models
+   dataset
+
+.. toctree::
+   :maxdepth: 1
+   :caption: API reference
+   :hidden:
+
+   api/predictor
+   api/encoder
+   api/generator
    api/base
+   api/nn
    api/utils
 
 .. toctree::
    :maxdepth: 1
-   :caption: Additional Information:
+   :caption: Project
    :hidden:
 
    additional

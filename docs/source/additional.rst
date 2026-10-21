@@ -1,53 +1,51 @@
-Project Overview
-----------------
+About the project
+=================
 
-``torch-molecule`` is a package under active development to support molecular discovery using deep learning. It provides a simple, ``sklearn``-style interface and model checkpoints for fast deployment and benchmarking.
+``torch-molecule`` brings molecular property prediction, representation learning,
+and generation into a shared Python interface. It combines PyTorch models with
+SMILES inputs, training utilities, dataset loaders, and checkpoint persistence.
 
-Main components:
+The project is developed openly on
+`GitHub <https://github.com/liugangcode/torch-molecule>`_. Browse the
+:doc:`overview` for supported workflows or read the class references for method
+papers and original implementations.
 
-1. **Predictive Models**
-   - ✔ GREA, SGIR, IRM, GIN/GCN w/ virtual, DIR, SSR
-   - ✔ GRIN, BFGNN, RPGNN
-   - ✔ SMILES-based LSTM / Transformers
-   - ⏳ More models
+Contribute
+----------
 
-2. **Generative Models**
-   - ✔ Graph DiT, GraphGA, DiGress, GDSS, JTVAE, MolGPT, LSTM
-   - ✔ DeFoG
-   - ✔ Hugging Face pretrained generators: NovoMolGen, MolGen, Molexar, SAFE-GPT
-   - ⏳ More models
+`Report an issue <https://github.com/liugangcode/torch-molecule/issues>`_ with a
+small reproducible example, your package version, and the relevant error output.
+Model integrations, documentation improvements, and additional examples are
+welcome through pull requests.
 
-3. **Representation Models**
-   - ✔ MoAMa, GraphMAE, AttrMasking, ContextPred, EdgePred, InfoGraph, Supervised
-   - ✔ Hugging Face pretrained encoders (ChemBERTa, ChemGPT, and related checkpoints)
-   - ⏳ More models and pretrained checkpoints
+For a local development installation:
 
-.. note::
+.. code-block:: bash
 
-   This project is in active development. Interfaces and features may change.
+   micromamba activate torch-molecule
+   python -m pip install -e ".[dev]"
 
-Project Structure
------------------
-
-.. code-block:: text
-
-   torch_molecule
-   ├── base
-   ├── datasets
-   ├── encoder
-   ├── generator
-   ├── nn
-   ├── predictor
-   └── utils
-
-Acknowledgements
-----------------
-
-This project was adapted from `python-project-template <https://github.com/lwaekfjlk/python-project-template>`_.
+Keep method-specific code with its model, follow comparable classes, and add
+focused tests and a usable example. See :doc:`install` for building the docs.
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-- **Man Hei Matthew Thom**: Pretrained Generator (NovoMolGen, MolGen, Molexar, SAFE-GPT), dataset splitting modules
-- **Eric Inae**: MoAMa, GraphMAE, AttrMasking, ContextPred, EdgePred
-- **Yihan Zhu**: DeFoG, GRIN, BFGNN, RPGNN, Transformer (SMILES)
+The following contributors have added model families and data utilities:
+
+* **Man Hei Matthew Thom** — pretrained generators and dataset splitting.
+* **Eric Inae** — Moama, GraphMAE, AttrMask, ContextPred, and EdgePred.
+* **Yihan Zhu** — DeFoG, GRIN, BFGNN, RPGNN, and the SMILES Transformer.
+
+See the
+`repository contributors <https://github.com/liugangcode/torch-molecule/graphs/contributors>`_
+for the current contributor list.
+
+License and acknowledgements
+----------------------------
+
+The project is distributed under the
+`MIT license <https://github.com/liugangcode/torch-molecule/blob/main/LICENSE>`_.
+Integrated methods retain their accompanying licenses and attribution.
+The initial project structure was adapted from
+`python-project-template <https://github.com/lwaekfjlk/python-project-template>`_.

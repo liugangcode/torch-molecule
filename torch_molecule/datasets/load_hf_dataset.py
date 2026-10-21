@@ -138,24 +138,25 @@ def load_qm9(
     Load QM9 dataset from Hugging Face Hub.
 
     Source: http://quantum-machine.org/datasets/
-    
+
     Parameters
     ----------
-    local_dir : str, optional
-        Path where the data should be saved, by default "torchmol_data"
-    target_cols : List[str], optional
-        List of target column names, by default ["gap"]
-    return_local_data_path : bool, optional
-        Whether to return the local data path, by default False
-    
+    local_dir : str, default="torchmol_data"
+        Directory used to cache the downloaded dataset. Existing files are reused.
+    target_cols : list of str, default=['gap']
+        Target columns to select, in the desired output order.
+    return_local_data_path : bool, default=False
+        Also return the path to the cached dataset file.
+
     Returns
     -------
-    Tuple[SMILESDataset, str] or SMILESDataset
-        If return_local_data_path is False:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-        If return_local_data_path is True:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-            - local_data_path: Path where the data is saved
+    dataset : SMILESDataset
+        ``data`` is a list of SMILES strings. ``target`` is a NumPy array
+        of shape ``(n_molecules, len(target_cols))``, with ``NaN`` for
+        missing measurements.
+    local_data_path : str, optional
+        Path to the cached CSV file, returned alongside ``dataset`` only
+        when ``return_local_data_path=True``.
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
         repo_id="liuganghuggingface/QM9",
@@ -179,24 +180,25 @@ def load_chembl2k(
     Load ChEMBL2K dataset from Hugging Face Hub.
 
     ChEMBL2K is introduced from "Learning Molecular Representation in a Cell" (ICLR 2025)
-    
+
     Parameters
     ----------
-    local_dir : str, optional
-        Path where the data should be saved, by default "torchmol_data"
-    target_cols : List[str], optional
-        List of target column names, by default ["ABCB1", "ABL1", "ADRA1D", "ADRA2B", "ADRB2", "CA12", "CA2", "CA9", "CACNA1H", "CDK2", "CHRM1", "CHRM3", "CHRM4", "CNR1", "CYP1A2", "CYP2C19", "CYP2C9", "CYP2D6", "CYP3A4", "DRD2", "DRD3", "DRD4", "EGFR", "ESR1", "FLT1", "HRH1", "HTR1A", "HTR2A", "HTR2B", "HTR2C", "HTR6", "KCNH2", "KDR", "LCK", "MCL1", "OPRK1", "PPARG", "PTGS1", "SIGMAR1", "SLC6A2", "SLC6A4"]
-    return_local_data_path : bool, optional
-        Whether to return the local data path, by default False
-    
+    local_dir : str, default="torchmol_data"
+        Directory used to cache the downloaded dataset. Existing files are reused.
+    target_cols : list of str, optional
+        List of target column names, in the desired output order. By default, all configured targets are selected.
+    return_local_data_path : bool, default=False
+        Also return the path to the cached dataset file.
+
     Returns
     -------
-    Tuple[SMILESDataset, str] or SMILESDataset
-        If return_local_data_path is False:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-        If return_local_data_path is True:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-            - local_data_path: Path where the data is saved
+    dataset : SMILESDataset
+        ``data`` is a list of SMILES strings. ``target`` is a NumPy array
+        of shape ``(n_molecules, len(target_cols))``, with ``NaN`` for
+        missing measurements.
+    local_data_path : str, optional
+        Path to the cached CSV file, returned alongside ``dataset`` only
+        when ``return_local_data_path=True``.
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
         repo_id="liuganghuggingface/InfoAlign-Data",
@@ -223,24 +225,25 @@ def load_broad6k(
     Broad6K is introduced from "Learning Molecular Representation in a Cell" (ICLR 2025)
 
     TODO: replace the column names with the original names
-    
+
     Parameters
     ----------
-    local_dir : str, optional
-        Path where the data should be saved, by default "torchmol_data"
-    target_cols : List[str], optional
-        List of target column names, by default all tasks
-    return_local_data_path : bool, optional
-        Whether to return the local data path, by default False
-    
+    local_dir : str, default="torchmol_data"
+        Directory used to cache the downloaded dataset. Existing files are reused.
+    target_cols : list of str, optional
+        List of target column names, in the desired output order. By default, all configured targets are selected.
+    return_local_data_path : bool, default=False
+        Also return the path to the cached dataset file.
+
     Returns
     -------
-    Tuple[SMILESDataset, str] or SMILESDataset
-        If return_local_data_path is False:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-        If return_local_data_path is True:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-            - local_data_path: Path where the data is saved
+    dataset : SMILESDataset
+        ``data`` is a list of SMILES strings. ``target`` is a NumPy array
+        of shape ``(n_molecules, len(target_cols))``, with ``NaN`` for
+        missing measurements.
+    local_data_path : str, optional
+        Path to the cached CSV file, returned alongside ``dataset`` only
+        when ``return_local_data_path=True``.
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
         repo_id="liuganghuggingface/InfoAlign-Data",
@@ -265,24 +268,25 @@ def load_toxcast(
     Load ToxCast dataset from Hugging Face Hub.
 
     Source: https://www.epa.gov/comptox-tools/exploring-toxcast-data
-    
+
     Parameters
     ----------
-    local_dir : str, optional
-        Path where the data should be saved, by default "torchmol_data"
-    target_cols : List[str], optional
-        List of target column names, by default all tasks
-    return_local_data_path : bool, optional
-        Whether to return the local data path, by default False
-    
+    local_dir : str, default="torchmol_data"
+        Directory used to cache the downloaded dataset. Existing files are reused.
+    target_cols : list of str, optional
+        List of target column names, in the desired output order. By default, all configured targets are selected.
+    return_local_data_path : bool, default=False
+        Also return the path to the cached dataset file.
+
     Returns
     -------
-    Tuple[SMILESDataset, str] or SMILESDataset
-        If return_local_data_path is False:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-        If return_local_data_path is True:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-            - local_data_path: Path where the data is saved
+    dataset : SMILESDataset
+        ``data`` is a list of SMILES strings. ``target`` is a NumPy array
+        of shape ``(n_molecules, len(target_cols))``, with ``NaN`` for
+        missing measurements.
+    local_data_path : str, optional
+        Path to the cached CSV file, returned alongside ``dataset`` only
+        when ``return_local_data_path=True``.
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
         repo_id="liuganghuggingface/toxcast",
@@ -306,26 +310,27 @@ def load_admet(
 ):
     """
     Load ADMET dataset from Hugging Face Hub.
-    
+
     Source: https://github.com/swansonk14/admet_ai/blob/main/admet_ai/resources/data/admet.csv
-    
+
     Parameters
     ----------
-    local_dir : str, optional
-        Path where the data should be saved, by default "torchmol_data"
-    target_cols : List[str], optional
-        List of target column names, by default all tasks
-    return_local_data_path : bool, optional
-        Whether to return the local data path, by default False
-    
+    local_dir : str, default="torchmol_data"
+        Directory used to cache the downloaded dataset. Existing files are reused.
+    target_cols : list of str, optional
+        List of target column names, in the desired output order. By default, all configured targets are selected.
+    return_local_data_path : bool, default=False
+        Also return the path to the cached dataset file.
+
     Returns
     -------
-    Tuple[SMILESDataset, str] or SMILESDataset
-        If return_local_data_path is False:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-        If return_local_data_path is True:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-            - local_data_path: Path where the data is saved
+    dataset : SMILESDataset
+        ``data`` is a list of SMILES strings. ``target`` is a NumPy array
+        of shape ``(n_molecules, len(target_cols))``, with ``NaN`` for
+        missing measurements.
+    local_data_path : str, optional
+        Path to the cached CSV file, returned alongside ``dataset`` only
+        when ``return_local_data_path=True``.
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
         repo_id="liuganghuggingface/admet",
@@ -346,22 +351,21 @@ def load_zinc250k(
 ):
     """
     Load ZINC250K dataset from Hugging Face Hub.
-    
+
     Parameters
     ----------
-    local_dir : str, optional
-        Path where the data should be saved, by default "torchmol_data"
-    return_local_data_path : bool, optional
-        Whether to return the local data path, by default False
+    local_dir : str, default="torchmol_data"
+        Directory used to cache the downloaded dataset. Existing files are reused.
+    return_local_data_path : bool, default=False
+        Also return the path to the cached dataset file.
 
     Returns
     -------
-    Tuple[SMILESDataset, str] or SMILESDataset
-        If return_local_data_path is False:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-        If return_local_data_path is True:
-            - molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes
-            - local_data_path: Path where the data is saved
+    dataset : SMILESDataset
+        ``data`` is a list of SMILES strings and ``target`` is ``None``.
+    local_data_path : str, optional
+        Path to the cached CSV file, returned alongside ``dataset`` only
+        when ``return_local_data_path=True``.
     """
     smiles_list, property_numpy, local_data_path = _load_from_hf(
         repo_id="liuganghuggingface/zinc250k",

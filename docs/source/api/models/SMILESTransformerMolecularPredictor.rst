@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.smiles_transformer.modeling_transformer.SMILESTransformerMolecularPredictor.predict
 
+.. _SMILESTransformerMolecularPredictor-example:
+
 Example
 -------
 
-:download:`Transformer example <../../../../examples/prediction/smilestransformer.py>`.
+.. literalinclude:: ../../../../examples/prediction/smilestransformer.py
+   :language: python
+   :caption: examples/prediction/smilestransformer.py
+   :class: tm-example

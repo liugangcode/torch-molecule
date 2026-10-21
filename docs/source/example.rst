@@ -122,7 +122,7 @@ selects similar molecules as demonstrations. Run it from the repository root:
 It trains for 25 epochs, saves and reloads the model, and writes losses and
 generated molecules under ``artifacts/demodiff/examples_similarity/``.
 Use ``--epochs`` or ``--device`` to change the run. See the
-:download:`complete DemoDiff example <../../examples/generation/demodiff.py>`
+:ref:`complete DemoDiff example <DemoDiffMolecularGenerator-example>`
 and :doc:`api/generator` for the input format and generation options.
 
 Generate molecules with GenMol

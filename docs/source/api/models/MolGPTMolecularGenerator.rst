@@ -38,7 +38,12 @@ generate
 
 .. automethod:: torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator.generate
 
+.. _MolGPTMolecularGenerator-example:
+
 Example
 -------
 
-:download:`MolGPT example <../../../../examples/generation/molgpt.py>`.
+.. literalinclude:: ../../../../examples/generation/molgpt.py
+   :language: python
+   :caption: examples/generation/molgpt.py
+   :class: tm-example

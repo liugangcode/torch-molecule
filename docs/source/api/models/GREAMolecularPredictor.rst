@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.predict
 
+.. _GREAMolecularPredictor-example:
+
 Example
 -------
 
-:download:`GREA example <../../../../examples/prediction/grea.py>`.
+.. literalinclude:: ../../../../examples/prediction/grea.py
+   :language: python
+   :caption: examples/prediction/grea.py
+   :class: tm-example

@@ -38,7 +38,12 @@ generate
 
 .. automethod:: torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator.generate
 
+.. _JTVAEMolecularGenerator-example:
+
 Example
 -------
 
-:download:`JT-VAE example <../../../../examples/generation/jtvae.py>`.
+.. literalinclude:: ../../../../examples/generation/jtvae.py
+   :language: python
+   :caption: examples/generation/jtvae.py
+   :class: tm-example

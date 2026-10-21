@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor.predict
 
+.. _GNNMolecularPredictor-example:
+
 Example
 -------
 
-:download:`GNN example <../../../../examples/prediction/gnn.py>`.
+.. literalinclude:: ../../../../examples/prediction/gnn.py
+   :language: python
+   :caption: examples/prediction/gnn.py
+   :class: tm-example

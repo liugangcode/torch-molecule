@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor.predict
 
+.. _LSTMMolecularPredictor-example:
+
 Example
 -------
 
-:download:`LSTM example <../../../../examples/prediction/lstm.py>`.
+.. literalinclude:: ../../../../examples/prediction/lstm.py
+   :language: python
+   :caption: examples/prediction/lstm.py
+   :class: tm-example

@@ -38,7 +38,12 @@ encode
 
 .. automethod:: torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder.encode
 
+.. _InfoGraphMolecularEncoder-example:
+
 Example
 -------
 
-:download:`InfoGraph example <../../../../examples/encoder/infograph.py>`.
+.. literalinclude:: ../../../../examples/encoder/infograph.py
+   :language: python
+   :caption: examples/encoder/infograph.py
+   :class: tm-example

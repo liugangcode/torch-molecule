@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor.predict
 
+.. _BFGNNMolecularPredictor-example:
+
 Example
 -------
 
-:download:`BFGNN example <../../../../examples/prediction/bfgnn.py>`.
+.. literalinclude:: ../../../../examples/prediction/bfgnn.py
+   :language: python
+   :caption: examples/prediction/bfgnn.py
+   :class: tm-example

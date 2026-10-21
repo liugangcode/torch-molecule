@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.rpgnn.modeling_rpgnn.RPGNNMolecularPredictor.predict
 
+.. _RPGNNMolecularPredictor-example:
+
 Example
 -------
 
-:download:`RPGNN example <../../../../examples/prediction/rpgnn.py>`.
+.. literalinclude:: ../../../../examples/prediction/rpgnn.py
+   :language: python
+   :caption: examples/prediction/rpgnn.py
+   :class: tm-example

@@ -38,7 +38,12 @@ encode
 
 .. automethod:: torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder.encode
 
+.. _SupervisedMolecularEncoder-example:
+
 Example
 -------
 
-:download:`Supervised example <../../../../examples/encoder/supervised.py>`.
+.. literalinclude:: ../../../../examples/encoder/supervised.py
+   :language: python
+   :caption: examples/encoder/supervised.py
+   :class: tm-example

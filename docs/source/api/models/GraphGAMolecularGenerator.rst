@@ -38,10 +38,15 @@ generate
 
 .. automethod:: torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator.generate
 
+.. _GraphGAMolecularGenerator-example:
+
 Example
 -------
 
-:download:`Graph GA example <../../../../examples/generation/graphga.py>`.
+.. literalinclude:: ../../../../examples/generation/graphga.py
+   :language: python
+   :caption: examples/generation/graphga.py
+   :class: tm-example
 
 Scoring oracles
 ---------------

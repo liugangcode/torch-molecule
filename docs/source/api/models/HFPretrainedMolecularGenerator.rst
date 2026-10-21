@@ -52,7 +52,12 @@ load_from_local
 
 .. automethod:: torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator.load_from_local
 
+.. _HFPretrainedMolecularGenerator-example:
+
 Example
 -------
 
-:download:`SAFE-GPT example <../../../../examples/generation/pretrained_safe_gpt.py>`.
+.. literalinclude:: ../../../../examples/generation/pretrained_safe_gpt.py
+   :language: python
+   :caption: examples/generation/pretrained_safe_gpt.py
+   :class: tm-example

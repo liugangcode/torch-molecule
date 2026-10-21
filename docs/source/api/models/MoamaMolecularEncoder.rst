@@ -38,7 +38,12 @@ encode
 
 .. automethod:: torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder.encode
 
+.. _MoamaMolecularEncoder-example:
+
 Example
 -------
 
-:download:`MoAmA example <../../../../examples/encoder/moama.py>`.
+.. literalinclude:: ../../../../examples/encoder/moama.py
+   :language: python
+   :caption: examples/encoder/moama.py
+   :class: tm-example

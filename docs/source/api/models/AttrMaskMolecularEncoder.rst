@@ -38,7 +38,12 @@ encode
 
 .. automethod:: torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder.encode
 
+.. _AttrMaskMolecularEncoder-example:
+
 Example
 -------
 
-:download:`AttrMask example <../../../../examples/encoder/attrmask.py>`.
+.. literalinclude:: ../../../../examples/encoder/attrmask.py
+   :language: python
+   :caption: examples/encoder/attrmask.py
+   :class: tm-example

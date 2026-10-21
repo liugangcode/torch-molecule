@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.sgir.modeling_sgir.SGIRMolecularPredictor.predict
 
+.. _SGIRMolecularPredictor-example:
+
 Example
 -------
 
-:download:`SGIR example <../../../../examples/prediction/sgir.py>`.
+.. literalinclude:: ../../../../examples/prediction/sgir.py
+   :language: python
+   :caption: examples/prediction/sgir.py
+   :class: tm-example

@@ -38,7 +38,12 @@ generate
 
 .. automethod:: torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator.generate
 
+.. _DeFoGMolecularGenerator-example:
+
 Example
 -------
 
-:download:`DeFoG example <../../../../examples/generation/defog.py>`.
+.. literalinclude:: ../../../../examples/generation/defog.py
+   :language: python
+   :caption: examples/generation/defog.py
+   :class: tm-example

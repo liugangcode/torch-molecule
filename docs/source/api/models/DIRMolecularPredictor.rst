@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor.predict
 
+.. _DIRMolecularPredictor-example:
+
 Example
 -------
 
-:download:`DIR example <../../../../examples/prediction/dir.py>`.
+.. literalinclude:: ../../../../examples/prediction/dir.py
+   :language: python
+   :caption: examples/prediction/dir.py
+   :class: tm-example

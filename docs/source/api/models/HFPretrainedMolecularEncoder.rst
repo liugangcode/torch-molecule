@@ -52,7 +52,12 @@ load_from_hf
 
 .. automethod:: torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.load_from_hf
 
+.. _HFPretrainedMolecularEncoder-example:
+
 Example
 -------
 
-:download:`Pretrained encoder example <../../../../examples/encoder/hfpretrained.py>`.
+.. literalinclude:: ../../../../examples/encoder/hfpretrained.py
+   :language: python
+   :caption: examples/encoder/hfpretrained.py
+   :class: tm-example

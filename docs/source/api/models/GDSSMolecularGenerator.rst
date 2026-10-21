@@ -38,7 +38,12 @@ generate
 
 .. automethod:: torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator.generate
 
+.. _GDSSMolecularGenerator-example:
+
 Example
 -------
 
-:download:`GDSS example <../../../../examples/generation/gdss.py>`.
+.. literalinclude:: ../../../../examples/generation/gdss.py
+   :language: python
+   :caption: examples/generation/gdss.py
+   :class: tm-example

@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor.predict
 
+.. _IRMMolecularPredictor-example:
+
 Example
 -------
 
-:download:`IRM example <../../../../examples/prediction/irm.py>`.
+.. literalinclude:: ../../../../examples/prediction/irm.py
+   :language: python
+   :caption: examples/prediction/irm.py
+   :class: tm-example

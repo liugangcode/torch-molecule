@@ -38,7 +38,12 @@ encode
 
 .. automethod:: torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder.encode
 
+.. _EdgePredMolecularEncoder-example:
+
 Example
 -------
 
-:download:`EdgePred example <../../../../examples/encoder/edgepred.py>`.
+.. literalinclude:: ../../../../examples/encoder/edgepred.py
+   :language: python
+   :caption: examples/encoder/edgepred.py
+   :class: tm-example

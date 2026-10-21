@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.ssr.modeling_ssr.SSRMolecularPredictor.predict
 
+.. _SSRMolecularPredictor-example:
+
 Example
 -------
 
-:download:`SSR example <../../../../examples/prediction/ssr.py>`.
+.. literalinclude:: ../../../../examples/prediction/ssr.py
+   :language: python
+   :caption: examples/prediction/ssr.py
+   :class: tm-example

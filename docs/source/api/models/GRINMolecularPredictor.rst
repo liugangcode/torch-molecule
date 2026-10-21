@@ -45,7 +45,12 @@ predict
 
 .. automethod:: torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor.predict
 
+.. _GRINMolecularPredictor-example:
+
 Example
 -------
 
-:download:`GRIN example <../../../../examples/prediction/grin.py>`.
+.. literalinclude:: ../../../../examples/prediction/grin.py
+   :language: python
+   :caption: examples/prediction/grin.py
+   :class: tm-example

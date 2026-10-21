@@ -4,7 +4,7 @@ Model catalog
 Choose from **31 model classes** for property prediction, molecular representations,
 and generation. Models accept SMILES strings and handle their own graph or sequence
 representations. Select a model below to see its parameters and method signatures.
-Example links download the Python source bundled with this documentation.
+Example links open the code directly in each model’s reference page.
 
 Predict properties
 ------------------
@@ -21,37 +21,37 @@ Start with GNN for a graph baseline or a SMILES model for a sequence baseline.
      - Example
    * - :class:`GNN <torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor>`
      - GIN or GCN message passing, with optional virtual nodes.
-     - :download:`GNN example <../../examples/prediction/gnn.py>`
+     - :ref:`GNN example <GNNMolecularPredictor-example>`
    * - :class:`GREA <torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor>`
      - Graph rationales and environment-based data augmentation.
-     - :download:`GREA example <../../examples/prediction/grea.py>`
+     - :ref:`GREA example <GREAMolecularPredictor-example>`
    * - :class:`SGIR <torch_molecule.predictor.sgir.modeling_sgir.SGIRMolecularPredictor>`
      - Semi-supervised learning for imbalanced regression targets.
-     - :download:`SGIR example <../../examples/prediction/sgir.py>`
+     - :ref:`SGIR example <SGIRMolecularPredictor-example>`
    * - :class:`GRIN <torch_molecule.predictor.grin.modeling_grin.GRINMolecularPredictor>`
      - Repetition-invariant graph representations for polymers.
-     - :download:`GRIN example <../../examples/prediction/grin.py>`
+     - :ref:`GRIN example <GRINMolecularPredictor-example>`
    * - :class:`BFGNN <torch_molecule.predictor.bfgnn.modeling_bfgnn.BFGNNMolecularPredictor>`
      - Graph learning aligned with the Bellman–Ford algorithm.
-     - :download:`BFGNN example <../../examples/prediction/bfgnn.py>`
+     - :ref:`BFGNN example <BFGNNMolecularPredictor-example>`
    * - :class:`DIR <torch_molecule.predictor.dir.modeling_dir.DIRMolecularPredictor>`
      - Learning invariant graph rationales.
-     - :download:`DIR example <../../examples/prediction/dir.py>`
+     - :ref:`DIR example <DIRMolecularPredictor-example>`
    * - :class:`IRM <torch_molecule.predictor.irm.modeling_irm.IRMMolecularPredictor>`
      - Invariant risk minimization with graph neural networks.
-     - :download:`IRM example <../../examples/prediction/irm.py>`
+     - :ref:`IRM example <IRMMolecularPredictor-example>`
    * - :class:`RPGNN <torch_molecule.predictor.rpgnn.modeling_rpgnn.RPGNNMolecularPredictor>`
      - Relational pooling over node permutations.
-     - :download:`RPGNN example <../../examples/prediction/rpgnn.py>`
+     - :ref:`RPGNN example <RPGNNMolecularPredictor-example>`
    * - :class:`SSR <torch_molecule.predictor.ssr.modeling_ssr.SSRMolecularPredictor>`
      - Regularization for generalization across graph sizes.
-     - :download:`SSR example <../../examples/prediction/ssr.py>`
+     - :ref:`SSR example <SSRMolecularPredictor-example>`
    * - :class:`LSTM <torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor>`
      - Recurrent sequence learning from SMILES.
-     - :download:`LSTM example <../../examples/prediction/lstm.py>`
+     - :ref:`LSTM example <LSTMMolecularPredictor-example>`
    * - :class:`SMILES Transformer <torch_molecule.predictor.smiles_transformer.modeling_transformer.SMILESTransformerMolecularPredictor>`
      - Transformer sequence learning from SMILES.
-     - :download:`Transformer example <../../examples/prediction/smilestransformer.py>`
+     - :ref:`Transformer example <SMILESTransformerMolecularPredictor-example>`
 
 Learn molecular representations
 -------------------------------
@@ -69,31 +69,31 @@ need the labels or pairs described below.
      - Example
    * - :class:`AttrMask <torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder>`
      - Reconstruct masked atom attributes.
-     - :download:`AttrMask example <../../examples/encoder/attrmask.py>`
+     - :ref:`AttrMask example <AttrMaskMolecularEncoder-example>`
    * - :class:`MoAmA <torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder>`
      - Motif-aware attribute masking and fingerprint reconstruction.
-     - :download:`MoAmA example <../../examples/encoder/moama.py>`
+     - :ref:`MoAmA example <MoamaMolecularEncoder-example>`
    * - :class:`GraphMAE <torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder>`
      - Graph masked autoencoding.
-     - :download:`GraphMAE example <../../examples/encoder/graphmae.py>`
+     - :ref:`GraphMAE example <GraphMAEMolecularEncoder-example>`
    * - :class:`ContextPred <torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder>`
      - Predict molecular subgraph contexts.
-     - :download:`ContextPred example <../../examples/encoder/contextpred.py>`
+     - :ref:`ContextPred example <ContextPredMolecularEncoder-example>`
    * - :class:`EdgePred <torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder>`
      - Predict whether pairs of atoms are connected.
-     - :download:`EdgePred example <../../examples/encoder/edgepred.py>`
+     - :ref:`EdgePred example <EdgePredMolecularEncoder-example>`
    * - :class:`InfoGraph <torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder>`
      - Learn agreement between graph and substructure representations.
-     - :download:`InfoGraph example <../../examples/encoder/infograph.py>`
+     - :ref:`InfoGraph example <InfoGraphMolecularEncoder-example>`
    * - :class:`Supervised <torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder>`
      - Molecular property labels or computed molecular descriptors.
-     - :download:`Supervised example <../../examples/encoder/supervised.py>`
+     - :ref:`Supervised example <SupervisedMolecularEncoder-example>`
    * - :class:`SAND <torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder>`
      - Pairwise similarity scores; dense or compressed molecular descriptors.
      - :doc:`API and input format <api/models/SANDMolecularEncoder>`
    * - :class:`Hugging Face <torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder>`
      - Load a pretrained sequence encoder, such as ChemBERTa or ChemGPT.
-     - :download:`Pretrained encoder example <../../examples/encoder/hfpretrained.py>`
+     - :ref:`Pretrained encoder example <HFPretrainedMolecularEncoder-example>`
 
 Generate molecules
 ------------------
@@ -111,37 +111,37 @@ different purposes and have different input formats.
      - Example
    * - :class:`DemoDiff <torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator>`
      - Graph diffusion with optional molecular demonstrations and normalized ``score`` values.
-     - :download:`DemoDiff example <../../examples/generation/demodiff.py>`
+     - :ref:`DemoDiff example <DemoDiffMolecularGenerator-example>`
    * - :class:`GenMol <torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator>`
      - Masked diffusion over SAFE fragments, optionally retaining a supplied scaffold.
      - :doc:`API and usage <api/models/GenMolMolecularGenerator>`
    * - :class:`GraphDiT <torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator>`
      - Graph diffusion transformer with optional property labels.
-     - :download:`GraphDiT example <../../examples/generation/graphdit.py>`
+     - :ref:`GraphDiT example <GraphDITMolecularGenerator-example>`
    * - :class:`DeFoG <torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator>`
      - Discrete graph flow matching with optional property labels.
-     - :download:`DeFoG example <../../examples/generation/defog.py>`
+     - :ref:`DeFoG example <DeFoGMolecularGenerator-example>`
    * - :class:`DiGress <torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator>`
      - Unconditional discrete graph diffusion.
-     - :download:`DiGress example <../../examples/generation/digress.py>`
+     - :ref:`DiGress example <DigressMolecularGenerator-example>`
    * - :class:`GDSS <torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator>`
      - Unconditional score-based graph diffusion.
-     - :download:`GDSS example <../../examples/generation/gdss.py>`
+     - :ref:`GDSS example <GDSSMolecularGenerator-example>`
    * - :class:`JT-VAE <torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator>`
      - Unconditional junction-tree variational autoencoding.
-     - :download:`JT-VAE example <../../examples/generation/jtvae.py>`
+     - :ref:`JT-VAE example <JTVAEMolecularGenerator-example>`
    * - :class:`Graph GA <torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator>`
      - Genetic search using property labels or a scoring oracle.
-     - :download:`Graph GA example <../../examples/generation/graphga.py>`
+     - :ref:`Graph GA example <GraphGAMolecularGenerator-example>`
    * - :class:`MolGPT <torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator>`
      - Autoregressive SMILES transformer with optional properties and scaffold tokens.
-     - :download:`MolGPT example <../../examples/generation/molgpt.py>`
+     - :ref:`MolGPT example <MolGPTMolecularGenerator-example>`
    * - :class:`LSTM <torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator>`
      - Recurrent SMILES generation with optional property labels.
-     - :download:`LSTM example <../../examples/generation/lstm.py>`
+     - :ref:`LSTM example <LSTMMolecularGenerator-example>`
    * - :class:`Hugging Face <torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator>`
      - NovoMolGen, MolGen, Molexar, or SAFE-GPT checkpoints; constraints depend on the model family.
-     - :download:`SAFE-GPT example <../../examples/generation/pretrained_safe_gpt.py>`
+     - :ref:`SAFE-GPT example <HFPretrainedMolecularGenerator-example>`
 
 See :doc:`install` for optional dependencies and :doc:`example` for complete
 workflows, including dataset preparation and checkpoint loading.

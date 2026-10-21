@@ -38,7 +38,12 @@ generate
 
 .. automethod:: torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator.generate
 
+.. _DigressMolecularGenerator-example:
+
 Example
 -------
 
-:download:`DiGress example <../../../../examples/generation/digress.py>`.
+.. literalinclude:: ../../../../examples/generation/digress.py
+   :language: python
+   :caption: examples/generation/digress.py
+   :class: tm-example

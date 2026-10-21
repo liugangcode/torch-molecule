@@ -38,7 +38,12 @@ encode
 
 .. automethod:: torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.encode
 
+.. _GraphMAEMolecularEncoder-example:
+
 Example
 -------
 
-:download:`GraphMAE example <../../../../examples/encoder/graphmae.py>`.
+.. literalinclude:: ../../../../examples/encoder/graphmae.py
+   :language: python
+   :caption: examples/encoder/graphmae.py
+   :class: tm-example

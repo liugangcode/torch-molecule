@@ -38,7 +38,12 @@ encode
 
 .. automethod:: torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder.encode
 
+.. _ContextPredMolecularEncoder-example:
+
 Example
 -------
 
-:download:`ContextPred example <../../../../examples/encoder/contextpred.py>`.
+.. literalinclude:: ../../../../examples/encoder/contextpred.py
+   :language: python
+   :caption: examples/encoder/contextpred.py
+   :class: tm-example

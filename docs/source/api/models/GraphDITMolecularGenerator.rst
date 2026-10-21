@@ -38,7 +38,12 @@ generate
 
 .. automethod:: torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator.generate
 
+.. _GraphDITMolecularGenerator-example:
+
 Example
 -------
 
-:download:`GraphDiT example <../../../../examples/generation/graphdit.py>`.
+.. literalinclude:: ../../../../examples/generation/graphdit.py
+   :language: python
+   :caption: examples/generation/graphdit.py
+   :class: tm-example

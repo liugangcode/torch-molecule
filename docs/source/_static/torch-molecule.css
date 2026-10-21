@@ -71,18 +71,19 @@ article .sig .pre { white-space: normal; }
 article .sig-name { font-weight: 600; }
 article .sig-name, article .sig-prename { color: var(--tm-accent); }
 article dl.py > dd { margin-left: 0 !important; }
-article dl.field-list { display: block; margin: 28px 0; }
-article dl.field-list > dt { font-size: 16px; font-weight: 600; text-transform: none !important; margin: 24px 0 12px; padding: 0; }
+article dl.field-list { display: block; margin: 20px 0; }
+article dl.field-list > dt { font-size: 16px; font-weight: 600; text-transform: none !important; margin: 18px 0 8px; padding: 0; }
 article dl.field-list > dt .colon { display: none; }
 article dl.field-list > dd { margin: 0 !important; padding: 0; }
 article dl.tm-parameters { margin: 0; }
-article dl.tm-parameters > dt { padding: 15px 0 0; font-size: 14px; font-weight: 400; line-height: 1.7; color: var(--tm-muted); overflow-wrap: anywhere; }
+article dl.tm-parameters > dt { margin: 10px 0 0; padding: 0; font-size: 14px; font-weight: 400; line-height: 1.5; color: var(--tm-muted); overflow-wrap: anywhere; }
 article dl.tm-parameters > dt strong { color: var(--tm-ink); font-family: var(--font-stack--monospace); font-size: 13px; }
 article dl.tm-parameters > dt em { font-style: normal; }
-article dl.tm-parameters > dd { padding: 5px 0 15px; margin-left: 0 !important; border-bottom: 1px solid var(--tm-line); font-size: 15px; }
-article dl.tm-parameters > dd > p:first-child { margin-top: 0; }
-article dl.tm-parameters > dd > p:last-child { margin-bottom: 0; }
-article dl.tm-parameters > dt:first-child { padding-top: 0; }
+article dl.tm-parameters > dd { padding: 2px 0 0; margin: 0 !important; font-size: 15px; }
+article dl.tm-parameters > dd > p { margin: 0 !important; line-height: 1.5; }
+article dl.tm-parameters > dd > p + p { padding-top: 6px; }
+article dl.tm-parameters > dt:first-child { margin-top: 0; }
+article .tm-example .highlight pre { max-height: 36rem; overflow: auto; }
 article .tm-defaults { border: 1px solid var(--tm-line); border-radius: 4px; margin: 24px 0; padding: 0 18px; }
 article .tm-defaults summary { padding: 15px 0; cursor: pointer; font-size: 14px; font-weight: 600; }
 article .tm-defaults .highlight { max-height: 24rem; overflow: auto; margin-bottom: 18px; }

@@ -76,7 +76,12 @@ generate
 
 .. automethod:: torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator.generate
 
+.. _DemoDiffMolecularGenerator-example:
+
 Example
 -------
 
-:download:`DemoDiff example <../../../../examples/generation/demodiff.py>`.
+.. literalinclude:: ../../../../examples/generation/demodiff.py
+   :language: python
+   :caption: examples/generation/demodiff.py
+   :class: tm-example

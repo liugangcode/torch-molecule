@@ -38,7 +38,12 @@ generate
 
 .. automethod:: torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator.generate
 
+.. _LSTMMolecularGenerator-example:
+
 Example
 -------
 
-:download:`LSTM example <../../../../examples/generation/lstm.py>`.
+.. literalinclude:: ../../../../examples/generation/lstm.py
+   :language: python
+   :caption: examples/generation/lstm.py
+   :class: tm-example

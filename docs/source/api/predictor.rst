@@ -1,27 +1,30 @@
-Molecular Property Prediction Models
-=====================================
+Predictor API
+=============
 
-The predictor models inherit from the :class:`BaseMolecularPredictor <torch_molecule.base.predictor.BaseMolecularPredictor>` class and share common methods for model training, evaluation, prediction and persistence.
+Train molecular property models with ``fit(X_train, y_train)`` and predict on
+new SMILES with ``predict(X)``. Predictions are returned in a dictionary; see
+each class for its output fields and task-specific options.
 
-.. rubric:: Training and Prediction
+.. list-table:: Common operations
+   :header-rows: 1
+   :widths: 35 65
 
-- ``fit(X, y, **kwargs)``: Train the model on given data, where X contains SMILES strings and y contains target values
-- ``autofit(X, y, search_parameters, n_trials=50, **kwargs)``: Automatically search for optimal hyperparameters using Optuna and train the model
-- ``predict(X, **kwargs)``: Make predictions on new SMILES strings and return a dictionary containing predictions and optional uncertainty estimates
+   * - Method
+     - Purpose
+   * - ``fit(...)``
+     - Train with SMILES and regression or classification labels.
+   * - ``autofit(...)``
+     - Search hyperparameters with Optuna and train a model.
+   * - ``predict(X)``
+     - Predict properties for a list of SMILES.
+   * - ``save_to_local(path)`` / ``load_from_local(path)``
+     - Save or restore a trained model.
 
-.. rubric:: Model Persistence
+Compare all 11 predictors in the :doc:`model catalog <../models>`. Checkpoint
+and Hugging Face methods are documented in :doc:`base`.
 
-inherited from :class:`BaseModel <torch_molecule.base.base.BaseModel>`
-
-- ``save_to_local(path)``: Save the trained model to a local file
-- ``load_from_local(path)``: Load a trained model from a local file
-- ``save_to_hf(repo_id)``: Push the model to Hugging Face Hub
-- ``load_from_hf(repo_id, local_cache)``: Load a model from Hugging Face Hub and save it to a local file
-- ``save(path, repo_id)``: Save the model to either local storage or Hugging Face
-- ``load(path, repo_id)``: Load a model from either local storage or Hugging Face
-
-Modeling Molecules as Graphs with Graph Neural Networks 
--------------------------------------------------------
+Graph models
+------------
 
 .. rubric:: Graph Neural Networks
 .. autoclass:: torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor
@@ -84,8 +87,8 @@ Modeling Molecules as Graphs with Graph Neural Networks
    :undoc-members:
    :show-inheritance:
 
-Modeling Molecules as Sequences with RNNs
------------------------------------------
+Sequence models
+---------------
 
 .. rubric:: LSTM models based on SMILES
 .. autoclass:: torch_molecule.predictor.lstm.modeling_lstm.LSTMMolecularPredictor

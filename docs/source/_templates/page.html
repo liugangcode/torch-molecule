@@ -1,0 +1,26 @@
+{% extends "!page.html" %}
+
+{% block body %}
+{% include "site-header.html" %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+{% if pagename == "index" %}
+{% include "home.html" %}
+{% else %}
+<nav class="tm-breadcrumb" aria-label="Breadcrumb">
+  <a href="{{ pathto('index') }}">Home</a><span aria-hidden="true">/</span>
+  <span>{{ title|striptags }}</span>
+</nav>
+{{ super() }}
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+{% if pagename != "index" %}{{ super() }}{% endif %}
+<div class="tm-footer">
+  <span>torch-molecule <span class="tm-footer-dot">·</span> Open source, open discovery.</span>
+  <div><a href="{{ pathto('additional') }}">Contribute</a><a href="https://github.com/liugangcode/torch-molecule/blob/main/LICENSE">MIT license</a><a href="https://github.com/liugangcode/torch-molecule">GitHub ↗</a></div>
+</div>
+{% endblock %}

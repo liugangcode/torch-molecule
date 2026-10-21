@@ -1,61 +1,50 @@
-Molecular Generation Models
-=============================
+Generator API
+=============
 
-The generator models inherit from the :class:`BaseMolecularGenerator <torch_molecule.base.generator.BaseMolecularGenerator>` class and share common methods for model training, generation and persistence.
+Fit a model on SMILES with ``fit(...)`` and sample molecules with
+``generate(...)``. Conditional inputs and sample-count arguments differ by
+model; use the signatures below when switching methods.
 
-The following models support conditional generation (click model name to jump to details):
-
-.. list-table:: Conditional Generation Models
+.. list-table:: Generation and conditioning
    :header-rows: 1
-   :widths: 30 70
+   :widths: 25 75
 
    * - Model
-     - Description
-   * - :class:`DemoDiffMolecularGenerator <torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator>`
-     - `Graph Diffusion Transformers are In-Context Molecular Designers <https://openreview.net/forum?id=lJ87GN5zJc>`_
-   * - :class:`GraphDITMolecularGenerator <torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator>`
-     - `Graph Diffusion Transformers for Multi-Conditional Molecular Generation <https://arxiv.org/abs/2401.13858>`_
-   * - :class:`DeFoGMolecularGenerator <torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator>`
-     - `Discrete Flow Matching for Graph Generation <https://openreview.net/forum?id=KPRIwWhqAZ>`_
-   * - :class:`GraphGAMolecularGenerator <torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator>`
-     - Graph Genetic Algorithm with Random Forests
-   * - :class:`MolGPTMolecularGenerator <torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator>`
-     - `MolGPT: Molecular Generation Using a Transformer-Decoder Model <https://pubs.acs.org/doi/10.1021/acs.jcim.1c00600>`_
-   * - :class:`GenMolMolecularGenerator <torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator>`
-     - `GenMol: A Drug Discovery Generalist with Discrete Diffusion <https://proceedings.mlr.press/v267/lee25o.html>`_ (scaffold conditioning)
-   * - :class:`LSTMMolecularGenerator <torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator>`
-     - LSTM
-   * - :class:`HFPretrainedMolecularGenerator <torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator>`
-     - Hugging Face pretrained generators (NovoMolGen, MolGen, Molexar, SAFE-GPT)
+     - Optional conditioning
+   * - :class:`DemoDiff <torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator>`
+     - Demonstration SMILES in ``contexts`` and normalized ``score`` values.
+   * - :class:`GenMol <torch_molecule.generator.genmol.modeling_genmol.GenMolMolecularGenerator>`
+     - A molecular substructure in ``scaffold``.
+   * - :class:`GraphDiT <torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator>`
+     - Property targets in ``labels``.
+   * - :class:`DeFoG <torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator>`
+     - Property targets in ``labels``.
+   * - :class:`Graph GA <torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator>`
+     - Property targets in ``labels`` or a scoring oracle configured on the estimator.
+   * - :class:`MolGPT <torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator>`
+     - ``properties`` and ``scaffolds``.
+   * - :class:`LSTM <torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator>`
+     - Property targets in ``labels``.
+   * - :class:`Hugging Face <torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator>`
+     - Scaffold, fragment, or property inputs, depending on the checkpoint family.
+   * - :class:`DiGress <torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator>`
+     - Unconditional generation.
+   * - :class:`GDSS <torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator>`
+     - Unconditional generation.
+   * - :class:`JT-VAE <torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator>`
+     - Unconditional generation.
 
-.. rubric:: Training and Generation
+Use ``save_to_local(path)`` and ``load_from_local(path)`` to save and restore
+trained models. Additional persistence methods are documented in :doc:`base`;
+Graph GA does not support Hugging Face uploads or downloads.
 
-- ``fit(X, **kwargs)``: Train the model on SMILES strings. Property-conditioned models also accept target values.
-- ``generate(n_samples, **kwargs)``: Generate molecules as SMILES strings, with optional conditions supported by the selected model.
+See the :doc:`model catalog <../models>` for method summaries and links to
+examples. Optional dependencies are listed in :doc:`../install`.
 
-.. rubric:: Model Persistence
+Graph models
+------------
 
-inherited from :class:`BaseModel <torch_molecule.base.base.BaseModel>`
-
-- ``save_to_local(path)``: Save the trained model to a local file
-- ``load_from_local(path)``: Load a trained model from a local file
-- ``save_to_hf(repo_id)``: Push the model to Hugging Face Hub
-
-  Not implemented for:
-  - :class:`GraphGAMolecularGenerator <torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator>`
-
-- ``load_from_hf(repo_id, local_cache)``: Load a model from Hugging Face Hub and save it to a local file
-
-  Not implemented for:
-  - :class:`GraphGAMolecularGenerator <torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator>`
-
-- ``save(path, repo_id)``: Save the model to either local storage or Hugging Face
-- ``load(path, repo_id)``: Load a model from either local storage or Hugging Face
-
-Modeling Molecules as Graphs
----------------------------------------------------------------------
-
-.. rubric:: DemoDiff for Molecular Generation with Demonstrations
+.. rubric:: DemoDiff: generation with demonstrations
 
 DemoDiff trains on SMILES and optionally uses other molecules as demonstrations.
 In ``fit()``, ``contexts[i]`` lists indices of other training molecules for target
@@ -98,21 +87,21 @@ Retrain checkpoints previously trained with distance values and a target score o
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: GraphDiT for Unconditional/Multi-Conditional Molecular Generation
+.. rubric:: GraphDiT: graph diffusion transformers
 .. autoclass:: torch_molecule.generator.graph_dit.modeling_graph_dit.GraphDITMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: Discrete Flow Matching for Graph Generation for Unconditional/Multi-Conditional Molecular Generation
+.. rubric:: DeFoG: discrete flow matching
 .. autoclass:: torch_molecule.generator.defog.modeling_defog.DeFoGMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: Graph Genetic Algorithm for Unconditional/Multi-Conditional Molecular Generation
+.. rubric:: Graph GA: genetic search
 .. autoclass:: torch_molecule.generator.graph_ga.modeling_graph_ga.GraphGAMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, save_to_hf, load_from_hf
    :members: fit, generate
@@ -124,31 +113,31 @@ Retrain checkpoints previously trained with distance values and a target score o
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: DiGress for Unconditional Molecular Generation
+.. rubric:: DiGress: discrete graph diffusion
 .. autoclass:: torch_molecule.generator.digress.modeling_digress.DigressMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_class, dataset_info, model_name
    :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: GDSS for Unconditional Molecular Generation
+.. rubric:: GDSS: score-based graph diffusion
 .. autoclass:: torch_molecule.generator.gdss.modeling_gdss.GDSSMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: JT-VAE for Unconditional Molecular Generation
+.. rubric:: JT-VAE: junction-tree variational autoencoding
 .. autoclass:: torch_molecule.generator.jtvae.modeling_jtvae.JTVAEMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
-Modeling Molecules as Sequences
---------------------------------
+Sequence models
+---------------
 
-.. rubric:: GenMol for De Novo and Scaffold-Conditioned Molecular Generation
+.. rubric:: GenMol: masked diffusion over SAFE fragments
 
 GenMol trains on SMILES strings and generates molecules using masked diffusion
 over SAFE fragments. Pass ``scaffold="c1ccccc1"`` to ``generate()`` to retain a
@@ -161,22 +150,22 @@ benzene substructure in generated molecules. Install its optional packages with
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: MolGPT for Unconditional/Multi-Conditional Molecular Generation
+.. rubric:: MolGPT: autoregressive SMILES generation
 .. autoclass:: torch_molecule.generator.molgpt.modeling_molgpt.MolGPTMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
-.. rubric:: LSTM for Unconditional/Multi-Conditional Molecular Generation
+.. rubric:: LSTM: recurrent SMILES generation
 .. autoclass:: torch_molecule.generator.lstm.modeling_lstm.LSTMMolecularGenerator
    :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
    :members: fit, generate
    :undoc-members:
    :show-inheritance:
 
-Pretrained Molecular Generators
---------------------------------
+Pretrained generators
+---------------------
 
 Hugging Face checkpoints can be loaded for de novo and constrained generation
 via :class:`~torch_molecule.generator.pretrained.modeling_pretrained.HFPretrainedMolecularGenerator`.

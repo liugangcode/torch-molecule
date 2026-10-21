@@ -1,0 +1,48 @@
+.. code-block:: python
+
+   from torch_molecule import {{ name }}
+
+{% if example %}
+:ref:`Examples <{{ name }}-example>` · :ref:`Methods <{{ name }}-methods>`
+{% else %}
+:ref:`Methods <{{ name }}-methods>`
+{% endif %}
+
+Constructor
+-----------
+
+.. autoclass:: {{ fullname }}
+
+{% if example %}
+.. _{{ name }}-example:
+
+Example
+-------
+
+.. literalinclude:: /../../{{ example }}
+   :language: python
+   :caption: {{ example }}
+   :class: tm-example
+{% endif %}
+
+.. _{{ name }}-methods:
+
+Methods
+-------
+
+.. autosummary::
+   :nosignatures:
+
+{% for method in methods %}
+   ~{{ fullname }}.{{ method }}
+{% endfor %}
+
+For shared checkpoint and parameter operations, see :doc:`/api/base`.
+
+{% for method in methods %}
+{{ method }}
+{{ "~" * method|length }}
+
+.. automethod:: {{ fullname }}.{{ method }}
+
+{% endfor %}

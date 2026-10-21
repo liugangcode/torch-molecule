@@ -1,9 +1,35 @@
-"""Format API fields and long dataset defaults without changing the Python API."""
+"""Share model page layouts and abbreviate long dataset defaults."""
 
 import inspect
+from pathlib import Path
 from pprint import pformat
 
-from docutils import nodes
+from docutils.parsers.rst import directives
+from sphinx.util.docutils import SphinxDirective
+from sphinx.util.template import SphinxRenderer
+
+
+class ModelReference(SphinxDirective):
+    """Render a model's API and example through the shared RST template."""
+
+    required_arguments = 1
+    option_spec = {
+        "methods": directives.unchanged_required,
+        "example": directives.path,
+    }
+
+    def run(self):
+        template = Path(self.env.srcdir) / "_templates" / "api" / "model.rst.jinja"
+        self.env.note_dependency(str(template))
+        fullname = self.arguments[0]
+        text = SphinxRenderer.render_from_file(template, {
+            "fullname": fullname,
+            "name": fullname.rsplit(".", 1)[-1],
+            "methods": [name.strip() for name in self.options["methods"].split(",")],
+            "example": self.options.get("example"),
+        })
+        self.state_machine.insert_input(text.splitlines(), str(template))
+        return []
 
 
 class AbbreviatedDefault:
@@ -55,33 +81,8 @@ def document_defaults(app, what, name, obj, options, lines):
     ])
 
 
-def parameter_definitions(app, doctree, docname):
-    """Give parameter names and types their own line, retaining nested content."""
-    for field in doctree.findall(nodes.field):
-        if field[0].astext() not in {"Parameters", "Keyword Arguments", "Other Parameters"}:
-            continue
-        body = field[1]
-        items = list(body[0]) if len(body) == 1 and isinstance(body[0], nodes.bullet_list) else [body]
-        definitions = nodes.definition_list(classes=["tm-parameters"])
-        for item in items:
-            if not len(item) or not isinstance(item[0], nodes.paragraph):
-                break
-            paragraph = item[0]
-            separator = next((i for i, child in enumerate(paragraph)
-                              if isinstance(child, nodes.Text) and str(child) == " – "), None)
-            if separator is None:
-                separator = len(paragraph)
-            term = nodes.term("", "", *[child.deepcopy() for child in paragraph[:separator]])
-            description = nodes.paragraph("", "", *[child.deepcopy() for child in paragraph[separator + 1:]])
-            definition = nodes.definition("", description, *[child.deepcopy() for child in item[1:]])
-            definitions += nodes.definition_list_item("", term, definition)
-        else:
-            body.children = []
-            body += definitions
-
-
 def setup(app):
+    app.add_directive("model-reference", ModelReference)
     app.connect("autodoc-process-signature", compact_signature)
     app.connect("autodoc-process-docstring", document_defaults, priority=400)
-    app.connect("doctree-resolved", parameter_definitions)
-    return {"version": "1", "parallel_read_safe": True, "parallel_write_safe": True}
+    return {"version": "2", "parallel_read_safe": True, "parallel_write_safe": True}

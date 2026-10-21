@@ -3,10 +3,6 @@ DemoDiffMolecularGenerator
 
 Graph diffusion with optional molecular demonstrations and normalized ``score`` values.
 
-.. code-block:: python
-
-   from torch_molecule import DemoDiffMolecularGenerator
-
 Usage
 -----
 
@@ -45,43 +41,6 @@ they are not guaranteed substructures. The tokenizer can lose stereochemistry
 and formal charges, while polymer attachment atoms are supported.
 Retrain checkpoints previously trained with distance values and a target score of 0.
 
-Constructor
------------
-
-.. autoclass:: torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator
-
-Methods
--------
-
-.. list-table::
-   :header-rows: 1
-   :widths: 30 70
-
-   * - Method
-     - Purpose
-   * - :meth:`fit <torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator.fit>`
-     - Fit the model to the supplied data.
-   * - :meth:`generate <torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator.generate>`
-     - Sample molecules with the supported conditioning inputs.
-
-For shared checkpoint and parameter operations, see :doc:`../base`.
-
-fit
-~~~
-
-.. automethod:: torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator.fit
-
-generate
-~~~~~~~~
-
-.. automethod:: torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator.generate
-
-.. _DemoDiffMolecularGenerator-example:
-
-Example
--------
-
-.. literalinclude:: ../../../../examples/generation/demodiff.py
-   :language: python
-   :caption: examples/generation/demodiff.py
-   :class: tm-example
+.. model-reference:: torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator
+   :methods: fit, generate
+   :example: examples/generation/demodiff.py

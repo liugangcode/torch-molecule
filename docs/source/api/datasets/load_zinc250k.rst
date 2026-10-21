@@ -1,26 +1,20 @@
 load_zinc250k
 =============
 
-ZINC250k — unlabeled molecules.
+ZINC250k — unlabeled molecules. Deprecated: this function calls ``load_dataset`` and will be removed.
+
+Use instead
+-----------
 
 .. code-block:: python
 
-   from torch_molecule.datasets import load_zinc250k
+   from torch_molecule.datasets import load_dataset
+
+   data = load_dataset("zinc250k", targets=[])
 
 Reference
 ---------
 
 .. autofunction:: torch_molecule.datasets.load_zinc250k
-
-Example
--------
-
-.. code-block:: python
-
-   from torch_molecule.datasets import load_zinc250k
-
-   data = load_zinc250k()
-   print(len(data.data))
-   print(data.target)  # None: this dataset has no labels.
 
 See :doc:`../../dataset` for caching, custom data, and train/test splits.

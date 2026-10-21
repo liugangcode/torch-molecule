@@ -1,0 +1,21 @@
+# Weekly check that torch-molecule still reads the published molecular dataset collection.
+name: Dataset hub contract
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+  pull_request:
+    paths: ["torch_molecule/datasets/**", "tests/datasets/**"]
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -e . pytest
+      - run: pytest -q tests/datasets/test_hub_live.py tests/datasets/test_hub.py
+        env:
+          TORCHMOL_HUB_LIVE: "1"

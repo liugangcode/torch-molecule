@@ -418,4 +418,6 @@ def _subset(dataset: SMILESDataset, indices: Sequence[int]) -> SMILESDataset:
         target = np.asarray(dataset.target)[indices]
         if target.ndim == 1:
             target = target.reshape(-1, 1)
-    return SMILESDataset(data=data, target=target)
+    groups = None if dataset.groups is None else [dataset.groups[i] for i in indices]
+    return SMILESDataset(data=data, target=target, target_names=dataset.target_names,
+                         groups=groups, info=dataset.info)

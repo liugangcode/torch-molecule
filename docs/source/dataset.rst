@@ -9,28 +9,29 @@ and ``target`` attributes; unlabeled datasets have ``target=None``.
 Load a dataset
 --------------
 
-QM9 and the other Hub datasets download on first use and reuse files in your
-chosen directory. Select properties with ``target_cols``.
+``load_dataset`` reads any published dataset of the
+`molecular dataset hub <https://liugangcode.github.io/molecular-dataset-hub/>`_
+by its original name: 87 small-molecule and polymer datasets with their license,
+original sources, quality tags, and source splits. Files download on first use
+and are reused from ``local_dir``.
 
 .. code-block:: python
 
-   from torch_molecule.datasets import load_qm9
+   from torch_molecule.datasets import list_datasets, load_dataset
 
-   data = load_qm9(
-       local_dir="artifacts/datasets/qm9",
-       target_cols=["homo", "lumo", "gap"],
-   )
+   list_datasets(category="adme", grade="ready")   # browse the collection
+
+   data = load_dataset("qm9", targets=["homo", "lumo", "gap"])
    print(len(data.data))
-   print(data.target.shape)  # (n_molecules, 3)
+   print(data.target.shape)          # (n_molecules, 3)
+   print(data.info["targets"]["gap"]["units"])   # Hartree
 
-The polymer gas-permeability dataset is included with the package:
-
-.. code-block:: python
-
-   from torch_molecule.datasets import load_gasperm
-
-   data = load_gasperm(target_cols=["CO2", "N2"])
-   print(data.target.shape)  # (n_polymers, 2)
+Labels stay as the source reported them: missing labels are ``NaN`` (never 0),
+and censored values such as ``<10`` are ``NaN`` unless ``include_censored=True``.
+Datasets that cannot be redistributed are listed too; loading one raises an
+error that names the original source. Gated datasets (noncommercial terms) need
+``huggingface-cli login`` and an accepted access request on the dataset page.
+Pass ``release="v2026.10.22"`` to pin a collection release.
 
 Bring your own data
 -------------------
@@ -56,11 +57,19 @@ attachment atoms before using it for polymer generation.
 Choose a split
 --------------
 
+When the source defines a split, load it by name. A test split drops molecules
+that also appear in training:
+
 .. code-block:: python
 
-   from torch_molecule.datasets import load_gasperm
+   train = load_dataset("moleculeace_chembl204_ki", split="train")
+   test = load_dataset("moleculeace_chembl204_ki", split="test")
 
-   data = load_gasperm(target_cols=["CO2"])
+Otherwise split the dataset yourself:
+
+.. code-block:: python
+
+   data = load_dataset("polymer_gas_permeability", targets=["CO2"])
    train, validation = data.train_test_split(
        test_size=0.2,
        method="random",
@@ -69,7 +78,8 @@ Choose a split
 
 Pass ``train.data`` and ``train.target`` to ``fit``; supply the validation data
 through ``X_val`` and ``y_val`` when the model supports them. Keep a separate
-test set for a final performance estimate.
+test set for a final performance estimate. ``data.groups`` holds a structure key
+per row, so repeated measurements of one molecule can stay in one split.
 
 .. list-table::
    :header-rows: 1
@@ -97,34 +107,37 @@ benchmarks on the intended dataset and split rather than a debugging subset.
 Loader reference
 ----------------
 
-Choose a loader for its parameters, return values, and a usage example.
+.. autofunction:: torch_molecule.datasets.load_dataset
+.. autofunction:: torch_molecule.datasets.list_datasets
+.. autofunction:: torch_molecule.datasets.dataset_info
+
+Deprecated loaders
+------------------
+
+These functions still work but call ``load_dataset`` and will be removed. Rows
+come from the collection's clean tables: canonical SMILES, unparseable
+structures removed, identical rows collapsed.
 
 .. list-table::
    :header-rows: 1
    :widths: 30 70
 
    * - Function
-     - Dataset
+     - Replacement
    * - :func:`load_qm9 <torch_molecule.datasets.load_qm9>`
-     - QM9 — quantum chemical properties
-
+     - ``load_dataset("qm9", targets=["gap"])``
    * - :func:`load_chembl2k <torch_molecule.datasets.load_chembl2k>`
-     - ChEMBL2k — bioactive molecules
-
+     - ``load_dataset("chembl2k")``
    * - :func:`load_broad6k <torch_molecule.datasets.load_broad6k>`
-     - Broad6k — bioactive molecules
-
+     - ``load_dataset("broad6k")``
    * - :func:`load_toxcast <torch_molecule.datasets.load_toxcast>`
-     - ToxCast — toxicity assays
-
+     - ``load_dataset("toxcast")``
    * - :func:`load_admet <torch_molecule.datasets.load_admet>`
-     - ADMET — pharmacokinetic and toxicity properties
-
+     - ``load_dataset("admet_ai")``
    * - :func:`load_gasperm <torch_molecule.datasets.load_gasperm>`
-     - Gas permeability — polymer properties
-
+     - ``load_dataset("polymer_gas_permeability")``
    * - :func:`load_zinc250k <torch_molecule.datasets.load_zinc250k>`
-     - ZINC250k — unlabeled molecules
+     - ``load_dataset("zinc250k", targets=[])``
 
 .. toctree::
    :hidden:

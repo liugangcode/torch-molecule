@@ -27,6 +27,7 @@ dependencies = [
     "scipy>=1.14.1",
     "tqdm>=4.66.2",
     "optuna>=4.0.0",
+    "pyarrow>=14",
 ]
 
 [project.urls]
@@ -51,7 +52,6 @@ include-package-data = true
 "torch_molecule" = [
     "**/*.yaml",
     "**/*.json",
-    "datasets/data/*",
     "encoder/sand/LICENSE",
     "generator/genmol/LICENSE",
     "generator/genmol/NOTICE",

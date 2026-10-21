@@ -67,12 +67,12 @@ For scripts and notebooks run from any directory, use explicit paths:
 ```python
 import os
 from pathlib import Path
-from torch_molecule.datasets import load_qm9
+from torch_molecule.datasets import load_dataset
 
 storage = Path(os.environ.get("PROJECT_DATA_ROOT", "/data/ubuntu/projects")) / "torch-molecule"
 (storage / "datasets").mkdir(parents=True, exist_ok=True)
 (storage / "checkpoints").mkdir(parents=True, exist_ok=True)
-data = load_qm9(local_dir=str(storage / "datasets"))
+data = load_dataset("qm9", targets=["gap"], local_dir=str(storage / "datasets"))
 
 # After fitting your model:
 # model.save_to_local(str(storage / "checkpoints" / "model.pt"))
@@ -132,38 +132,24 @@ print(model.generate(n_samples=5, scaffold="c1ccccc1"))
 
 > More examples can be found in the `examples` folder.
 
-`torch-molecule` supports applications in broad domains from chemistry, biology, to materials science. To get started, you can load prepared datasets from `torch_molecule.datasets` (updated after v0.1.3):
-| Dataset | Description | Function |
-|---------|-------------|----------|
-| qm9 | Quantum chemical properties (DFT level) | `load_qm9` |
-| chembl2k | Bioactive molecules with drug-like properties | `load_chembl2k` |
-| broad6k | Bioactive molecules with drug-like properties | `load_broad6k` |
-| toxcast | Toxicity of chemical compounds | `load_toxcast` |
-| admet | Chemical absorption, distribution, metabolism, excretion, and toxicity | `load_admet` |
-| gasperm | Five gas permeability properties for polymeric materials | `load_gasperm` |
-| zinc250k | A common subset of ZINC dataset, which does not have labels and could be used for unconditional generation or virtual screening | `load_zinc250k` |
+`torch-molecule` supports applications in broad domains from chemistry, biology, to materials science. Load any of 87 published datasets from the [molecular dataset hub](https://liugangcode.github.io/molecular-dataset-hub/) by its original name, with its license, units, source splits, and quality tags:
 
 ```python
-from torch_molecule.datasets import load_qm9
+from torch_molecule.datasets import list_datasets, load_dataset
 
-# local_dir is the local path where the dataset will be saved
-molecular_data = load_qm9(local_dir='torchmol_data')
-smiles_list, property_np_array = molecular_data.data, molecular_data.target
+list_datasets(category="adme", grade="ready")      # browse by category, quality grade, or license
 
-# len(smiles_list): 133885
-# Property array shape: (133885, 1)
+data = load_dataset("qm9", targets=["homo", "lumo", "gap"], local_dir="torchmol_data")
+smiles_list, property_np_array = data.data, data.target   # 133,885 molecules, shape (133885, 3)
+data.info["targets"]["gap"]["units"]                        # 'Hartree'
 
-# load_qm9 returns the target "gap" by default, but you can adjust it by passing new target_cols
-target_cols = ['homo', 'lumo', 'gap']
-molecular_data = load_qm9(local_dir='torchmol_data', target_cols=target_cols)
-smiles_list, property_np_array = molecular_data.data, molecular_data.target
+train = load_dataset("moleculeace_chembl204_ki", split="train")   # source splits where defined;
+test = load_dataset("moleculeace_chembl204_ki", split="test")     # test drops molecules seen in train
 
-# the target could be None if loading an unlabeled dataset
-from torch_molecule.datasets import load_zinc250k
-molecular_data = load_zinc250k(local_dir='torchmol_data')
-smiles_list = molecular_data.data
-assert molecular_data.target is None
+zinc = load_dataset("zinc250k", targets=[])                 # structures only: target is None
 ```
+
+`load_qm9`, `load_chembl2k`, `load_broad6k`, `load_toxcast`, `load_admet`, `load_gasperm`, and `load_zinc250k` still work but are deprecated aliases of `load_dataset` and will be removed.
 
 (We are actively adding more datasets. We welcome your suggestions and contributions on your datasets!)
 
@@ -172,10 +158,10 @@ assert molecular_data.target is None
 After preparing the dataset, split it, then fit a model with an sklearn-style API (no extra SMILES featurization is required):
 
 ```python
-from torch_molecule.datasets import load_qm9
+from torch_molecule.datasets import load_dataset
 from torch_molecule import GREAMolecularPredictor
 
-data = load_qm9(local_dir='torchmol_data')
+data = load_dataset("qm9", targets=["gap"], local_dir="torchmol_data")
 # "random" | "scaffold" | "butina" | "size"
 # scaffold: unseen Bemis-Murcko scaffolds; butina: Tanimoto clusters; size: heavy-atom count
 train, val = data.train_test_split(test_size=0.2, method="scaffold", seed=42)

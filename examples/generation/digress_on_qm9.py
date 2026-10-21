@@ -1,13 +1,13 @@
 import os
 
 from torch_molecule import DigressMolecularGenerator
-from torch_molecule.datasets import load_qm9
+from torch_molecule.datasets import load_dataset
 
 
 def train_on_qm9() -> None:
     model = DigressMolecularGenerator(verbose="progress_bar", batch_size=1024, epochs=2)
 
-    smiles_list, _ = load_qm9(local_dir="torchmol_data")
+    smiles_list = load_dataset("qm9", targets=[], local_dir="torchmol_data").data
 
     original_count = len(smiles_list)
     smiles_list = [s for s in smiles_list if isinstance(s, str) and s]

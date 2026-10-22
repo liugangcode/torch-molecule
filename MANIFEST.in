@@ -1,0 +1,11 @@
+include LICENSE README.md RELEASE_NOTES.md pyproject.toml
+recursive-include assets *.png
+recursive-include examples *.py
+include data/molecule100.csv data/polymer100.csv
+prune artifacts
+prune dev
+prune tests
+prune private
+prune docs
+prune .github
+global-exclude __pycache__ *.py[cod] *.bak

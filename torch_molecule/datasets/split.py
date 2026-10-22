@@ -1,6 +1,8 @@
 """Train/test splitting utilities for molecular SMILES datasets.
 
-Random splitting is an i.i.d. baseline. Scaffold splitting groups molecules by
+Random splitting assigns individual rows and can place duplicate structures in
+both splits. The splitters preserve ``groups`` metadata without using it to
+assign rows. Scaffold splitting groups molecules by
 Bemis-Murcko frameworks so that the same scaffold does not appear in both
 splits. Butina splitting groups by Taylor-Butina clusters on Morgan fingerprints
 (sparse Tanimoto neighbor graph). Size splitting holds out larger (or smaller)
@@ -109,7 +111,9 @@ def train_test_split(
         assigned together. Ignored when ``method="size"`` and
         ``mode="sizeshiftreg"``.
     method : {"random", "scaffold", "butina", "size"}, default="random"
-        ``"random"`` is an i.i.d. baseline (often optimistic for molecules).
+        ``"random"`` assigns individual rows; duplicate structures can appear
+        in both splits. ``dataset.groups`` is preserved but not used to assign
+        rows.
         ``"scaffold"`` holds out unseen Bemis-Murcko scaffolds.
         ``"butina"`` holds out unseen Taylor-Butina clusters (Morgan / Tanimoto).
         ``"size"`` holds out molecules by heavy-atom count.

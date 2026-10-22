@@ -1,4 +1,4 @@
-import os
+import tempfile
 import shutil
 
 from torch_molecule import HFPretrainedMolecularGenerator
@@ -41,7 +41,7 @@ def test_molexar_generator():
     print("Example generated SMILES:", generated_smiles[:2])
 
     print("\n=== Testing Molexar saving and loading ===")
-    save_path = "pretrained_molexar_test_model"
+    save_path = tempfile.mkdtemp(prefix="torchmol-molexar-")
     model.save_to_local(save_path)
     print(f"Molexar saved to {save_path}")
 
@@ -57,9 +57,8 @@ def test_molexar_generator():
     print(f"Generated {len(generated_smiles)} molecules with loaded model")
     print("Example generated SMILES:", generated_smiles[:2])
 
-    if os.path.exists(save_path):
-        shutil.rmtree(save_path)
-        print(f"Cleaned up {save_path}")
+    shutil.rmtree(save_path)
+    print(f"Cleaned up {save_path}")
 
 
 if __name__ == "__main__":

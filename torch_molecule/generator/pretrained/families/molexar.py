@@ -25,7 +25,7 @@ def _require_molexar():
     except ImportError as exc:
         raise ImportError(
             "The 'molexar' package is required for Molexar generation. "
-            "Install it with `pip install git+https://github.com/fairydance/Molexar.git`."
+            "Install it with `pip install git+https://github.com/yiyanliao/Molexar.git`."
         ) from exc
 
 

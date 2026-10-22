@@ -36,10 +36,7 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
       ``start_smiles`` / ``start_string`` / ``conditions`` (omni).
     - SAFE-GPT: GPT-2 causal LM on SAFE strings; de novo and ``scaffold=`` prefix.
 
-    Other registered families can be loaded but may raise ``NotImplementedError``
-    until later phases are implemented.
-
-    Tested models include:
+    Supported model repositories include:
 
     - NovoMolGen: Causal LM pretrained on ZINC-22 for de novo SMILES generation.
 
@@ -316,7 +313,8 @@ class HFPretrainedMolecularGenerator(BaseMolecularGenerator):
             ``min_length``, and ``max_length``. For Molexar, use ``start_smiles``,
             ``start_string``, ``generation_task``, or ``conditions`` for omni
             models. For SAFE-GPT, use ``scaffold=`` with a SMILES prefix
-            (converted to SAFE internally).
+            (converted to SAFE internally). A prefix does not guarantee that
+            the final molecule retains the supplied substructure.
 
         Returns
         -------

@@ -1,4 +1,4 @@
-import os
+import tempfile
 import shutil
 
 from torch_molecule import HFPretrainedMolecularGenerator
@@ -53,7 +53,7 @@ def test_molgen_generator():
         print("Example generated SMILES:", generated_smiles[:2])
 
         print(f"\n=== Testing {name} saving and loading ===")
-        save_path = f"pretrained_{name.lower().replace('-', '_')}_test_model"
+        save_path = tempfile.mkdtemp(prefix="torchmol-molgen-")
         model.save_to_local(save_path)
         print(f"{name} saved to {save_path}")
 
@@ -65,9 +65,8 @@ def test_molgen_generator():
         print(f"Generated {len(generated_smiles)} molecules with loaded model")
         print("Example generated SMILES:", generated_smiles[:2])
 
-        if os.path.exists(save_path):
-            shutil.rmtree(save_path)
-            print(f"Cleaned up {save_path}")
+        shutil.rmtree(save_path)
+        print(f"Cleaned up {save_path}")
 
 
 if __name__ == "__main__":

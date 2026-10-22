@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "torch_molecule"
-version = "0.1.7"
+version = "0.2.0"
 description = "Deep learning packages for molecular discovery with a simple sklearn-style interface"
 authors = [{name = "Gang Liu", email = "gliu7@nd.edu"}]
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = {text = "MIT"}
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -70,10 +70,10 @@ markers = [
 # torch-scatter needs the PyG wheel index for your torch/CUDA build (see README).
 scatter = ["torch-scatter"]
 grin = ["torch-scatter", "CombineMols"]
-hf = ["transformers"]
-molgen = ["transformers", "selfies>=2.1"]
-molexar = ["transformers>=5.8", "loguru"]  # plus Fragment-SELFIES and Molexar, not on PyPI
-safe = ["transformers", "safe-mol"]
+hf = ["torch>=2.6", "transformers"]
+molgen = ["torch>=2.6", "transformers", "selfies>=2.1"]
+molexar = ["torch>=2.6", "transformers>=5.8", "loguru"]  # plus Fragment-SELFIES and Molexar, not on PyPI
+safe = ["torch>=2.6", "transformers", "safe-mol"]
 genmol = [
     "transformers==4.57.1",
     "safe-mol>=0.2.1,<0.3",
@@ -87,7 +87,7 @@ dev = [
 
 [tool.black]
 line-length = 100
-target-version = ['py38']
+target-version = ['py310']
 
 [tool.isort]
 profile = "black"

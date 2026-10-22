@@ -2,7 +2,8 @@ Installation
 ============
 
 Create a dedicated environment, then install the published package or the latest
-source. Python 3.12 is a practical starting point for the current models.
+source. Python 3.10 or newer is required; GenMol and Molexar require Python 3.11 or newer.
+Python 3.12 is a practical starting point for the current models.
 
 Create an environment
 ---------------------
@@ -60,7 +61,8 @@ Optional model packages
 -----------------------
 
 Install additional packages only for the models you use. SAND and DemoDiff use
-the core project dependencies.
+the core project dependencies. Hugging Face pretrained generators require
+PyTorch 2.6 or newer; their installation extras include this requirement.
 
 .. list-table::
    :header-rows: 1
@@ -73,7 +75,7 @@ the core project dependencies.
    * - MolGen through the pretrained generator
      - ``transformers``, ``selfies>=2.1``
    * - Molexar through the pretrained generator
-     - ``transformers``, ``fragment-selfies``, ``molexar``
+     - ``transformers>=5.8``, ``fragment-selfies``, ``molexar``
    * - SAFE-GPT through the pretrained generator
      - ``transformers``, ``safe-mol``
    * - GenMol
@@ -83,27 +85,38 @@ the core project dependencies.
    * - GRIN with ``repetition_augmentation=True``
      - ``CombineMols`` in addition to ``torch-scatter``
 
-**GenMol.** From the source checkout, install the supported extra
-(Python 3.11 or newer):
+**GenMol.** In an environment with Python 3.11 or newer, install its extra:
 
 .. code-block:: bash
 
-   python -m pip install -e ".[genmol]"
+   python -m pip install "torch-molecule[genmol]"
+
+Use separate environments for GenMol and Molexar. GenMol requires
+``transformers==4.57.1`` and Molexar requires ``transformers>=5.8``; these
+versions cannot be installed together. For example:
+
+.. code-block:: bash
+
+   micromamba create -n torch-molecule-genmol -c conda-forge python=3.12 pip
+   micromamba run -n torch-molecule-genmol python -m pip install "torch-molecule[genmol]"
 
 **Hugging Face models.** Install the extra for your chosen checkpoint:
-``hf`` (transformers only), ``molgen``, ``molexar``, or ``safe``. For example,
+``hf``, ``molgen``, ``molexar``, or ``safe``. For example,
 SAFE-GPT uses:
 
 .. code-block:: bash
 
    python -m pip install "torch-molecule[safe]"
 
-Molexar and Fragment-SELFIES are not on PyPI; after the ``molexar`` extra,
-install them from the
-`Molexar <https://github.com/fairydance/Molexar>`_ and
-`Fragment-SELFIES <https://github.com/fairydance/Fragment-SELFIES>`_ repositories.
-Use a separate environment when checkpoint dependencies conflict with another
-model's version requirements.
+For Molexar, use Python 3.11 or newer and install its extra and source packages:
+
+.. code-block:: bash
+
+   python -m pip install "torch-molecule[molexar]"
+   python -m pip install git+https://github.com/yiyanliao/Fragment-SELFIES.git git+https://github.com/yiyanliao/Molexar.git
+
+Source: `Molexar <https://github.com/yiyanliao/Molexar>`_ and
+`Fragment-SELFIES <https://github.com/yiyanliao/Fragment-SELFIES>`_.
 
 **Graph scatter operations.** Install the ``scatter`` extra (``grin`` adds
 ``CombineMols``) with a ``torch-scatter`` wheel matching your

@@ -1,4 +1,4 @@
-import os
+import tempfile
 import shutil
 
 from torch_molecule import HFPretrainedMolecularGenerator
@@ -32,7 +32,7 @@ def test_novomolgen_generator():
     print("Example generated SMILES:", generated_smiles[:2])
 
     print("\n=== Testing NovoMolGen saving and loading ===")
-    save_path = "pretrained_novomolgen_test_model"
+    save_path = tempfile.mkdtemp(prefix="torchmol-novomolgen-")
     model.save_to_local(save_path)
     print(f"NovoMolGen saved to {save_path}")
 
@@ -44,9 +44,8 @@ def test_novomolgen_generator():
     print(f"Generated {len(generated_smiles)} molecules with loaded model")
     print("Example generated SMILES:", generated_smiles[:2])
 
-    if os.path.exists(save_path):
-        shutil.rmtree(save_path)
-        print(f"Cleaned up {save_path}")
+    shutil.rmtree(save_path)
+    print(f"Cleaned up {save_path}")
 
     print("\n=== Testing NovoMolGen fine-tuning ===")
     finetune_model = HFPretrainedMolecularGenerator(
@@ -65,7 +64,7 @@ def test_novomolgen_generator():
     print("Example generated SMILES:", generated_smiles[:2])
 
     print("\n=== Testing fine-tuned NovoMolGen saving and loading ===")
-    save_path = "pretrained_novomolgen_finetune_test_model"
+    save_path = tempfile.mkdtemp(prefix="torchmol-novomolgen-finetune-")
     finetune_model.save_to_local(save_path)
     print(f"Fine-tuned NovoMolGen saved to {save_path}")
 
@@ -77,9 +76,8 @@ def test_novomolgen_generator():
     print(f"Generated {len(generated_smiles)} molecules with loaded fine-tuned model")
     print("Example generated SMILES:", generated_smiles[:2])
 
-    if os.path.exists(save_path):
-        shutil.rmtree(save_path)
-        print(f"Cleaned up {save_path}")
+    shutil.rmtree(save_path)
+    print(f"Cleaned up {save_path}")
 
 
 if __name__ == "__main__":

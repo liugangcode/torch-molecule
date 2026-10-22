@@ -1,4 +1,4 @@
-import os
+import tempfile
 import shutil
 
 from torch_molecule import HFPretrainedMolecularGenerator
@@ -37,7 +37,7 @@ def test_safe_gpt_generator():
     print("Example generated SMILES:", generated_smiles[:2])
 
     print("\n=== Testing SAFE-GPT saving and loading ===")
-    save_path = "pretrained_safe_gpt_test_model"
+    save_path = tempfile.mkdtemp(prefix="torchmol-safe-gpt-")
     model.save_to_local(save_path)
     print(f"SAFE-GPT saved to {save_path}")
 
@@ -49,9 +49,8 @@ def test_safe_gpt_generator():
     print(f"Generated {len(generated_smiles)} molecules with loaded model")
     print("Example generated SMILES:", generated_smiles[:2])
 
-    if os.path.exists(save_path):
-        shutil.rmtree(save_path)
-        print(f"Cleaned up {save_path}")
+    shutil.rmtree(save_path)
+    print(f"Cleaned up {save_path}")
 
 
 if __name__ == "__main__":

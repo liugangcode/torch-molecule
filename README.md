@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="torch-molecule logo" width="600"/>
+  <img src="https://raw.githubusercontent.com/liugangcode/torch-molecule/main/assets/logo.png" alt="torch-molecule logo" width="600"/>
 </p>
 
 <p align="center">
@@ -20,12 +20,14 @@
 `torch-molecule` is a package that facilitates molecular discovery through deep learning, featuring a user-friendly, `sklearn`-style interface. It includes model checkpoints for efficient deployment and benchmarking across a range of molecular tasks. The package focuses on three main components: **Predictive Models**, **Generative Models**, and **Representation Models**, which make molecular AI models easy to implement and deploy. 
 
 <p align="center">
-  <img src="assets/cover.png" alt="scikit-learn vs torch-molecule comparison" width="800"/>
+  <img src="https://raw.githubusercontent.com/liugangcode/torch-molecule/main/assets/cover.png" alt="scikit-learn vs torch-molecule comparison" width="800"/>
 </p>
 
 See the [List of Supported Models](#list-of-supported-models) section for all available models.
 
 ## Installation
+
+Python 3.10 or newer is required; GenMol and Molexar require Python 3.11 or newer.
 
 1. **Create a mamba environment**:
    ```bash
@@ -58,13 +60,24 @@ Optional model requirements install as pip extras, e.g. `pip install "torch-mole
 
 | Extra | Installs | For |
 |-------|----------|-----|
-| `hf` | transformers | HFPretrainedMolecularEncoder, HFPretrainedMolecularGenerator |
-| `molgen` | transformers, selfies>=2.1 | MolGen |
-| `molexar` | transformers>=5.8, loguru | Molexar; also install [Fragment-SELFIES](https://github.com/fairydance/Fragment-SELFIES) and [Molexar](https://github.com/fairydance/Molexar) from their repositories (not on PyPI) |
-| `safe` | transformers, safe-mol | SAFE-GPT |
+| `hf` | torch>=2.6, transformers | HFPretrainedMolecularEncoder, HFPretrainedMolecularGenerator |
+| `molgen` | torch>=2.6, transformers, selfies>=2.1 | MolGen |
+| `molexar` | torch>=2.6, transformers>=5.8, loguru | Molexar (Python 3.11+); also install [Fragment-SELFIES](https://github.com/yiyanliao/Fragment-SELFIES) and [Molexar](https://github.com/yiyanliao/Molexar) from source |
+| `safe` | torch>=2.6, transformers, safe-mol | SAFE-GPT |
 | `genmol` | transformers==4.57.1, safe-mol>=0.2.1,<0.3 | GenMol (Python 3.11+) |
 | `scatter` | torch-scatter | BFGNN, GRIN |
 | `grin` | torch-scatter, CombineMols | GRIN with `repetition_augmentation=True` |
+
+Hugging Face pretrained generators require PyTorch 2.6 or newer.
+
+Use separate environments for GenMol and Molexar: GenMol requires
+`transformers==4.57.1`, while Molexar requires `transformers>=5.8`.
+
+After installing the `molexar` extra, install its source packages:
+
+```bash
+python -m pip install git+https://github.com/yiyanliao/Fragment-SELFIES.git git+https://github.com/yiyanliao/Molexar.git
+```
 
 Install a `torch-scatter` wheel matching your PyTorch and CUDA versions using
 the [PyTorch Geometric installation guide](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html).
@@ -150,6 +163,11 @@ grea.autofit(
     n_trials=10,
 )
 ```
+
+Random splitting assigns individual rows, so repeated structures can occur
+in both splits. The splitters preserve `data.groups` metadata but do not use it
+to assign rows. Use `scaffold` or `butina`, or split by group yourself, when
+repeated measurements must stay together.
 
 ### Checkpoints
 

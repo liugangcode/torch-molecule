@@ -53,8 +53,10 @@ class SMILESDataset:
         test_size : float, default=0.2
             Requested holdout fraction.
         method : {"random", "scaffold", "butina", "size"}, default="random"
-            Split protocol. ``random`` is an i.i.d. baseline; ``scaffold``
-            holds out unseen Bemis-Murcko scaffolds; ``butina`` holds out
+            ``random`` assigns individual rows, so duplicate structures can
+            appear in both splits. ``groups`` metadata is not used to assign
+            rows. ``scaffold`` holds out unseen Bemis-Murcko scaffolds;
+            ``butina`` holds out
             unseen Taylor-Butina clusters; ``size`` splits by heavy-atom count.
         seed : int, default=42
             Random seed (used by ``random``).

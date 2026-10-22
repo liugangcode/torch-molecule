@@ -99,7 +99,7 @@ def _require_fragment_selfies():
     except ImportError as exc:
         raise ImportError(
             "The 'fragment-selfies' package is required for Fragment-SELFIES conversion. "
-            "Install it with `pip install fragment-selfies`."
+            "Install it with `pip install git+https://github.com/yiyanliao/Fragment-SELFIES.git`."
         ) from exc
 
 
@@ -112,7 +112,7 @@ def smiles_to_fragment_selfies(smiles: List[str]) -> List[str]:
     except ImportError as exc:
         raise ImportError(
             "Molexar conversion utilities require the 'molexar' package. "
-            "Install it with `pip install git+https://github.com/fairydance/Molexar.git`."
+            "Install it with `pip install git+https://github.com/yiyanliao/Molexar.git`."
         ) from exc
 
     return [encode_one(smiles_string, canonical=True) for smiles_string in smiles]
@@ -131,7 +131,7 @@ def fragment_selfies_to_smiles(fragment_selfies_list: List[str]) -> List[str]:
     except ImportError as exc:
         raise ImportError(
             "Molexar conversion utilities require the 'molexar' package. "
-            "Install it with `pip install git+https://github.com/fairydance/Molexar.git`."
+            "Install it with `pip install git+https://github.com/yiyanliao/Molexar.git`."
         ) from exc
 
     smiles_list: List[str] = []

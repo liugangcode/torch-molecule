@@ -1,0 +1,79 @@
+name: CPU package tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.10"
+            torch: "2.2.0"
+            numpy: "numpy<2"
+            extra: ""
+          - python: "3.12"
+            torch: "2.7.1"
+            numpy: "numpy"
+            extra: "genmol,molgen"
+    env:
+      OMP_NUM_THREADS: "2"
+      MKL_NUM_THREADS: "2"
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: torch-molecule-test
+          create-args: python=${{ matrix.python }} pip
+          cache-environment: true
+      - name: Install CPU PyTorch
+        run: |
+          python -m pip install "${{ matrix.numpy }}"
+          python -m pip install "torch==${{ matrix.torch }}" --index-url https://download.pytorch.org/whl/cpu
+      - name: Build and install the wheel
+        env:
+          MODEL_EXTRA: ${{ matrix.extra }}
+        run: |
+          python -m pip wheel --no-deps . --wheel-dir "$RUNNER_TEMP/wheels"
+          wheel=("$RUNNER_TEMP"/wheels/*.whl)
+          requirement="${wheel[0]}"
+          if [ -n "$MODEL_EXTRA" ]; then
+            requirement="$requirement[$MODEL_EXTRA]"
+          fi
+          python -m pip install "$requirement" pytest "${{ matrix.numpy }}"
+          python -m pip check
+      - name: Test the installed package outside the checkout
+        working-directory: ${{ runner.temp }}
+        env:
+          MODEL_EXTRA: ${{ matrix.extra }}
+        run: |
+          python -c "import pathlib, torch_molecule; assert not pathlib.Path(torch_molecule.__file__).is_relative_to(pathlib.Path('$GITHUB_WORKSPACE')); print(torch_molecule.__version__)"
+          suites=(
+            "$GITHUB_WORKSPACE/tests/test_public_models.py"
+            "$GITHUB_WORKSPACE/tests/datasets"
+            "$GITHUB_WORKSPACE/tests/encoder/sand"
+            "$GITHUB_WORKSPACE/tests/generator/demodiff"
+          )
+          if [ -n "$MODEL_EXTRA" ]; then
+            suites+=(
+              "$GITHUB_WORKSPACE/tests/generator/genmol"
+              "$GITHUB_WORKSPACE/tests/generator/pretrained"
+            )
+          else
+            suites+=("$GITHUB_WORKSPACE/tests/generator/genmol/test_dependencies.py")
+          fi
+          python -m pytest --import-mode=importlib -m "not integration" "${suites[@]}"

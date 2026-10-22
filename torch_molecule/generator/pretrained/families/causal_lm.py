@@ -32,8 +32,8 @@ def generate_causal_lm(
     n_samples : int
         Number of molecules to generate.
     family : Optional[str], default=None
-        Generator family name. Unused by the standard ``generate()`` path;
-        kept for call-site compatibility.
+        Generator family name. NovoMolGen prefixes include its BOS token,
+        matching the tokenizer's training format.
     max_new_tokens : Optional[int], default=None
         Maximum number of newly generated tokens. Independent of prefix length,
         so a long ``scaffold=`` does not consume the generation budget.
@@ -54,7 +54,6 @@ def generate_causal_lm(
     List[str]
         Raw decoded strings from the tokenizer (may contain spaces).
     """
-    del family  # dispatch is done by HFPretrainedMolecularGenerator
     pad_token_id = tokenizer.pad_token_id
     if pad_token_id is None:
         pad_token_id = tokenizer.eos_token_id
@@ -78,6 +77,9 @@ def generate_causal_lm(
     if scaffold:
         encoded = tokenizer(scaffold, return_tensors="pt", add_special_tokens=False)
         input_ids = encoded["input_ids"]
+        if family == "novomolgen":
+            bos = input_ids.new_tensor([[tokenizer.bos_token_id]])
+            input_ids = torch.cat([bos, input_ids], dim=1)
         input_ids = input_ids.to(device).expand(n_samples, -1).contiguous()
         generate_kwargs["input_ids"] = input_ids
         generate_kwargs["attention_mask"] = torch.ones_like(input_ids)

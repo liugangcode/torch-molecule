@@ -101,7 +101,10 @@ Otherwise split the dataset yourself:
 Pass ``train.data`` and ``train.target`` to ``fit``; supply the validation data
 through ``X_val`` and ``y_val`` when the model supports them. Keep a separate
 test set for a final performance estimate. ``data.groups`` holds a structure key
-per row, so repeated measurements of one molecule can stay in one split.
+per row, but the splitters preserve this metadata without using it to assign
+rows. Random splitting assigns individual rows, so repeated structures can
+occur in both splits. Use ``scaffold`` or ``butina``, or split by group yourself, when
+repeated measurements must stay together.
 
 .. list-table::
    :header-rows: 1
@@ -111,7 +114,7 @@ per row, so repeated measurements of one molecule can stay in one split.
      - Holdout strategy
      - Useful for
    * - ``random``
-     - Randomly assign molecules to each split
+     - Randomly assign rows to each split; repeated structures may overlap
      - An initial baseline
    * - ``scaffold``
      - Keep Bemis–Murcko scaffold groups separate

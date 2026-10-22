@@ -88,6 +88,25 @@ def test_random_preserves_multitask_target():
     assert train.target.shape[0] == len(train.data)
 
 
+@pytest.mark.parametrize("method", ["random", "scaffold", "butina"])
+def test_duplicate_structure_split_behavior_and_group_metadata(method):
+    smiles = ["CCO", "CCO", "CCN", "CCN", "c1ccccc1", "c1ccccc1"]
+    data = SMILESDataset(
+        data=smiles,
+        target=np.arange(len(smiles)).reshape(-1, 1),
+        groups=smiles.copy(),
+    )
+    train, holdout = data.train_test_split(test_size=0.5, method=method, seed=42)
+    overlap = set(train.data) & set(holdout.data)
+    assert bool(overlap) == (method == "random")
+    assert train.groups == train.data
+    assert holdout.groups == holdout.data
+    np.testing.assert_array_equal(
+        np.sort(np.concatenate([train.target, holdout.target], axis=0).ravel()),
+        np.arange(len(smiles)),
+    )
+
+
 def test_split_unlabeled_dataset():
     data = SMILESDataset(data=_benzene_family() + _other_molecules(), target=None)
     train, holdout = train_test_split(data, test_size=0.2, method="random", seed=1)

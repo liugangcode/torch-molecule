@@ -3,13 +3,14 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Base Modules" href="base.html"><link rel="prev" title="Molecular Encoder Models" href="encoder.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Utility Functions" href="utils.html"><link rel="prev" title="Base Modules" href="base.html">
 
-    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
-        <title>Neural Network Components - torch-molecule (0.1.7) documentation</title>
+    <link rel="shortcut icon" href="../_static/favicon.svg"><!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Neural Network Components - torch-molecule</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/torch-molecule.css?v=50fedd17" />
     
     
 
@@ -18,18 +19,39 @@
   body {
     --color-code-background: #f2f2f2;
   --color-code-foreground: #1e1e1e;
+  --color-brand-primary: #984b35;
+  --color-brand-content: #984b35;
+  --color-background-primary: #faf9f6;
+  --color-background-secondary: #f1f0eb;
+  --color-foreground-primary: #242721;
+  --color-foreground-secondary: #555b51;
+  --color-foreground-muted: #64685e;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
       }
     }
@@ -37,6 +59,25 @@
 </style></head>
   <body>
     
+<header class="tm-header">
+  <a class="tm-wordmark" href="../index.html" aria-label="torch-molecule home">
+    <svg viewBox="0 0 34 34" width="30" height="30" fill="none" aria-hidden="true"><path d="M9 7 25 10 22 27 7 23Z M9 7 22 27 M7 23 25 10" stroke="currentColor" stroke-width="1.5"/><g fill="currentColor"><circle cx="9" cy="7" r="3.5"/><circle cx="25" cy="10" r="3.5"/><circle cx="22" cy="27" r="3.5"/></g><circle cx="7" cy="23" r="3.5" fill="var(--tm-accent)"/></svg>
+    <span>torch-molecule</span>
+  </a>
+  <button class="tm-menu-toggle" aria-controls="tm-site-navigation" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
+  <nav class="tm-navigation" id="tm-site-navigation" aria-label="Main navigation">
+    <a href="../overview.html" aria-current="page">Documentation</a>
+    <a href="../models.html">Models</a>
+    <a href="../example.html">Examples</a>
+    <a href="https://github.com/liugangcode/torch-molecule" class="tm-github">GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+  <form class="tm-search" role="search" action="../search.html" method="get">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+    <input aria-label="Search documentation" name="q" placeholder="Search docs" autocomplete="off"/>
+    <kbd aria-hidden="true">⌘ K</kbd>
+  </form>
+</header>
+
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
@@ -161,7 +202,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">torch-molecule (0.1.7) documentation</div></a>
+      <a href="../index.html"><div class="brand">torch-molecule</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,50 +221,87 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
-  
-  <span class="sidebar-brand-text">torch-molecule (0.1.7) documentation</span>
-  
-</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+      <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="../overview.html">
+  <span>Documentation</span>
+</a>
+<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<div id="searchbox"></div><div class="sidebar-scroll"><nav class="sidebar-tree" aria-label="Documentation navigation">
+  <p class="caption" role="heading" aria-level="2"><span class="caption-text">Get started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Datasets Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../overview.html">Model Overview</a><input aria-label="Toggle navigation of Model Overview" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Choose a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Explore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Model collection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../dataset.html">Datasets</a><input aria-label="Toggle navigation of Datasets" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_qm9.html">load_qm9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_chembl2k.html">load_chembl2k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_broad6k.html">load_broad6k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_toxcast.html">load_toxcast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_admet.html">load_admet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_gasperm.html">load_gasperm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_zinc250k.html">load_zinc250k</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="encoder.html">Molecular Encoder Models</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">API reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Neural Network Components</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="predictor.html">Predictor API</a><input aria-label="Toggle navigation of Predictor API" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/GNNMolecularPredictor.html">GNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GREAMolecularPredictor.html">GREA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/SGIRMolecularPredictor.html">SGIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GRINMolecularPredictor.html">GRIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/BFGNNMolecularPredictor.html">BFGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/DIRMolecularPredictor.html">DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/IRMMolecularPredictor.html">IRM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/RPGNNMolecularPredictor.html">RPGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/SSRMolecularPredictor.html">SSR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/LSTMMolecularPredictor.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/SMILESTransformerMolecularPredictor.html">SMILES Transformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="encoder.html">Encoder API</a><input aria-label="Toggle navigation of Encoder API" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/MoamaMolecularEncoder.html">MoAmA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/AttrMaskMolecularEncoder.html">AttrMask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GraphMAEMolecularEncoder.html">GraphMAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/ContextPredMolecularEncoder.html">ContextPred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/EdgePredMolecularEncoder.html">EdgePred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/InfoGraphMolecularEncoder.html">InfoGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/SupervisedMolecularEncoder.html">Supervised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/SANDMolecularEncoder.html">SAND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/HFPretrainedMolecularEncoder.html">Hugging Face</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generator.html">Generator API</a><input aria-label="Toggle navigation of Generator API" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/DemoDiffMolecularGenerator.html">DemoDiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GraphDITMolecularGenerator.html">GraphDiT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/DeFoGMolecularGenerator.html">DeFoG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GraphGAMolecularGenerator.html">Graph GA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/DigressMolecularGenerator.html">DiGress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GDSSMolecularGenerator.html">GDSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/JTVAEMolecularGenerator.html">JT-VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GenMolMolecularGenerator.html">GenMol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/MolGPTMolecularGenerator.html">MolGPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/LSTMMolecularGenerator.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/HFPretrainedMolecularGenerator.html">Hugging Face</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">Base Modules</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utility Functions</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Project</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../additional.html">Project Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../additional.html#project-structure">Project Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../additional.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../additional.html">About the project</a></li>
 </ul>
 
-</div>
-</div>
-
+</nav></div>
       </div>
       
     </div>
@@ -238,13 +316,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="../_sources/api/nn.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -257,12 +329,20 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="neural-network-components">
+          
+
+<nav class="tm-breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span aria-hidden="true">/</span>
+  
+  <span>Neural Network Components</span>
+</nav>
+<section id="neural-network-components">
 <h1>Neural Network Components<a class="headerlink" href="#neural-network-components" title="Link to this heading">¶</a></h1>
-<p class="rubric">Multi-Head Attention with Node Masking</p>
-<dl class="py class" id="module-torch_molecule.nn.attention">
+<section id="module-torch_molecule.nn.attention">
+<span id="multi-head-attention-with-node-masking"></span><h2>Multi-Head Attention with Node Masking<a class="headerlink" href="#module-torch_molecule.nn.attention" title="Link to this heading">¶</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.attention.AttentionWithNodeMask">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.attention.</span></span><span class="sig-name descname"><span class="pre">AttentionWithNodeMask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_head</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qkv_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qk_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attn_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'torch.nn.modules.normalization.LayerNorm'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/attention.html#AttentionWithNodeMask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.attention.AttentionWithNodeMask" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">AttentionWithNodeMask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_head</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qkv_bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qk_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attn_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'torch.nn.modules.normalization.LayerNorm'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/attention.html#AttentionWithNodeMask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.attention.AttentionWithNodeMask" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.nn.attention.AttentionWithNodeMask.fast_attn">
@@ -285,10 +365,12 @@ registered hooks while the latter silently ignores them.</p>
 
 </dd></dl>
 
-<p class="rubric">Embedding methods for different input features</p>
-<dl class="py class" id="module-torch_molecule.nn.embedder">
+</section>
+<section id="module-torch_molecule.nn.embedder">
+<span id="embedding-methods-for-different-input-features"></span><h2>Embedding methods for different input features<a class="headerlink" href="#module-torch_molecule.nn.embedder" title="Link to this heading">¶</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.embedder.CategoricalEmbedder">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.embedder.</span></span><span class="sig-name descname"><span class="pre">CategoricalEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_prob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/embedder.html#CategoricalEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.embedder.CategoricalEmbedder" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">CategoricalEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_prob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/embedder.html#CategoricalEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.embedder.CategoricalEmbedder" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Embeds categorical conditions (e.g., data source labels) into vector representations.
 Supports label dropout for classifier-free guidance.</p>
@@ -326,7 +408,7 @@ Supports label dropout for classifier-free guidance.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.embedder.ClusterContinuousEmbedder">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.embedder.</span></span><span class="sig-name descname"><span class="pre">ClusterContinuousEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_prob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/embedder.html#ClusterContinuousEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.embedder.ClusterContinuousEmbedder" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ClusterContinuousEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dropout_prob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/embedder.html#ClusterContinuousEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.embedder.ClusterContinuousEmbedder" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Embeds continuous input features into vector representations using a multilayer perceptron (MLP).
 Supports optional embedding dropout for classifier-free guidance.</p>
@@ -357,7 +439,7 @@ registered hooks while the latter silently ignores them.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.embedder.TimestepEmbedder">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.embedder.</span></span><span class="sig-name descname"><span class="pre">TimestepEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_embedding_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/embedder.html#TimestepEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.embedder.TimestepEmbedder" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">TimestepEmbedder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_embedding_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/embedder.html#TimestepEmbedder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.embedder.TimestepEmbedder" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Embeds scalar timesteps into vector representations using a sinusoidal embedding
 followed by a multilayer perceptron (MLP).</p>
@@ -407,10 +489,12 @@ These may be fractional.</p></li>
 
 </dd></dl>
 
-<p class="rubric">Layers for Graph Neural Networks</p>
-<dl class="py class" id="module-torch_molecule.nn.gnn">
+</section>
+<section id="module-torch_molecule.nn.gnn">
+<span id="layers-for-graph-neural-networks"></span><h2>Layers for Graph Neural Networks<a class="headerlink" href="#module-torch_molecule.nn.gnn" title="Link to this heading">¶</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.AtomEncoder">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">AtomEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#AtomEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.AtomEncoder" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">AtomEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#AtomEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.AtomEncoder" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Encodes atom features into a fixed-size vector representation.</p>
 <p>This module converts categorical atom features into embeddings and combines them
@@ -447,7 +531,7 @@ atom features.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.BondEncoder">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">BondEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#BondEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.BondEncoder" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BondEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#BondEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.BondEncoder" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Encodes bond features into a fixed-size vector representation.</p>
 <p>This module converts categorical bond features into embeddings and combines them
@@ -484,7 +568,7 @@ bond features.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GCNConv">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">GCNConv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GCNConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GCNConv" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">GCNConv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GCNConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GCNConv" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MessagePassing</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GCNConv.forward">
@@ -519,7 +603,7 @@ which was initially passed to <code class="xref py py-meth docutils literal notr
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GCNConv_BF">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">GCNConv_BF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GCNConv_BF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GCNConv_BF" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">GCNConv_BF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GCNConv_BF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GCNConv_BF" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MessagePassing</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GCNConv_BF.aggregate">
@@ -556,7 +640,7 @@ respective nodes <span class="math notranslate nohighlight">\(i\)</span> and <sp
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GCNConv_GRIN">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">GCNConv_GRIN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GCNConv_GRIN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GCNConv_GRIN" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">GCNConv_GRIN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GCNConv_GRIN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GCNConv_GRIN" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MessagePassing</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GCNConv_GRIN.aggregate">
@@ -593,7 +677,7 @@ respective nodes <span class="math notranslate nohighlight">\(i\)</span> and <sp
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GINConv">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">GINConv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GINConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GINConv" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">GINConv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GINConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GINConv" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MessagePassing</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GINConv.forward">
@@ -628,7 +712,7 @@ which was initially passed to <code class="xref py py-meth docutils literal notr
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GINConv_BF">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">GINConv_BF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GINConv_BF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GINConv_BF" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">GINConv_BF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GINConv_BF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GINConv_BF" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MessagePassing</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GINConv_BF.aggregate">
@@ -665,7 +749,7 @@ respective nodes <span class="math notranslate nohighlight">\(i\)</span> and <sp
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GINConv_GRIN">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">GINConv_GRIN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GINConv_GRIN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GINConv_GRIN" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">GINConv_GRIN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GINConv_GRIN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GINConv_GRIN" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MessagePassing</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GINConv_GRIN.aggregate">
@@ -702,7 +786,7 @@ respective nodes <span class="math notranslate nohighlight">\(i\)</span> and <sp
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GNN_node">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">GNN_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">JK</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encode_atom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_aligned</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GNN_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GNN_node" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">GNN_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">JK</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encode_atom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_aligned</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GNN_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GNN_node" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="simple">
 <dt>Output:</dt><dd><p>node representations</p>
@@ -726,7 +810,7 @@ registered hooks while the latter silently ignores them.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.gnn.GNN_node_Virtualnode">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.gnn.</span></span><span class="sig-name descname"><span class="pre">GNN_node_Virtualnode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">JK</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encode_atom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_aligned</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GNN_node_Virtualnode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GNN_node_Virtualnode" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">GNN_node_Virtualnode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">JK</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encode_atom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm_aligned</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/gnn.html#GNN_node_Virtualnode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.gnn.GNN_node_Virtualnode" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="simple">
 <dt>Output:</dt><dd><p>node representations</p>
@@ -748,10 +832,12 @@ registered hooks while the latter silently ignores them.</p>
 
 </dd></dl>
 
-<p class="rubric">Multi-Layer Perceptron</p>
-<dl class="py class" id="module-torch_molecule.nn.mlp">
+</section>
+<section id="module-torch_molecule.nn.mlp">
+<span id="multi-layer-perceptron"></span><h2>Multi-Layer Perceptron<a class="headerlink" href="#module-torch_molecule.nn.mlp" title="Link to this heading">¶</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.nn.mlp.MLP">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.nn.mlp.</span></span><span class="sig-name descname"><span class="pre">MLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'torch.nn.modules.activation.GELU'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/mlp.html#MLP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.mlp.MLP" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">MLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;class</span> <span class="pre">'torch.nn.modules.activation.GELU'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_bn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/nn/mlp.html#MLP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.nn.mlp.MLP" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.nn.mlp.MLP.forward">
@@ -770,29 +856,33 @@ registered hooks while the latter silently ignores them.</p>
 </dd></dl>
 
 </section>
+</section>
+
+
 
         </article>
       </div>
       <footer>
         
+
         <div class="related-pages">
-          <a class="next-page" href="base.html">
+          <a class="next-page" href="utils.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Base Modules</div>
+                <div class="title">Utility Functions</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="encoder.html">
+          <a class="prev-page" href="base.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Molecular Encoder Models</div>
+                <div class="title">Base Modules</div>
                 
               </div>
             </a>
@@ -800,7 +890,7 @@ registered hooks while the latter silently ignores them.</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2025, Gang Liu
+                Copyright &#169; 2025–2026, Gang Liu
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -812,6 +902,11 @@ registered hooks while the latter silently ignores them.</p>
           </div>
         </div>
         
+<div class="tm-footer">
+  <span>torch-molecule <span class="tm-footer-dot">·</span> Open source, open discovery.</span>
+  <div><a href="../additional.html">Contribute</a><a href="https://github.com/liugangcode/torch-molecule/blob/main/LICENSE">MIT license</a><a href="https://github.com/liugangcode/torch-molecule">GitHub ↗</a></div>
+</div>
+
       </footer>
     </div>
     <aside class="toc-drawer">
@@ -827,80 +922,10 @@ registered hooks while the latter silently ignores them.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Neural Network Components</a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.attention.AttentionWithNodeMask"><code class="docutils literal notranslate"><span class="pre">AttentionWithNodeMask</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.attention.AttentionWithNodeMask.fast_attn"><code class="docutils literal notranslate"><span class="pre">AttentionWithNodeMask.fast_attn</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.attention.AttentionWithNodeMask.forward"><code class="docutils literal notranslate"><span class="pre">AttentionWithNodeMask.forward()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.embedder.CategoricalEmbedder"><code class="docutils literal notranslate"><span class="pre">CategoricalEmbedder</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.embedder.CategoricalEmbedder.forward"><code class="docutils literal notranslate"><span class="pre">CategoricalEmbedder.forward()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.embedder.ClusterContinuousEmbedder"><code class="docutils literal notranslate"><span class="pre">ClusterContinuousEmbedder</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.embedder.ClusterContinuousEmbedder.forward"><code class="docutils literal notranslate"><span class="pre">ClusterContinuousEmbedder.forward()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.embedder.TimestepEmbedder"><code class="docutils literal notranslate"><span class="pre">TimestepEmbedder</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.embedder.TimestepEmbedder.forward"><code class="docutils literal notranslate"><span class="pre">TimestepEmbedder.forward()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.embedder.TimestepEmbedder.timestep_embedding"><code class="docutils literal notranslate"><span class="pre">TimestepEmbedder.timestep_embedding()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.AtomEncoder"><code class="docutils literal notranslate"><span class="pre">AtomEncoder</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.AtomEncoder.forward"><code class="docutils literal notranslate"><span class="pre">AtomEncoder.forward()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.BondEncoder"><code class="docutils literal notranslate"><span class="pre">BondEncoder</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.BondEncoder.forward"><code class="docutils literal notranslate"><span class="pre">BondEncoder.forward()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv"><code class="docutils literal notranslate"><span class="pre">GCNConv</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv.forward"><code class="docutils literal notranslate"><span class="pre">GCNConv.forward()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv.message"><code class="docutils literal notranslate"><span class="pre">GCNConv.message()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv.update"><code class="docutils literal notranslate"><span class="pre">GCNConv.update()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv_BF"><code class="docutils literal notranslate"><span class="pre">GCNConv_BF</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv_BF.aggregate"><code class="docutils literal notranslate"><span class="pre">GCNConv_BF.aggregate()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv_BF.forward"><code class="docutils literal notranslate"><span class="pre">GCNConv_BF.forward()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv_BF.message"><code class="docutils literal notranslate"><span class="pre">GCNConv_BF.message()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv_GRIN"><code class="docutils literal notranslate"><span class="pre">GCNConv_GRIN</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv_GRIN.aggregate"><code class="docutils literal notranslate"><span class="pre">GCNConv_GRIN.aggregate()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv_GRIN.forward"><code class="docutils literal notranslate"><span class="pre">GCNConv_GRIN.forward()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GCNConv_GRIN.message"><code class="docutils literal notranslate"><span class="pre">GCNConv_GRIN.message()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv"><code class="docutils literal notranslate"><span class="pre">GINConv</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv.forward"><code class="docutils literal notranslate"><span class="pre">GINConv.forward()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv.message"><code class="docutils literal notranslate"><span class="pre">GINConv.message()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv.update"><code class="docutils literal notranslate"><span class="pre">GINConv.update()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv_BF"><code class="docutils literal notranslate"><span class="pre">GINConv_BF</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv_BF.aggregate"><code class="docutils literal notranslate"><span class="pre">GINConv_BF.aggregate()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv_BF.forward"><code class="docutils literal notranslate"><span class="pre">GINConv_BF.forward()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv_BF.message"><code class="docutils literal notranslate"><span class="pre">GINConv_BF.message()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv_GRIN"><code class="docutils literal notranslate"><span class="pre">GINConv_GRIN</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv_GRIN.aggregate"><code class="docutils literal notranslate"><span class="pre">GINConv_GRIN.aggregate()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv_GRIN.forward"><code class="docutils literal notranslate"><span class="pre">GINConv_GRIN.forward()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GINConv_GRIN.message"><code class="docutils literal notranslate"><span class="pre">GINConv_GRIN.message()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GNN_node"><code class="docutils literal notranslate"><span class="pre">GNN_node</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GNN_node.forward"><code class="docutils literal notranslate"><span class="pre">GNN_node.forward()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GNN_node_Virtualnode"><code class="docutils literal notranslate"><span class="pre">GNN_node_Virtualnode</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.gnn.GNN_node_Virtualnode.forward"><code class="docutils literal notranslate"><span class="pre">GNN_node_Virtualnode.forward()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.nn.mlp.MLP"><code class="docutils literal notranslate"><span class="pre">MLP</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.nn.mlp.MLP.forward"><code class="docutils literal notranslate"><span class="pre">MLP.forward()</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#module-torch_molecule.nn.attention">Multi-Head Attention with Node Masking</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.nn.embedder">Embedding methods for different input features</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.nn.gnn">Layers for Graph Neural Networks</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.nn.mlp">Multi-Layer Perceptron</a></li>
 </ul>
 </li>
 </ul>
@@ -912,10 +937,12 @@ registered hooks while the latter silently ignores them.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=a6319924"></script>
+</div>
+<script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/torch-molecule.js?v=7701f30b"></script>
     </body>
 </html>

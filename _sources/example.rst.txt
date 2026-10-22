@@ -1,218 +1,183 @@
-Examples
-========
+Quickstart
+==========
 
-This section shows how to use the `torch_molecule` library in practice. More examples are available in the `examples <https://github.com/liugangcode/torch-molecule/tree/main/examples/>`_ folder and the `tests <https://github.com/liugangcode/torch-molecule/tree/main/tests/>`_ folder.
+Train a predictor, learn molecular embeddings, or generate molecules from
+SMILES. These small examples demonstrate the API; use a larger dataset and a
+separate evaluation set to assess model quality.
 
-Loading Datasets and Splits
----------------------------
+Predict a molecular property
+----------------------------
 
-Loaders download (or reuse) data under ``local_dir`` and return a ``SMILESDataset``.
-Use ``train_test_split`` with ``"random"``, ``"scaffold"``, ``"butina"``, or ``"size"``:
+This example learns molecular weight calculated with RDKit. Replace these
+values with your own measured property labels for a prediction task.
 
 .. code-block:: python
 
-   from torch_molecule.datasets import load_qm9, load_zinc250k
-   from torch_molecule import GREAMolecularPredictor
+   import numpy as np
+   from rdkit import Chem
+   from rdkit.Chem import Descriptors
+   from torch_molecule import GNNMolecularPredictor
 
-   data = load_qm9(local_dir="torchmol_data")
-   # scaffold: unseen Bemis-Murcko scaffolds; butina: Tanimoto clusters; size: heavy-atom count
-   # Split the full dataset. subsample() is only for local debugging / CI.
-   train, val = data.train_test_split(test_size=0.2, method="scaffold", seed=42)
+   smiles = ["CCO", "CCN", "CCC", "CCCO", "CCCN", "CCCC", "CCOC", "CCNC"]
+   target = np.array([
+       [Descriptors.MolWt(Chem.MolFromSmiles(value))] for value in smiles
+   ])
 
-   grea = GREAMolecularPredictor(
+   predictor = GNNMolecularPredictor(
        num_task=1,
        task_type="regression",
-       evaluate_higher_better=False,
-       verbose="progress_bar",  # or "print_statement" / "none"
+       num_layer=2,
+       hidden_size=32,
+       batch_size=4,
+       epochs=20,
+       device="cpu",
    )
-   grea.autofit(
-       X_train=train.data,
-       y_train=train.target,
-       X_val=val.data,
-       y_val=val.target,
-       n_trials=10,
+   predictor.fit(
+       X_train=smiles[:6],
+       y_train=target[:6],
+       X_val=smiles[6:],
+       y_val=target[6:],
    )
+   prediction = predictor.predict(smiles[6:])["prediction"]
+   print(prediction.shape)  # (2, 1)
 
-   # Unlabeled datasets (e.g. ZINC250k) have target=None
-   zinc = load_zinc250k(local_dir="torchmol_data")
-   assert zinc.target is None
+For multiple properties, provide a target array of shape
+``(n_molecules, n_tasks)`` and set ``num_task`` accordingly. For automated
+hyperparameter search, see ``autofit`` in the :doc:`api/predictor` reference.
 
-Molecular Property Prediction Usage
------------------------------------
+Learn molecular embeddings
+--------------------------
 
-The following example demonstrates how to use the `GREAMolecularPredictor`:
+Attribute masking trains on unlabeled molecules and returns one vector per
+molecule. These vectors can be used in similarity analysis or a downstream
+predictor.
 
 .. code-block:: python
 
-   from torch_molecule import GREAMolecularPredictor, GNNMolecularPredictor
-   from torch_molecule.utils.search import ParameterType, ParameterSpec
+   from torch_molecule import AttrMaskMolecularEncoder
 
-   # Define search parameters
-   search_GNN = {
-       "gnn_type": ParameterSpec(ParameterType.CATEGORICAL, ["gin-virtual", "gcn-virtual", "gin", "gcn"]),
-       "norm_layer": ParameterSpec(ParameterType.CATEGORICAL, ["batch_norm", "layer_norm"]),
-       "graph_pooling": ParameterSpec(ParameterType.CATEGORICAL, ["mean", "sum", "max"]),
-       "augmented_feature": ParameterSpec(ParameterType.CATEGORICAL, ["maccs,morgan", "maccs", "morgan", None]),
-       "num_layer": ParameterSpec(ParameterType.INTEGER, (2, 5)),
-       "hidden_size": ParameterSpec(ParameterType.INTEGER, (64, 512)),
-       "drop_ratio": ParameterSpec(ParameterType.FLOAT, (0.0, 0.5)),
-       "learning_rate": ParameterSpec(ParameterType.LOG_FLOAT, (1e-5, 1e-2)),
-       "weight_decay": ParameterSpec(ParameterType.LOG_FLOAT, (1e-10, 1e-3)),
-   }
-
-   search_GREA = {
-       "gamma": ParameterSpec(ParameterType.FLOAT, (0.25, 0.75)),
-       **search_GNN
-   }
-
-   # Train GREA model
-   grea_model = GREAMolecularPredictor(
-       num_task=num_task,
-       task_type="regression",
-       model_name="GREA_multitask",
-       batch_size=BATCH_SIZE,
-       epochs=N_epoch,
-       evaluate_criterion='r2',
-       evaluate_higher_better=True,
-       verbose='progress_bar'
+   smiles = ["CCO", "CCN", "CCC", "CCCO", "CCCN", "CCCC", "CCOC", "CCNC"]
+   encoder = AttrMaskMolecularEncoder(
+       num_layer=2,
+       hidden_size=32,
+       batch_size=4,
+       epochs=20,
+       device="cpu",
    )
+   encoder.fit(smiles)
+   embeddings = encoder.encode(smiles, return_type="np")
+   print(embeddings.shape)  # (8, 32)
 
-   # Fit the model
-   X_train = ['C1=CC=CC=C1', 'C1=CC=CC=C1']
-   y_train = [[0.5], [1.5]]
-   X_val = ['C1=CC=CC=C1', 'C1=CC=CC=C1']
-   y_val = [[0.5], [1.5]]
-   N_trial = 100
+For similarity-supervised learning, SAND instead takes explicit molecular pairs:
+``fit(smiles, similarity_labels, pairs=pair_indices)``. ``pair_indices`` has shape
+``(n_pairs, 2)`` and indexes ``smiles``; each pair needs one finite label. At least
+two pairs with different labels are required. See :doc:`api/encoder`.
 
-   grea_model.autofit(
-       X_train=X_train.tolist(),
-       y_train=y_train,
-       X_val=X_val.tolist(),
-       y_val=y_val,
-       n_trials=N_trial,
-       search_parameters=search_GREA
-   )
+Generate molecules with DemoDiff
+--------------------------------
 
-
-Molecular Generator Usage
-----------------------------
-
-The following example demonstrates how to use the `GraphDITMolecularGenerator` for generating molecules with retry logic for invalid molecules:
+DemoDiff trains on SMILES and can generate with or without demonstrations. This
+small configuration trains from scratch using the core dependencies.
 
 .. code-block:: python
 
-   from torch_molecule import GraphDITMolecularGenerator
-   from rdkit import Chem
+   from torch_molecule import DemoDiffMolecularGenerator
 
-   property_names = ['logP']
-   train_smiles_list = ['C1=CC=CC=C1', 'C1=CC=CC=C1']
-   train_property_array = [[1], [2]]
-   test_property_array = [[1.5], [2.5]]
-
-   # Initialize the generator model
-   model_cond = GraphDITMolecularGenerator(
-       task_type=['regression'] * len(property_names),
-       batch_size=1024,
-       drop_condition=0.1,
-       verbose='progress_bar',
-       epochs=10000,
+   smiles = ["CCO", "CCN", "CCC", "CCCO", "CCCN", "CCCC", "CCOC", "CCNC"]
+   generator = DemoDiffMolecularGenerator(
+       num_layer=2,
+       hidden_size=64,
+       num_head=4,
+       mlp_ratio=2,
+       diffusion_steps=20,
+       batch_size=4,
+       epochs=25,
+       learning_rate=1e-3,
+       guidance_scale=1.0,
+       device="cpu",
    )
+   generator.fit(smiles)
+   generated = generator.generate(n_samples=5, max_attempts=10)
+   print(generated)
 
-   # Fit the model
-   model_cond.fit(train_smiles_list, train_property_array)
+Generation returns valid, connected SMILES. If the attempt limit is reached,
+DemoDiff warns and returns the available molecules. A short training run can
+return fewer molecules than requested.
 
-   # Generate molecules with retry logic
-   max_retries = 10
-   generated_smiles_list = model_cond.generate(test_property_array)
+Use molecular demonstrations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   # Function to check if SMILES is valid
-   def is_valid_smiles(smiles):
-       if smiles is None:
-           return False
-       mol = Chem.MolFromSmiles(smiles)
-       return mol is not None
+For conditional training, pass demonstration indices for every training molecule
+and one ``score`` per demonstration. Scores are similarities or normalized task
+scores in ``[0, 1]``; the target's score is always ``1``. Use the same score
+definition for training and generation.
 
-   # Retry generation for invalid molecules
-   for retry in range(max_retries - 1):  # Already did first generation
-       # Find indices of invalid SMILES
-       invalid_indices = [i for i, smiles in enumerate(generated_smiles_list) if not is_valid_smiles(smiles)]
-       
-       if not invalid_indices:
-           print(f"All SMILES valid after {retry + 1} attempts")
-           break
-           
-       print(f"Retry {retry + 1}: Regenerating {len(invalid_indices)} invalid molecules")
-       
-       # Extract properties for invalid molecules
-       invalid_properties = test_property_array[invalid_indices]
-       
-       # Regenerate only for invalid molecules
-       new_smiles = model_cond.generate(invalid_properties)
-       
-       # Replace invalid molecules with new generations
-       for idx, new_idx in enumerate(invalid_indices):
-           generated_smiles_list[new_idx] = new_smiles[idx]
-       
-       if retry == max_retries - 2:  # Last iteration
-           print(f"Reached maximum retries ({max_retries}). {len(invalid_indices)} molecules still invalid.")
+The repository example computes Morgan fingerprint Tanimoto similarity and
+selects similar molecules as demonstrations. Run it from the repository root:
 
+.. code-block:: bash
 
-Using Pretrained Checkpoints
-----------------------------
+   python examples/generation/demodiff.py --data data/molecule100.csv --with-context
 
-`torch_molecule` supports loading and saving trained predictors via Hugging Face Hub
-(``save_to_hf`` / ``load_from_hf``) or local paths
-(``save_to_local`` / ``load_from_local``).
+It trains for 25 epochs, saves and reloads the model, and writes losses and
+generated molecules under ``artifacts/demodiff/examples_similarity/``.
+Use ``--epochs`` or ``--device`` to change the run. See the
+:ref:`complete DemoDiff example <DemoDiffMolecularGenerator-example>`
+and :doc:`api/generator` for the input format and generation options.
+
+Generate molecules with GenMol
+------------------------------
+
+Install the ``genmol`` extra described in :doc:`install`. GenMol trains on
+SMILES and supports an optional scaffold at generation time.
 
 .. code-block:: python
 
-   from torch_molecule import GREAMolecularPredictor
+   from torch_molecule import GenMolMolecularGenerator
 
-   repo_id = "user/repo_id"  # replace with your Hugging Face username and repo_id
-
-   # Save a trained model to Hugging Face
-   grea.save_to_hf(
-       repo_id=repo_id,
-       task_id="qm9_grea",
-       commit_message="Upload qm9_grea",
-       private=False,
+   smiles = ["CCO", "CCN", "CCC", "CCCO", "CCCN", "CCCC", "CCOC", "CCNC"]
+   generator = GenMolMolecularGenerator(
+       num_layer=2,
+       num_head=4,
+       hidden_size=64,
+       intermediate_size=128,
+       max_len=64,
+       batch_size=4,
+       epochs=100,
+       learning_rate=1e-3,
+       warmup_steps=0,
+       ema_decay=0.0,
+       device="cpu",
    )
+   generator.fit(smiles)
+   generated = generator.generate(n_samples=5, min_new_tokens=4)
+   print(generated)
 
-   # Load a pretrained checkpoint from Hugging Face
-   model = GREAMolecularPredictor()
-   model.load_from_hf(repo_id=repo_id, local_cache=f"{model_dir}/GREA_{task_name}.pt")
-   model.set_params(verbose="none")
-   predictions = model.predict(smiles_list)
+GenMol also returns available molecules with a warning when bounded sampling
+cannot fill the request. For scaffold generation, pass ``scaffold="c1ccccc1"``
+to ``generate`` after training on a suitable molecular dataset.
 
-   # Or save / load locally
-   grea.save_to_local("qm9_grea.pt")
-   new_model = GREAMolecularPredictor()
-   new_model.load_from_local("qm9_grea.pt")
+Use a pretrained generator
+--------------------------
 
-Hugging Face Pretrained Generators
-----------------------------------
-
-Download and run Hub generators (NovoMolGen, MolGen, Molexar, SAFE-GPT) with
-:class:`~torch_molecule.HFPretrainedMolecularGenerator`. Extra packages may be
-required; see :doc:`install`.
+Hugging Face wrappers load existing checkpoints. This example needs network
+access and the SAFE-GPT dependencies in :doc:`install`.
 
 .. code-block:: python
 
    from torch_molecule import HFPretrainedMolecularGenerator
 
-   # SAFE-GPT: de novo and scaffold-constrained generation
-   model = HFPretrainedMolecularGenerator(repo_id="datamol-io/safe-gpt")
-   model.fit()  # download / load the Hub checkpoint
-   print(model.generate(n_samples=5))
-   print(model.generate(n_samples=5, scaffold="c1ccccc1"))
+   generator = HFPretrainedMolecularGenerator(repo_id="datamol-io/safe-gpt")
+   generator.fit()
+   generated = generator.generate(n_samples=5)
+   print(generated)
 
-   # Other tested repo_ids include:
-   #   "chandar-lab/NovoMolGen_32M_SMILES_BPE"
-   #   "zjunlp/MolGen-large"
-   #   "zjunlp/MolGen-large-opt"
-   #   "fairydance/molexar-10m-base"
-   #   "fairydance/molexar-10m-omni"
+More examples
+-------------
 
-   model.save_to_local("safe_gpt_local")
-   loaded = HFPretrainedMolecularGenerator(repo_id="datamol-io/safe-gpt")
-   loaded.load_from_local("safe_gpt_local")
+Browse the maintained scripts for
+`prediction <https://github.com/liugangcode/torch-molecule/tree/main/examples/prediction>`_,
+`representation learning <https://github.com/liugangcode/torch-molecule/tree/main/examples/encoder>`_,
+`generation <https://github.com/liugangcode/torch-molecule/tree/main/examples/generation>`_,
+and `datasets <https://github.com/liugangcode/torch-molecule/tree/main/examples/datasets>`_.
+See :doc:`dataset` to bring your own data and :doc:`overview` to save a fitted model.

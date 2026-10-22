@@ -1,0 +1,846 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="SGIRMolecularPredictor" href="SGIRMolecularPredictor.html"><link rel="prev" title="GNNMolecularPredictor" href="GNNMolecularPredictor.html">
+
+    <link rel="shortcut icon" href="../../_static/favicon.svg"><!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>GREAMolecularPredictor - torch-molecule</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/torch-molecule.css?v=50fedd17" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  --color-brand-primary: #984b35;
+  --color-brand-content: #984b35;
+  --color-background-primary: #faf9f6;
+  --color-background-secondary: #f1f0eb;
+  --color-foreground-primary: #242721;
+  --color-foreground-secondary: #555b51;
+  --color-foreground-muted: #64685e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+<header class="tm-header">
+  <a class="tm-wordmark" href="../../index.html" aria-label="torch-molecule home">
+    <svg viewBox="0 0 34 34" width="30" height="30" fill="none" aria-hidden="true"><path d="M9 7 25 10 22 27 7 23Z M9 7 22 27 M7 23 25 10" stroke="currentColor" stroke-width="1.5"/><g fill="currentColor"><circle cx="9" cy="7" r="3.5"/><circle cx="25" cy="10" r="3.5"/><circle cx="22" cy="27" r="3.5"/></g><circle cx="7" cy="23" r="3.5" fill="var(--tm-accent)"/></svg>
+    <span>torch-molecule</span>
+  </a>
+  <button class="tm-menu-toggle" aria-controls="tm-site-navigation" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
+  <nav class="tm-navigation" id="tm-site-navigation" aria-label="Main navigation">
+    <a href="../../overview.html" aria-current="page">Documentation</a>
+    <a href="../../models.html">Models</a>
+    <a href="../../example.html">Examples</a>
+    <a href="https://github.com/liugangcode/torch-molecule" class="tm-github">GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+  <form class="tm-search" role="search" action="../../search.html" method="get">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+    <input aria-label="Search documentation" name="q" placeholder="Search docs" autocomplete="off"/>
+    <kbd aria-hidden="true">⌘ K</kbd>
+  </form>
+</header>
+
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">torch-molecule</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="../../overview.html">
+  <span>Documentation</span>
+</a>
+<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><nav class="sidebar-tree" aria-label="Documentation navigation">
+  <p class="caption" role="heading" aria-level="2"><span class="caption-text">Get started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Choose a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../example.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Explore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Model collection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dataset.html">Datasets</a><input aria-label="Toggle navigation of Datasets" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../datasets/load_qm9.html">load_qm9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datasets/load_chembl2k.html">load_chembl2k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datasets/load_broad6k.html">load_broad6k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datasets/load_toxcast.html">load_toxcast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datasets/load_admet.html">load_admet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datasets/load_gasperm.html">load_gasperm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datasets/load_zinc250k.html">load_zinc250k</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">API reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../predictor.html">Predictor API</a><input aria-label="Toggle navigation of Predictor API" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="GNNMolecularPredictor.html">GNN</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">GREA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SGIRMolecularPredictor.html">SGIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GRINMolecularPredictor.html">GRIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BFGNNMolecularPredictor.html">BFGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DIRMolecularPredictor.html">DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="IRMMolecularPredictor.html">IRM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RPGNNMolecularPredictor.html">RPGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SSRMolecularPredictor.html">SSR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LSTMMolecularPredictor.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SMILESTransformerMolecularPredictor.html">SMILES Transformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../encoder.html">Encoder API</a><input aria-label="Toggle navigation of Encoder API" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="MoamaMolecularEncoder.html">MoAmA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AttrMaskMolecularEncoder.html">AttrMask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GraphMAEMolecularEncoder.html">GraphMAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ContextPredMolecularEncoder.html">ContextPred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EdgePredMolecularEncoder.html">EdgePred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="InfoGraphMolecularEncoder.html">InfoGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SupervisedMolecularEncoder.html">Supervised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SANDMolecularEncoder.html">SAND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HFPretrainedMolecularEncoder.html">Hugging Face</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../generator.html">Generator API</a><input aria-label="Toggle navigation of Generator API" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="DemoDiffMolecularGenerator.html">DemoDiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GraphDITMolecularGenerator.html">GraphDiT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DeFoGMolecularGenerator.html">DeFoG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GraphGAMolecularGenerator.html">Graph GA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DigressMolecularGenerator.html">DiGress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GDSSMolecularGenerator.html">GDSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JTVAEMolecularGenerator.html">JT-VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GenMolMolecularGenerator.html">GenMol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MolGPTMolecularGenerator.html">MolGPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LSTMMolecularGenerator.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HFPretrainedMolecularGenerator.html">Hugging Face</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nn.html">Neural Network Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utility Functions</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../additional.html">About the project</a></li>
+</ul>
+
+</nav></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          
+
+<nav class="tm-breadcrumb" aria-label="Breadcrumb">
+  <a href="../../index.html">Home</a><span aria-hidden="true">/</span>
+  <a href="../predictor.html">Predictor API</a><span aria-hidden="true">/</span>
+  <span>GREAMolecularPredictor</span>
+</nav>
+<section id="greamolecularpredictor">
+<h1>GREAMolecularPredictor<a class="headerlink" href="#greamolecularpredictor" title="Link to this heading">¶</a></h1>
+<p>Graph rationales and environment-based data augmentation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GREAMolecularPredictor</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#greamolecularpredictor-example"><span class="std std-ref">Examples</span></a> · <a class="reference internal" href="#greamolecularpredictor-methods"><span class="std std-ref">Methods</span></a></p>
+<section id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">GREAMolecularPredictor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'regression'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gnn_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gin-virtual'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'batch_norm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_pooling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_feature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_clip_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_lr_scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluate_higher_better</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GREAMolecularPredictor'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/torch_molecule/predictor/grea/modeling_grea.html#GREAMolecularPredictor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor" title="Link to this definition">¶</a></dt>
+<dd><p>This predictor implements GREA model from the paper “Graph Rationalization with Environment-based Augmentations”.</p>
+<p>During model training, it learns the rationales (explainable subgraphs). Use them for data augmentation.
+During prediction, the model uses the rationales to make predictions and the rationales themselves can also explain the predictions.</p>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Graph Rationalization with Environment-based Augmentations.
+<a class="reference external" href="https://dl.acm.org/doi/10.1145/3534678.3539347">https://dl.acm.org/doi/10.1145/3534678.3539347</a></p></li>
+<li><p>Code: <a class="reference external" href="https://github.com/liugangcode/GREA">https://github.com/liugangcode/GREA</a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gamma</strong> (<em>float</em><em>, </em><em>default=0.4</em>) – GREA-specific parameter that penalize the size of the rationales (ratio between the number of nodes in the rationales and the number of nodes in the original graph).</p></li>
+<li><p><strong>num_task</strong> (<em>int</em><em>, </em><em>default=1</em>) – Number of prediction tasks.</p></li>
+<li><p><strong>task_type</strong> (<em>str</em><em>, </em><em>default=&quot;regression&quot;</em>) – Type of prediction task, either “regression” or “classification”.</p></li>
+<li><p><strong>num_layer</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of GNN layers.</p></li>
+<li><p><strong>hidden_size</strong> (<em>int</em><em>, </em><em>default=300</em>) – Dimension of hidden node features.</p></li>
+<li><p><strong>gnn_type</strong> (<em>str</em><em>, </em><em>default=&quot;gin-virtual&quot;</em>) – Type of GNN architecture to use. One of [“gin-virtual”, “gcn-virtual”, “gin”, “gcn”].</p></li>
+<li><p><strong>drop_ratio</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Dropout probability.</p></li>
+<li><p><strong>norm_layer</strong> (<em>str</em><em>, </em><em>default=&quot;batch_norm&quot;</em>) – Type of normalization layer to use. One of [“batch_norm”, “layer_norm”, “instance_norm”, “graph_norm”, “size_norm”, “pair_norm”].</p></li>
+<li><p><strong>graph_pooling</strong> (<em>str</em><em>, </em><em>default=&quot;sum&quot;</em>) – Method for aggregating node features to graph-level representations. One of [“sum”, “mean”, “max”].</p></li>
+<li><p><strong>augmented_feature</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default=None</em>) – Additional molecular fingerprints to use as features. It will be concatenated with the graph representation after pooling.
+Examples like [“morgan”, “maccs”] or None.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>default=128</em>) – Number of samples per batch for training.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>default=500</em>) – Maximum number of training epochs.</p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em><em>, </em><em>default=0.001</em>) – Learning rate for optimizer.</p></li>
+<li><p><strong>weight_decay</strong> (<em>float</em><em>, </em><em>default=0.0</em>) – L2 regularization strength.</p></li>
+<li><p><strong>grad_clip_value</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum norm of gradients for gradient clipping.</p></li>
+<li><p><strong>patience</strong> (<em>int</em><em>, </em><em>default=50</em>) – Number of epochs to wait for improvement before early stopping.</p></li>
+<li><p><strong>use_lr_scheduler</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to use learning rate scheduler.</p></li>
+<li><p><strong>scheduler_factor</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Factor by which to reduce learning rate when plateau is reached.</p></li>
+<li><p><strong>scheduler_patience</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of epochs with no improvement after which learning rate will be reduced.</p></li>
+<li><p><strong>loss_criterion</strong> (<em>callable</em><em>, </em><em>optional</em>) – Loss function for training.</p></li>
+<li><p><strong>evaluate_criterion</strong> (<em>str</em><em> or </em><em>callable</em><em>, </em><em>optional</em>) – Metric for model evaluation.</p></li>
+<li><p><strong>evaluate_higher_better</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether higher values of the evaluation metric are better.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to print progress information during training.</p></li>
+<li><p><strong>device</strong> (<em>torch.device</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Device to use for computation.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em><em>, </em><em>default=&quot;GREAMolecularPredictor&quot;</em>) – Name of the model.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="example">
+<span id="greamolecularpredictor-example"></span><h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">examples/prediction/grea.py</span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
+<div class="tm-example highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GREAMolecularPredictor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.utils.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParameterType</span><span class="p">,</span> <span class="n">ParameterSpec</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_grea_predictor</span><span class="p">():</span>
+    <span class="c1"># Test data</span>
+    <span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">'CNC[C@H]1OCc2cnnn2CCCC(=O)N([C@H](C)CO)C[C@@H]1C'</span><span class="p">,</span>
+        <span class="s1">'CNC[C@@H]1OCc2cnnn2CCCC(=O)N([C@H](C)CO)C[C@H]1C'</span><span class="p">,</span>
+        <span class="s1">'C[C@H]1CN([C@@H](C)CO)C(=O)CCCn2cc(nn2)CO[C@@H]1CN(C)C(=O)CCC(F)(F)F'</span><span class="p">,</span>
+        <span class="s1">'CC1=CC=C(C=C1)C2=CC(=NN2C3=CC=C(C=C3)S(=O)(=O)N)C(F)(F)F'</span>
+    <span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># Binary classification</span>
+
+    <span class="c1"># 1. Basic initialization test</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Testing GREA model initialization ==="</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
+        <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">task_type</span><span class="o">=</span><span class="s2">"classification"</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+        <span class="n">num_layer</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">hidden_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="s2">"print_statement"</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"GREA model initialized successfully"</span><span class="p">)</span>
+
+    <span class="c1"># 2. Basic fitting test</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Testing GREA model fitting ==="</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">X_val</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span> <span class="n">y_val</span><span class="o">=</span><span class="n">properties</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"GREA model fitting completed"</span><span class="p">)</span>
+
+    <span class="c1"># 3. Prediction test</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Testing GREA model prediction ==="</span><span class="p">)</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Prediction shape: </span><span class="si">{</span><span class="n">predictions</span><span class="p">[</span><span class="s1">'prediction'</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Prediction for new molecule: </span><span class="si">{</span><span class="n">predictions</span><span class="p">[</span><span class="s1">'prediction'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># 4. Auto-fitting test with search space parameters</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Testing GREA model auto-fitting ==="</span><span class="p">)</span>
+    
+    <span class="c1"># Define search parameters using ParameterSpec</span>
+    <span class="n">search_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'num_layer'</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span>
+            <span class="n">param_type</span><span class="o">=</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="n">value_range</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="s1">'hidden_size'</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span>
+            <span class="n">param_type</span><span class="o">=</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="n">value_range</span><span class="o">=</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="s1">'learning_rate'</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span>
+            <span class="n">param_type</span><span class="o">=</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span>
+            <span class="n">value_range</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="s1">'drop_ratio'</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span>
+            <span class="n">param_type</span><span class="o">=</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="n">value_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="s1">'gnn_type'</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span>
+            <span class="n">param_type</span><span class="o">=</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span>
+            <span class="n">value_range</span><span class="o">=</span><span class="p">[</span><span class="s1">'gin-virtual'</span><span class="p">,</span> <span class="s1">'gcn'</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="c1"># Test different search configurations</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">--- Testing with full search space ---"</span><span class="p">)</span>
+    <span class="n">model_auto</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
+        <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">task_type</span><span class="o">=</span><span class="s2">"classification"</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="s2">"print_statement"</span>
+    <span class="p">)</span>
+    
+    <span class="n">model_auto</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
+        <span class="n">smiles_list</span><span class="p">,</span>
+        <span class="n">properties</span><span class="p">,</span>
+        <span class="n">X_val</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span>
+        <span class="n">y_val</span><span class="o">=</span><span class="n">properties</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span>
+        <span class="n">search_parameters</span><span class="o">=</span><span class="n">search_parameters</span><span class="p">,</span>
+        <span class="n">n_trials</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Full search space auto-fitting completed"</span><span class="p">)</span>
+    
+    <span class="c1"># Test with subset of parameters</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">--- Testing with partial search space ---"</span><span class="p">)</span>
+    <span class="n">partial_search</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'num_layer'</span><span class="p">:</span> <span class="n">search_parameters</span><span class="p">[</span><span class="s1">'num_layer'</span><span class="p">],</span>
+        <span class="s1">'learning_rate'</span><span class="p">:</span> <span class="n">search_parameters</span><span class="p">[</span><span class="s1">'learning_rate'</span><span class="p">]</span>
+    <span class="p">}</span>
+    
+    <span class="n">model_partial</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
+        <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">task_type</span><span class="o">=</span><span class="s2">"classification"</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="s2">"print_statement"</span>
+    <span class="p">)</span>
+    
+    <span class="n">model_partial</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
+        <span class="n">smiles_list</span><span class="p">,</span>
+        <span class="n">properties</span><span class="p">,</span>
+        <span class="n">X_val</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span>
+        <span class="n">y_val</span><span class="o">=</span><span class="n">properties</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span>
+        <span class="n">search_parameters</span><span class="o">=</span><span class="n">partial_search</span><span class="p">,</span>
+        <span class="n">n_trials</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Partial search space auto-fitting completed"</span><span class="p">)</span>
+    
+    <span class="c1"># Test with default search space</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">--- Testing with default search space ---"</span><span class="p">)</span>
+    <span class="n">model_default</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
+        <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">task_type</span><span class="o">=</span><span class="s2">"classification"</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="s2">"print_statement"</span>
+    <span class="p">)</span>
+    
+    <span class="n">model_default</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
+        <span class="n">smiles_list</span><span class="p">,</span>
+        <span class="n">properties</span><span class="p">,</span>
+        <span class="n">n_trials</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Default search space auto-fitting completed"</span><span class="p">)</span>
+
+    <span class="c1"># 5. Model saving and loading test</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Testing GREA model saving and loading ==="</span><span class="p">)</span>
+    <span class="n">save_path</span> <span class="o">=</span> <span class="s2">"test_grea_model.pt"</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">save_to_local</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"GREA model saved to </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="n">new_model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
+        <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">task_type</span><span class="o">=</span><span class="s2">"classification"</span>
+    <span class="p">)</span>
+    <span class="n">new_model</span><span class="o">.</span><span class="n">load_from_local</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"GREA model loaded successfully"</span><span class="p">)</span>
+
+    <span class="c1"># 6. Test invalid SMILES handling</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Testing invalid SMILES handling ==="</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">invalid_smiles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'CC'</span><span class="p">,</span> <span class="s1">'INVALID_SMILES'</span><span class="p">]</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">invalid_smiles</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Invalid SMILES handling test completed"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid SMILES handled with error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># 7. Test error handling for invalid search parameters</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Testing invalid search parameters handling ==="</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">invalid_search</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'invalid_param'</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span>
+                <span class="n">param_type</span><span class="o">=</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+                <span class="n">value_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">model_invalid</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
+            <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">task_type</span><span class="o">=</span><span class="s2">"classification"</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="s2">"print_statement"</span>
+        <span class="p">)</span>
+        <span class="n">model_invalid</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
+            <span class="n">smiles_list</span><span class="p">,</span>
+            <span class="n">properties</span><span class="p">,</span>
+            <span class="n">search_parameters</span><span class="o">=</span><span class="n">invalid_search</span><span class="p">,</span>
+            <span class="n">n_trials</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid parameter handled correctly with error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># Clean up</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cleaned up </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GREAMolecularPredictor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.utils.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParameterType</span><span class="p">,</span> <span class="n">ParameterSpec</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_grea_upload</span><span class="p">():</span>
+    <span class="c1"># Test data</span>
+    <span class="n">smiles_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">'CNC[C@H]1OCc2cnnn2CCCC(=O)N([C@H](C)CO)C[C@@H]1C'</span><span class="p">,</span>
+        <span class="s1">'CNC[C@@H]1OCc2cnnn2CCCC(=O)N([C@H](C)CO)C[C@H]1C'</span><span class="p">,</span>
+        <span class="s1">'C[C@H]1CN([C@@H](C)CO)C(=O)CCCn2cc(nn2)CO[C@@H]1CN(C)C(=O)CCC(F)(F)F'</span><span class="p">,</span>
+        <span class="s1">'CC1=CC=C(C=C1)C2=CC(=NN2C3=CC=C(C=C3)S(=O)(=O)N)C(F)(F)F'</span>
+    <span class="p">]</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>  <span class="c1"># Binary classification</span>
+
+    <span class="c1"># 8. Test Hugging Face upload</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Testing Hugging Face Hub upload ==="</span><span class="p">)</span>
+    <span class="c1"># try:</span>
+    <span class="c1"># Initialize and fit a small model for testing upload</span>
+    <span class="n">model_for_upload</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
+        <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">task_type</span><span class="o">=</span><span class="s2">"regression"</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+        <span class="n">num_layer</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="c1"># Small model for quick testing</span>
+        <span class="n">hidden_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>   <span class="c1"># Small embedding dimension</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>     <span class="c1"># Few epochs for quick testing</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="o">=</span><span class="s1">'GREA_O2'</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># Fit the model with sample data</span>
+    <span class="n">model_for_upload</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">X_val</span><span class="o">=</span><span class="n">smiles_list</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span> <span class="n">y_val</span><span class="o">=</span><span class="n">properties</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
+    
+    <span class="c1"># Push to Hugging Face Hub</span>
+    <span class="c1"># Note: HF_TOKEN should be set in environment variables</span>
+    <span class="n">repo_id</span> <span class="o">=</span> <span class="s2">"liuganghuggingface/test-torch-molecule-ckpt-GREA-gas-separation"</span>
+    <span class="n">model_for_upload</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+        <span class="n">commit_message</span><span class="o">=</span><span class="s2">"Upload GREA model for gas separation tasks"</span><span class="p">,</span>
+        <span class="n">private</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Successfully pushed model to Hugging Face Hub"</span><span class="p">)</span>
+    
+    <span class="c1"># Test downloading and loading from Hub</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Testing model loading from Hugging Face Hub ==="</span><span class="p">)</span>        
+    <span class="c1"># Load model</span>
+    <span class="n">downloaded_model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">()</span>
+    <span class="n">downloaded_model</span><span class="o">.</span><span class="n">load_from_hf</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">local_cache</span><span class="o">=</span><span class="s2">"./downloaded_model/GREA_O2.pt"</span><span class="p">)</span>
+    
+    <span class="c1"># Test prediction with downloaded model</span>
+    <span class="n">test_pred</span> <span class="o">=</span> <span class="n">downloaded_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Successfully loaded and tested model from Hugging Face Hub"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test prediction shape: </span><span class="si">{</span><span class="n">test_pred</span><span class="p">[</span><span class="s1">'prediction'</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        
+    <span class="c1"># except Exception as e:</span>
+        <span class="c1"># print(f"Hugging Face Hub operations failed with error: {str(e)}")</span>
+        <span class="c1"># print("Note: Make sure HF_TOKEN environment variable is set")</span>
+    
+    <span class="c1"># finally:</span>
+    <span class="c1">#     # Clean up downloaded files</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">"./downloaded_model"</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s2">"./downloaded_model"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Cleaned up downloaded model files"</span><span class="p">)</span>
+
+    <span class="c1"># Previous cleanup code remains the same...</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">"test_grea_model.pt"</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">"test_grea_model.pt"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Cleaned up test_grea_model.pt"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">test_grea_predictor</span><span class="p">()</span>
+    <span class="n">test_grea_upload</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="methods">
+<span id="greamolecularpredictor-methods"></span><h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.fit" title="torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a></p></td>
+<td><p>Fit the model to the training data with optional validation set.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.autofit" title="torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.autofit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">autofit</span></code></a></p></td>
+<td><p>Automatically find the best hyperparameters using Optuna optimization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.predict" title="torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a></p></td>
+<td><p>Make predictions using the fitted model.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For shared checkpoint and parameter operations, see <a class="reference internal" href="../base.html"><span class="doc">Base Modules</span></a>.</p>
+<section id="fit">
+<h3>fit<a class="headerlink" href="#fit" title="Link to this heading">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.fit">
+<span class="sig-prename descclassname"><span class="pre">GREAMolecularPredictor.</span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_unlbl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fit the model to the training data with optional validation set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – Training set input molecular structures as SMILES strings</p></li>
+<li><p><strong>y_train</strong> (<em>Union</em><em>[</em><em>List</em><em>, </em><em>np.ndarray</em><em>]</em>) – Training set target values for property prediction</p></li>
+<li><p><strong>X_val</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Validation set input molecular structures as SMILES strings.
+If None, training data will be used for validation</p></li>
+<li><p><strong>y_val</strong> (<em>Union</em><em>[</em><em>List</em><em>, </em><em>np.ndarray</em><em>]</em><em>, </em><em>optional</em>) – Validation set target values. Required if X_val is provided</p></li>
+<li><p><strong>X_unlbl</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – Unlabeled set input molecular structures as SMILES strings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted estimator</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="GNNMolecularPredictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor" title="torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor">GNNMolecularPredictor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="autofit">
+<h3>autofit<a class="headerlink" href="#autofit" title="Link to this heading">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.autofit">
+<span class="sig-prename descclassname"><span class="pre">GREAMolecularPredictor.</span></span><span class="sig-name descname"><span class="pre">autofit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_unlbl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_trials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.autofit" title="Link to this definition">¶</a></dt>
+<dd><p>Automatically find the best hyperparameters using Optuna optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>y_train</strong> (<em>List</em><em> | </em><em>ndarray</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>X_val</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>y_val</strong> (<em>List</em><em> | </em><em>ndarray</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>X_unlbl</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>search_parameters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="../utils.html#torch_molecule.utils.search.ParameterSpec" title="torch_molecule.utils.search.ParameterSpec"><em>ParameterSpec</em></a><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>n_trials</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="GNNMolecularPredictor.html#torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor" title="torch_molecule.predictor.gnn.modeling_gnn.GNNMolecularPredictor"><em>GNNMolecularPredictor</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="predict">
+<h3>predict<a class="headerlink" href="#predict" title="Link to this heading">¶</a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.predict">
+<span class="sig-prename descclassname"><span class="pre">GREAMolecularPredictor.</span></span><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/torch_molecule/predictor/grea/modeling_grea.html#GREAMolecularPredictor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.predictor.grea.modeling_grea.GREAMolecularPredictor.predict" title="Link to this definition">¶</a></dt>
+<dd><p>Make predictions using the fitted model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of SMILES strings to make predictions for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Dictionary containing:</dt><dd><ul class="simple">
+<li><p>’prediction’: Model predictions (shape: [n_samples, n_tasks])</p></li>
+<li><p>’variance’: Prediction variances (shape: [n_samples, n_tasks])</p></li>
+<li><p>’node_importance’: A nested list where the outer list has length n_samples and each inner list has length n_nodes for that molecule</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+
+        </article>
+      </div>
+      <footer>
+        
+
+        <div class="related-pages">
+          <a class="next-page" href="SGIRMolecularPredictor.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">SGIRMolecularPredictor</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="GNNMolecularPredictor.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">GNNMolecularPredictor</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025–2026, Gang Liu
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+<div class="tm-footer">
+  <span>torch-molecule <span class="tm-footer-dot">·</span> Open source, open discovery.</span>
+  <div><a href="../../additional.html">Contribute</a><a href="https://github.com/liugangcode/torch-molecule/blob/main/LICENSE">MIT license</a><a href="https://github.com/liugangcode/torch-molecule">GitHub ↗</a></div>
+</div>
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">GREAMolecularPredictor</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#fit">fit</a></li>
+<li><a class="reference internal" href="#autofit">autofit</a></li>
+<li><a class="reference internal" href="#predict">predict</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div>
+<script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/torch-molecule.js?v=7701f30b"></script>
+    </body>
+</html>

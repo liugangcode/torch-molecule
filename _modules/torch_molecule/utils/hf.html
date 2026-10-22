@@ -4,11 +4,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
-        <title>torch_molecule.utils.hf - torch-molecule (0.1.7) documentation</title>
+    <link rel="shortcut icon" href="../../../_static/favicon.svg"><!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>torch_molecule.utils.hf - torch-molecule</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/torch-molecule.css?v=50fedd17" />
     
     
 
@@ -17,18 +18,39 @@
   body {
     --color-code-background: #f2f2f2;
   --color-code-foreground: #1e1e1e;
+  --color-brand-primary: #984b35;
+  --color-brand-content: #984b35;
+  --color-background-primary: #faf9f6;
+  --color-background-secondary: #f1f0eb;
+  --color-foreground-primary: #242721;
+  --color-foreground-secondary: #555b51;
+  --color-foreground-muted: #64685e;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
       }
     }
@@ -36,6 +58,25 @@
 </style></head>
   <body>
     
+<header class="tm-header">
+  <a class="tm-wordmark" href="../../../index.html" aria-label="torch-molecule home">
+    <svg viewBox="0 0 34 34" width="30" height="30" fill="none" aria-hidden="true"><path d="M9 7 25 10 22 27 7 23Z M9 7 22 27 M7 23 25 10" stroke="currentColor" stroke-width="1.5"/><g fill="currentColor"><circle cx="9" cy="7" r="3.5"/><circle cx="25" cy="10" r="3.5"/><circle cx="22" cy="27" r="3.5"/></g><circle cx="7" cy="23" r="3.5" fill="var(--tm-accent)"/></svg>
+    <span>torch-molecule</span>
+  </a>
+  <button class="tm-menu-toggle" aria-controls="tm-site-navigation" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
+  <nav class="tm-navigation" id="tm-site-navigation" aria-label="Main navigation">
+    <a href="../../../overview.html">Documentation</a>
+    <a href="../../../models.html">Models</a>
+    <a href="../../../example.html">Examples</a>
+    <a href="https://github.com/liugangcode/torch-molecule" class="tm-github">GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+  <form class="tm-search" role="search" action="../../../search.html" method="get">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+    <input aria-label="Search documentation" name="q" placeholder="Search docs" autocomplete="off"/>
+    <kbd aria-hidden="true">⌘ K</kbd>
+  </form>
+</header>
+
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
@@ -160,7 +201,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">torch-molecule (0.1.7) documentation</div></a>
+      <a href="../../../index.html"><div class="brand">torch-molecule</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,50 +220,87 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
-  
-  <span class="sidebar-brand-text">torch-molecule (0.1.7) documentation</span>
-  
-</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+      <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="../../../overview.html">
+  <span>Documentation</span>
+</a>
+<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<div id="searchbox"></div><div class="sidebar-scroll"><nav class="sidebar-tree" aria-label="Documentation navigation">
+  <p class="caption" role="heading" aria-level="2"><span class="caption-text">Get started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Datasets Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../overview.html">Model Overview</a><input aria-label="Toggle navigation of Model Overview" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Choose a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Explore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Model collection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../dataset.html">Datasets</a><input aria-label="Toggle navigation of Datasets" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_qm9.html">load_qm9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_chembl2k.html">load_chembl2k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_broad6k.html">load_broad6k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_toxcast.html">load_toxcast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_admet.html">load_admet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_gasperm.html">load_gasperm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_zinc250k.html">load_zinc250k</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">API reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/predictor.html">Predictor API</a><input aria-label="Toggle navigation of Predictor API" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GNNMolecularPredictor.html">GNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GREAMolecularPredictor.html">GREA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/SGIRMolecularPredictor.html">SGIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GRINMolecularPredictor.html">GRIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/BFGNNMolecularPredictor.html">BFGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/DIRMolecularPredictor.html">DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/IRMMolecularPredictor.html">IRM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/RPGNNMolecularPredictor.html">RPGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/SSRMolecularPredictor.html">SSR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/LSTMMolecularPredictor.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/SMILESTransformerMolecularPredictor.html">SMILES Transformer</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/nn.html">Neural Network Components</a></li>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/encoder.html">Encoder API</a><input aria-label="Toggle navigation of Encoder API" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/MoamaMolecularEncoder.html">MoAmA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/AttrMaskMolecularEncoder.html">AttrMask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GraphMAEMolecularEncoder.html">GraphMAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/ContextPredMolecularEncoder.html">ContextPred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/EdgePredMolecularEncoder.html">EdgePred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/InfoGraphMolecularEncoder.html">InfoGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/SupervisedMolecularEncoder.html">Supervised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/SANDMolecularEncoder.html">SAND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/HFPretrainedMolecularEncoder.html">Hugging Face</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/generator.html">Generator API</a><input aria-label="Toggle navigation of Generator API" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/DemoDiffMolecularGenerator.html">DemoDiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GraphDITMolecularGenerator.html">GraphDiT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/DeFoGMolecularGenerator.html">DeFoG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GraphGAMolecularGenerator.html">Graph GA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/DigressMolecularGenerator.html">DiGress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GDSSMolecularGenerator.html">GDSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/JTVAEMolecularGenerator.html">JT-VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GenMolMolecularGenerator.html">GenMol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/MolGPTMolecularGenerator.html">MolGPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/LSTMMolecularGenerator.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/HFPretrainedMolecularGenerator.html">Hugging Face</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/utils.html">Utility Functions</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Project</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Project Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../additional.html#project-structure">Project Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../additional.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">About the project</a></li>
 </ul>
 
-</div>
-</div>
-
+</nav></div>
       </div>
       
     </div>
@@ -250,7 +328,14 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for torch_molecule.utils.hf</h1><div class="highlight"><pre>
+          
+
+<nav class="tm-breadcrumb" aria-label="Breadcrumb">
+  <a href="../../../index.html">Home</a><span aria-hidden="true">/</span>
+  <a href="../../index.html">Module code</a><span aria-hidden="true">/</span>
+  <span>torch_molecule.utils.hf</span>
+</nav>
+<h1>Source code for torch_molecule.utils.hf</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
@@ -493,10 +578,13 @@
     <span class="k">return</span> <span class="n">readme_content</span></div>
 
 </pre></div>
+
+
         </article>
       </div>
       <footer>
         
+
         <div class="related-pages">
           
           
@@ -504,7 +592,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2025, Gang Liu
+                Copyright &#169; 2025–2026, Gang Liu
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -516,6 +604,11 @@
           </div>
         </div>
         
+<div class="tm-footer">
+  <span>torch-molecule <span class="tm-footer-dot">·</span> Open source, open discovery.</span>
+  <div><a href="../../../additional.html">Contribute</a><a href="https://github.com/liugangcode/torch-molecule/blob/main/LICENSE">MIT license</a><a href="https://github.com/liugangcode/torch-molecule">GitHub ↗</a></div>
+</div>
+
       </footer>
     </div>
     <aside class="toc-drawer no-toc">
@@ -524,9 +617,11 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=a6319924"></script>
+</div>
+<script src="../../../_static/documentation_options.js?v=ca7ad2ea"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/torch-molecule.js?v=7701f30b"></script>
     </body>
 </html>

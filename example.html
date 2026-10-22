@@ -3,13 +3,14 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Datasets Overview" href="dataset.html"><link rel="prev" title="Installation" href="install.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Model collection" href="models.html"><link rel="prev" title="Choose a model" href="overview.html">
 
-    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
-        <title>Examples - torch-molecule (0.1.7) documentation</title>
+    <link rel="shortcut icon" href="_static/favicon.svg"><!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Quickstart - torch-molecule</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/torch-molecule.css?v=50fedd17" />
     
     
 
@@ -18,18 +19,39 @@
   body {
     --color-code-background: #f2f2f2;
   --color-code-foreground: #1e1e1e;
+  --color-brand-primary: #984b35;
+  --color-brand-content: #984b35;
+  --color-background-primary: #faf9f6;
+  --color-background-secondary: #f1f0eb;
+  --color-foreground-primary: #242721;
+  --color-foreground-secondary: #555b51;
+  --color-foreground-muted: #64685e;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
       }
     }
@@ -37,6 +59,25 @@
 </style></head>
   <body>
     
+<header class="tm-header">
+  <a class="tm-wordmark" href="index.html" aria-label="torch-molecule home">
+    <svg viewBox="0 0 34 34" width="30" height="30" fill="none" aria-hidden="true"><path d="M9 7 25 10 22 27 7 23Z M9 7 22 27 M7 23 25 10" stroke="currentColor" stroke-width="1.5"/><g fill="currentColor"><circle cx="9" cy="7" r="3.5"/><circle cx="25" cy="10" r="3.5"/><circle cx="22" cy="27" r="3.5"/></g><circle cx="7" cy="23" r="3.5" fill="var(--tm-accent)"/></svg>
+    <span>torch-molecule</span>
+  </a>
+  <button class="tm-menu-toggle" aria-controls="tm-site-navigation" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
+  <nav class="tm-navigation" id="tm-site-navigation" aria-label="Main navigation">
+    <a href="overview.html">Documentation</a>
+    <a href="models.html">Models</a>
+    <a href="#" aria-current="page">Examples</a>
+    <a href="https://github.com/liugangcode/torch-molecule" class="tm-github">GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+  <form class="tm-search" role="search" action="search.html" method="get">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+    <input aria-label="Search documentation" name="q" placeholder="Search docs" autocomplete="off"/>
+    <kbd aria-hidden="true">⌘ K</kbd>
+  </form>
+</header>
+
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
@@ -161,7 +202,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">torch-molecule (0.1.7) documentation</div></a>
+      <a href="index.html"><div class="brand">torch-molecule</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,50 +221,87 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
-  
-  <span class="sidebar-brand-text">torch-molecule (0.1.7) documentation</span>
-  
-</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+      <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="overview.html">
+  <span>Documentation</span>
+</a>
+<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<div id="searchbox"></div><div class="sidebar-scroll"><nav class="sidebar-tree" aria-label="Documentation navigation">
+  <p class="caption" role="heading" aria-level="2"><span class="caption-text">Get started</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dataset.html">Datasets Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">Model Overview</a><input aria-label="Toggle navigation of Model Overview" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Choose a model</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Explore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Model collection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dataset.html">Datasets</a><input aria-label="Toggle navigation of Datasets" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_qm9.html">load_qm9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_chembl2k.html">load_chembl2k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_broad6k.html">load_broad6k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_toxcast.html">load_toxcast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_admet.html">load_admet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_gasperm.html">load_gasperm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_zinc250k.html">load_zinc250k</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">API reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/predictor.html">Predictor API</a><input aria-label="Toggle navigation of Predictor API" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GNNMolecularPredictor.html">GNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GREAMolecularPredictor.html">GREA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SGIRMolecularPredictor.html">SGIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GRINMolecularPredictor.html">GRIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/BFGNNMolecularPredictor.html">BFGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DIRMolecularPredictor.html">DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/IRMMolecularPredictor.html">IRM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/RPGNNMolecularPredictor.html">RPGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SSRMolecularPredictor.html">SSR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/LSTMMolecularPredictor.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SMILESTransformerMolecularPredictor.html">SMILES Transformer</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/encoder.html">Encoder API</a><input aria-label="Toggle navigation of Encoder API" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models/MoamaMolecularEncoder.html">MoAmA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/AttrMaskMolecularEncoder.html">AttrMask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GraphMAEMolecularEncoder.html">GraphMAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/ContextPredMolecularEncoder.html">ContextPred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/EdgePredMolecularEncoder.html">EdgePred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/InfoGraphMolecularEncoder.html">InfoGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SupervisedMolecularEncoder.html">Supervised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SANDMolecularEncoder.html">SAND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/HFPretrainedMolecularEncoder.html">Hugging Face</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/generator.html">Generator API</a><input aria-label="Toggle navigation of Generator API" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DemoDiffMolecularGenerator.html">DemoDiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GraphDITMolecularGenerator.html">GraphDiT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DeFoGMolecularGenerator.html">DeFoG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GraphGAMolecularGenerator.html">Graph GA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DigressMolecularGenerator.html">DiGress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GDSSMolecularGenerator.html">GDSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/JTVAEMolecularGenerator.html">JT-VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GenMolMolecularGenerator.html">GenMol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/MolGPTMolecularGenerator.html">MolGPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/LSTMMolecularGenerator.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/HFPretrainedMolecularGenerator.html">Hugging Face</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Project</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="additional.html">Project Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="additional.html#project-structure">Project Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="additional.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html">About the project</a></li>
 </ul>
 
-</div>
-</div>
-
+</nav></div>
       </div>
       
     </div>
@@ -238,13 +316,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="_sources/example.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -257,235 +329,203 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h1>
-<p>This section shows how to use the <cite>torch_molecule</cite> library in practice. More examples are available in the <a class="reference external" href="https://github.com/liugangcode/torch-molecule/tree/main/examples/">examples</a> folder and the <a class="reference external" href="https://github.com/liugangcode/torch-molecule/tree/main/tests/">tests</a> folder.</p>
-<section id="loading-datasets-and-splits">
-<h2>Loading Datasets and Splits<a class="headerlink" href="#loading-datasets-and-splits" title="Link to this heading">¶</a></h2>
-<p>Loaders download (or reuse) data under <code class="docutils literal notranslate"><span class="pre">local_dir</span></code> and return a <code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code>.
-Use <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code> with <code class="docutils literal notranslate"><span class="pre">&quot;random&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;scaffold&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;butina&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;size&quot;</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_qm9</span><span class="p">,</span> <span class="n">load_zinc250k</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GREAMolecularPredictor</span>
+          
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">load_qm9</span><span class="p">(</span><span class="n">local_dir</span><span class="o">=</span><span class="s2">"torchmol_data"</span><span class="p">)</span>
-<span class="c1"># scaffold: unseen Bemis-Murcko scaffolds; butina: Tanimoto clusters; size: heavy-atom count</span>
-<span class="c1"># Split the full dataset. subsample() is only for local debugging / CI.</span>
-<span class="n">train</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"scaffold"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<nav class="tm-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">Home</a><span aria-hidden="true">/</span>
+  
+  <span>Quickstart</span>
+</nav>
+<section id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h1>
+<p>Train a predictor, learn molecular embeddings, or generate molecules from
+SMILES. These small examples demonstrate the API; use a larger dataset and a
+separate evaluation set to assess model quality.</p>
+<section id="predict-a-molecular-property">
+<h2>Predict a molecular property<a class="headerlink" href="#predict-a-molecular-property" title="Link to this heading">¶</a></h2>
+<p>This example learns molecular weight calculated with RDKit. Replace these
+values with your own measured property labels for a prediction task.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">Descriptors</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GNNMolecularPredictor</span>
 
-<span class="n">grea</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
+<span class="n">smiles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"CCO"</span><span class="p">,</span> <span class="s2">"CCN"</span><span class="p">,</span> <span class="s2">"CCC"</span><span class="p">,</span> <span class="s2">"CCCO"</span><span class="p">,</span> <span class="s2">"CCCN"</span><span class="p">,</span> <span class="s2">"CCCC"</span><span class="p">,</span> <span class="s2">"CCOC"</span><span class="p">,</span> <span class="s2">"CCNC"</span><span class="p">]</span>
+<span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="n">Descriptors</span><span class="o">.</span><span class="n">MolWt</span><span class="p">(</span><span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">value</span><span class="p">))]</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">smiles</span>
+<span class="p">])</span>
+
+<span class="n">predictor</span> <span class="o">=</span> <span class="n">GNNMolecularPredictor</span><span class="p">(</span>
     <span class="n">num_task</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">task_type</span><span class="o">=</span><span class="s2">"regression"</span><span class="p">,</span>
-    <span class="n">evaluate_higher_better</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="s2">"progress_bar"</span><span class="p">,</span>  <span class="c1"># or "print_statement" / "none"</span>
+    <span class="n">num_layer</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">hidden_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s2">"cpu"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">grea</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
-    <span class="n">X_train</span><span class="o">=</span><span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
-    <span class="n">y_train</span><span class="o">=</span><span class="n">train</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
-    <span class="n">X_val</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
-    <span class="n">y_val</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
-    <span class="n">n_trials</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="n">predictor</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">X_train</span><span class="o">=</span><span class="n">smiles</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span>
+    <span class="n">y_train</span><span class="o">=</span><span class="n">target</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span>
+    <span class="n">X_val</span><span class="o">=</span><span class="n">smiles</span><span class="p">[</span><span class="mi">6</span><span class="p">:],</span>
+    <span class="n">y_val</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="mi">6</span><span class="p">:],</span>
 <span class="p">)</span>
-
-<span class="c1"># Unlabeled datasets (e.g. ZINC250k) have target=None</span>
-<span class="n">zinc</span> <span class="o">=</span> <span class="n">load_zinc250k</span><span class="p">(</span><span class="n">local_dir</span><span class="o">=</span><span class="s2">"torchmol_data"</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">zinc</span><span class="o">.</span><span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">predictor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">smiles</span><span class="p">[</span><span class="mi">6</span><span class="p">:])[</span><span class="s2">"prediction"</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (2, 1)</span>
 </pre></div>
 </div>
+<p>For multiple properties, provide a target array of shape
+<code class="docutils literal notranslate"><span class="pre">(n_molecules,</span> <span class="pre">n_tasks)</span></code> and set <code class="docutils literal notranslate"><span class="pre">num_task</span></code> accordingly. For automated
+hyperparameter search, see <code class="docutils literal notranslate"><span class="pre">autofit</span></code> in the <a class="reference internal" href="api/predictor.html"><span class="doc">Predictor API</span></a> reference.</p>
 </section>
-<section id="molecular-property-prediction-usage">
-<h2>Molecular Property Prediction Usage<a class="headerlink" href="#molecular-property-prediction-usage" title="Link to this heading">¶</a></h2>
-<p>The following example demonstrates how to use the <cite>GREAMolecularPredictor</cite>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GREAMolecularPredictor</span><span class="p">,</span> <span class="n">GNNMolecularPredictor</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.utils.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParameterType</span><span class="p">,</span> <span class="n">ParameterSpec</span>
+<section id="learn-molecular-embeddings">
+<h2>Learn molecular embeddings<a class="headerlink" href="#learn-molecular-embeddings" title="Link to this heading">¶</a></h2>
+<p>Attribute masking trains on unlabeled molecules and returns one vector per
+molecule. These vectors can be used in similarity analysis or a downstream
+predictor.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttrMaskMolecularEncoder</span>
 
-<span class="c1"># Define search parameters</span>
-<span class="n">search_GNN</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"gnn_type"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">"gin-virtual"</span><span class="p">,</span> <span class="s2">"gcn-virtual"</span><span class="p">,</span> <span class="s2">"gin"</span><span class="p">,</span> <span class="s2">"gcn"</span><span class="p">]),</span>
-    <span class="s2">"norm_layer"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">"batch_norm"</span><span class="p">,</span> <span class="s2">"layer_norm"</span><span class="p">]),</span>
-    <span class="s2">"graph_pooling"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">"mean"</span><span class="p">,</span> <span class="s2">"sum"</span><span class="p">,</span> <span class="s2">"max"</span><span class="p">]),</span>
-    <span class="s2">"augmented_feature"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span> <span class="p">[</span><span class="s2">"maccs,morgan"</span><span class="p">,</span> <span class="s2">"maccs"</span><span class="p">,</span> <span class="s2">"morgan"</span><span class="p">,</span> <span class="kc">None</span><span class="p">]),</span>
-    <span class="s2">"num_layer"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
-    <span class="s2">"hidden_size"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">512</span><span class="p">)),</span>
-    <span class="s2">"drop_ratio"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
-    <span class="s2">"learning_rate"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)),</span>
-    <span class="s2">"weight_decay"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">LOG_FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)),</span>
-<span class="p">}</span>
-
-<span class="n">search_GREA</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"gamma"</span><span class="p">:</span> <span class="n">ParameterSpec</span><span class="p">(</span><span class="n">ParameterType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)),</span>
-    <span class="o">**</span><span class="n">search_GNN</span>
-<span class="p">}</span>
-
-<span class="c1"># Train GREA model</span>
-<span class="n">grea_model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">(</span>
-    <span class="n">num_task</span><span class="o">=</span><span class="n">num_task</span><span class="p">,</span>
-    <span class="n">task_type</span><span class="o">=</span><span class="s2">"regression"</span><span class="p">,</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s2">"GREA_multitask"</span><span class="p">,</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
-    <span class="n">epochs</span><span class="o">=</span><span class="n">N_epoch</span><span class="p">,</span>
-    <span class="n">evaluate_criterion</span><span class="o">=</span><span class="s1">'r2'</span><span class="p">,</span>
-    <span class="n">evaluate_higher_better</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="s1">'progress_bar'</span>
+<span class="n">smiles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"CCO"</span><span class="p">,</span> <span class="s2">"CCN"</span><span class="p">,</span> <span class="s2">"CCC"</span><span class="p">,</span> <span class="s2">"CCCO"</span><span class="p">,</span> <span class="s2">"CCCN"</span><span class="p">,</span> <span class="s2">"CCCC"</span><span class="p">,</span> <span class="s2">"CCOC"</span><span class="p">,</span> <span class="s2">"CCNC"</span><span class="p">]</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">AttrMaskMolecularEncoder</span><span class="p">(</span>
+    <span class="n">num_layer</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">hidden_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s2">"cpu"</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="c1"># Fit the model</span>
-<span class="n">X_train</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'C1=CC=CC=C1'</span><span class="p">,</span> <span class="s1">'C1=CC=CC=C1'</span><span class="p">]</span>
-<span class="n">y_train</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">]]</span>
-<span class="n">X_val</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'C1=CC=CC=C1'</span><span class="p">,</span> <span class="s1">'C1=CC=CC=C1'</span><span class="p">]</span>
-<span class="n">y_val</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">]]</span>
-<span class="n">N_trial</span> <span class="o">=</span> <span class="mi">100</span>
-
-<span class="n">grea_model</span><span class="o">.</span><span class="n">autofit</span><span class="p">(</span>
-    <span class="n">X_train</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-    <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
-    <span class="n">X_val</span><span class="o">=</span><span class="n">X_val</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-    <span class="n">y_val</span><span class="o">=</span><span class="n">y_val</span><span class="p">,</span>
-    <span class="n">n_trials</span><span class="o">=</span><span class="n">N_trial</span><span class="p">,</span>
-    <span class="n">search_parameters</span><span class="o">=</span><span class="n">search_GREA</span>
-<span class="p">)</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">"np"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">embeddings</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (8, 32)</span>
 </pre></div>
 </div>
+<p>For similarity-supervised learning, SAND instead takes explicit molecular pairs:
+<code class="docutils literal notranslate"><span class="pre">fit(smiles,</span> <span class="pre">similarity_labels,</span> <span class="pre">pairs=pair_indices)</span></code>. <code class="docutils literal notranslate"><span class="pre">pair_indices</span></code> has shape
+<code class="docutils literal notranslate"><span class="pre">(n_pairs,</span> <span class="pre">2)</span></code> and indexes <code class="docutils literal notranslate"><span class="pre">smiles</span></code>; each pair needs one finite label. At least
+two pairs with different labels are required. See <a class="reference internal" href="api/encoder.html"><span class="doc">Encoder API</span></a>.</p>
 </section>
-<section id="molecular-generator-usage">
-<h2>Molecular Generator Usage<a class="headerlink" href="#molecular-generator-usage" title="Link to this heading">¶</a></h2>
-<p>The following example demonstrates how to use the <cite>GraphDITMolecularGenerator</cite> for generating molecules with retry logic for invalid molecules:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphDITMolecularGenerator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">rdkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chem</span>
+<section id="generate-molecules-with-demodiff">
+<h2>Generate molecules with DemoDiff<a class="headerlink" href="#generate-molecules-with-demodiff" title="Link to this heading">¶</a></h2>
+<p>DemoDiff trains on SMILES and can generate with or without demonstrations. This
+small configuration trains from scratch using the core dependencies.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">DemoDiffMolecularGenerator</span>
 
-<span class="n">property_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'logP'</span><span class="p">]</span>
-<span class="n">train_smiles_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'C1=CC=CC=C1'</span><span class="p">,</span> <span class="s1">'C1=CC=CC=C1'</span><span class="p">]</span>
-<span class="n">train_property_array</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
-<span class="n">test_property_array</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">]]</span>
-
-<span class="c1"># Initialize the generator model</span>
-<span class="n">model_cond</span> <span class="o">=</span> <span class="n">GraphDITMolecularGenerator</span><span class="p">(</span>
-    <span class="n">task_type</span><span class="o">=</span><span class="p">[</span><span class="s1">'regression'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">property_names</span><span class="p">),</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
-    <span class="n">drop_condition</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="s1">'progress_bar'</span><span class="p">,</span>
-    <span class="n">epochs</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+<span class="n">smiles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"CCO"</span><span class="p">,</span> <span class="s2">"CCN"</span><span class="p">,</span> <span class="s2">"CCC"</span><span class="p">,</span> <span class="s2">"CCCO"</span><span class="p">,</span> <span class="s2">"CCCN"</span><span class="p">,</span> <span class="s2">"CCCC"</span><span class="p">,</span> <span class="s2">"CCOC"</span><span class="p">,</span> <span class="s2">"CCNC"</span><span class="p">]</span>
+<span class="n">generator</span> <span class="o">=</span> <span class="n">DemoDiffMolecularGenerator</span><span class="p">(</span>
+    <span class="n">num_layer</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">hidden_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+    <span class="n">num_head</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">mlp_ratio</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">diffusion_steps</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+    <span class="n">guidance_scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s2">"cpu"</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="c1"># Fit the model</span>
-<span class="n">model_cond</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_smiles_list</span><span class="p">,</span> <span class="n">train_property_array</span><span class="p">)</span>
-
-<span class="c1"># Generate molecules with retry logic</span>
-<span class="n">max_retries</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">generated_smiles_list</span> <span class="o">=</span> <span class="n">model_cond</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">test_property_array</span><span class="p">)</span>
-
-<span class="c1"># Function to check if SMILES is valid</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">is_valid_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">smiles</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span>
-    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-
-<span class="c1"># Retry generation for invalid molecules</span>
-<span class="k">for</span> <span class="n">retry</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_retries</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># Already did first generation</span>
-    <span class="c1"># Find indices of invalid SMILES</span>
-    <span class="n">invalid_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">smiles</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">generated_smiles_list</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_smiles</span><span class="p">(</span><span class="n">smiles</span><span class="p">)]</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">invalid_indices</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"All SMILES valid after </span><span class="si">{</span><span class="n">retry</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> attempts"</span><span class="p">)</span>
-        <span class="k">break</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Retry </span><span class="si">{</span><span class="n">retry</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: Regenerating </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">invalid_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> invalid molecules"</span><span class="p">)</span>
-
-    <span class="c1"># Extract properties for invalid molecules</span>
-    <span class="n">invalid_properties</span> <span class="o">=</span> <span class="n">test_property_array</span><span class="p">[</span><span class="n">invalid_indices</span><span class="p">]</span>
-
-    <span class="c1"># Regenerate only for invalid molecules</span>
-    <span class="n">new_smiles</span> <span class="o">=</span> <span class="n">model_cond</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">invalid_properties</span><span class="p">)</span>
-
-    <span class="c1"># Replace invalid molecules with new generations</span>
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">new_idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">invalid_indices</span><span class="p">):</span>
-        <span class="n">generated_smiles_list</span><span class="p">[</span><span class="n">new_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_smiles</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="n">retry</span> <span class="o">==</span> <span class="n">max_retries</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Last iteration</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reached maximum retries (</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">). </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">invalid_indices</span><span class="p">)</span><span class="si">}</span><span class="s2"> molecules still invalid."</span><span class="p">)</span>
+<span class="n">generator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+<span class="n">generated</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">generated</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="using-pretrained-checkpoints">
-<h2>Using Pretrained Checkpoints<a class="headerlink" href="#using-pretrained-checkpoints" title="Link to this heading">¶</a></h2>
-<p><cite>torch_molecule</cite> supports loading and saving trained predictors via Hugging Face Hub
-(<code class="docutils literal notranslate"><span class="pre">save_to_hf</span></code> / <code class="docutils literal notranslate"><span class="pre">load_from_hf</span></code>) or local paths
-(<code class="docutils literal notranslate"><span class="pre">save_to_local</span></code> / <code class="docutils literal notranslate"><span class="pre">load_from_local</span></code>).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GREAMolecularPredictor</span>
-
-<span class="n">repo_id</span> <span class="o">=</span> <span class="s2">"user/repo_id"</span>  <span class="c1"># replace with your Hugging Face username and repo_id</span>
-
-<span class="c1"># Save a trained model to Hugging Face</span>
-<span class="n">grea</span><span class="o">.</span><span class="n">save_to_hf</span><span class="p">(</span>
-    <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
-    <span class="n">task_id</span><span class="o">=</span><span class="s2">"qm9_grea"</span><span class="p">,</span>
-    <span class="n">commit_message</span><span class="o">=</span><span class="s2">"Upload qm9_grea"</span><span class="p">,</span>
-    <span class="n">private</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="c1"># Load a pretrained checkpoint from Hugging Face</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">()</span>
-<span class="n">model</span><span class="o">.</span><span class="n">load_from_hf</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">local_cache</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">model_dir</span><span class="si">}</span><span class="s2">/GREA_</span><span class="si">{</span><span class="n">task_name</span><span class="si">}</span><span class="s2">.pt"</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="s2">"none"</span><span class="p">)</span>
-<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">smiles_list</span><span class="p">)</span>
-
-<span class="c1"># Or save / load locally</span>
-<span class="n">grea</span><span class="o">.</span><span class="n">save_to_local</span><span class="p">(</span><span class="s2">"qm9_grea.pt"</span><span class="p">)</span>
-<span class="n">new_model</span> <span class="o">=</span> <span class="n">GREAMolecularPredictor</span><span class="p">()</span>
-<span class="n">new_model</span><span class="o">.</span><span class="n">load_from_local</span><span class="p">(</span><span class="s2">"qm9_grea.pt"</span><span class="p">)</span>
+<p>Generation returns valid, connected SMILES. If the attempt limit is reached,
+DemoDiff warns and returns the available molecules. A short training run can
+return fewer molecules than requested.</p>
+<section id="use-molecular-demonstrations">
+<h3>Use molecular demonstrations<a class="headerlink" href="#use-molecular-demonstrations" title="Link to this heading">¶</a></h3>
+<p>For conditional training, pass demonstration indices for every training molecule
+and one <code class="docutils literal notranslate"><span class="pre">score</span></code> per demonstration. Scores are similarities or normalized task
+scores in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>; the target’s score is always <code class="docutils literal notranslate"><span class="pre">1</span></code>. Use the same score
+definition for training and generation.</p>
+<p>The repository example computes Morgan fingerprint Tanimoto similarity and
+selects similar molecules as demonstrations. Run it from the repository root:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>examples/generation/demodiff.py<span class="w"> </span>--data<span class="w"> </span>data/molecule100.csv<span class="w"> </span>--with-context
 </pre></div>
 </div>
+<p>It trains for 25 epochs, saves and reloads the model, and writes losses and
+generated molecules under <code class="docutils literal notranslate"><span class="pre">artifacts/demodiff/examples_similarity/</span></code>.
+Use <code class="docutils literal notranslate"><span class="pre">--epochs</span></code> or <code class="docutils literal notranslate"><span class="pre">--device</span></code> to change the run. See the
+<a class="reference internal" href="api/models/DemoDiffMolecularGenerator.html#demodiffmoleculargenerator-example"><span class="std std-ref">complete DemoDiff example</span></a>
+and <a class="reference internal" href="api/generator.html"><span class="doc">Generator API</span></a> for the input format and generation options.</p>
 </section>
-<section id="hugging-face-pretrained-generators">
-<h2>Hugging Face Pretrained Generators<a class="headerlink" href="#hugging-face-pretrained-generators" title="Link to this heading">¶</a></h2>
-<p>Download and run Hub generators (NovoMolGen, MolGen, Molexar, SAFE-GPT) with
-<code class="xref py py-class docutils literal notranslate"><span class="pre">HFPretrainedMolecularGenerator</span></code>. Extra packages may be
-required; see <a class="reference internal" href="install.html"><span class="doc">Installation</span></a>.</p>
+</section>
+<section id="generate-molecules-with-genmol">
+<h2>Generate molecules with GenMol<a class="headerlink" href="#generate-molecules-with-genmol" title="Link to this heading">¶</a></h2>
+<p>Install the <code class="docutils literal notranslate"><span class="pre">genmol</span></code> extra described in <a class="reference internal" href="install.html"><span class="doc">Installation</span></a>. GenMol trains on
+SMILES and supports an optional scaffold at generation time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenMolMolecularGenerator</span>
+
+<span class="n">smiles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"CCO"</span><span class="p">,</span> <span class="s2">"CCN"</span><span class="p">,</span> <span class="s2">"CCC"</span><span class="p">,</span> <span class="s2">"CCCO"</span><span class="p">,</span> <span class="s2">"CCCN"</span><span class="p">,</span> <span class="s2">"CCCC"</span><span class="p">,</span> <span class="s2">"CCOC"</span><span class="p">,</span> <span class="s2">"CCNC"</span><span class="p">]</span>
+<span class="n">generator</span> <span class="o">=</span> <span class="n">GenMolMolecularGenerator</span><span class="p">(</span>
+    <span class="n">num_layer</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">num_head</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">hidden_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+    <span class="n">intermediate_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">max_len</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+    <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ema_decay</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s2">"cpu"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">generator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+<span class="n">generated</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">min_new_tokens</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">generated</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>GenMol also returns available molecules with a warning when bounded sampling
+cannot fill the request. For scaffold generation, pass <code class="docutils literal notranslate"><span class="pre">scaffold=&quot;c1ccccc1&quot;</span></code>
+to <code class="docutils literal notranslate"><span class="pre">generate</span></code> after training on a suitable molecular dataset.</p>
+</section>
+<section id="use-a-pretrained-generator">
+<h2>Use a pretrained generator<a class="headerlink" href="#use-a-pretrained-generator" title="Link to this heading">¶</a></h2>
+<p>Hugging Face wrappers load existing checkpoints. This example needs network
+access and the SAFE-GPT dependencies in <a class="reference internal" href="install.html"><span class="doc">Installation</span></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">HFPretrainedMolecularGenerator</span>
 
-<span class="c1"># SAFE-GPT: de novo and scaffold-constrained generation</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">HFPretrainedMolecularGenerator</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="s2">"datamol-io/safe-gpt"</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>  <span class="c1"># download / load the Hub checkpoint</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scaffold</span><span class="o">=</span><span class="s2">"c1ccccc1"</span><span class="p">))</span>
-
-<span class="c1"># Other tested repo_ids include:</span>
-<span class="c1">#   "chandar-lab/NovoMolGen_32M_SMILES_BPE"</span>
-<span class="c1">#   "zjunlp/MolGen-large"</span>
-<span class="c1">#   "zjunlp/MolGen-large-opt"</span>
-<span class="c1">#   "fairydance/molexar-10m-base"</span>
-<span class="c1">#   "fairydance/molexar-10m-omni"</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">save_to_local</span><span class="p">(</span><span class="s2">"safe_gpt_local"</span><span class="p">)</span>
-<span class="n">loaded</span> <span class="o">=</span> <span class="n">HFPretrainedMolecularGenerator</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="s2">"datamol-io/safe-gpt"</span><span class="p">)</span>
-<span class="n">loaded</span><span class="o">.</span><span class="n">load_from_local</span><span class="p">(</span><span class="s2">"safe_gpt_local"</span><span class="p">)</span>
+<span class="n">generator</span> <span class="o">=</span> <span class="n">HFPretrainedMolecularGenerator</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="s2">"datamol-io/safe-gpt"</span><span class="p">)</span>
+<span class="n">generator</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">generated</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">generated</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
+<section id="more-examples">
+<h2>More examples<a class="headerlink" href="#more-examples" title="Link to this heading">¶</a></h2>
+<p>Browse the maintained scripts for
+<a class="reference external" href="https://github.com/liugangcode/torch-molecule/tree/main/examples/prediction">prediction</a>,
+<a class="reference external" href="https://github.com/liugangcode/torch-molecule/tree/main/examples/encoder">representation learning</a>,
+<a class="reference external" href="https://github.com/liugangcode/torch-molecule/tree/main/examples/generation">generation</a>,
+and <a class="reference external" href="https://github.com/liugangcode/torch-molecule/tree/main/examples/datasets">datasets</a>.
+See <a class="reference internal" href="dataset.html"><span class="doc">Datasets</span></a> to bring your own data and <a class="reference internal" href="overview.html"><span class="doc">Choose a model</span></a> to save a fitted model.</p>
 </section>
+</section>
+
+
 
         </article>
       </div>
       <footer>
         
+
         <div class="related-pages">
-          <a class="next-page" href="dataset.html">
+          <a class="next-page" href="models.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Datasets Overview</div>
+                <div class="title">Model collection</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="install.html">
+          <a class="prev-page" href="overview.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Installation</div>
+                <div class="title">Choose a model</div>
                 
               </div>
             </a>
@@ -493,7 +533,7 @@ required; see <a class="reference internal" href="install.html"><span class="doc
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2025, Gang Liu
+                Copyright &#169; 2025–2026, Gang Liu
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -505,6 +545,11 @@ required; see <a class="reference internal" href="install.html"><span class="doc
           </div>
         </div>
         
+<div class="tm-footer">
+  <span>torch-molecule <span class="tm-footer-dot">·</span> Open source, open discovery.</span>
+  <div><a href="additional.html">Contribute</a><a href="https://github.com/liugangcode/torch-molecule/blob/main/LICENSE">MIT license</a><a href="https://github.com/liugangcode/torch-molecule">GitHub ↗</a></div>
+</div>
+
       </footer>
     </div>
     <aside class="toc-drawer">
@@ -519,12 +564,16 @@ required; see <a class="reference internal" href="install.html"><span class="doc
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Examples</a><ul>
-<li><a class="reference internal" href="#loading-datasets-and-splits">Loading Datasets and Splits</a></li>
-<li><a class="reference internal" href="#molecular-property-prediction-usage">Molecular Property Prediction Usage</a></li>
-<li><a class="reference internal" href="#molecular-generator-usage">Molecular Generator Usage</a></li>
-<li><a class="reference internal" href="#using-pretrained-checkpoints">Using Pretrained Checkpoints</a></li>
-<li><a class="reference internal" href="#hugging-face-pretrained-generators">Hugging Face Pretrained Generators</a></li>
+<li><a class="reference internal" href="#">Quickstart</a><ul>
+<li><a class="reference internal" href="#predict-a-molecular-property">Predict a molecular property</a></li>
+<li><a class="reference internal" href="#learn-molecular-embeddings">Learn molecular embeddings</a></li>
+<li><a class="reference internal" href="#generate-molecules-with-demodiff">Generate molecules with DemoDiff</a><ul>
+<li><a class="reference internal" href="#use-molecular-demonstrations">Use molecular demonstrations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generate-molecules-with-genmol">Generate molecules with GenMol</a></li>
+<li><a class="reference internal" href="#use-a-pretrained-generator">Use a pretrained generator</a></li>
+<li><a class="reference internal" href="#more-examples">More examples</a></li>
 </ul>
 </li>
 </ul>
@@ -536,9 +585,11 @@ required; see <a class="reference internal" href="install.html"><span class="doc
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=a6319924"></script>
+</div>
+<script src="_static/documentation_options.js?v=ca7ad2ea"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/torch-molecule.js?v=7701f30b"></script>
     </body>
 </html>

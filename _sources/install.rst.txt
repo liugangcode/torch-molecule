@@ -1,119 +1,124 @@
 Installation
 ============
 
-This document explains how to install ``torch-molecule`` and any extra packages you may need.
+Create a dedicated environment, then install the published package or the latest
+source. Python 3.12 is a practical starting point for the current models.
 
-Installation Steps
-------------------
-
-Follow these steps in order. 
-
-Create a Conda Environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Create an environment
+---------------------
 
 .. code-block:: bash
 
-   conda create --name torch_molecule python=3.11.7
-   conda activate torch_molecule
+   micromamba create -n torch-molecule -c conda-forge python=3.12 pip
+   eval "$(micromamba shell hook --shell bash)"
+   micromamba activate torch-molecule
 
-a. Install via pip
-~~~~~~~~~~~~~~~~~~
+An existing project environment can be reused. If you use Mamba, use
+``mamba create`` and activate it with your configured Conda shell.
 
-.. code-block:: bash
-
-   pip install torch-molecule
-
-b. Install from Source (Latest Version)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-   git clone https://github.com/liugangcode/torch-molecule
-   cd torch-molecule
-
-Then install:
-
-.. code-block:: bash
-
-   pip install .
-
-c. Editable Installation for Development
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To work on the code directly, install in "editable" mode.
-
-1. Clone the repository (if you have not already):
-
-   .. code-block:: bash
-
-      git clone https://github.com/liugangcode/torch-molecule
-      cd torch-molecule
-
-2. Install the dependencies:
-
-   .. code-block:: bash
-
-      pip install -r requirements.txt
-
-3. Install in editable mode:
-
-   .. code-block:: bash
-
-      pip install -e .
-
-Additional Packages
+Install the package
 -------------------
 
-Some models require extra libraries. Install these packages if you use the corresponding model:
+For the latest published release:
 
-.. list-table:: Optional dependencies
+.. code-block:: bash
+
+   python -m pip install torch-molecule
+
+Install from source
+-------------------
+
+For the current source, including recently added models:
+
+.. code-block:: bash
+
+   git clone https://github.com/liugangcode/torch-molecule.git
+   cd torch-molecule
+   python -m pip install -e .
+
+Check the installation:
+
+.. code-block:: bash
+
+   python -c "import torch_molecule; print(torch_molecule.__version__)"
+
+Then try :doc:`example` or choose a model in the :doc:`overview`.
+
+GPU support
+-----------
+
+Models accept ``device="cpu"``, ``device="cuda"``, or a specific GPU such as
+``device="cuda:1"``. When omitted, supported models choose CUDA if available.
+Install a PyTorch build suitable for your system using the
+`PyTorch installation guide <https://pytorch.org/get-started/locally/>`_.
+
+.. code-block:: bash
+
+   python -c "import torch; print(torch.__version__); print(torch.cuda.is_available())"
+
+Optional model packages
+-----------------------
+
+Install additional packages only for the models you use. SAND and DemoDiff use
+the core project dependencies.
+
+.. list-table::
    :header-rows: 1
+   :widths: 45 55
 
    * - Model
-     - Required packages
-   * - HFPretrainedMolecularEncoder
-     - transformers
-   * - HFPretrainedMolecularGenerator
-     - transformers
-   * - HFPretrainedMolecularGenerator (MolGen)
-     - transformers, selfies
-   * - HFPretrainedMolecularGenerator (Molexar)
-     - transformers, fragment-selfies, molexar
-   * - HFPretrainedMolecularGenerator (SAFE-GPT)
-     - transformers, safe-mol
-   * - GenMolMolecularGenerator
-     - transformers, safe-mol
-   * - BFGNNMolecularPredictor
-     - torch-scatter
-   * - GRINMolecularPredictor
-     - torch-scatter
-   * - GRINMolecularPredictor (``repetition_augmentation=True``)
-     - CombineMols
+     - Additional packages
+   * - Hugging Face pretrained encoders and generators
+     - ``transformers``; checkpoint-specific packages may also be needed
+   * - MolGen through the pretrained generator
+     - ``transformers``, ``selfies>=2.1``
+   * - Molexar through the pretrained generator
+     - ``transformers``, ``fragment-selfies``, ``molexar``
+   * - SAFE-GPT through the pretrained generator
+     - ``transformers``, ``safe-mol``
+   * - GenMol
+     - ``transformers==4.57.1``, ``safe-mol>=0.2.1,<0.3``
+   * - BFGNN and GRIN
+     - ``torch-scatter``
+   * - GRIN with ``repetition_augmentation=True``
+     - ``CombineMols`` in addition to ``torch-scatter``
 
-**For models that require** ``torch-scatter``: install with
-``pip install torch-scatter -f https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html``,
-for example ``pip install torch-scatter -f https://data.pyg.org/whl/torch-2.7.1+cu128.html``.
+**GenMol.** From the source checkout, install the supported extra
+(Python 3.11 or newer):
 
-**For models that require** ``transformers``: ``pip install transformers``
+.. code-block:: bash
 
-**For MolGen** (``selfies``): ``pip install "selfies>=2.1"``. Source: `aspuru-guzik-group/selfies <https://github.com/aspuru-guzik-group/selfies>`_.
+   python -m pip install -e ".[genmol]"
 
-**For Molexar:** ``pip install fragment-selfies loguru`` (`Fragment-SELFIES <https://github.com/fairydance/Fragment-SELFIES>`_) and ``pip install git+https://github.com/fairydance/Molexar.git`` (`Molexar <https://github.com/fairydance/Molexar>`_). Molexar itself requires ``transformers>=5.8``.
+**Hugging Face models.** Install the extra for your chosen checkpoint:
+``hf`` (transformers only), ``molgen``, ``molexar``, or ``safe``. For example,
+SAFE-GPT uses:
 
-**For SAFE-GPT:** ``pip install safe-mol`` (`SAFE <https://github.com/datamol-io/safe>`_).
+.. code-block:: bash
 
-**For GenMol (Python 3.11+):** From the source checkout, run ``pip install ".[genmol]"``.
-This installs ``transformers==4.57.1`` and ``safe-mol>=0.2.1,<0.3``; ``datasets`` is not required.
+   python -m pip install "torch-molecule[safe]"
 
-Example (SAFE-GPT pretrained generator):
+Molexar and Fragment-SELFIES are not on PyPI; after the ``molexar`` extra,
+install them from the
+`Molexar <https://github.com/fairydance/Molexar>`_ and
+`Fragment-SELFIES <https://github.com/fairydance/Fragment-SELFIES>`_ repositories.
+Use a separate environment when checkpoint dependencies conflict with another
+model's version requirements.
 
-.. code-block:: python
+**Graph scatter operations.** Install the ``scatter`` extra (``grin`` adds
+``CombineMols``) with a ``torch-scatter`` wheel matching your
+installed PyTorch and CUDA versions using the
+`PyTorch Geometric installation guide <https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html>`_.
 
-   from torch_molecule import HFPretrainedMolecularGenerator
+Build the documentation
+-----------------------
 
-   model = HFPretrainedMolecularGenerator(
-       repo_id="datamol-io/safe-gpt",
-   )
-   model.fit()
-   print(model.generate(n_samples=5))
-   print(model.generate(n_samples=5, scaffold="c1ccccc1"))
+From the repository root, inside the project environment:
+
+.. code-block:: bash
+
+   python -m pip install -r docs/requirements.txt
+   python -m sphinx -b html docs/source docs/build/html
+   python -m http.server 8000 --directory docs/build/html
+
+Open ``http://localhost:8000`` to browse the local documentation.

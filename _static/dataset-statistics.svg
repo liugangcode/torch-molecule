@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="348" viewBox="0 0 960 348" role="img" aria-labelledby="title description">
+<title id="title">Molecular Dataset Hub statistics</title>
+<desc id="description">Snapshot 2026-10-22: 251 datasets, 205 published on Hugging Face, 24,699,163 source rows, 207 with processed tables, 242 processed tables, and 94,855 distinct tasks. Source rows may include repeated structures. Each dataset retains its own license.</desc>
+<style>
+          :root { --bg: #faf9f5; --ink: #141413; --muted: #6b6a64; --line: #e6e3d8; --clay: #c96442; }
+          @media (prefers-color-scheme: dark) {
+            :root { --bg: #1d1c1a; --ink: #f2f0e8; --muted: #a29f95; --line: #33312d; --clay: #e08a6a; }
+          }
+          text { fill: var(--ink); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+          .display { font-family: Georgia, serif; }
+          .muted { fill: var(--muted); }
+          .accent { fill: var(--clay); }
+        </style>
+<rect x="0.5" y="0.5" width="959" height="347" rx="14" fill="var(--bg)" stroke="var(--line)"/>
+<text x="32" y="38" class="display" font-size="26">Molecular Dataset Hub</text>
+<text x="928" y="36" text-anchor="end" class="muted" font-size="15">Snapshot 2026-10-22</text>
+<text x="32" y="110" class="display" font-size="40">251</text>
+<text x="32" y="137" class="muted" font-size="18">datasets</text>
+<text x="330.667" y="110" class="display" font-size="40">205</text>
+<text x="330.667" y="137" class="muted" font-size="18">on Hugging Face</text>
+<text x="629.333" y="110" class="display" font-size="40">24.7M</text>
+<text x="629.333" y="137" class="muted" font-size="18">source rows</text>
+<text x="32" y="202" class="display" font-size="40">207</text>
+<text x="32" y="229" class="muted" font-size="18">with processed tables</text>
+<text x="330.667" y="202" class="display" font-size="40">242</text>
+<text x="330.667" y="229" class="muted" font-size="18">processed tables</text>
+<text x="629.333" y="202" class="display" font-size="40">94,855</text>
+<text x="629.333" y="229" class="muted" font-size="18">distinct tasks</text>
+<path d="M32 268 H928" stroke="var(--line)"/>
+<text x="32" y="298" font-size="18">201 small-molecule · 50 polymer datasets</text>
+<text x="32" y="324" class="accent" font-size="16">Explore the interactive dataset map ↗</text>
+</svg>

@@ -1,97 +1,107 @@
-Molecular Encoder Models
-====================================================
+Encoder API
+===========
 
-The encoder models inherit from the :class:`BaseMolecularEncoder <torch_molecule.base.encoder.BaseMolecularEncoder>` class and share common methods for model pretraining and encoding, as well as model persistence.
+Learn molecular representations and return one embedding per input SMILES with
+``encode(X)``. Trainable encoders learn from your data; the Hugging Face encoder
+loads an existing checkpoint with ``fit()``.
 
-.. rubric:: Training and Encoding
+.. list-table:: Common operations
+   :header-rows: 1
+   :widths: 35 65
 
-- ``fit(...)``: Train an encoder or load pretrained weights; see each model's requirements
+   * - Method
+     - Purpose
+   * - ``fit(...)``
+     - Train an encoder. Supervised models need labels; SAND needs pairs and similarity scores.
+   * - ``encode(X, return_type="np")``
+     - Return molecular embeddings as a NumPy array; use ``"pt"`` for a PyTorch tensor.
+   * - ``save_to_local(path)`` / ``load_from_local(path)``
+     - Save or restore a trained model.
 
-- ``encode(X, **kwargs)``: Encode SMILES strings into a NumPy array or PyTorch tensor
-
-.. rubric:: Model Persistence
-
-inherited from :class:`BaseModel <torch_molecule.base.base.BaseModel>`
-
-- ``save_to_local(path)``: Save the trained model to a local file
-- ``load_from_local(path)``: Load a trained model from a local file
-- ``save_to_hf(repo_id)``: Push the model to Hugging Face Hub
-- ``load_from_hf(repo_id, local_cache)``: Load a model from Hugging Face Hub and save it to a local file
-- ``save(path, repo_id)``: Save the model to either local storage or Hugging Face
-- ``load(path, repo_id)``: Load a model from either local storage or Hugging Face
+Compare all 9 encoders in the :doc:`model collection <../models>`. See
+:doc:`../install` for optional pretrained-model dependencies.
 
 
-Self-supervised Molecular Representation Learning
--------------------------------------------------
+Model reference
+---------------
 
-.. rubric:: MoAma for Molecular Representation Learning
-.. autoclass:: torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder
-   :members: fit, encode
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :undoc-members:
-   :show-inheritance:
+.. list-table::
+   :header-rows: 1
+   :widths: 42 58
 
-.. rubric:: Attribute Masking for Molecular Representation Learning
+   * - Class
+     - Purpose
+   * - :class:`MoamaMolecularEncoder <torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder>`
+     - Motif-aware attribute masking and fingerprint reconstruction.
 
-.. autoclass:: torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder
-   :members: fit, encode
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :undoc-members:
-   :show-inheritance:
+   * - :class:`AttrMaskMolecularEncoder <torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder>`
+     - Reconstruct masked atom attributes.
 
-.. rubric:: Graph masked autoencoder
+   * - :class:`GraphMAEMolecularEncoder <torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder>`
+     - Graph masked autoencoding.
 
-.. autoclass:: torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder
-   :members: fit, encode
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :undoc-members:
-   :show-inheritance:
+   * - :class:`ContextPredMolecularEncoder <torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder>`
+     - Predict molecular subgraph contexts.
 
-.. rubric:: Context Prediction
+   * - :class:`EdgePredMolecularEncoder <torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder>`
+     - Predict whether pairs of atoms are connected.
 
-.. autoclass:: torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder
-   :members: fit, encode
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :undoc-members:
-   :show-inheritance:
+   * - :class:`InfoGraphMolecularEncoder <torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder>`
+     - Learn agreement between graph and substructure representations.
 
-.. rubric:: Edge Prediction
+   * - :class:`SupervisedMolecularEncoder <torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder>`
+     - Molecular property labels or computed molecular descriptors.
 
-.. autoclass:: torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder
-   :members: fit, encode
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :undoc-members:
-   :show-inheritance:
+   * - :class:`SANDMolecularEncoder <torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder>`
+     - Pairwise similarity scores; dense or compressed molecular descriptors.
 
-.. rubric:: InfoGraph
+   * - :class:`HFPretrainedMolecularEncoder <torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder>`
+     - Load a pretrained sequence encoder, such as ChemBERTa or ChemGPT.
 
-.. autoclass:: torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder
-   :members: fit, encode
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :undoc-members:
-   :show-inheritance:
+.. toctree::
+   :hidden:
 
-Supervised Pretraining for Molecules
-------------------------------------
+   MoAmA <models/MoamaMolecularEncoder>
+   AttrMask <models/AttrMaskMolecularEncoder>
+   GraphMAE <models/GraphMAEMolecularEncoder>
+   ContextPred <models/ContextPredMolecularEncoder>
+   EdgePred <models/EdgePredMolecularEncoder>
+   InfoGraph <models/InfoGraphMolecularEncoder>
+   Supervised <models/SupervisedMolecularEncoder>
+   SAND <models/SANDMolecularEncoder>
+   Hugging Face <models/HFPretrainedMolecularEncoder>
 
-.. rubric:: Pretraining with Supervised/Pseudolabeled Data
-.. autoclass:: torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder
-   :members: fit, encode
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
-   :undoc-members:
-   :show-inheritance:
+.. raw:: html
 
-.. rubric:: SAND Shape Aware Neural Descriptor
-
-.. autoclass:: torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder
-   :members: fit, encode, load_from_pretrained, save_to_local, load_from_local
-   :show-inheritance:
-
-Pretrained Molecular Encoders
-----------------------------------------------
-
-.. rubric:: Sequence-based Pretrained Transformers from Hugging Face
-
-.. autoclass:: torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder
-   :members: fit, encode, load, load_from_hf
-   :exclude-members: fitting_epoch, fitting_loss, model_name, model_class
+   <a class="tm-api-redirect" id="torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder" href="models/MoamaMolecularEncoder.html#torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder">MoamaMolecularEncoder reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder.fit" href="models/MoamaMolecularEncoder.html#torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder.fit">MoamaMolecularEncoder.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder.encode" href="models/MoamaMolecularEncoder.html#torch_molecule.encoder.moama.modeling_moama.MoamaMolecularEncoder.encode">MoamaMolecularEncoder.encode reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder" href="models/AttrMaskMolecularEncoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder">AttrMaskMolecularEncoder reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder.fit" href="models/AttrMaskMolecularEncoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder.fit">AttrMaskMolecularEncoder.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder.encode" href="models/AttrMaskMolecularEncoder.html#torch_molecule.encoder.attrmask.modeling_attrmask.AttrMaskMolecularEncoder.encode">AttrMaskMolecularEncoder.encode reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder" href="models/GraphMAEMolecularEncoder.html#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder">GraphMAEMolecularEncoder reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.fit" href="models/GraphMAEMolecularEncoder.html#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.fit">GraphMAEMolecularEncoder.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.encode" href="models/GraphMAEMolecularEncoder.html#torch_molecule.encoder.graphmae.modeling_graphmae.GraphMAEMolecularEncoder.encode">GraphMAEMolecularEncoder.encode reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder" href="models/ContextPredMolecularEncoder.html#torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder">ContextPredMolecularEncoder reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder.fit" href="models/ContextPredMolecularEncoder.html#torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder.fit">ContextPredMolecularEncoder.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder.encode" href="models/ContextPredMolecularEncoder.html#torch_molecule.encoder.contextpred.modeling_contextpred.ContextPredMolecularEncoder.encode">ContextPredMolecularEncoder.encode reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder" href="models/EdgePredMolecularEncoder.html#torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder">EdgePredMolecularEncoder reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder.fit" href="models/EdgePredMolecularEncoder.html#torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder.fit">EdgePredMolecularEncoder.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder.encode" href="models/EdgePredMolecularEncoder.html#torch_molecule.encoder.edgepred.modeling_edgepred.EdgePredMolecularEncoder.encode">EdgePredMolecularEncoder.encode reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder" href="models/InfoGraphMolecularEncoder.html#torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder">InfoGraphMolecularEncoder reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder.fit" href="models/InfoGraphMolecularEncoder.html#torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder.fit">InfoGraphMolecularEncoder.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder.encode" href="models/InfoGraphMolecularEncoder.html#torch_molecule.encoder.infograph.modeling_infograph.InfoGraphMolecularEncoder.encode">InfoGraphMolecularEncoder.encode reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder" href="models/SupervisedMolecularEncoder.html#torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder">SupervisedMolecularEncoder reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder.fit" href="models/SupervisedMolecularEncoder.html#torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder.fit">SupervisedMolecularEncoder.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder.encode" href="models/SupervisedMolecularEncoder.html#torch_molecule.encoder.supervised.modeling_supervised.SupervisedMolecularEncoder.encode">SupervisedMolecularEncoder.encode reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder" href="models/SANDMolecularEncoder.html#torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder">SANDMolecularEncoder reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder.fit" href="models/SANDMolecularEncoder.html#torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder.fit">SANDMolecularEncoder.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder.encode" href="models/SANDMolecularEncoder.html#torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder.encode">SANDMolecularEncoder.encode reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder.load_from_pretrained" href="models/SANDMolecularEncoder.html#torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder.load_from_pretrained">SANDMolecularEncoder.load_from_pretrained reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder.save_to_local" href="models/SANDMolecularEncoder.html#torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder.save_to_local">SANDMolecularEncoder.save_to_local reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder.load_from_local" href="models/SANDMolecularEncoder.html#torch_molecule.encoder.sand.modeling_sand.SANDMolecularEncoder.load_from_local">SANDMolecularEncoder.load_from_local reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder" href="models/HFPretrainedMolecularEncoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder">HFPretrainedMolecularEncoder reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.fit" href="models/HFPretrainedMolecularEncoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.fit">HFPretrainedMolecularEncoder.fit reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.encode" href="models/HFPretrainedMolecularEncoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.encode">HFPretrainedMolecularEncoder.encode reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.load" href="models/HFPretrainedMolecularEncoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.load">HFPretrainedMolecularEncoder.load reference</a>
+   <a class="tm-api-redirect" id="torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.load_from_hf" href="models/HFPretrainedMolecularEncoder.html#torch_molecule.encoder.pretrained.modeling_pretrained.HFPretrainedMolecularEncoder.load_from_hf">HFPretrainedMolecularEncoder.load_from_hf reference</a>

@@ -3,13 +3,14 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Project Overview" href="../additional.html"><link rel="prev" title="Base Modules" href="base.html">
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="About the project" href="../additional.html"><link rel="prev" title="Neural Network Components" href="nn.html">
 
-    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
-        <title>Utility Functions - torch-molecule (0.1.7) documentation</title>
+    <link rel="shortcut icon" href="../_static/favicon.svg"><!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Utility Functions - torch-molecule</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/torch-molecule.css?v=50fedd17" />
     
     
 
@@ -18,18 +19,39 @@
   body {
     --color-code-background: #f2f2f2;
   --color-code-foreground: #1e1e1e;
+  --color-brand-primary: #984b35;
+  --color-brand-content: #984b35;
+  --color-background-primary: #faf9f6;
+  --color-background-secondary: #f1f0eb;
+  --color-foreground-primary: #242721;
+  --color-foreground-secondary: #555b51;
+  --color-foreground-muted: #64685e;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
       }
     }
@@ -37,6 +59,25 @@
 </style></head>
   <body>
     
+<header class="tm-header">
+  <a class="tm-wordmark" href="../index.html" aria-label="torch-molecule home">
+    <svg viewBox="0 0 34 34" width="30" height="30" fill="none" aria-hidden="true"><path d="M9 7 25 10 22 27 7 23Z M9 7 22 27 M7 23 25 10" stroke="currentColor" stroke-width="1.5"/><g fill="currentColor"><circle cx="9" cy="7" r="3.5"/><circle cx="25" cy="10" r="3.5"/><circle cx="22" cy="27" r="3.5"/></g><circle cx="7" cy="23" r="3.5" fill="var(--tm-accent)"/></svg>
+    <span>torch-molecule</span>
+  </a>
+  <button class="tm-menu-toggle" aria-controls="tm-site-navigation" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
+  <nav class="tm-navigation" id="tm-site-navigation" aria-label="Main navigation">
+    <a href="../overview.html" aria-current="page">Documentation</a>
+    <a href="../models.html">Models</a>
+    <a href="../example.html">Examples</a>
+    <a href="https://github.com/liugangcode/torch-molecule" class="tm-github">GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+  <form class="tm-search" role="search" action="../search.html" method="get">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+    <input aria-label="Search documentation" name="q" placeholder="Search docs" autocomplete="off"/>
+    <kbd aria-hidden="true">⌘ K</kbd>
+  </form>
+</header>
+
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
@@ -161,7 +202,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">torch-molecule (0.1.7) documentation</div></a>
+      <a href="../index.html"><div class="brand">torch-molecule</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,50 +221,87 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
-  
-  <span class="sidebar-brand-text">torch-molecule (0.1.7) documentation</span>
-  
-</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+      <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="../overview.html">
+  <span>Documentation</span>
+</a>
+<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<div id="searchbox"></div><div class="sidebar-scroll"><nav class="sidebar-tree" aria-label="Documentation navigation">
+  <p class="caption" role="heading" aria-level="2"><span class="caption-text">Get started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Datasets Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../overview.html">Model Overview</a><input aria-label="Toggle navigation of Model Overview" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Choose a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Explore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Model collection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../dataset.html">Datasets</a><input aria-label="Toggle navigation of Datasets" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_qm9.html">load_qm9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_chembl2k.html">load_chembl2k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_broad6k.html">load_broad6k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_toxcast.html">load_toxcast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_admet.html">load_admet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_gasperm.html">load_gasperm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets/load_zinc250k.html">load_zinc250k</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="encoder.html">Molecular Encoder Models</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">API reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="nn.html">Neural Network Components</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="predictor.html">Predictor API</a><input aria-label="Toggle navigation of Predictor API" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/GNNMolecularPredictor.html">GNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GREAMolecularPredictor.html">GREA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/SGIRMolecularPredictor.html">SGIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GRINMolecularPredictor.html">GRIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/BFGNNMolecularPredictor.html">BFGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/DIRMolecularPredictor.html">DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/IRMMolecularPredictor.html">IRM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/RPGNNMolecularPredictor.html">RPGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/SSRMolecularPredictor.html">SSR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/LSTMMolecularPredictor.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/SMILESTransformerMolecularPredictor.html">SMILES Transformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="encoder.html">Encoder API</a><input aria-label="Toggle navigation of Encoder API" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/MoamaMolecularEncoder.html">MoAmA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/AttrMaskMolecularEncoder.html">AttrMask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GraphMAEMolecularEncoder.html">GraphMAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/ContextPredMolecularEncoder.html">ContextPred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/EdgePredMolecularEncoder.html">EdgePred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/InfoGraphMolecularEncoder.html">InfoGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/SupervisedMolecularEncoder.html">Supervised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/SANDMolecularEncoder.html">SAND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/HFPretrainedMolecularEncoder.html">Hugging Face</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generator.html">Generator API</a><input aria-label="Toggle navigation of Generator API" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/DemoDiffMolecularGenerator.html">DemoDiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GraphDITMolecularGenerator.html">GraphDiT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/DeFoGMolecularGenerator.html">DeFoG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GraphGAMolecularGenerator.html">Graph GA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/DigressMolecularGenerator.html">DiGress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GDSSMolecularGenerator.html">GDSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/JTVAEMolecularGenerator.html">JT-VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/GenMolMolecularGenerator.html">GenMol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/MolGPTMolecularGenerator.html">MolGPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/LSTMMolecularGenerator.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/HFPretrainedMolecularGenerator.html">Hugging Face</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn.html">Neural Network Components</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Utility Functions</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Project</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../additional.html">Project Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../additional.html#project-structure">Project Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../additional.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../additional.html">About the project</a></li>
 </ul>
 
-</div>
-</div>
-
+</nav></div>
       </div>
       
     </div>
@@ -238,13 +316,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="../_sources/api/utils.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -257,16 +329,25 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-torch_molecule.utils.checker">
-<span id="utility-functions"></span><h1>Utility Functions<a class="headerlink" href="#module-torch_molecule.utils.checker" title="Link to this heading">¶</a></h1>
+          
+
+<nav class="tm-breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a><span aria-hidden="true">/</span>
+  
+  <span>Utility Functions</span>
+</nav>
+<section id="utility-functions">
+<h1>Utility Functions<a class="headerlink" href="#utility-functions" title="Link to this heading">¶</a></h1>
+<section id="module-torch_molecule.utils.checker">
+<span id="input-validation"></span><h2>Input validation<a class="headerlink" href="#module-torch_molecule.utils.checker" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.utils.checker.MolecularInputChecker">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.checker.</span></span><span class="sig-name descname"><span class="pre">MolecularInputChecker</span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checker.html#MolecularInputChecker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checker.MolecularInputChecker" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">MolecularInputChecker</span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checker.html#MolecularInputChecker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checker.MolecularInputChecker" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for validating input data used in molecular models.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.utils.checker.MolecularInputChecker.validate_inputs">
-<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">validate_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_pretask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_rdkit_mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Mol</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checker.html#MolecularInputChecker.validate_inputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checker.MolecularInputChecker.validate_inputs" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">validate_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_task</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_pretask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_rdkit_mol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/checker.html#MolecularInputChecker.validate_inputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checker.MolecularInputChecker.validate_inputs" title="Link to this definition">¶</a></dt>
 <dd><p>Validate a list of SMILES strings, and optionally validate a target array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -299,7 +380,7 @@ by default 0</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.utils.checker.MolecularInputChecker.validate_smiles">
-<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">validate_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Mol</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checker.html#MolecularInputChecker.validate_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checker.MolecularInputChecker.validate_smiles" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">validate_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/checker.html#MolecularInputChecker.validate_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checker.MolecularInputChecker.validate_smiles" title="Link to this definition">¶</a></dt>
 <dd><p>Validate a single SMILES string at a given index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -325,47 +406,98 @@ by default 0</p></li>
 
 </dd></dl>
 
-<dl class="py class" id="module-torch_molecule.utils.checkpoint">
+</section>
+<section id="module-torch_molecule.utils.checkpoint">
+<span id="checkpoint-files"></span><h2>Checkpoint files<a class="headerlink" href="#module-torch_molecule.utils.checkpoint" title="Link to this heading">¶</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.checkpoint.</span></span><span class="sig-name descname"><span class="pre">HuggingFaceCheckpointManager</span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#HuggingFaceCheckpointManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">HuggingFaceCheckpointManager</span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#HuggingFaceCheckpointManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Handles saving and loading of models to and from the Hugging Face Hub.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.load_model_from_hf">
-<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">load_model_from_hf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'config.json'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#HuggingFaceCheckpointManager.load_model_from_hf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.load_model_from_hf" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">load_model_from_hf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'config.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#HuggingFaceCheckpointManager.load_model_from_hf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.load_model_from_hf" title="Link to this definition">¶</a></dt>
 <dd><p>Load model from Hugging Face Hub, saving locally to <cite>path</cite> first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>path</strong> (<em>str</em>)</p></li>
+<li><p><strong>config_filename</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.push_to_huggingface">
-<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">push_to_huggingface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commit_message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Update</span> <span class="pre">model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'config.json'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#HuggingFaceCheckpointManager.push_to_huggingface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.push_to_huggingface" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">push_to_huggingface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commit_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Update</span> <span class="pre">model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'config.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#HuggingFaceCheckpointManager.push_to_huggingface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.push_to_huggingface" title="Link to this definition">¶</a></dt>
 <dd><p>Push a task-specific model checkpoint to Hugging Face Hub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>task_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>metadata_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>metrics</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>commit_message</strong> (<em>str</em>)</p></li>
+<li><p><strong>token</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>private</strong> (<em>bool</em>)</p></li>
+<li><p><strong>config_filename</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.utils.checkpoint.LocalCheckpointManager">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.checkpoint.</span></span><span class="sig-name descname"><span class="pre">LocalCheckpointManager</span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#LocalCheckpointManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.LocalCheckpointManager" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">LocalCheckpointManager</span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#LocalCheckpointManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.LocalCheckpointManager" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Handles saving and loading of models to and from local paths.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.utils.checkpoint.LocalCheckpointManager.load_model_from_local">
-<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">load_model_from_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#LocalCheckpointManager.load_model_from_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.LocalCheckpointManager.load_model_from_local" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">load_model_from_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#LocalCheckpointManager.load_model_from_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.LocalCheckpointManager.load_model_from_local" title="Link to this definition">¶</a></dt>
 <dd><p>Load model weights and configuration from a local file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.utils.checkpoint.LocalCheckpointManager.save_model_to_local">
-<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">save_model_to_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#LocalCheckpointManager.save_model_to_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.LocalCheckpointManager.save_model_to_local" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">save_model_to_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/checkpoint.html#LocalCheckpointManager.save_model_to_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.checkpoint.LocalCheckpointManager.save_model_to_local" title="Link to this definition">¶</a></dt>
 <dd><p>Save model weights and configuration to a local file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py function" id="module-torch_molecule.utils.format">
+</section>
+<section id="module-torch_molecule.utils.format">
+<span id="data-formatting"></span><h2>Data formatting<a class="headerlink" href="#module-torch_molecule.utils.format" title="Link to this heading">¶</a></h2>
+<dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.format.sanitize_config">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.format.</span></span><span class="sig-name descname"><span class="pre">sanitize_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/format.html#sanitize_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.format.sanitize_config" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sanitize_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/format.html#sanitize_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.format.sanitize_config" title="Link to this definition">¶</a></dt>
 <dd><p>Recursively sanitize config dictionary for JSON serialization.</p>
 <p>Handles nested structures and special cases.</p>
 <dl class="field-list simple">
@@ -383,7 +515,7 @@ by default 0</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.format.serialize_config">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.format.</span></span><span class="sig-name descname"><span class="pre">serialize_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/format.html#serialize_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.format.serialize_config" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">serialize_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/format.html#serialize_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.format.serialize_config" title="Link to this definition">¶</a></dt>
 <dd><p>Helper function to make config JSON serializable.</p>
 <p>Handles special cases like lambda functions, torch modules, and numpy arrays.</p>
 <dl class="field-list simple">
@@ -399,9 +531,12 @@ by default 0</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py function" id="module-torch_molecule.utils.hf">
+</section>
+<section id="module-torch_molecule.utils.hf">
+<span id="hugging-face-models"></span><h2>Hugging Face models<a class="headerlink" href="#module-torch_molecule.utils.hf" title="Link to this heading">¶</a></h2>
+<dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.hf.create_model_card">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.hf.</span></span><span class="sig-name descname"><span class="pre">create_model_card</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tasks_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">existing_readme</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/hf.html#create_model_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.hf.create_model_card" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_model_card</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tasks_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">existing_readme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/hf.html#create_model_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.hf.create_model_card" title="Link to this definition">¶</a></dt>
 <dd><p>Create a model card for multiple tasks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -425,7 +560,7 @@ by default 0</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.hf.get_existing_repo_data">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.hf.</span></span><span class="sig-name descname"><span class="pre">get_existing_repo_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/hf.html#get_existing_repo_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.hf.get_existing_repo_data" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_existing_repo_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/hf.html#get_existing_repo_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.hf.get_existing_repo_data" title="Link to this definition">¶</a></dt>
 <dd><p>Get existing repository data from HuggingFace Hub.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -445,7 +580,7 @@ by default 0</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.hf.merge_task_configs">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.hf.</span></span><span class="sig-name descname"><span class="pre">merge_task_configs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">existing_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_task_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/hf.html#merge_task_configs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.hf.merge_task_configs" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">merge_task_configs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">existing_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_task_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/hf.html#merge_task_configs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.hf.merge_task_configs" title="Link to this definition">¶</a></dt>
 <dd><p>Merge task-specific configuration and maintain version history.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -465,11 +600,22 @@ by default 0</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py class" id="module-torch_molecule.utils.search">
+</section>
+<section id="module-torch_molecule.utils.search">
+<span id="hyperparameter-search"></span><h2>Hyperparameter search<a class="headerlink" href="#module-torch_molecule.utils.search" title="Link to this heading">¶</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.utils.search.ParameterSpec">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.search.</span></span><span class="sig-name descname"><span class="pre">ParameterSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#torch_molecule.utils.search.ParameterType" title="torch_molecule.utils.search.ParameterType"><span class="pre">ParameterType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/search.html#ParameterSpec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.search.ParameterSpec" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ParameterSpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_range</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/search.html#ParameterSpec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.search.ParameterSpec" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
 <p>Specification for a hyperparameter including its type and valid range/options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param_type</strong> (<a class="reference internal" href="#torch_molecule.utils.search.ParameterType" title="torch_molecule.utils.search.ParameterType"><em>ParameterType</em></a>)</p></li>
+<li><p><strong>value_range</strong> (<em>Tuple</em><em>[</em><em>Any</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>List</em><em>[</em><em>Any</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.utils.search.ParameterSpec.param_type">
 <span class="sig-name descname"><span class="pre">param_type</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#torch_molecule.utils.search.ParameterType" title="torch_molecule.utils.search.ParameterType"><span class="pre">ParameterType</span></a></span><a class="headerlink" href="#torch_molecule.utils.search.ParameterSpec.param_type" title="Link to this definition">¶</a></dt>
@@ -486,7 +632,7 @@ by default 0</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.utils.search.ParameterType">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.search.</span></span><span class="sig-name descname"><span class="pre">ParameterType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/search.html#ParameterType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.search.ParameterType" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ParameterType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/search.html#ParameterType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.search.ParameterType" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
 <p>Enum defining types of hyperparameters for optimization.</p>
 <p>Each type corresponds to a specific Optuna suggest method and parameter behavior.</p>
@@ -514,12 +660,12 @@ by default 0</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.search.parse_list_params">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.search.</span></span><span class="sig-name descname"><span class="pre">parse_list_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/search.html#parse_list_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.search.parse_list_params" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_list_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/search.html#parse_list_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.search.parse_list_params" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.search.suggest_parameter">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.search.</span></span><span class="sig-name descname"><span class="pre">suggest_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trial</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#torch_molecule.utils.search.ParameterSpec" title="torch_molecule.utils.search.ParameterSpec"><span class="pre">ParameterSpec</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/search.html#suggest_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.search.suggest_parameter" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">suggest_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_spec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/search.html#suggest_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.search.suggest_parameter" title="Link to this definition">¶</a></dt>
 <dd><p>Suggest a parameter value using the appropriate Optuna suggest method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -541,14 +687,17 @@ by default 0</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py function" id="module-torch_molecule.utils.graph.features">
+</section>
+<section id="module-torch_molecule.utils.graph.features">
+<span id="atom-and-bond-features"></span><h2>Atom and bond features<a class="headerlink" href="#module-torch_molecule.utils.graph.features" title="Link to this heading">¶</a></h2>
+<dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.features.atom_feature_vector_to_dict">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">atom_feature_vector_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_feature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#atom_feature_vector_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.atom_feature_vector_to_dict" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">atom_feature_vector_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_feature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#atom_feature_vector_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.atom_feature_vector_to_dict" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.features.atom_to_feature_vector">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">atom_to_feature_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#atom_to_feature_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.atom_to_feature_vector" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">atom_to_feature_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#atom_to_feature_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.atom_to_feature_vector" title="Link to this definition">¶</a></dt>
 <dd><p>Converts rdkit atom object to feature list of indices
 :param mol: rdkit atom object
 :return: list</p>
@@ -556,12 +705,12 @@ by default 0</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.features.bond_feature_vector_to_dict">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">bond_feature_vector_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bond_feature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#bond_feature_vector_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.bond_feature_vector_to_dict" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">bond_feature_vector_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bond_feature</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#bond_feature_vector_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.bond_feature_vector_to_dict" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.features.bond_to_feature_vector">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">bond_to_feature_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bond</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#bond_to_feature_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.bond_to_feature_vector" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">bond_to_feature_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bond</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#bond_to_feature_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.bond_to_feature_vector" title="Link to this definition">¶</a></dt>
 <dd><p>Converts rdkit bond object to feature list of indices
 :param mol: rdkit bond object
 :return: list</p>
@@ -569,43 +718,46 @@ by default 0</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.features.get_atom_feature_dims">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">get_atom_feature_dims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#get_atom_feature_dims"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.get_atom_feature_dims" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_atom_feature_dims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#get_atom_feature_dims"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.get_atom_feature_dims" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.features.get_bond_feature_dims">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">get_bond_feature_dims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#get_bond_feature_dims"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.get_bond_feature_dims" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_bond_feature_dims</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#get_bond_feature_dims"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.get_bond_feature_dims" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.features.getmaccsfingerprint">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">getmaccsfingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#getmaccsfingerprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.getmaccsfingerprint" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getmaccsfingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#getmaccsfingerprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.getmaccsfingerprint" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.features.getmorganfingerprint">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">getmorganfingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#getmorganfingerprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.getmorganfingerprint" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getmorganfingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#getmorganfingerprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.getmorganfingerprint" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.features.safe_index">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.features.</span></span><span class="sig-name descname"><span class="pre">safe_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#safe_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.safe_index" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">safe_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/features.html#safe_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.features.safe_index" title="Link to this definition">¶</a></dt>
 <dd><p>Return index of element e in list l. If e is not present, return the last index</p>
 </dd></dl>
 
-<dl class="py function" id="module-torch_molecule.utils.graph.graph_from_smiles">
+</section>
+<section id="module-torch_molecule.utils.graph.graph_from_smiles">
+<span id="smiles-to-graphs"></span><h2>SMILES to graphs<a class="headerlink" href="#module-torch_molecule.utils.graph.graph_from_smiles" title="Link to this heading">¶</a></h2>
+<dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_from_smiles.add_fingerprint_feature">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_from_smiles.</span></span><span class="sig-name descname"><span class="pre">add_fingerprint_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_fingerprint_fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_from_smiles.html#add_fingerprint_feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_from_smiles.add_fingerprint_feature" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_fingerprint_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_fingerprint_fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_from_smiles.html#add_fingerprint_feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_from_smiles.add_fingerprint_feature" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_from_smiles.get_augmented_property">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_from_smiles.</span></span><span class="sig-name descname"><span class="pre">get_augmented_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_from_smiles.html#get_augmented_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_from_smiles.get_augmented_property" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_augmented_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_from_smiles.html#get_augmented_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_from_smiles.get_augmented_property" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_from_smiles.graph_from_smiles">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_from_smiles.</span></span><span class="sig-name descname"><span class="pre">graph_from_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles_or_mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_properties</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_from_smiles.html#graph_from_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_from_smiles.graph_from_smiles" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">graph_from_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles_or_mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">augmented_properties</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_from_smiles.html#graph_from_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_from_smiles.graph_from_smiles" title="Link to this definition">¶</a></dt>
 <dd><p>Converts SMILES string or RDKit molecule to graph Data object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -625,68 +777,85 @@ by default 0</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py function" id="module-torch_molecule.utils.graph.graph_to_smiles">
+</section>
+<section id="module-torch_molecule.utils.graph.graph_to_smiles">
+<span id="graphs-to-smiles"></span><h2>Graphs to SMILES<a class="headerlink" href="#module-torch_molecule.utils.graph.graph_to_smiles" title="Link to this heading">¶</a></h2>
+<dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.build_molecule_with_partial_charges">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">build_molecule_with_partial_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_decoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#build_molecule_with_partial_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.build_molecule_with_partial_charges" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">build_molecule_with_partial_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_decoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#build_molecule_with_partial_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.build_molecule_with_partial_charges" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.check_valency">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">check_valency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#check_valency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.check_valency" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">check_valency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#check_valency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.check_valency" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.check_valid">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">check_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#check_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.check_valid" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">check_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#check_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.check_valid" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.connect_fragments">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">connect_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#connect_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.connect_fragments" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">connect_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#connect_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.connect_fragments" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.correct_mol">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">correct_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#correct_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.correct_mol" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">correct_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#correct_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.correct_mol" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.get_mol">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">get_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles_or_mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#get_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.get_mol" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_mol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles_or_mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#get_mol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.get_mol" title="Link to this definition">¶</a></dt>
 <dd><p>Loads SMILES/molecule into RDKit’s object</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.graph_to_smiles">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">graph_to_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_decoder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#graph_to_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.graph_to_smiles" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">graph_to_smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_decoder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#graph_to_smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.graph_to_smiles" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>molecule_list</strong> (<em>List</em><em>[</em><em>Tuple</em><em>]</em>)</p></li>
+<li><p><strong>atom_decoder</strong> (<em>list</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>List</em>[str | None]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.mol2smiles">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">mol2smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#mol2smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.mol2smiles" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mol2smiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#mol2smiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.mol2smiles" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.select_atom_with_available_valency">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">select_atom_with_available_valency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#select_atom_with_available_valency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.select_atom_with_available_valency" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">select_atom_with_available_valency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#select_atom_with_available_valency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.select_atom_with_available_valency" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.select_atoms_with_available_valency">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">select_atoms_with_available_valency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#select_atoms_with_available_valency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.select_atoms_with_available_valency" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">select_atoms_with_available_valency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#select_atoms_with_available_valency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.select_atoms_with_available_valency" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.graph.graph_to_smiles.try_to_connect_fragments">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.graph.graph_to_smiles.</span></span><span class="sig-name descname"><span class="pre">try_to_connect_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">combined_mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#try_to_connect_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.try_to_connect_fragments" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">try_to_connect_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">combined_mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/graph/graph_to_smiles.html#try_to_connect_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.graph.graph_to_smiles.try_to_connect_fragments" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function" id="module-torch_molecule.utils.generic.metrics">
+</section>
+<section id="module-torch_molecule.utils.generic.metrics">
+<span id="evaluation-metrics"></span><h2>Evaluation metrics<a class="headerlink" href="#module-torch_molecule.utils.generic.metrics" title="Link to this heading">¶</a></h2>
+<dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.accuracy_score">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">accuracy_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avergae</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#accuracy_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.accuracy_score" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">accuracy_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avergae</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#accuracy_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.accuracy_score" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate accuracy for multiple tasks from prediction logits.</p>
 <section id="parameters">
-<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>y_true<span class="classifier">numpy.ndarray</span></dt><dd><p>Ground truth labels with shape (n_samples, n_tasks)</p>
 </dd>
@@ -704,7 +873,7 @@ If None, all tasks are weighted equally</p>
 </dl>
 </section>
 <section id="returns">
-<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
+<h3>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dictionary containing:
 - ‘task_accuracies’: Accuracy for each individual task
@@ -715,7 +884,7 @@ If None, all tasks are weighted equally</p>
 </dl>
 </section>
 <section id="raises">
-<h2>Raises:<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h2>
+<h3>Raises:<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>ValueError</dt><dd><p>If input shapes don’t match or dimensions are incorrect</p>
 </dd>
@@ -725,7 +894,7 @@ If None, all tasks are weighted equally</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.mean_absolute_error">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">mean_absolute_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#mean_absolute_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.mean_absolute_error" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mean_absolute_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#mean_absolute_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.mean_absolute_error" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate Mean Absolute Error for multi-task regression, handling NaN values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -749,7 +918,7 @@ If average=False, returns array of MAE scores with NaN for invalid tasks.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.mean_squared_error">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">mean_squared_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">squared</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#mean_squared_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.mean_squared_error" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mean_squared_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">squared</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#mean_squared_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.mean_squared_error" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate Mean Squared Error for multi-task regression, handling NaN values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -775,7 +944,7 @@ If average=False, returns array of MSE/RMSE scores with NaN for invalid tasks.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.r2_score">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">r2_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#r2_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.r2_score" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">r2_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#r2_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.r2_score" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate R² Score for multi-task regression, handling NaN values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -799,7 +968,7 @@ If average=False, returns array of R² scores with NaN for invalid tasks.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.roc_auc_score">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">roc_auc_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#roc_auc_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.roc_auc_score" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">roc_auc_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#roc_auc_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.roc_auc_score" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate ROC AUC scores for multi-task binary classification, handling NaN values.</p>
 <p>For each task dimension, computes AUC score using only the non-NaN samples.
 Tasks with insufficient valid samples or unique labels are masked in the output.</p>
@@ -838,18 +1007,24 @@ If average=False, returns array of ROC AUC scores with NaN for invalid tasks.</p
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.root_mean_squared_error">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">root_mean_squared_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#root_mean_squared_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.root_mean_squared_error" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">root_mean_squared_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#root_mean_squared_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.root_mean_squared_error" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.utils.generic.metrics.sigmoid">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.metrics.</span></span><span class="sig-name descname"><span class="pre">sigmoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#sigmoid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.sigmoid" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sigmoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/metrics.html#sigmoid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.metrics.sigmoid" title="Link to this definition">¶</a></dt>
 <dd><p>Numerically stable sigmoid function.</p>
 </dd></dl>
 
-<dl class="py function" id="module-torch_molecule.utils.generic.weights">
-<span id="module-torch_molecule.utils.generic.pseudo_tasks"></span><dt class="sig sig-object py" id="torch_molecule.utils.generic.weights.init_weights">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.utils.generic.weights.</span></span><span class="sig-name descname"><span class="pre">init_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xavier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_gain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/weights.html#init_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.weights.init_weights" title="Link to this definition">¶</a></dt>
+</section>
+<section id="module-torch_molecule.utils.generic.pseudo_tasks">
+<span id="computed-molecular-targets"></span><h2>Computed molecular targets<a class="headerlink" href="#module-torch_molecule.utils.generic.pseudo_tasks" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-torch_molecule.utils.generic.weights">
+<span id="weight-initialization"></span><h2>Weight initialization<a class="headerlink" href="#module-torch_molecule.utils.generic.weights" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.utils.generic.weights.init_weights">
+<span class="sig-name descname"><span class="pre">init_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xavier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_gain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torch_molecule/utils/generic/weights.html#init_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.utils.generic.weights.init_weights" title="Link to this definition">¶</a></dt>
 <dd><p>Initialize network weights.
 :param net:
 :type net: network
@@ -860,29 +1035,33 @@ If average=False, returns array of ROC AUC scores with NaN for invalid tasks.</p
 </dd></dl>
 
 </section>
+</section>
+
+
 
         </article>
       </div>
       <footer>
         
+
         <div class="related-pages">
           <a class="next-page" href="../additional.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Project Overview</div>
+                <div class="title">About the project</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="base.html">
+          <a class="prev-page" href="nn.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Base Modules</div>
+                <div class="title">Neural Network Components</div>
                 
               </div>
             </a>
@@ -890,7 +1069,7 @@ If average=False, returns array of ROC AUC scores with NaN for invalid tasks.</p
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2025, Gang Liu
+                Copyright &#169; 2025–2026, Gang Liu
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -902,6 +1081,11 @@ If average=False, returns array of ROC AUC scores with NaN for invalid tasks.</p
           </div>
         </div>
         
+<div class="tm-footer">
+  <span>torch-molecule <span class="tm-footer-dot">·</span> Open source, open discovery.</span>
+  <div><a href="../additional.html">Contribute</a><a href="https://github.com/liugangcode/torch-molecule/blob/main/LICENSE">MIT license</a><a href="https://github.com/liugangcode/torch-molecule">GitHub ↗</a></div>
+</div>
+
       </footer>
     </div>
     <aside class="toc-drawer">
@@ -917,71 +1101,17 @@ If average=False, returns array of ROC AUC scores with NaN for invalid tasks.</p
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Utility Functions</a><ul>
-<li><a class="reference internal" href="#torch_molecule.utils.checker.MolecularInputChecker"><code class="docutils literal notranslate"><span class="pre">MolecularInputChecker</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.utils.checker.MolecularInputChecker.validate_inputs"><code class="docutils literal notranslate"><span class="pre">MolecularInputChecker.validate_inputs()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.checker.MolecularInputChecker.validate_smiles"><code class="docutils literal notranslate"><span class="pre">MolecularInputChecker.validate_smiles()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager"><code class="docutils literal notranslate"><span class="pre">HuggingFaceCheckpointManager</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.load_model_from_hf"><code class="docutils literal notranslate"><span class="pre">HuggingFaceCheckpointManager.load_model_from_hf()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.checkpoint.HuggingFaceCheckpointManager.push_to_huggingface"><code class="docutils literal notranslate"><span class="pre">HuggingFaceCheckpointManager.push_to_huggingface()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.utils.checkpoint.LocalCheckpointManager"><code class="docutils literal notranslate"><span class="pre">LocalCheckpointManager</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.utils.checkpoint.LocalCheckpointManager.load_model_from_local"><code class="docutils literal notranslate"><span class="pre">LocalCheckpointManager.load_model_from_local()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.checkpoint.LocalCheckpointManager.save_model_to_local"><code class="docutils literal notranslate"><span class="pre">LocalCheckpointManager.save_model_to_local()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.utils.format.sanitize_config"><code class="docutils literal notranslate"><span class="pre">sanitize_config()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.format.serialize_config"><code class="docutils literal notranslate"><span class="pre">serialize_config()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.hf.create_model_card"><code class="docutils literal notranslate"><span class="pre">create_model_card()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.hf.get_existing_repo_data"><code class="docutils literal notranslate"><span class="pre">get_existing_repo_data()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.hf.merge_task_configs"><code class="docutils literal notranslate"><span class="pre">merge_task_configs()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.search.ParameterSpec"><code class="docutils literal notranslate"><span class="pre">ParameterSpec</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.utils.search.ParameterSpec.param_type"><code class="docutils literal notranslate"><span class="pre">ParameterSpec.param_type</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.search.ParameterSpec.value_range"><code class="docutils literal notranslate"><span class="pre">ParameterSpec.value_range</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.utils.search.ParameterType"><code class="docutils literal notranslate"><span class="pre">ParameterType</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.utils.search.ParameterType.CATEGORICAL"><code class="docutils literal notranslate"><span class="pre">ParameterType.CATEGORICAL</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.search.ParameterType.FLOAT"><code class="docutils literal notranslate"><span class="pre">ParameterType.FLOAT</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.search.ParameterType.INTEGER"><code class="docutils literal notranslate"><span class="pre">ParameterType.INTEGER</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.search.ParameterType.LOG_FLOAT"><code class="docutils literal notranslate"><span class="pre">ParameterType.LOG_FLOAT</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#torch_molecule.utils.search.parse_list_params"><code class="docutils literal notranslate"><span class="pre">parse_list_params()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.search.suggest_parameter"><code class="docutils literal notranslate"><span class="pre">suggest_parameter()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.features.atom_feature_vector_to_dict"><code class="docutils literal notranslate"><span class="pre">atom_feature_vector_to_dict()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.features.atom_to_feature_vector"><code class="docutils literal notranslate"><span class="pre">atom_to_feature_vector()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.features.bond_feature_vector_to_dict"><code class="docutils literal notranslate"><span class="pre">bond_feature_vector_to_dict()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.features.bond_to_feature_vector"><code class="docutils literal notranslate"><span class="pre">bond_to_feature_vector()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.features.get_atom_feature_dims"><code class="docutils literal notranslate"><span class="pre">get_atom_feature_dims()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.features.get_bond_feature_dims"><code class="docutils literal notranslate"><span class="pre">get_bond_feature_dims()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.features.getmaccsfingerprint"><code class="docutils literal notranslate"><span class="pre">getmaccsfingerprint()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.features.getmorganfingerprint"><code class="docutils literal notranslate"><span class="pre">getmorganfingerprint()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.features.safe_index"><code class="docutils literal notranslate"><span class="pre">safe_index()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_from_smiles.add_fingerprint_feature"><code class="docutils literal notranslate"><span class="pre">add_fingerprint_feature()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_from_smiles.get_augmented_property"><code class="docutils literal notranslate"><span class="pre">get_augmented_property()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_from_smiles.graph_from_smiles"><code class="docutils literal notranslate"><span class="pre">graph_from_smiles()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.build_molecule_with_partial_charges"><code class="docutils literal notranslate"><span class="pre">build_molecule_with_partial_charges()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.check_valency"><code class="docutils literal notranslate"><span class="pre">check_valency()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.check_valid"><code class="docutils literal notranslate"><span class="pre">check_valid()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.connect_fragments"><code class="docutils literal notranslate"><span class="pre">connect_fragments()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.correct_mol"><code class="docutils literal notranslate"><span class="pre">correct_mol()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.get_mol"><code class="docutils literal notranslate"><span class="pre">get_mol()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.graph_to_smiles"><code class="docutils literal notranslate"><span class="pre">graph_to_smiles()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.mol2smiles"><code class="docutils literal notranslate"><span class="pre">mol2smiles()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.select_atom_with_available_valency"><code class="docutils literal notranslate"><span class="pre">select_atom_with_available_valency()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.select_atoms_with_available_valency"><code class="docutils literal notranslate"><span class="pre">select_atoms_with_available_valency()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.graph.graph_to_smiles.try_to_connect_fragments"><code class="docutils literal notranslate"><span class="pre">try_to_connect_fragments()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.accuracy_score"><code class="docutils literal notranslate"><span class="pre">accuracy_score()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.mean_absolute_error"><code class="docutils literal notranslate"><span class="pre">mean_absolute_error()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.mean_squared_error"><code class="docutils literal notranslate"><span class="pre">mean_squared_error()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.r2_score"><code class="docutils literal notranslate"><span class="pre">r2_score()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.roc_auc_score"><code class="docutils literal notranslate"><span class="pre">roc_auc_score()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.root_mean_squared_error"><code class="docutils literal notranslate"><span class="pre">root_mean_squared_error()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.generic.metrics.sigmoid"><code class="docutils literal notranslate"><span class="pre">sigmoid()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.utils.generic.weights.init_weights"><code class="docutils literal notranslate"><span class="pre">init_weights()</span></code></a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.checker">Input validation</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.checkpoint">Checkpoint files</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.format">Data formatting</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.hf">Hugging Face models</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.search">Hyperparameter search</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.graph.features">Atom and bond features</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.graph.graph_from_smiles">SMILES to graphs</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.graph.graph_to_smiles">Graphs to SMILES</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.generic.metrics">Evaluation metrics</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.generic.pseudo_tasks">Computed molecular targets</a></li>
+<li><a class="reference internal" href="#module-torch_molecule.utils.generic.weights">Weight initialization</a></li>
 </ul>
 </li>
 </ul>
@@ -993,9 +1123,11 @@ If average=False, returns array of ROC AUC scores with NaN for invalid tasks.</p
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=a6319924"></script>
+</div>
+<script src="../_static/documentation_options.js?v=ca7ad2ea"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/torch-molecule.js?v=7701f30b"></script>
     </body>
 </html>

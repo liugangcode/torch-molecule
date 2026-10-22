@@ -3,13 +3,14 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Examples" href="example.html"><link rel="prev" title="torch-molecule documentation" href="index.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Choose a model" href="overview.html"><link rel="prev" title="torch-molecule" href="index.html">
 
-    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
-        <title>Installation - torch-molecule (0.1.7) documentation</title>
+    <link rel="shortcut icon" href="_static/favicon.svg"><!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Installation - torch-molecule</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/torch-molecule.css?v=50fedd17" />
     
     
 
@@ -18,18 +19,39 @@
   body {
     --color-code-background: #f2f2f2;
   --color-code-foreground: #1e1e1e;
+  --color-brand-primary: #984b35;
+  --color-brand-content: #984b35;
+  --color-background-primary: #faf9f6;
+  --color-background-secondary: #f1f0eb;
+  --color-foreground-primary: #242721;
+  --color-foreground-secondary: #555b51;
+  --color-foreground-muted: #64685e;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
       }
     }
@@ -37,6 +59,25 @@
 </style></head>
   <body>
     
+<header class="tm-header">
+  <a class="tm-wordmark" href="index.html" aria-label="torch-molecule home">
+    <svg viewBox="0 0 34 34" width="30" height="30" fill="none" aria-hidden="true"><path d="M9 7 25 10 22 27 7 23Z M9 7 22 27 M7 23 25 10" stroke="currentColor" stroke-width="1.5"/><g fill="currentColor"><circle cx="9" cy="7" r="3.5"/><circle cx="25" cy="10" r="3.5"/><circle cx="22" cy="27" r="3.5"/></g><circle cx="7" cy="23" r="3.5" fill="var(--tm-accent)"/></svg>
+    <span>torch-molecule</span>
+  </a>
+  <button class="tm-menu-toggle" aria-controls="tm-site-navigation" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
+  <nav class="tm-navigation" id="tm-site-navigation" aria-label="Main navigation">
+    <a href="overview.html" aria-current="page">Documentation</a>
+    <a href="models.html">Models</a>
+    <a href="example.html">Examples</a>
+    <a href="https://github.com/liugangcode/torch-molecule" class="tm-github">GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+  <form class="tm-search" role="search" action="search.html" method="get">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+    <input aria-label="Search documentation" name="q" placeholder="Search docs" autocomplete="off"/>
+    <kbd aria-hidden="true">⌘ K</kbd>
+  </form>
+</header>
+
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
@@ -161,7 +202,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">torch-molecule (0.1.7) documentation</div></a>
+      <a href="index.html"><div class="brand">torch-molecule</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,50 +221,87 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
-  
-  <span class="sidebar-brand-text">torch-molecule (0.1.7) documentation</span>
-  
-</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+      <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="overview.html">
+  <span>Documentation</span>
+</a>
+<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<div id="searchbox"></div><div class="sidebar-scroll"><nav class="sidebar-tree" aria-label="Documentation navigation">
+  <p class="caption" role="heading" aria-level="2"><span class="caption-text">Get started</span></p>
 <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dataset.html">Datasets Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">Model Overview</a><input aria-label="Toggle navigation of Model Overview" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Choose a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Explore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Model collection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dataset.html">Datasets</a><input aria-label="Toggle navigation of Datasets" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_qm9.html">load_qm9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_chembl2k.html">load_chembl2k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_broad6k.html">load_broad6k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_toxcast.html">load_toxcast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_admet.html">load_admet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_gasperm.html">load_gasperm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_zinc250k.html">load_zinc250k</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">API reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/predictor.html">Predictor API</a><input aria-label="Toggle navigation of Predictor API" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GNNMolecularPredictor.html">GNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GREAMolecularPredictor.html">GREA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SGIRMolecularPredictor.html">SGIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GRINMolecularPredictor.html">GRIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/BFGNNMolecularPredictor.html">BFGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DIRMolecularPredictor.html">DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/IRMMolecularPredictor.html">IRM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/RPGNNMolecularPredictor.html">RPGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SSRMolecularPredictor.html">SSR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/LSTMMolecularPredictor.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SMILESTransformerMolecularPredictor.html">SMILES Transformer</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/encoder.html">Encoder API</a><input aria-label="Toggle navigation of Encoder API" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models/MoamaMolecularEncoder.html">MoAmA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/AttrMaskMolecularEncoder.html">AttrMask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GraphMAEMolecularEncoder.html">GraphMAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/ContextPredMolecularEncoder.html">ContextPred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/EdgePredMolecularEncoder.html">EdgePred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/InfoGraphMolecularEncoder.html">InfoGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SupervisedMolecularEncoder.html">Supervised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SANDMolecularEncoder.html">SAND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/HFPretrainedMolecularEncoder.html">Hugging Face</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/generator.html">Generator API</a><input aria-label="Toggle navigation of Generator API" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DemoDiffMolecularGenerator.html">DemoDiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GraphDITMolecularGenerator.html">GraphDiT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DeFoGMolecularGenerator.html">DeFoG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GraphGAMolecularGenerator.html">Graph GA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DigressMolecularGenerator.html">DiGress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GDSSMolecularGenerator.html">GDSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/JTVAEMolecularGenerator.html">JT-VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GenMolMolecularGenerator.html">GenMol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/MolGPTMolecularGenerator.html">MolGPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/LSTMMolecularGenerator.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/HFPretrainedMolecularGenerator.html">Hugging Face</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Project</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="additional.html">Project Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="additional.html#project-structure">Project Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="additional.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html">About the project</a></li>
 </ul>
 
-</div>
-</div>
-
+</nav></div>
       </div>
       
     </div>
@@ -238,13 +316,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="_sources/install.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -257,135 +329,146 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="installation">
+          
+
+<nav class="tm-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">Home</a><span aria-hidden="true">/</span>
+  
+  <span>Installation</span>
+</nav>
+<section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
-<p>This document explains how to install <code class="docutils literal notranslate"><span class="pre">torch-molecule</span></code> and any extra packages you may need.</p>
-<section id="installation-steps">
-<h2>Installation Steps<a class="headerlink" href="#installation-steps" title="Link to this heading">¶</a></h2>
-<p>Follow these steps in order.</p>
-<section id="create-a-conda-environment">
-<h3>Create a Conda Environment<a class="headerlink" href="#create-a-conda-environment" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>torch_molecule<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11.7
-conda<span class="w"> </span>activate<span class="w"> </span>torch_molecule
+<p>Create a dedicated environment, then install the published package or the latest
+source. Python 3.12 is a practical starting point for the current models.</p>
+<section id="create-an-environment">
+<h2>Create an environment<a class="headerlink" href="#create-an-environment" title="Link to this heading">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>micromamba<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>torch-molecule<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip
+<span class="nb">eval</span><span class="w"> </span><span class="s2">"</span><span class="k">$(</span>micromamba<span class="w"> </span>shell<span class="w"> </span>hook<span class="w"> </span>--shell<span class="w"> </span>bash<span class="k">)</span><span class="s2">"</span>
+micromamba<span class="w"> </span>activate<span class="w"> </span>torch-molecule
+</pre></div>
+</div>
+<p>An existing project environment can be reused. If you use Mamba, use
+<code class="docutils literal notranslate"><span class="pre">mamba</span> <span class="pre">create</span></code> and activate it with your configured Conda shell.</p>
+</section>
+<section id="install-the-package">
+<h2>Install the package<a class="headerlink" href="#install-the-package" title="Link to this heading">¶</a></h2>
+<p>For the latest published release:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>torch-molecule
 </pre></div>
 </div>
 </section>
-<section id="a-install-via-pip">
-<h3>a. Install via pip<a class="headerlink" href="#a-install-via-pip" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>torch-molecule
-</pre></div>
-</div>
-</section>
-<section id="b-install-from-source-latest-version">
-<h3>b. Install from Source (Latest Version)<a class="headerlink" href="#b-install-from-source-latest-version" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/liugangcode/torch-molecule
+<section id="install-from-source">
+<h2>Install from source<a class="headerlink" href="#install-from-source" title="Link to this heading">¶</a></h2>
+<p>For the current source, including recently added models:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/liugangcode/torch-molecule.git
 <span class="nb">cd</span><span class="w"> </span>torch-molecule
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
-<p>Then install:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.
+<p>Check the installation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import torch_molecule; print(torch_molecule.__version__)"</span>
+</pre></div>
+</div>
+<p>Then try <a class="reference internal" href="example.html"><span class="doc">Quickstart</span></a> or choose a model in the <a class="reference internal" href="overview.html"><span class="doc">Choose a model</span></a>.</p>
+</section>
+<section id="gpu-support">
+<h2>GPU support<a class="headerlink" href="#gpu-support" title="Link to this heading">¶</a></h2>
+<p>Models accept <code class="docutils literal notranslate"><span class="pre">device=&quot;cpu&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">device=&quot;cuda&quot;</span></code>, or a specific GPU such as
+<code class="docutils literal notranslate"><span class="pre">device=&quot;cuda:1&quot;</span></code>. When omitted, supported models choose CUDA if available.
+Install a PyTorch build suitable for your system using the
+<a class="reference external" href="https://pytorch.org/get-started/locally/">PyTorch installation guide</a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import torch; print(torch.__version__); print(torch.cuda.is_available())"</span>
 </pre></div>
 </div>
 </section>
-<section id="c-editable-installation-for-development">
-<h3>c. Editable Installation for Development<a class="headerlink" href="#c-editable-installation-for-development" title="Link to this heading">¶</a></h3>
-<p>To work on the code directly, install in “editable” mode.</p>
-<ol class="arabic">
-<li><p>Clone the repository (if you have not already):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/liugangcode/torch-molecule
-<span class="nb">cd</span><span class="w"> </span>torch-molecule
-</pre></div>
-</div>
-</li>
-<li><p>Install the dependencies:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
-</pre></div>
-</div>
-</li>
-<li><p>Install in editable mode:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-</section>
-<section id="additional-packages">
-<h2>Additional Packages<a class="headerlink" href="#additional-packages" title="Link to this heading">¶</a></h2>
-<p>Some models require extra libraries. Install these packages if you use the corresponding model:</p>
-<div class="table-wrapper docutils container" id="id1">
-<table class="docutils align-default" id="id1">
-<caption><span class="caption-text">Optional dependencies</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
+<section id="optional-model-packages">
+<h2>Optional model packages<a class="headerlink" href="#optional-model-packages" title="Link to this heading">¶</a></h2>
+<p>Install additional packages only for the models you use. SAND and DemoDiff use
+the core project dependencies.</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Model</p></th>
-<th class="head"><p>Required packages</p></th>
+<th class="head"><p>Additional packages</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>HFPretrainedMolecularEncoder</p></td>
-<td><p>transformers</p></td>
+<tr class="row-even"><td><p>Hugging Face pretrained encoders and generators</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">transformers</span></code>; checkpoint-specific packages may also be needed</p></td>
 </tr>
-<tr class="row-odd"><td><p>HFPretrainedMolecularGenerator</p></td>
-<td><p>transformers</p></td>
+<tr class="row-odd"><td><p>MolGen through the pretrained generator</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">transformers</span></code>, <code class="docutils literal notranslate"><span class="pre">selfies&gt;=2.1</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>HFPretrainedMolecularGenerator (MolGen)</p></td>
-<td><p>transformers, selfies</p></td>
+<tr class="row-even"><td><p>Molexar through the pretrained generator</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">transformers</span></code>, <code class="docutils literal notranslate"><span class="pre">fragment-selfies</span></code>, <code class="docutils literal notranslate"><span class="pre">molexar</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>HFPretrainedMolecularGenerator (Molexar)</p></td>
-<td><p>transformers, fragment-selfies, molexar</p></td>
+<tr class="row-odd"><td><p>SAFE-GPT through the pretrained generator</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">transformers</span></code>, <code class="docutils literal notranslate"><span class="pre">safe-mol</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>HFPretrainedMolecularGenerator (SAFE-GPT)</p></td>
-<td><p>transformers, safe-mol</p></td>
+<tr class="row-even"><td><p>GenMol</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">transformers==4.57.1</span></code>, <code class="docutils literal notranslate"><span class="pre">safe-mol&gt;=0.2.1,&lt;0.3</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>GenMolMolecularGenerator</p></td>
-<td><p>transformers, safe-mol</p></td>
+<tr class="row-odd"><td><p>BFGNN and GRIN</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">torch-scatter</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>BFGNNMolecularPredictor</p></td>
-<td><p>torch-scatter</p></td>
-</tr>
-<tr class="row-odd"><td><p>GRINMolecularPredictor</p></td>
-<td><p>torch-scatter</p></td>
-</tr>
-<tr class="row-even"><td><p>GRINMolecularPredictor (<code class="docutils literal notranslate"><span class="pre">repetition_augmentation=True</span></code>)</p></td>
-<td><p>CombineMols</p></td>
+<tr class="row-even"><td><p>GRIN with <code class="docutils literal notranslate"><span class="pre">repetition_augmentation=True</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CombineMols</span></code> in addition to <code class="docutils literal notranslate"><span class="pre">torch-scatter</span></code></p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><strong>For models that require</strong> <code class="docutils literal notranslate"><span class="pre">torch-scatter</span></code>: install with
-<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">torch-scatter</span> <span class="pre">-f</span> <span class="pre">https://data.pyg.org/whl/torch-${TORCH}+${CUDA}.html</span></code>,
-for example <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">torch-scatter</span> <span class="pre">-f</span> <span class="pre">https://data.pyg.org/whl/torch-2.7.1+cu128.html</span></code>.</p>
-<p><strong>For models that require</strong> <code class="docutils literal notranslate"><span class="pre">transformers</span></code>: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">transformers</span></code></p>
-<p><strong>For MolGen</strong> (<code class="docutils literal notranslate"><span class="pre">selfies</span></code>): <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;selfies&gt;=2.1&quot;</span></code>. Source: <a class="reference external" href="https://github.com/aspuru-guzik-group/selfies">aspuru-guzik-group/selfies</a>.</p>
-<p><strong>For Molexar:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">fragment-selfies</span> <span class="pre">loguru</span></code> (<a class="reference external" href="https://github.com/fairydance/Fragment-SELFIES">Fragment-SELFIES</a>) and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/fairydance/Molexar.git</span></code> (<a class="reference external" href="https://github.com/fairydance/Molexar">Molexar</a>). Molexar itself requires <code class="docutils literal notranslate"><span class="pre">transformers&gt;=5.8</span></code>.</p>
-<p><strong>For SAFE-GPT:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">safe-mol</span></code> (<a class="reference external" href="https://github.com/datamol-io/safe">SAFE</a>).</p>
-<p><strong>For GenMol (Python 3.11+):</strong> From the source checkout, run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;.[genmol]&quot;</span></code>.
-This installs <code class="docutils literal notranslate"><span class="pre">transformers==4.57.1</span></code> and <code class="docutils literal notranslate"><span class="pre">safe-mol&gt;=0.2.1,&lt;0.3</span></code>; <code class="docutils literal notranslate"><span class="pre">datasets</span></code> is not required.</p>
-<p>Example (SAFE-GPT pretrained generator):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">HFPretrainedMolecularGenerator</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">HFPretrainedMolecularGenerator</span><span class="p">(</span>
-    <span class="n">repo_id</span><span class="o">=</span><span class="s2">"datamol-io/safe-gpt"</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scaffold</span><span class="o">=</span><span class="s2">"c1ccccc1"</span><span class="p">))</span>
+<p><strong>GenMol.</strong> From the source checkout, install the supported extra
+(Python 3.11 or newer):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[genmol]"</span>
 </pre></div>
 </div>
+<p><strong>Hugging Face models.</strong> Install the extra for your chosen checkpoint:
+<code class="docutils literal notranslate"><span class="pre">hf</span></code> (transformers only), <code class="docutils literal notranslate"><span class="pre">molgen</span></code>, <code class="docutils literal notranslate"><span class="pre">molexar</span></code>, or <code class="docutils literal notranslate"><span class="pre">safe</span></code>. For example,
+SAFE-GPT uses:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"torch-molecule[safe]"</span>
+</pre></div>
+</div>
+<p>Molexar and Fragment-SELFIES are not on PyPI; after the <code class="docutils literal notranslate"><span class="pre">molexar</span></code> extra,
+install them from the
+<a class="reference external" href="https://github.com/fairydance/Molexar">Molexar</a> and
+<a class="reference external" href="https://github.com/fairydance/Fragment-SELFIES">Fragment-SELFIES</a> repositories.
+Use a separate environment when checkpoint dependencies conflict with another
+model’s version requirements.</p>
+<p><strong>Graph scatter operations.</strong> Install the <code class="docutils literal notranslate"><span class="pre">scatter</span></code> extra (<code class="docutils literal notranslate"><span class="pre">grin</span></code> adds
+<code class="docutils literal notranslate"><span class="pre">CombineMols</span></code>) with a <code class="docutils literal notranslate"><span class="pre">torch-scatter</span></code> wheel matching your
+installed PyTorch and CUDA versions using the
+<a class="reference external" href="https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html">PyTorch Geometric installation guide</a>.</p>
+</section>
+<section id="build-the-documentation">
+<h2>Build the documentation<a class="headerlink" href="#build-the-documentation" title="Link to this heading">¶</a></h2>
+<p>From the repository root, inside the project environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>docs/requirements.txt
+python<span class="w"> </span>-m<span class="w"> </span>sphinx<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>docs/source<span class="w"> </span>docs/build/html
+python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">8000</span><span class="w"> </span>--directory<span class="w"> </span>docs/build/html
+</pre></div>
+</div>
+<p>Open <code class="docutils literal notranslate"><span class="pre">http://localhost:8000</span></code> to browse the local documentation.</p>
 </section>
 </section>
+
+
 
         </article>
       </div>
       <footer>
         
+
         <div class="related-pages">
-          <a class="next-page" href="example.html">
+          <a class="next-page" href="overview.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Examples</div>
+                <div class="title">Choose a model</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -404,7 +487,7 @@ This installs <code class="docutils literal notranslate"><span class="pre">trans
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2025, Gang Liu
+                Copyright &#169; 2025–2026, Gang Liu
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -416,6 +499,11 @@ This installs <code class="docutils literal notranslate"><span class="pre">trans
           </div>
         </div>
         
+<div class="tm-footer">
+  <span>torch-molecule <span class="tm-footer-dot">·</span> Open source, open discovery.</span>
+  <div><a href="additional.html">Contribute</a><a href="https://github.com/liugangcode/torch-molecule/blob/main/LICENSE">MIT license</a><a href="https://github.com/liugangcode/torch-molecule">GitHub ↗</a></div>
+</div>
+
       </footer>
     </div>
     <aside class="toc-drawer">
@@ -431,14 +519,12 @@ This installs <code class="docutils literal notranslate"><span class="pre">trans
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
-<li><a class="reference internal" href="#installation-steps">Installation Steps</a><ul>
-<li><a class="reference internal" href="#create-a-conda-environment">Create a Conda Environment</a></li>
-<li><a class="reference internal" href="#a-install-via-pip">a. Install via pip</a></li>
-<li><a class="reference internal" href="#b-install-from-source-latest-version">b. Install from Source (Latest Version)</a></li>
-<li><a class="reference internal" href="#c-editable-installation-for-development">c. Editable Installation for Development</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#additional-packages">Additional Packages</a></li>
+<li><a class="reference internal" href="#create-an-environment">Create an environment</a></li>
+<li><a class="reference internal" href="#install-the-package">Install the package</a></li>
+<li><a class="reference internal" href="#install-from-source">Install from source</a></li>
+<li><a class="reference internal" href="#gpu-support">GPU support</a></li>
+<li><a class="reference internal" href="#optional-model-packages">Optional model packages</a></li>
+<li><a class="reference internal" href="#build-the-documentation">Build the documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -450,9 +536,11 @@ This installs <code class="docutils literal notranslate"><span class="pre">trans
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=a6319924"></script>
+</div>
+<script src="_static/documentation_options.js?v=ca7ad2ea"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/torch-molecule.js?v=7701f30b"></script>
     </body>
 </html>

@@ -3,13 +3,14 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Model Overview" href="overview.html"><link rel="prev" title="Examples" href="example.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="load_qm9" href="api/datasets/load_qm9.html"><link rel="prev" title="Model collection" href="models.html">
 
-    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
-        <title>Datasets Overview - torch-molecule (0.1.7) documentation</title>
+    <link rel="shortcut icon" href="_static/favicon.svg"><!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>Datasets - torch-molecule</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/torch-molecule.css?v=50fedd17" />
     
     
 
@@ -18,18 +19,39 @@
   body {
     --color-code-background: #f2f2f2;
   --color-code-foreground: #1e1e1e;
+  --color-brand-primary: #984b35;
+  --color-brand-content: #984b35;
+  --color-background-primary: #faf9f6;
+  --color-background-secondary: #f1f0eb;
+  --color-foreground-primary: #242721;
+  --color-foreground-secondary: #555b51;
+  --color-foreground-muted: #64685e;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
       }
     }
@@ -37,6 +59,25 @@
 </style></head>
   <body>
     
+<header class="tm-header">
+  <a class="tm-wordmark" href="index.html" aria-label="torch-molecule home">
+    <svg viewBox="0 0 34 34" width="30" height="30" fill="none" aria-hidden="true"><path d="M9 7 25 10 22 27 7 23Z M9 7 22 27 M7 23 25 10" stroke="currentColor" stroke-width="1.5"/><g fill="currentColor"><circle cx="9" cy="7" r="3.5"/><circle cx="25" cy="10" r="3.5"/><circle cx="22" cy="27" r="3.5"/></g><circle cx="7" cy="23" r="3.5" fill="var(--tm-accent)"/></svg>
+    <span>torch-molecule</span>
+  </a>
+  <button class="tm-menu-toggle" aria-controls="tm-site-navigation" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
+  <nav class="tm-navigation" id="tm-site-navigation" aria-label="Main navigation">
+    <a href="overview.html">Documentation</a>
+    <a href="models.html">Models</a>
+    <a href="example.html">Examples</a>
+    <a href="https://github.com/liugangcode/torch-molecule" class="tm-github">GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+  <form class="tm-search" role="search" action="search.html" method="get">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+    <input aria-label="Search documentation" name="q" placeholder="Search docs" autocomplete="off"/>
+    <kbd aria-hidden="true">⌘ K</kbd>
+  </form>
+</header>
+
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
@@ -161,7 +202,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">torch-molecule (0.1.7) documentation</div></a>
+      <a href="index.html"><div class="brand">torch-molecule</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,50 +221,87 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
-  
-  <span class="sidebar-brand-text">torch-molecule (0.1.7) documentation</span>
-  
-</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+      <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="overview.html">
+  <span>Documentation</span>
+</a>
+<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
-<ul class="current">
+<div id="searchbox"></div><div class="sidebar-scroll"><nav class="sidebar-tree" aria-label="Documentation navigation">
+  <p class="caption" role="heading" aria-level="2"><span class="caption-text">Get started</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Datasets Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="overview.html">Model Overview</a><input aria-label="Toggle navigation of Model Overview" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Choose a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Explore</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="models.html">Model collection</a></li>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Datasets</a><input aria-label="Toggle navigation of Datasets" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_qm9.html">load_qm9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_chembl2k.html">load_chembl2k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_broad6k.html">load_broad6k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_toxcast.html">load_toxcast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_admet.html">load_admet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_gasperm.html">load_gasperm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets/load_zinc250k.html">load_zinc250k</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">API reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/predictor.html">Predictor API</a><input aria-label="Toggle navigation of Predictor API" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GNNMolecularPredictor.html">GNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GREAMolecularPredictor.html">GREA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SGIRMolecularPredictor.html">SGIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GRINMolecularPredictor.html">GRIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/BFGNNMolecularPredictor.html">BFGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DIRMolecularPredictor.html">DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/IRMMolecularPredictor.html">IRM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/RPGNNMolecularPredictor.html">RPGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SSRMolecularPredictor.html">SSR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/LSTMMolecularPredictor.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SMILESTransformerMolecularPredictor.html">SMILES Transformer</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/encoder.html">Encoder API</a><input aria-label="Toggle navigation of Encoder API" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models/MoamaMolecularEncoder.html">MoAmA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/AttrMaskMolecularEncoder.html">AttrMask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GraphMAEMolecularEncoder.html">GraphMAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/ContextPredMolecularEncoder.html">ContextPred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/EdgePredMolecularEncoder.html">EdgePred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/InfoGraphMolecularEncoder.html">InfoGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SupervisedMolecularEncoder.html">Supervised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/SANDMolecularEncoder.html">SAND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/HFPretrainedMolecularEncoder.html">Hugging Face</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/generator.html">Generator API</a><input aria-label="Toggle navigation of Generator API" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DemoDiffMolecularGenerator.html">DemoDiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GraphDITMolecularGenerator.html">GraphDiT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DeFoGMolecularGenerator.html">DeFoG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GraphGAMolecularGenerator.html">Graph GA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/DigressMolecularGenerator.html">DiGress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GDSSMolecularGenerator.html">GDSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/JTVAEMolecularGenerator.html">JT-VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/GenMolMolecularGenerator.html">GenMol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/MolGPTMolecularGenerator.html">MolGPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/LSTMMolecularGenerator.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models/HFPretrainedMolecularGenerator.html">Hugging Face</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/utils.html">Utility Functions</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Project</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="additional.html">Project Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="additional.html#project-structure">Project Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="additional.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html">About the project</a></li>
 </ul>
 
-</div>
-</div>
-
+</nav></div>
       </div>
       
     </div>
@@ -238,13 +316,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="_sources/dataset.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
@@ -257,198 +329,164 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="datasets-overview">
-<h1>Datasets Overview<a class="headerlink" href="#datasets-overview" title="Link to this heading">¶</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">torch-molecule</span></code> package provides easy access to a wide range of datasets
-(locally or from the Hugging Face Hub). Loaders return a
-<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">SMILESDataset</span></code></a> with <code class="docutils literal notranslate"><span class="pre">.data</span></code>
-(SMILES strings) and <code class="docutils literal notranslate"><span class="pre">.target</span></code> (property array, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for unlabeled sets).</p>
-<section id="built-in-loaders">
-<h2>Built-in loaders<a class="headerlink" href="#built-in-loaders" title="Link to this heading">¶</a></h2>
-<p class="rubric">QM9</p>
+          
+
+<nav class="tm-breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">Home</a><span aria-hidden="true">/</span>
+  
+  <span>Datasets</span>
+</nav>
+<section id="datasets">
+<h1>Datasets<a class="headerlink" href="#datasets" title="Link to this heading">¶</a></h1>
+<p>Model inputs are lists of SMILES strings. For supervised prediction, add a
+numerical target array with shape <code class="docutils literal notranslate"><span class="pre">(n_molecules,</span> <span class="pre">n_tasks)</span></code>. Dataset loaders
+return a <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">SMILESDataset</span></code></a> with <code class="docutils literal notranslate"><span class="pre">data</span></code>
+and <code class="docutils literal notranslate"><span class="pre">target</span></code> attributes; unlabeled datasets have <code class="docutils literal notranslate"><span class="pre">target=None</span></code>.</p>
+<section id="collection-statistics">
+<h2>Collection statistics<a class="headerlink" href="#collection-statistics" title="Link to this heading">¶</a></h2>
+<p>Explore small-molecule and polymer datasets in the
+<a class="reference external" href="https://liugangcode.github.io/molecular-dataset-hub/">molecular dataset hub</a>,
+including their original sources, licenses, quality tags, and available data.</p>
+<a class="tm-dataset-statistics" href="https://liugangcode.github.io/molecular-dataset-hub/#explore">
+  <picture>
+    <source media="(max-width: 600px)" srcset="_static/dataset-statistics-compact.svg">
+    <img src="_static/dataset-statistics.svg" alt="Open the Molecular Dataset Hub for current dataset counts, Hugging Face coverage, source rows, tasks, and the interactive map.">
+  </picture>
+</a><p>Read the hub’s <a class="reference external" href="https://liugangcode.github.io/molecular-dataset-hub/#stats">current counts</a>
+or select the figure to explore its interactive map.
+Hugging Face entries include public and gated datasets, and some provide files
+instead of SMILES tables. Source rows can repeat structures and are not a count
+of unique molecules. Each dataset retains its own license.</p>
+</section>
+<section id="load-a-dataset">
+<h2>Load a dataset<a class="headerlink" href="#load-a-dataset" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">load_dataset</span></code> reads any published dataset of the
+<a class="reference external" href="https://liugangcode.github.io/molecular-dataset-hub/">molecular dataset hub</a>
+by its original name. Use <code class="docutils literal notranslate"><span class="pre">list_datasets()</span></code> to see the current collection and
+filter by domain, category, quality, or access. Files download on first use and
+are reused from <code class="docutils literal notranslate"><span class="pre">local_dir</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">list_datasets</span><span class="p">,</span> <span class="n">load_dataset</span>
+
+<span class="n">list_datasets</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">"adme"</span><span class="p">,</span> <span class="n">grade</span><span class="o">=</span><span class="s2">"ready"</span><span class="p">)</span>   <span class="c1"># browse the collection</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"qm9"</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="p">[</span><span class="s2">"homo"</span><span class="p">,</span> <span class="s2">"lumo"</span><span class="p">,</span> <span class="s2">"gap"</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>          <span class="c1"># (n_molecules, 3)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"targets"</span><span class="p">][</span><span class="s2">"gap"</span><span class="p">][</span><span class="s2">"units"</span><span class="p">])</span>   <span class="c1"># Hartree</span>
+</pre></div>
+</div>
+<p>Labels stay as the source reported them: missing labels are <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (never 0),
+and censored values such as <code class="docutils literal notranslate"><span class="pre">&lt;10</span></code> are <code class="docutils literal notranslate"><span class="pre">NaN</span></code> unless <code class="docutils literal notranslate"><span class="pre">include_censored=True</span></code>.
+Datasets that cannot be redistributed are listed too; loading one raises an
+error that names the original source. Gated datasets (noncommercial terms) need
+<code class="docutils literal notranslate"><span class="pre">huggingface-cli</span> <span class="pre">login</span></code> and an accepted access request on the dataset page.
+Pass <code class="docutils literal notranslate"><span class="pre">release=&quot;v2026.10.22&quot;</span></code> to pin a collection release.</p>
+</section>
+<section id="bring-your-own-data">
+<h2>Bring your own data<a class="headerlink" href="#bring-your-own-data" title="Link to this heading">¶</a></h2>
+<p>Pass SMILES directly to a model, or wrap them in <code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code> to use the
+built-in splitting tools. For an unlabeled CSV with a <code class="docutils literal notranslate"><span class="pre">smiles</span></code> column:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">SMILESDataset</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"data/molecule100.csv"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">smiles</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s2">"smiles"</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">handle</span><span class="p">)]</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">SMILESDataset</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">smiles</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The source checkout includes <code class="docutils literal notranslate"><span class="pre">data/molecule100.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">data/polymer100.csv</span></code>
+for small local examples. Both contain SMILES; the polymer dataset uses <code class="docutils literal notranslate"><span class="pre">*</span></code>
+attachment atoms. Check the selected model’s support for polymer inputs and
+attachment atoms before using it for polymer generation.</p>
+</section>
+<section id="choose-a-split">
+<h2>Choose a split<a class="headerlink" href="#choose-a-split" title="Link to this heading">¶</a></h2>
+<p>When the source defines a split, load it by name. A test split drops molecules
+that also appear in training:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"moleculeace_chembl204_ki"</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">"train"</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"moleculeace_chembl204_ki"</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">"test"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Otherwise split the dataset yourself:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"polymer_gas_permeability"</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="p">[</span><span class="s2">"CO2"</span><span class="p">])</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">validation</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">"random"</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Pass <code class="docutils literal notranslate"><span class="pre">train.data</span></code> and <code class="docutils literal notranslate"><span class="pre">train.target</span></code> to <code class="docutils literal notranslate"><span class="pre">fit</span></code>; supply the validation data
+through <code class="docutils literal notranslate"><span class="pre">X_val</span></code> and <code class="docutils literal notranslate"><span class="pre">y_val</span></code> when the model supports them. Keep a separate
+test set for a final performance estimate. <code class="docutils literal notranslate"><span class="pre">data.groups</span></code> holds a structure key
+per row, so repeated measurements of one molecule can stay in one split.</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 45.0%" />
+<col style="width: 33.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Holdout strategy</p></th>
+<th class="head"><p>Useful for</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">random</span></code></p></td>
+<td><p>Randomly assign molecules to each split</p></td>
+<td><p>An initial baseline</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">scaffold</span></code></p></td>
+<td><p>Keep Bemis–Murcko scaffold groups separate</p></td>
+<td><p>Testing on unseen molecular scaffolds</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">butina</span></code></p></td>
+<td><p>Separate clusters based on Morgan fingerprint Tanimoto similarity</p></td>
+<td><p>Testing on different structural neighborhoods</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p></td>
+<td><p>Split by heavy-atom count</p></td>
+<td><p>Testing transfer across molecular sizes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">subsample(n=100,</span> <span class="pre">seed=42)</span></code> for a quick local experiment. Evaluate
+benchmarks on the intended dataset and split rather than a debugging subset.</p>
+</section>
+<section id="loader-reference">
+<h2>Loader reference<a class="headerlink" href="#loader-reference" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="torch_molecule.datasets.load_qm9">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_qm9</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['gap']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_local_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/load_hf_dataset.html#load_qm9"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_qm9" title="Link to this definition">¶</a></dt>
-<dd><p>Load QM9 dataset from Hugging Face Hub.</p>
-<p>Source: <a class="reference external" href="http://quantum-machine.org/datasets/">http://quantum-machine.org/datasets/</a></p>
+<dt class="sig sig-object py" id="torch_molecule.datasets.load_dataset">
+<span class="sig-name descname"><span class="pre">load_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_censored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_leaked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#load_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_dataset" title="Link to this definition">¶</a></dt>
+<dd><p>Load one table of a collection dataset as a <code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>local_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path where the data should be saved, by default “torchmol_data”</p></li>
-<li><p><strong>target_cols</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of target column names, by default [“gap”]</p></li>
-<li><p><strong>return_local_data_path</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the local data path, by default False</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Dataset name from <code class="docutils literal notranslate"><span class="pre">list_datasets()</span></code>, for example <code class="docutils literal notranslate"><span class="pre">&quot;moleculeace_chembl204_ki&quot;</span></code>.</p></li>
+<li><p><strong>targets</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Target columns; default all targets of the table.</p></li>
+<li><p><strong>config</strong> (<em>str</em><em>, </em><em>optional</em>) – Table name; default the dataset’s first table.</p></li>
+<li><p><strong>split</strong> (<em>str</em><em>, </em><em>optional</em>) – A source split (<code class="docutils literal notranslate"><span class="pre">&quot;train&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;test&quot;</span></code>, …). Default: all rows.</p></li>
+<li><p><strong>task_values</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – For long-format tables (one row per measurement, with a task column such as an
+assay ID), the task values to load; each becomes one target column, and rows
+keep NaN for the other tasks. Required for long-format tables.</p></li>
+<li><p><strong>include_censored</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Censored labels such as <code class="docutils literal notranslate"><span class="pre">&lt;10</span></code> become NaN unless True, in which case the
+bound (10) is used.</p></li>
+<li><p><strong>drop_leaked</strong> (<em>bool</em><em>, </em><em>default=True</em>) – When loading a non-train split, drop molecules that also appear in the
+source’s train split.</p></li>
+<li><p><strong>release</strong> (<em>str</em><em>, </em><em>optional</em>) – Collection release tag (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;v2026.10.22&quot;</span></code>) for reproducible results; default the
+latest release. New datasets appear here as soon as the collection publishes them.</p></li>
+<li><p><strong>local_dir</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-</ul>
-</dd>
-<dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-<li><p>local_data_path: Path where the data is saved</p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<p class="rubric">ChEMBL2k (a small subset from ChEMBL database)</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="torch_molecule.datasets.load_chembl2k">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_chembl2k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['ABCB1',</span> <span class="pre">'ABL1',</span> <span class="pre">'ADRA1D',</span> <span class="pre">'ADRA2B',</span> <span class="pre">'ADRB2',</span> <span class="pre">'CA12',</span> <span class="pre">'CA2',</span> <span class="pre">'CA9',</span> <span class="pre">'CACNA1H',</span> <span class="pre">'CDK2',</span> <span class="pre">'CHRM1',</span> <span class="pre">'CHRM3',</span> <span class="pre">'CHRM4',</span> <span class="pre">'CNR1',</span> <span class="pre">'CYP1A2',</span> <span class="pre">'CYP2C19',</span> <span class="pre">'CYP2C9',</span> <span class="pre">'CYP2D6',</span> <span class="pre">'CYP3A4',</span> <span class="pre">'DRD2',</span> <span class="pre">'DRD3',</span> <span class="pre">'DRD4',</span> <span class="pre">'EGFR',</span> <span class="pre">'ESR1',</span> <span class="pre">'FLT1',</span> <span class="pre">'HRH1',</span> <span class="pre">'HTR1A',</span> <span class="pre">'HTR2A',</span> <span class="pre">'HTR2B',</span> <span class="pre">'HTR2C',</span> <span class="pre">'HTR6',</span> <span class="pre">'KCNH2',</span> <span class="pre">'KDR',</span> <span class="pre">'LCK',</span> <span class="pre">'MCL1',</span> <span class="pre">'OPRK1',</span> <span class="pre">'PPARG',</span> <span class="pre">'PTGS1',</span> <span class="pre">'SIGMAR1',</span> <span class="pre">'SLC6A2',</span> <span class="pre">'SLC6A4']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_local_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/load_hf_dataset.html#load_chembl2k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_chembl2k" title="Link to this definition">¶</a></dt>
-<dd><p>Load ChEMBL2K dataset from Hugging Face Hub.</p>
-<p>ChEMBL2K is introduced from “Learning Molecular Representation in a Cell” (ICLR 2025)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>local_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path where the data should be saved, by default “torchmol_data”</p></li>
-<li><p><strong>target_cols</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of target column names, by default [“ABCB1”, “ABL1”, “ADRA1D”, “ADRA2B”, “ADRB2”, “CA12”, “CA2”, “CA9”, “CACNA1H”, “CDK2”, “CHRM1”, “CHRM3”, “CHRM4”, “CNR1”, “CYP1A2”, “CYP2C19”, “CYP2C9”, “CYP2D6”, “CYP3A4”, “DRD2”, “DRD3”, “DRD4”, “EGFR”, “ESR1”, “FLT1”, “HRH1”, “HTR1A”, “HTR2A”, “HTR2B”, “HTR2C”, “HTR6”, “KCNH2”, “KDR”, “LCK”, “MCL1”, “OPRK1”, “PPARG”, “PTGS1”, “SIGMAR1”, “SLC6A2”, “SLC6A4”]</p></li>
-<li><p><strong>return_local_data_path</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the local data path, by default False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-</ul>
-</dd>
-<dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-<li><p>local_data_path: Path where the data is saved</p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<p class="rubric">Broad6k</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="torch_molecule.datasets.load_broad6k">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_broad6k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['220_692',</span> <span class="pre">'221_693',</span> <span class="pre">'231_703',</span> <span class="pre">'233_706',</span> <span class="pre">'234_707',</span> <span class="pre">'235_708',</span> <span class="pre">'238_712',</span> <span class="pre">'239_713',</span> <span class="pre">'240_714',</span> <span class="pre">'241_715',</span> <span class="pre">'242_716',</span> <span class="pre">'243_717',</span> <span class="pre">'244_718',</span> <span class="pre">'246_720',</span> <span class="pre">'247_721',</span> <span class="pre">'248_722',</span> <span class="pre">'249_724',</span> <span class="pre">'251_727',</span> <span class="pre">'260_738',</span> <span class="pre">'264_742',</span> <span class="pre">'265_743',</span> <span class="pre">'267_745',</span> <span class="pre">'268_746',</span> <span class="pre">'269_747',</span> <span class="pre">'270_748',</span> <span class="pre">'274_752',</span> <span class="pre">'275_754',</span> <span class="pre">'276_755',</span> <span class="pre">'277_756',</span> <span class="pre">'278_757',</span> <span class="pre">'279_758',</span> <span class="pre">'280_759']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_local_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/load_hf_dataset.html#load_broad6k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_broad6k" title="Link to this definition">¶</a></dt>
-<dd><p>Load Broad6K dataset from Hugging Face Hub.</p>
-<p>Broad6K is introduced from “Learning Molecular Representation in a Cell” (ICLR 2025)</p>
-<p>TODO: replace the column names with the original names</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>local_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path where the data should be saved, by default “torchmol_data”</p></li>
-<li><p><strong>target_cols</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of target column names, by default all tasks</p></li>
-<li><p><strong>return_local_data_path</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the local data path, by default False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-</ul>
-</dd>
-<dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-<li><p>local_data_path: Path where the data is saved</p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<p class="rubric">ToxCast (The US EPA Toxicity Forecaster program)</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="torch_molecule.datasets.load_toxcast">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_toxcast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['ACEA_T47D_80hr_Negative',</span> <span class="pre">'ACEA_T47D_80hr_Positive',</span> <span class="pre">'APR_HepG2_CellCycleArrest_24h_dn',</span> <span class="pre">'APR_HepG2_CellCycleArrest_24h_up',</span> <span class="pre">'APR_HepG2_CellCycleArrest_72h_dn',</span> <span class="pre">'APR_HepG2_CellLoss_24h_dn',</span> <span class="pre">'APR_HepG2_CellLoss_72h_dn',</span> <span class="pre">'APR_HepG2_MicrotubuleCSK_24h_dn',</span> <span class="pre">'APR_HepG2_MicrotubuleCSK_24h_up',</span> <span class="pre">'APR_HepG2_MicrotubuleCSK_72h_dn',</span> <span class="pre">'APR_HepG2_MicrotubuleCSK_72h_up',</span> <span class="pre">'APR_HepG2_MitoMass_24h_dn',</span> <span class="pre">'APR_HepG2_MitoMass_24h_up',</span> <span class="pre">'APR_HepG2_MitoMass_72h_dn',</span> <span class="pre">'APR_HepG2_MitoMass_72h_up',</span> <span class="pre">'APR_HepG2_MitoMembPot_1h_dn',</span> <span class="pre">'APR_HepG2_MitoMembPot_24h_dn',</span> <span class="pre">'APR_HepG2_MitoMembPot_72h_dn',</span> <span class="pre">'APR_HepG2_MitoticArrest_24h_up',</span> <span class="pre">'APR_HepG2_MitoticArrest_72h_up',</span> <span class="pre">'APR_HepG2_NuclearSize_24h_dn',</span> <span class="pre">'APR_HepG2_NuclearSize_72h_dn',</span> <span class="pre">'APR_HepG2_NuclearSize_72h_up',</span> <span class="pre">'APR_HepG2_OxidativeStress_24h_up',</span> <span class="pre">'APR_HepG2_OxidativeStress_72h_up',</span> <span class="pre">'APR_HepG2_StressKinase_1h_up',</span> <span class="pre">'APR_HepG2_StressKinase_24h_up',</span> <span class="pre">'APR_HepG2_StressKinase_72h_up',</span> <span class="pre">'APR_HepG2_p53Act_24h_up',</span> <span class="pre">'APR_HepG2_p53Act_72h_up',</span> <span class="pre">'APR_Hepat_Apoptosis_24hr_up',</span> <span class="pre">'APR_Hepat_Apoptosis_48hr_up',</span> <span class="pre">'APR_Hepat_CellLoss_24hr_dn',</span> <span class="pre">'APR_Hepat_CellLoss_48hr_dn',</span> <span class="pre">'APR_Hepat_DNADamage_24hr_up',</span> <span class="pre">'APR_Hepat_DNADamage_48hr_up',</span> <span class="pre">'APR_Hepat_DNATexture_24hr_up',</span> <span class="pre">'APR_Hepat_DNATexture_48hr_up',</span> <span class="pre">'APR_Hepat_MitoFxnI_1hr_dn',</span> <span class="pre">'APR_Hepat_MitoFxnI_24hr_dn',</span> <span class="pre">'APR_Hepat_MitoFxnI_48hr_dn',</span> <span class="pre">'APR_Hepat_NuclearSize_24hr_dn',</span> <span class="pre">'APR_Hepat_NuclearSize_48hr_dn',</span> <span class="pre">'APR_Hepat_Steatosis_24hr_up',</span> <span class="pre">'APR_Hepat_Steatosis_48hr_up',</span> <span class="pre">'ATG_AP_1_CIS_dn',</span> <span class="pre">'ATG_AP_1_CIS_up',</span> <span class="pre">'ATG_AP_2_CIS_dn',</span> <span class="pre">'ATG_AP_2_CIS_up',</span> <span class="pre">'ATG_AR_TRANS_dn',</span> <span class="pre">'ATG_AR_TRANS_up',</span> <span class="pre">'ATG_Ahr_CIS_dn',</span> <span class="pre">'ATG_Ahr_CIS_up',</span> <span class="pre">'ATG_BRE_CIS_dn',</span> <span class="pre">'ATG_BRE_CIS_up',</span> <span class="pre">'ATG_CAR_TRANS_dn',</span> <span class="pre">'ATG_CAR_TRANS_up',</span> <span class="pre">'ATG_CMV_CIS_dn',</span> <span class="pre">'ATG_CMV_CIS_up',</span> <span class="pre">'ATG_CRE_CIS_dn',</span> <span class="pre">'ATG_CRE_CIS_up',</span> <span class="pre">'ATG_C_EBP_CIS_dn',</span> <span class="pre">'ATG_C_EBP_CIS_up',</span> <span class="pre">'ATG_DR4_LXR_CIS_dn',</span> <span class="pre">'ATG_DR4_LXR_CIS_up',</span> <span class="pre">'ATG_DR5_CIS_dn',</span> <span class="pre">'ATG_DR5_CIS_up',</span> <span class="pre">'ATG_E2F_CIS_dn',</span> <span class="pre">'ATG_E2F_CIS_up',</span> <span class="pre">'ATG_EGR_CIS_up',</span> <span class="pre">'ATG_ERE_CIS_dn',</span> <span class="pre">'ATG_ERE_CIS_up',</span> <span class="pre">'ATG_ERRa_TRANS_dn',</span> <span class="pre">'ATG_ERRg_TRANS_dn',</span> <span class="pre">'ATG_ERRg_TRANS_up',</span> <span class="pre">'ATG_ERa_TRANS_up',</span> <span class="pre">'ATG_E_Box_CIS_dn',</span> <span class="pre">'ATG_E_Box_CIS_up',</span> <span class="pre">'ATG_Ets_CIS_dn',</span> <span class="pre">'ATG_Ets_CIS_up',</span> <span class="pre">'ATG_FXR_TRANS_up',</span> <span class="pre">'ATG_FoxA2_CIS_dn',</span> <span class="pre">'ATG_FoxA2_CIS_up',</span> <span class="pre">'ATG_FoxO_CIS_dn',</span> <span class="pre">'ATG_FoxO_CIS_up',</span> <span class="pre">'ATG_GAL4_TRANS_dn',</span> <span class="pre">'ATG_GATA_CIS_dn',</span> <span class="pre">'ATG_GATA_CIS_up',</span> <span class="pre">'ATG_GLI_CIS_dn',</span> <span class="pre">'ATG_GLI_CIS_up',</span> <span class="pre">'ATG_GRE_CIS_dn',</span> <span class="pre">'ATG_GRE_CIS_up',</span> <span class="pre">'ATG_GR_TRANS_dn',</span> <span class="pre">'ATG_GR_TRANS_up',</span> <span class="pre">'ATG_HIF1a_CIS_dn',</span> <span class="pre">'ATG_HIF1a_CIS_up',</span> <span class="pre">'ATG_HNF4a_TRANS_dn',</span> <span class="pre">'ATG_HNF4a_TRANS_up',</span> <span class="pre">'ATG_HNF6_CIS_dn',</span> <span class="pre">'ATG_HNF6_CIS_up',</span> <span class="pre">'ATG_HSE_CIS_dn',</span> <span class="pre">'ATG_HSE_CIS_up',</span> <span class="pre">'ATG_IR1_CIS_dn',</span> <span class="pre">'ATG_IR1_CIS_up',</span> <span class="pre">'ATG_ISRE_CIS_dn',</span> <span class="pre">'ATG_ISRE_CIS_up',</span> <span class="pre">'ATG_LXRa_TRANS_dn',</span> <span class="pre">'ATG_LXRa_TRANS_up',</span> <span class="pre">'ATG_LXRb_TRANS_dn',</span> <span class="pre">'ATG_LXRb_TRANS_up',</span> <span class="pre">'ATG_MRE_CIS_up',</span> <span class="pre">'ATG_M_06_TRANS_up',</span> <span class="pre">'ATG_M_19_CIS_dn',</span> <span class="pre">'ATG_M_19_TRANS_dn',</span> <span class="pre">'ATG_M_19_TRANS_up',</span> <span class="pre">'ATG_M_32_CIS_dn',</span> <span class="pre">'ATG_M_32_CIS_up',</span> <span class="pre">'ATG_M_32_TRANS_dn',</span> <span class="pre">'ATG_M_32_TRANS_up',</span> <span class="pre">'ATG_M_61_TRANS_up',</span> <span class="pre">'ATG_Myb_CIS_dn',</span> <span class="pre">'ATG_Myb_CIS_up',</span> <span class="pre">'ATG_Myc_CIS_dn',</span> <span class="pre">'ATG_Myc_CIS_up',</span> <span class="pre">'ATG_NFI_CIS_dn',</span> <span class="pre">'ATG_NFI_CIS_up',</span> <span class="pre">'ATG_NF_kB_CIS_dn',</span> <span class="pre">'ATG_NF_kB_CIS_up',</span> <span class="pre">'ATG_NRF1_CIS_dn',</span> <span class="pre">'ATG_NRF1_CIS_up',</span> <span class="pre">'ATG_NRF2_ARE_CIS_dn',</span> <span class="pre">'ATG_NRF2_ARE_CIS_up',</span> <span class="pre">'ATG_NURR1_TRANS_dn',</span> <span class="pre">'ATG_NURR1_TRANS_up',</span> <span class="pre">'ATG_Oct_MLP_CIS_dn',</span> <span class="pre">'ATG_Oct_MLP_CIS_up',</span> <span class="pre">'ATG_PBREM_CIS_dn',</span> <span class="pre">'ATG_PBREM_CIS_up',</span> <span class="pre">'ATG_PPARa_TRANS_dn',</span> <span class="pre">'ATG_PPARa_TRANS_up',</span> <span class="pre">'ATG_PPARd_TRANS_up',</span> <span class="pre">'ATG_PPARg_TRANS_up',</span> <span class="pre">'ATG_PPRE_CIS_dn',</span> <span class="pre">'ATG_PPRE_CIS_up',</span> <span class="pre">'ATG_PXRE_CIS_dn',</span> <span class="pre">'ATG_PXRE_CIS_up',</span> <span class="pre">'ATG_PXR_TRANS_dn',</span> <span class="pre">'ATG_PXR_TRANS_up',</span> <span class="pre">'ATG_Pax6_CIS_up',</span> <span class="pre">'ATG_RARa_TRANS_dn',</span> <span class="pre">'ATG_RARa_TRANS_up',</span> <span class="pre">'ATG_RARb_TRANS_dn',</span> <span class="pre">'ATG_RARb_TRANS_up',</span> <span class="pre">'ATG_RARg_TRANS_dn',</span> <span class="pre">'ATG_RARg_TRANS_up',</span> <span class="pre">'ATG_RORE_CIS_dn',</span> <span class="pre">'ATG_RORE_CIS_up',</span> <span class="pre">'ATG_RORb_TRANS_dn',</span> <span class="pre">'ATG_RORg_TRANS_dn',</span> <span class="pre">'ATG_RORg_TRANS_up',</span> <span class="pre">'ATG_RXRa_TRANS_dn',</span> <span class="pre">'ATG_RXRa_TRANS_up',</span> <span class="pre">'ATG_RXRb_TRANS_dn',</span> <span class="pre">'ATG_RXRb_TRANS_up',</span> <span class="pre">'ATG_SREBP_CIS_dn',</span> <span class="pre">'ATG_SREBP_CIS_up',</span> <span class="pre">'ATG_STAT3_CIS_dn',</span> <span class="pre">'ATG_STAT3_CIS_up',</span> <span class="pre">'ATG_Sox_CIS_dn',</span> <span class="pre">'ATG_Sox_CIS_up',</span> <span class="pre">'ATG_Sp1_CIS_dn',</span> <span class="pre">'ATG_Sp1_CIS_up',</span> <span class="pre">'ATG_TAL_CIS_dn',</span> <span class="pre">'ATG_TAL_CIS_up',</span> <span class="pre">'ATG_TA_CIS_dn',</span> <span class="pre">'ATG_TA_CIS_up',</span> <span class="pre">'ATG_TCF_b_cat_CIS_dn',</span> <span class="pre">'ATG_TCF_b_cat_CIS_up',</span> <span class="pre">'ATG_TGFb_CIS_dn',</span> <span class="pre">'ATG_TGFb_CIS_up',</span> <span class="pre">'ATG_THRa1_TRANS_dn',</span> <span class="pre">'ATG_THRa1_TRANS_up',</span> <span class="pre">'ATG_VDRE_CIS_dn',</span> <span class="pre">'ATG_VDRE_CIS_up',</span> <span class="pre">'ATG_VDR_TRANS_dn',</span> <span class="pre">'ATG_VDR_TRANS_up',</span> <span class="pre">'ATG_XTT_Cytotoxicity_up',</span> <span class="pre">'ATG_Xbp1_CIS_dn',</span> <span class="pre">'ATG_Xbp1_CIS_up',</span> <span class="pre">'ATG_p53_CIS_dn',</span> <span class="pre">'ATG_p53_CIS_up',</span> <span class="pre">'BSK_3C_Eselectin_down',</span> <span class="pre">'BSK_3C_HLADR_down',</span> <span class="pre">'BSK_3C_ICAM1_down',</span> <span class="pre">'BSK_3C_IL8_down',</span> <span class="pre">'BSK_3C_MCP1_down',</span> <span class="pre">'BSK_3C_MIG_down',</span> <span class="pre">'BSK_3C_Proliferation_down',</span> <span class="pre">'BSK_3C_SRB_down',</span> <span class="pre">'BSK_3C_Thrombomodulin_down',</span> <span class="pre">'BSK_3C_Thrombomodulin_up',</span> <span class="pre">'BSK_3C_TissueFactor_down',</span> <span class="pre">'BSK_3C_TissueFactor_up',</span> <span class="pre">'BSK_3C_VCAM1_down',</span> <span class="pre">'BSK_3C_Vis_down',</span> <span class="pre">'BSK_3C_uPAR_down',</span> <span class="pre">'BSK_4H_Eotaxin3_down',</span> <span class="pre">'BSK_4H_MCP1_down',</span> <span class="pre">'BSK_4H_Pselectin_down',</span> <span class="pre">'BSK_4H_Pselectin_up',</span> <span class="pre">'BSK_4H_SRB_down',</span> <span class="pre">'BSK_4H_VCAM1_down',</span> <span class="pre">'BSK_4H_VEGFRII_down',</span> <span class="pre">'BSK_4H_uPAR_down',</span> <span class="pre">'BSK_4H_uPAR_up',</span> <span class="pre">'BSK_BE3C_HLADR_down',</span> <span class="pre">'BSK_BE3C_IL1a_down',</span> <span class="pre">'BSK_BE3C_IP10_down',</span> <span class="pre">'BSK_BE3C_MIG_down',</span> <span class="pre">'BSK_BE3C_MMP1_down',</span> <span class="pre">'BSK_BE3C_MMP1_up',</span> <span class="pre">'BSK_BE3C_PAI1_down',</span> <span class="pre">'BSK_BE3C_SRB_down',</span> <span class="pre">'BSK_BE3C_TGFb1_down',</span> <span class="pre">'BSK_BE3C_tPA_down',</span> <span class="pre">'BSK_BE3C_uPAR_down',</span> <span class="pre">'BSK_BE3C_uPAR_up',</span> <span class="pre">'BSK_BE3C_uPA_down',</span> <span class="pre">'BSK_CASM3C_HLADR_down',</span> <span class="pre">'BSK_CASM3C_IL6_down',</span> <span class="pre">'BSK_CASM3C_IL6_up',</span> <span class="pre">'BSK_CASM3C_IL8_down',</span> <span class="pre">'BSK_CASM3C_LDLR_down',</span> <span class="pre">'BSK_CASM3C_LDLR_up',</span> <span class="pre">'BSK_CASM3C_MCP1_down',</span> <span class="pre">'BSK_CASM3C_MCP1_up',</span> <span class="pre">'BSK_CASM3C_MCSF_down',</span> <span class="pre">'BSK_CASM3C_MCSF_up',</span> <span class="pre">'BSK_CASM3C_MIG_down',</span> <span class="pre">'BSK_CASM3C_Proliferation_down',</span> <span class="pre">'BSK_CASM3C_Proliferation_up',</span> <span class="pre">'BSK_CASM3C_SAA_down',</span> <span class="pre">'BSK_CASM3C_SAA_up',</span> <span class="pre">'BSK_CASM3C_SRB_down',</span> <span class="pre">'BSK_CASM3C_Thrombomodulin_down',</span> <span class="pre">'BSK_CASM3C_Thrombomodulin_up',</span> <span class="pre">'BSK_CASM3C_TissueFactor_down',</span> <span class="pre">'BSK_CASM3C_VCAM1_down',</span> <span class="pre">'BSK_CASM3C_VCAM1_up',</span> <span class="pre">'BSK_CASM3C_uPAR_down',</span> <span class="pre">'BSK_CASM3C_uPAR_up',</span> <span class="pre">'BSK_KF3CT_ICAM1_down',</span> <span class="pre">'BSK_KF3CT_IL1a_down',</span> <span class="pre">'BSK_KF3CT_IP10_down',</span> <span class="pre">'BSK_KF3CT_IP10_up',</span> <span class="pre">'BSK_KF3CT_MCP1_down',</span> <span class="pre">'BSK_KF3CT_MCP1_up',</span> <span class="pre">'BSK_KF3CT_MMP9_down',</span> <span class="pre">'BSK_KF3CT_SRB_down',</span> <span class="pre">'BSK_KF3CT_TGFb1_down',</span> <span class="pre">'BSK_KF3CT_TIMP2_down',</span> <span class="pre">'BSK_KF3CT_uPA_down',</span> <span class="pre">'BSK_LPS_CD40_down',</span> <span class="pre">'BSK_LPS_Eselectin_down',</span> <span class="pre">'BSK_LPS_Eselectin_up',</span> <span class="pre">'BSK_LPS_IL1a_down',</span> <span class="pre">'BSK_LPS_IL1a_up',</span> <span class="pre">'BSK_LPS_IL8_down',</span> <span class="pre">'BSK_LPS_IL8_up',</span> <span class="pre">'BSK_LPS_MCP1_down',</span> <span class="pre">'BSK_LPS_MCSF_down',</span> <span class="pre">'BSK_LPS_PGE2_down',</span> <span class="pre">'BSK_LPS_PGE2_up',</span> <span class="pre">'BSK_LPS_SRB_down',</span> <span class="pre">'BSK_LPS_TNFa_down',</span> <span class="pre">'BSK_LPS_TNFa_up',</span> <span class="pre">'BSK_LPS_TissueFactor_down',</span> <span class="pre">'BSK_LPS_TissueFactor_up',</span> <span class="pre">'BSK_LPS_VCAM1_down',</span> <span class="pre">'BSK_SAg_CD38_down',</span> <span class="pre">'BSK_SAg_CD40_down',</span> <span class="pre">'BSK_SAg_CD69_down',</span> <span class="pre">'BSK_SAg_Eselectin_down',</span> <span class="pre">'BSK_SAg_Eselectin_up',</span> <span class="pre">'BSK_SAg_IL8_down',</span> <span class="pre">'BSK_SAg_IL8_up',</span> <span class="pre">'BSK_SAg_MCP1_down',</span> <span class="pre">'BSK_SAg_MIG_down',</span> <span class="pre">'BSK_SAg_PBMCCytotoxicity_down',</span> <span class="pre">'BSK_SAg_PBMCCytotoxicity_up',</span> <span class="pre">'BSK_SAg_Proliferation_down',</span> <span class="pre">'BSK_SAg_SRB_down',</span> <span class="pre">'BSK_hDFCGF_CollagenIII_down',</span> <span class="pre">'BSK_hDFCGF_EGFR_down',</span> <span class="pre">'BSK_hDFCGF_EGFR_up',</span> <span class="pre">'BSK_hDFCGF_IL8_down',</span> <span class="pre">'BSK_hDFCGF_IP10_down',</span> <span class="pre">'BSK_hDFCGF_MCSF_down',</span> <span class="pre">'BSK_hDFCGF_MIG_down',</span> <span class="pre">'BSK_hDFCGF_MMP1_down',</span> <span class="pre">'BSK_hDFCGF_MMP1_up',</span> <span class="pre">'BSK_hDFCGF_PAI1_down',</span> <span class="pre">'BSK_hDFCGF_Proliferation_down',</span> <span class="pre">'BSK_hDFCGF_SRB_down',</span> <span class="pre">'BSK_hDFCGF_TIMP1_down',</span> <span class="pre">'BSK_hDFCGF_VCAM1_down',</span> <span class="pre">'CEETOX_H295R_11DCORT_dn',</span> <span class="pre">'CEETOX_H295R_ANDR_dn',</span> <span class="pre">'CEETOX_H295R_CORTISOL_dn',</span> <span class="pre">'CEETOX_H295R_DOC_dn',</span> <span class="pre">'CEETOX_H295R_DOC_up',</span> <span class="pre">'CEETOX_H295R_ESTRADIOL_dn',</span> <span class="pre">'CEETOX_H295R_ESTRADIOL_up',</span> <span class="pre">'CEETOX_H295R_ESTRONE_dn',</span> <span class="pre">'CEETOX_H295R_ESTRONE_up',</span> <span class="pre">'CEETOX_H295R_OHPREG_up',</span> <span class="pre">'CEETOX_H295R_OHPROG_dn',</span> <span class="pre">'CEETOX_H295R_OHPROG_up',</span> <span class="pre">'CEETOX_H295R_PROG_up',</span> <span class="pre">'CEETOX_H295R_TESTO_dn',</span> <span class="pre">'CLD_ABCB1_48hr',</span> <span class="pre">'CLD_ABCG2_48hr',</span> <span class="pre">'CLD_CYP1A1_24hr',</span> <span class="pre">'CLD_CYP1A1_48hr',</span> <span class="pre">'CLD_CYP1A1_6hr',</span> <span class="pre">'CLD_CYP1A2_24hr',</span> <span class="pre">'CLD_CYP1A2_48hr',</span> <span class="pre">'CLD_CYP1A2_6hr',</span> <span class="pre">'CLD_CYP2B6_24hr',</span> <span class="pre">'CLD_CYP2B6_48hr',</span> <span class="pre">'CLD_CYP2B6_6hr',</span> <span class="pre">'CLD_CYP3A4_24hr',</span> <span class="pre">'CLD_CYP3A4_48hr',</span> <span class="pre">'CLD_CYP3A4_6hr',</span> <span class="pre">'CLD_GSTA2_48hr',</span> <span class="pre">'CLD_SULT2A_24hr',</span> <span class="pre">'CLD_SULT2A_48hr',</span> <span class="pre">'CLD_UGT1A1_24hr',</span> <span class="pre">'CLD_UGT1A1_48hr',</span> <span class="pre">'NCCT_HEK293T_CellTiterGLO',</span> <span class="pre">'NCCT_QuantiLum_inhib_2_dn',</span> <span class="pre">'NCCT_QuantiLum_inhib_dn',</span> <span class="pre">'NCCT_TPO_AUR_dn',</span> <span class="pre">'NCCT_TPO_GUA_dn',</span> <span class="pre">'NHEERL_ZF_144hpf_TERATOSCORE_up',</span> <span class="pre">'NVS_ADME_hCYP19A1',</span> <span class="pre">'NVS_ADME_hCYP1A1',</span> <span class="pre">'NVS_ADME_hCYP1A2',</span> <span class="pre">'NVS_ADME_hCYP2A6',</span> <span class="pre">'NVS_ADME_hCYP2B6',</span> <span class="pre">'NVS_ADME_hCYP2C19',</span> <span class="pre">'NVS_ADME_hCYP2C9',</span> <span class="pre">'NVS_ADME_hCYP2D6',</span> <span class="pre">'NVS_ADME_hCYP3A4',</span> <span class="pre">'NVS_ADME_hCYP4F12',</span> <span class="pre">'NVS_ADME_rCYP2C12',</span> <span class="pre">'NVS_ENZ_hAChE',</span> <span class="pre">'NVS_ENZ_hAMPKa1',</span> <span class="pre">'NVS_ENZ_hAurA',</span> <span class="pre">'NVS_ENZ_hBACE',</span> <span class="pre">'NVS_ENZ_hCASP5',</span> <span class="pre">'NVS_ENZ_hCK1D',</span> <span class="pre">'NVS_ENZ_hDUSP3',</span> <span class="pre">'NVS_ENZ_hES',</span> <span class="pre">'NVS_ENZ_hElastase',</span> <span class="pre">'NVS_ENZ_hFGFR1',</span> <span class="pre">'NVS_ENZ_hGSK3b',</span> <span class="pre">'NVS_ENZ_hMMP1',</span> <span class="pre">'NVS_ENZ_hMMP13',</span> <span class="pre">'NVS_ENZ_hMMP2',</span> <span class="pre">'NVS_ENZ_hMMP3',</span> <span class="pre">'NVS_ENZ_hMMP7',</span> <span class="pre">'NVS_ENZ_hMMP9',</span> <span class="pre">'NVS_ENZ_hPDE10',</span> <span class="pre">'NVS_ENZ_hPDE4A1',</span> <span class="pre">'NVS_ENZ_hPDE5',</span> <span class="pre">'NVS_ENZ_hPI3Ka',</span> <span class="pre">'NVS_ENZ_hPTEN',</span> <span class="pre">'NVS_ENZ_hPTPN11',</span> <span class="pre">'NVS_ENZ_hPTPN12',</span> <span class="pre">'NVS_ENZ_hPTPN13',</span> <span class="pre">'NVS_ENZ_hPTPN9',</span> <span class="pre">'NVS_ENZ_hPTPRC',</span> <span class="pre">'NVS_ENZ_hSIRT1',</span> <span class="pre">'NVS_ENZ_hSIRT2',</span> <span class="pre">'NVS_ENZ_hTrkA',</span> <span class="pre">'NVS_ENZ_hVEGFR2',</span> <span class="pre">'NVS_ENZ_oCOX1',</span> <span class="pre">'NVS_ENZ_oCOX2',</span> <span class="pre">'NVS_ENZ_rAChE',</span> <span class="pre">'NVS_ENZ_rCNOS',</span> <span class="pre">'NVS_ENZ_rMAOAC',</span> <span class="pre">'NVS_ENZ_rMAOAP',</span> <span class="pre">'NVS_ENZ_rMAOBC',</span> <span class="pre">'NVS_ENZ_rMAOBP',</span> <span class="pre">'NVS_ENZ_rabI2C',</span> <span class="pre">'NVS_GPCR_bAdoR_NonSelective',</span> <span class="pre">'NVS_GPCR_bDR_NonSelective',</span> <span class="pre">'NVS_GPCR_g5HT4',</span> <span class="pre">'NVS_GPCR_gH2',</span> <span class="pre">'NVS_GPCR_gLTB4',</span> <span class="pre">'NVS_GPCR_gLTD4',</span> <span class="pre">'NVS_GPCR_gMPeripheral_NonSelective',</span> <span class="pre">'NVS_GPCR_gOpiateK',</span> <span class="pre">'NVS_GPCR_h5HT2A',</span> <span class="pre">'NVS_GPCR_h5HT5A',</span> <span class="pre">'NVS_GPCR_h5HT6',</span> <span class="pre">'NVS_GPCR_h5HT7',</span> <span class="pre">'NVS_GPCR_hAT1',</span> <span class="pre">'NVS_GPCR_hAdoRA1',</span> <span class="pre">'NVS_GPCR_hAdoRA2a',</span> <span class="pre">'NVS_GPCR_hAdra2A',</span> <span class="pre">'NVS_GPCR_hAdra2C',</span> <span class="pre">'NVS_GPCR_hAdrb1',</span> <span class="pre">'NVS_GPCR_hAdrb2',</span> <span class="pre">'NVS_GPCR_hAdrb3',</span> <span class="pre">'NVS_GPCR_hDRD1',</span> <span class="pre">'NVS_GPCR_hDRD2s',</span> <span class="pre">'NVS_GPCR_hDRD4.4',</span> <span class="pre">'NVS_GPCR_hH1',</span> <span class="pre">'NVS_GPCR_hLTB4_BLT1',</span> <span class="pre">'NVS_GPCR_hM1',</span> <span class="pre">'NVS_GPCR_hM2',</span> <span class="pre">'NVS_GPCR_hM3',</span> <span class="pre">'NVS_GPCR_hM4',</span> <span class="pre">'NVS_GPCR_hNK2',</span> <span class="pre">'NVS_GPCR_hOpiate_D1',</span> <span class="pre">'NVS_GPCR_hOpiate_mu',</span> <span class="pre">'NVS_GPCR_hTXA2',</span> <span class="pre">'NVS_GPCR_p5HT2C',</span> <span class="pre">'NVS_GPCR_r5HT1_NonSelective',</span> <span class="pre">'NVS_GPCR_r5HT_NonSelective',</span> <span class="pre">'NVS_GPCR_rAdra1B',</span> <span class="pre">'NVS_GPCR_rAdra1_NonSelective',</span> <span class="pre">'NVS_GPCR_rAdra2_NonSelective',</span> <span class="pre">'NVS_GPCR_rAdrb_NonSelective',</span> <span class="pre">'NVS_GPCR_rNK1',</span> <span class="pre">'NVS_GPCR_rNK3',</span> <span class="pre">'NVS_GPCR_rOpiate_NonSelective',</span> <span class="pre">'NVS_GPCR_rOpiate_NonSelectiveNa',</span> <span class="pre">'NVS_GPCR_rSST',</span> <span class="pre">'NVS_GPCR_rTRH',</span> <span class="pre">'NVS_GPCR_rV1',</span> <span class="pre">'NVS_GPCR_rabPAF',</span> <span class="pre">'NVS_GPCR_rmAdra2B',</span> <span class="pre">'NVS_IC_hKhERGCh',</span> <span class="pre">'NVS_IC_rCaBTZCHL',</span> <span class="pre">'NVS_IC_rCaDHPRCh_L',</span> <span class="pre">'NVS_IC_rNaCh_site2',</span> <span class="pre">'NVS_LGIC_bGABARa1',</span> <span class="pre">'NVS_LGIC_h5HT3',</span> <span class="pre">'NVS_LGIC_hNNR_NBungSens',</span> <span class="pre">'NVS_LGIC_rGABAR_NonSelective',</span> <span class="pre">'NVS_LGIC_rNNR_BungSens',</span> <span class="pre">'NVS_MP_hPBR',</span> <span class="pre">'NVS_MP_rPBR',</span> <span class="pre">'NVS_NR_bER',</span> <span class="pre">'NVS_NR_bPR',</span> <span class="pre">'NVS_NR_cAR',</span> <span class="pre">'NVS_NR_hAR',</span> <span class="pre">'NVS_NR_hCAR_Antagonist',</span> <span class="pre">'NVS_NR_hER',</span> <span class="pre">'NVS_NR_hFXR_Agonist',</span> <span class="pre">'NVS_NR_hFXR_Antagonist',</span> <span class="pre">'NVS_NR_hGR',</span> <span class="pre">'NVS_NR_hPPARa',</span> <span class="pre">'NVS_NR_hPPARg',</span> <span class="pre">'NVS_NR_hPR',</span> <span class="pre">'NVS_NR_hPXR',</span> <span class="pre">'NVS_NR_hRAR_Antagonist',</span> <span class="pre">'NVS_NR_hRARa_Agonist',</span> <span class="pre">'NVS_NR_hTRa_Antagonist',</span> <span class="pre">'NVS_NR_mERa',</span> <span class="pre">'NVS_NR_rAR',</span> <span class="pre">'NVS_NR_rMR',</span> <span class="pre">'NVS_OR_gSIGMA_NonSelective',</span> <span class="pre">'NVS_TR_gDAT',</span> <span class="pre">'NVS_TR_hAdoT',</span> <span class="pre">'NVS_TR_hDAT',</span> <span class="pre">'NVS_TR_hNET',</span> <span class="pre">'NVS_TR_hSERT',</span> <span class="pre">'NVS_TR_rNET',</span> <span class="pre">'NVS_TR_rSERT',</span> <span class="pre">'NVS_TR_rVMAT2',</span> <span class="pre">'OT_AR_ARELUC_AG_1440',</span> <span class="pre">'OT_AR_ARSRC1_0480',</span> <span class="pre">'OT_AR_ARSRC1_0960',</span> <span class="pre">'OT_ER_ERaERa_0480',</span> <span class="pre">'OT_ER_ERaERa_1440',</span> <span class="pre">'OT_ER_ERaERb_0480',</span> <span class="pre">'OT_ER_ERaERb_1440',</span> <span class="pre">'OT_ER_ERbERb_0480',</span> <span class="pre">'OT_ER_ERbERb_1440',</span> <span class="pre">'OT_ERa_EREGFP_0120',</span> <span class="pre">'OT_ERa_EREGFP_0480',</span> <span class="pre">'OT_FXR_FXRSRC1_0480',</span> <span class="pre">'OT_FXR_FXRSRC1_1440',</span> <span class="pre">'OT_NURR1_NURR1RXRa_0480',</span> <span class="pre">'OT_NURR1_NURR1RXRa_1440',</span> <span class="pre">'TOX21_ARE_BLA_Agonist_ch1',</span> <span class="pre">'TOX21_ARE_BLA_Agonist_ch2',</span> <span class="pre">'TOX21_ARE_BLA_agonist_ratio',</span> <span class="pre">'TOX21_ARE_BLA_agonist_viability',</span> <span class="pre">'TOX21_AR_BLA_Agonist_ch1',</span> <span class="pre">'TOX21_AR_BLA_Agonist_ch2',</span> <span class="pre">'TOX21_AR_BLA_Agonist_ratio',</span> <span class="pre">'TOX21_AR_BLA_Antagonist_ch1',</span> <span class="pre">'TOX21_AR_BLA_Antagonist_ch2',</span> <span class="pre">'TOX21_AR_BLA_Antagonist_ratio',</span> <span class="pre">'TOX21_AR_BLA_Antagonist_viability',</span> <span class="pre">'TOX21_AR_LUC_MDAKB2_Agonist',</span> <span class="pre">'TOX21_AR_LUC_MDAKB2_Antagonist',</span> <span class="pre">'TOX21_AR_LUC_MDAKB2_Antagonist2',</span> <span class="pre">'TOX21_AhR_LUC_Agonist',</span> <span class="pre">'TOX21_Aromatase_Inhibition',</span> <span class="pre">'TOX21_AutoFluor_HEK293_Cell_blue',</span> <span class="pre">'TOX21_AutoFluor_HEK293_Media_blue',</span> <span class="pre">'TOX21_AutoFluor_HEPG2_Cell_blue',</span> <span class="pre">'TOX21_AutoFluor_HEPG2_Cell_green',</span> <span class="pre">'TOX21_AutoFluor_HEPG2_Media_blue',</span> <span class="pre">'TOX21_AutoFluor_HEPG2_Media_green',</span> <span class="pre">'TOX21_ELG1_LUC_Agonist',</span> <span class="pre">'TOX21_ERa_BLA_Agonist_ch1',</span> <span class="pre">'TOX21_ERa_BLA_Agonist_ch2',</span> <span class="pre">'TOX21_ERa_BLA_Agonist_ratio',</span> <span class="pre">'TOX21_ERa_BLA_Antagonist_ch1',</span> <span class="pre">'TOX21_ERa_BLA_Antagonist_ch2',</span> <span class="pre">'TOX21_ERa_BLA_Antagonist_ratio',</span> <span class="pre">'TOX21_ERa_BLA_Antagonist_viability',</span> <span class="pre">'TOX21_ERa_LUC_BG1_Agonist',</span> <span class="pre">'TOX21_ERa_LUC_BG1_Antagonist',</span> <span class="pre">'TOX21_ESRE_BLA_ch1',</span> <span class="pre">'TOX21_ESRE_BLA_ch2',</span> <span class="pre">'TOX21_ESRE_BLA_ratio',</span> <span class="pre">'TOX21_ESRE_BLA_viability',</span> <span class="pre">'TOX21_FXR_BLA_Antagonist_ch1',</span> <span class="pre">'TOX21_FXR_BLA_Antagonist_ch2',</span> <span class="pre">'TOX21_FXR_BLA_agonist_ch2',</span> <span class="pre">'TOX21_FXR_BLA_agonist_ratio',</span> <span class="pre">'TOX21_FXR_BLA_antagonist_ratio',</span> <span class="pre">'TOX21_FXR_BLA_antagonist_viability',</span> <span class="pre">'TOX21_GR_BLA_Agonist_ch1',</span> <span class="pre">'TOX21_GR_BLA_Agonist_ch2',</span> <span class="pre">'TOX21_GR_BLA_Agonist_ratio',</span> <span class="pre">'TOX21_GR_BLA_Antagonist_ch2',</span> <span class="pre">'TOX21_GR_BLA_Antagonist_ratio',</span> <span class="pre">'TOX21_GR_BLA_Antagonist_viability',</span> <span class="pre">'TOX21_HSE_BLA_agonist_ch1',</span> <span class="pre">'TOX21_HSE_BLA_agonist_ch2',</span> <span class="pre">'TOX21_HSE_BLA_agonist_ratio',</span> <span class="pre">'TOX21_HSE_BLA_agonist_viability',</span> <span class="pre">'TOX21_MMP_ratio_down',</span> <span class="pre">'TOX21_MMP_ratio_up',</span> <span class="pre">'TOX21_MMP_viability',</span> <span class="pre">'TOX21_NFkB_BLA_agonist_ch1',</span> <span class="pre">'TOX21_NFkB_BLA_agonist_ch2',</span> <span class="pre">'TOX21_NFkB_BLA_agonist_ratio',</span> <span class="pre">'TOX21_NFkB_BLA_agonist_viability',</span> <span class="pre">'TOX21_PPARd_BLA_Agonist_viability',</span> <span class="pre">'TOX21_PPARd_BLA_Antagonist_ch1',</span> <span class="pre">'TOX21_PPARd_BLA_agonist_ch1',</span> <span class="pre">'TOX21_PPARd_BLA_agonist_ch2',</span> <span class="pre">'TOX21_PPARd_BLA_agonist_ratio',</span> <span class="pre">'TOX21_PPARd_BLA_antagonist_ratio',</span> <span class="pre">'TOX21_PPARd_BLA_antagonist_viability',</span> <span class="pre">'TOX21_PPARg_BLA_Agonist_ch1',</span> <span class="pre">'TOX21_PPARg_BLA_Agonist_ch2',</span> <span class="pre">'TOX21_PPARg_BLA_Agonist_ratio',</span> <span class="pre">'TOX21_PPARg_BLA_Antagonist_ch1',</span> <span class="pre">'TOX21_PPARg_BLA_antagonist_ratio',</span> <span class="pre">'TOX21_PPARg_BLA_antagonist_viability',</span> <span class="pre">'TOX21_TR_LUC_GH3_Agonist',</span> <span class="pre">'TOX21_TR_LUC_GH3_Antagonist',</span> <span class="pre">'TOX21_VDR_BLA_Agonist_viability',</span> <span class="pre">'TOX21_VDR_BLA_Antagonist_ch1',</span> <span class="pre">'TOX21_VDR_BLA_agonist_ch2',</span> <span class="pre">'TOX21_VDR_BLA_agonist_ratio',</span> <span class="pre">'TOX21_VDR_BLA_antagonist_ratio',</span> <span class="pre">'TOX21_VDR_BLA_antagonist_viability',</span> <span class="pre">'TOX21_p53_BLA_p1_ch1',</span> <span class="pre">'TOX21_p53_BLA_p1_ch2',</span> <span class="pre">'TOX21_p53_BLA_p1_ratio',</span> <span class="pre">'TOX21_p53_BLA_p1_viability',</span> <span class="pre">'TOX21_p53_BLA_p2_ch1',</span> <span class="pre">'TOX21_p53_BLA_p2_ch2',</span> <span class="pre">'TOX21_p53_BLA_p2_ratio',</span> <span class="pre">'TOX21_p53_BLA_p2_viability',</span> <span class="pre">'TOX21_p53_BLA_p3_ch1',</span> <span class="pre">'TOX21_p53_BLA_p3_ch2',</span> <span class="pre">'TOX21_p53_BLA_p3_ratio',</span> <span class="pre">'TOX21_p53_BLA_p3_viability',</span> <span class="pre">'TOX21_p53_BLA_p4_ch1',</span> <span class="pre">'TOX21_p53_BLA_p4_ch2',</span> <span class="pre">'TOX21_p53_BLA_p4_ratio',</span> <span class="pre">'TOX21_p53_BLA_p4_viability',</span> <span class="pre">'TOX21_p53_BLA_p5_ch1',</span> <span class="pre">'TOX21_p53_BLA_p5_ch2',</span> <span class="pre">'TOX21_p53_BLA_p5_ratio',</span> <span class="pre">'TOX21_p53_BLA_p5_viability',</span> <span class="pre">'Tanguay_ZF_120hpf_AXIS_up',</span> <span class="pre">'Tanguay_ZF_120hpf_ActivityScore',</span> <span class="pre">'Tanguay_ZF_120hpf_BRAI_up',</span> <span class="pre">'Tanguay_ZF_120hpf_CFIN_up',</span> <span class="pre">'Tanguay_ZF_120hpf_CIRC_up',</span> <span class="pre">'Tanguay_ZF_120hpf_EYE_up',</span> <span class="pre">'Tanguay_ZF_120hpf_JAW_up',</span> <span class="pre">'Tanguay_ZF_120hpf_MORT_up',</span> <span class="pre">'Tanguay_ZF_120hpf_OTIC_up',</span> <span class="pre">'Tanguay_ZF_120hpf_PE_up',</span> <span class="pre">'Tanguay_ZF_120hpf_PFIN_up',</span> <span class="pre">'Tanguay_ZF_120hpf_PIG_up',</span> <span class="pre">'Tanguay_ZF_120hpf_SNOU_up',</span> <span class="pre">'Tanguay_ZF_120hpf_SOMI_up',</span> <span class="pre">'Tanguay_ZF_120hpf_SWIM_up',</span> <span class="pre">'Tanguay_ZF_120hpf_TRUN_up',</span> <span class="pre">'Tanguay_ZF_120hpf_TR_up',</span> <span class="pre">'Tanguay_ZF_120hpf_YSE_up']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_local_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/load_hf_dataset.html#load_toxcast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_toxcast" title="Link to this definition">¶</a></dt>
-<dd><p>Load ToxCast dataset from Hugging Face Hub.</p>
-<p>Source: <a class="reference external" href="https://www.epa.gov/comptox-tools/exploring-toxcast-data">https://www.epa.gov/comptox-tools/exploring-toxcast-data</a></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>local_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path where the data should be saved, by default “torchmol_data”</p></li>
-<li><p><strong>target_cols</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of target column names, by default all tasks</p></li>
-<li><p><strong>return_local_data_path</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the local data path, by default False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-</ul>
-</dd>
-<dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-<li><p>local_data_path: Path where the data is saved</p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<p class="rubric">ADMET (absorption-distribution-metabolism-excretion-toxicity)</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="torch_molecule.datasets.load_admet">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_admet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['AMES',</span> <span class="pre">'BBB_Martins',</span> <span class="pre">'Bioavailability_Ma',</span> <span class="pre">'CYP1A2_Veith',</span> <span class="pre">'CYP2C19_Veith',</span> <span class="pre">'CYP2C9_Substrate_CarbonMangels',</span> <span class="pre">'CYP2C9_Veith',</span> <span class="pre">'CYP2D6_Substrate_CarbonMangels',</span> <span class="pre">'CYP2D6_Veith',</span> <span class="pre">'CYP3A4_Substrate_CarbonMangels',</span> <span class="pre">'CYP3A4_Veith',</span> <span class="pre">'Caco2_Wang',</span> <span class="pre">'Carcinogens_Lagunin',</span> <span class="pre">'Clearance_Hepatocyte_AZ',</span> <span class="pre">'Clearance_Microsome_AZ',</span> <span class="pre">'ClinTox',</span> <span class="pre">'DILI',</span> <span class="pre">'HIA_Hou',</span> <span class="pre">'Half_Life_Obach',</span> <span class="pre">'HydrationFreeEnergy_FreeSolv',</span> <span class="pre">'LD50_Zhu',</span> <span class="pre">'Lipophilicity_AstraZeneca',</span> <span class="pre">'NR-AR-LBD',</span> <span class="pre">'NR-AR',</span> <span class="pre">'NR-AhR',</span> <span class="pre">'NR-Aromatase',</span> <span class="pre">'NR-ER-LBD',</span> <span class="pre">'NR-ER',</span> <span class="pre">'NR-PPAR-gamma',</span> <span class="pre">'PAMPA_NCATS',</span> <span class="pre">'PPBR_AZ',</span> <span class="pre">'Pgp_Broccatelli',</span> <span class="pre">'SR-ARE',</span> <span class="pre">'SR-ATAD5',</span> <span class="pre">'SR-HSE',</span> <span class="pre">'SR-MMP',</span> <span class="pre">'SR-p53',</span> <span class="pre">'Skin_Reaction',</span> <span class="pre">'Solubility_AqSolDB',</span> <span class="pre">'VDss_Lombardo',</span> <span class="pre">'hERG']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_local_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/load_hf_dataset.html#load_admet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_admet" title="Link to this definition">¶</a></dt>
-<dd><p>Load ADMET dataset from Hugging Face Hub.</p>
-<p>Source: <a class="reference external" href="https://github.com/swansonk14/admet_ai/blob/main/admet_ai/resources/data/admet.csv">https://github.com/swansonk14/admet_ai/blob/main/admet_ai/resources/data/admet.csv</a></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>local_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path where the data should be saved, by default “torchmol_data”</p></li>
-<li><p><strong>target_cols</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of target column names, by default all tasks</p></li>
-<li><p><strong>return_local_data_path</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the local data path, by default False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-</ul>
-</dd>
-<dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-<li><p>local_data_path: Path where the data is saved</p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<p class="rubric">Gas Permeability for polymers</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="torch_molecule.datasets.load_gasperm">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_gasperm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['CH4',</span> <span class="pre">'CO2',</span> <span class="pre">'H2',</span> <span class="pre">'N2',</span> <span class="pre">'O2']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><span class="pre">SMILESDataset</span></a></span></span><a class="reference internal" href="_modules/torch_molecule/datasets/load_local_csv.html#load_gasperm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_gasperm" title="Link to this definition">¶</a></dt>
-<dd><p>Load gas permeability dataset from local CSV.gz file within torch_molecule package.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>target_cols</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of target column names. Default is [“CH4”, “CO2”, “H2”, “N2”, “O2”]</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dataset object with data (SMILES strings) and target (property values) attributes
-- data: List[str]
-- target: np.ndarray</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">data</span></code> holds canonical SMILES (mixture components joined with <code class="docutils literal notranslate"><span class="pre">.</span></code>),
+<code class="docutils literal notranslate"><span class="pre">target</span></code> is (rows, targets) with NaN for missing labels, <code class="docutils literal notranslate"><span class="pre">groups</span></code> holds the
+structure key of each row (use it to keep one molecule in one split), and
+<code class="docutils literal notranslate"><span class="pre">info</span></code> holds units, label kinds, license, original sources, and quality tags.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
@@ -456,46 +494,108 @@
 </dl>
 </dd></dl>
 
-<p class="rubric">ZINC250k (unlabeled; generation / screening)</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="torch_molecule.datasets.load_zinc250k">
-<span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.</span></span><span class="sig-name descname"><span class="pre">load_zinc250k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_local_data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/load_hf_dataset.html#load_zinc250k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_zinc250k" title="Link to this definition">¶</a></dt>
-<dd><p>Load ZINC250K dataset from Hugging Face Hub.</p>
+<dt class="sig sig-object py" id="torch_molecule.datasets.list_datasets">
+<span class="sig-name descname"><span class="pre">list_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#list_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.list_datasets" title="Link to this definition">¶</a></dt>
+<dd><p>Summaries of datasets in the collection, filtered by any given field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>local_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path where the data should be saved, by default “torchmol_data”</p></li>
-<li><p><strong>return_local_data_path</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the local data path, by default False</p></li>
+<li><p><strong>domain</strong> (<em>{&quot;small_molecules&quot;</em><em>, </em><em>&quot;polymers&quot;}</em><em>, </em><em>optional</em>)</p></li>
+<li><p><strong>category</strong> (<em>str</em><em>, </em><em>optional</em>) – For example <code class="docutils literal notranslate"><span class="pre">&quot;adme&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;toxicity&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;thermodynamics&quot;</span></code>.</p></li>
+<li><p><strong>grade</strong> (<em>{&quot;ready&quot;</em><em>, </em><em>&quot;care&quot;</em><em>, </em><em>&quot;caution&quot;</em><em>, </em><em>&quot;unmeasured&quot;}</em><em>, </em><em>optional</em>) – Rough data-quality grade; see <code class="docutils literal notranslate"><span class="pre">dataset_info(name)[&quot;quality&quot;]</span></code> for its tags.</p></li>
+<li><p><strong>access</strong> (<em>{&quot;public&quot;</em><em>, </em><em>&quot;gated&quot;</em><em>, </em><em>&quot;link&quot;}</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">link</span></code> datasets are not redistributed; get them from their original source.</p></li>
+<li><p><strong>license_class</strong> (<em>{&quot;open&quot;</em><em>, </em><em>&quot;share_alike&quot;</em><em>, </em><em>&quot;noncommercial&quot;</em><em>, </em><em>&quot;unverified&quot;}</em><em>, </em><em>optional</em>)</p></li>
+<li><p><strong>release</strong> (<em>str</em><em>, </em><em>optional</em>) – Collection release tag (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;v2026.10.22&quot;</span></code>); default the latest release.</p></li>
+<li><p><strong>local_dir</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>If return_local_data_path is False:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-</ul>
-</dd>
-<dt>If return_local_data_path is True:</dt><dd><ul class="simple">
-<li><p>molecular_dataset: SMILESDataset object with data (SMILES strings) and target (property values) attributes</p></li>
-<li><p>local_data_path: Path where the data is saved</p></li>
-</ul>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>List</em>[dict]</p>
 </dd>
 </dl>
-</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.datasets.dataset_info">
+<span class="sig-name descname"><span class="pre">dataset_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#dataset_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.dataset_info" title="Link to this definition">¶</a></dt>
+<dd><p>Full index entry: license, links to original sources, quality tags, tables, and targets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>local_dir</strong> (<em>str</em>)</p></li>
+<li><p><strong>release</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[<a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a>, str] or <a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
-<section id="smilesdataset-and-splitting">
-<h2><code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code> and splitting<a class="headerlink" href="#smilesdataset-and-splitting" title="Link to this heading">¶</a></h2>
+<section id="deprecated-loaders">
+<h2>Deprecated loaders<a class="headerlink" href="#deprecated-loaders" title="Link to this heading">¶</a></h2>
+<p>These functions still work but call <code class="docutils literal notranslate"><span class="pre">load_dataset</span></code> and will be removed. Rows
+come from the collection’s clean tables: canonical SMILES, unparseable
+structures removed, identical rows collapsed.</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Replacement</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="api/datasets/load_qm9.html#torch_molecule.datasets.load_qm9" title="torch_molecule.datasets.load_qm9"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_qm9</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">load_dataset(&quot;qm9&quot;,</span> <span class="pre">targets=[&quot;gap&quot;])</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/datasets/load_chembl2k.html#torch_molecule.datasets.load_chembl2k" title="torch_molecule.datasets.load_chembl2k"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_chembl2k</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">load_dataset(&quot;chembl2k&quot;)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/datasets/load_broad6k.html#torch_molecule.datasets.load_broad6k" title="torch_molecule.datasets.load_broad6k"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_broad6k</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">load_dataset(&quot;broad6k&quot;)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/datasets/load_toxcast.html#torch_molecule.datasets.load_toxcast" title="torch_molecule.datasets.load_toxcast"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_toxcast</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">load_dataset(&quot;toxcast&quot;)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/datasets/load_admet.html#torch_molecule.datasets.load_admet" title="torch_molecule.datasets.load_admet"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_admet</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">load_dataset(&quot;admet_ai&quot;)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/datasets/load_gasperm.html#torch_molecule.datasets.load_gasperm" title="torch_molecule.datasets.load_gasperm"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_gasperm</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">load_dataset(&quot;polymer_gas_permeability&quot;)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/datasets/load_zinc250k.html#torch_molecule.datasets.load_zinc250k" title="torch_molecule.datasets.load_zinc250k"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_zinc250k</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">load_dataset(&quot;zinc250k&quot;,</span> <span class="pre">targets=[])</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="dataset-interface">
+<h2>Dataset interface<a class="headerlink" href="#dataset-interface" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torch_molecule.datasets.constant.</span></span><span class="sig-name descname"><span class="pre">SMILESDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Data class for storing molecular SMILES dataset with input and target data.</p>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SMILESDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset" title="Link to this definition">¶</a></dt>
+<dd><p>Data class for storing molecular SMILES dataset with input and target data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>target</strong> (<em>ndarray</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>target_names</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>groups</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>info</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.data">
 <span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.data" title="Link to this definition">¶</a></dt>
@@ -518,9 +618,42 @@
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.target_names">
+<span class="sig-name descname"><span class="pre">target_names</span></span><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.target_names" title="Link to this definition">¶</a></dt>
+<dd><p>Name of each target column, when known</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.groups">
+<span class="sig-name descname"><span class="pre">groups</span></span><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.groups" title="Link to this definition">¶</a></dt>
+<dd><p>Structure key per row; rows with the same key are the same molecule</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.info">
+<span class="sig-name descname"><span class="pre">info</span></span><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.info" title="Link to this definition">¶</a></dt>
+<dd><p>Provenance, units, label kinds, and quality tags for hub datasets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.subsample">
-<span class="sig-name descname"><span class="pre">subsample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><span class="pre">SMILESDataset</span></a></span></span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset.subsample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.subsample" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">subsample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset.subsample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.subsample" title="Link to this definition">¶</a></dt>
 <dd><p>Draw a random subset without replacement.</p>
 <p>Intended for local debugging and CI, not as a way to make structure-
 aware splits cheaper. Do not subsample a benchmark (for example QM9)
@@ -533,12 +666,15 @@ measures.</p>
 <li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=0</em>) – Random seed.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><em>SMILESDataset</em></a></p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.train_test_split">
-<span class="sig-name descname"><span class="pre">train_test_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'random'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><span class="pre">SMILESDataset</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><span class="pre">SMILESDataset</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset.train_test_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.train_test_split" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">train_test_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'random'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset.train_test_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.train_test_split" title="Link to this definition">¶</a></dt>
 <dd><p>Split into train and holdout <code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code> objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -563,49 +699,40 @@ unseen Taylor-Butina clusters; <code class="docutils literal notranslate"><span 
 
 </dd></dl>
 
-<p>Supported <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code> methods:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;random&quot;</span></code>: i.i.d. baseline split</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;scaffold&quot;</span></code>: hold out unseen Bemis-Murcko scaffolds</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;butina&quot;</span></code>: hold out unseen Taylor-Butina clusters (Morgan / Tanimoto)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;size&quot;</span></code>: split by heavy-atom count</p></li>
-</ul>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_qm9</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="n">load_qm9</span><span class="p">(</span><span class="n">local_dir</span><span class="o">=</span><span class="s2">"torchmol_data"</span><span class="p">)</span>
-<span class="c1"># Split the full dataset. subsample() is only for local debugging / CI —</span>
-<span class="c1"># do not shrink a benchmark just to make Butina cheaper.</span>
-<span class="n">train</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"scaffold"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-
-<span class="n">smiles_list</span><span class="p">,</span> <span class="n">property_np_array</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">train</span><span class="o">.</span><span class="n">target</span>
-</pre></div>
-</div>
+<a class="tm-api-redirect" id="torch_molecule.datasets.load_qm9" href="api/datasets/load_qm9.html#torch_molecule.datasets.load_qm9">load_qm9 reference</a>
+<a class="tm-api-redirect" id="torch_molecule.datasets.load_chembl2k" href="api/datasets/load_chembl2k.html#torch_molecule.datasets.load_chembl2k">load_chembl2k reference</a>
+<a class="tm-api-redirect" id="torch_molecule.datasets.load_broad6k" href="api/datasets/load_broad6k.html#torch_molecule.datasets.load_broad6k">load_broad6k reference</a>
+<a class="tm-api-redirect" id="torch_molecule.datasets.load_toxcast" href="api/datasets/load_toxcast.html#torch_molecule.datasets.load_toxcast">load_toxcast reference</a>
+<a class="tm-api-redirect" id="torch_molecule.datasets.load_admet" href="api/datasets/load_admet.html#torch_molecule.datasets.load_admet">load_admet reference</a>
+<a class="tm-api-redirect" id="torch_molecule.datasets.load_gasperm" href="api/datasets/load_gasperm.html#torch_molecule.datasets.load_gasperm">load_gasperm reference</a>
+<a class="tm-api-redirect" id="torch_molecule.datasets.load_zinc250k" href="api/datasets/load_zinc250k.html#torch_molecule.datasets.load_zinc250k">load_zinc250k reference</a></section>
 </section>
-</section>
+
+
 
         </article>
       </div>
       <footer>
         
+
         <div class="related-pages">
-          <a class="next-page" href="overview.html">
+          <a class="next-page" href="api/datasets/load_qm9.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Model Overview</div>
+                <div class="title">load_qm9</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="example.html">
+          <a class="prev-page" href="models.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Examples</div>
+                <div class="title">Model collection</div>
                 
               </div>
             </a>
@@ -613,7 +740,7 @@ unseen Taylor-Butina clusters; <code class="docutils literal notranslate"><span 
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2025, Gang Liu
+                Copyright &#169; 2025–2026, Gang Liu
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -625,6 +752,11 @@ unseen Taylor-Butina clusters; <code class="docutils literal notranslate"><span 
           </div>
         </div>
         
+<div class="tm-footer">
+  <span>torch-molecule <span class="tm-footer-dot">·</span> Open source, open discovery.</span>
+  <div><a href="additional.html">Contribute</a><a href="https://github.com/liugangcode/torch-molecule/blob/main/LICENSE">MIT license</a><a href="https://github.com/liugangcode/torch-molecule">GitHub ↗</a></div>
+</div>
+
       </footer>
     </div>
     <aside class="toc-drawer">
@@ -639,27 +771,14 @@ unseen Taylor-Butina clusters; <code class="docutils literal notranslate"><span 
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Datasets Overview</a><ul>
-<li><a class="reference internal" href="#built-in-loaders">Built-in loaders</a><ul>
-<li><a class="reference internal" href="#torch_molecule.datasets.load_qm9"><code class="docutils literal notranslate"><span class="pre">load_qm9()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.datasets.load_chembl2k"><code class="docutils literal notranslate"><span class="pre">load_chembl2k()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.datasets.load_broad6k"><code class="docutils literal notranslate"><span class="pre">load_broad6k()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.datasets.load_toxcast"><code class="docutils literal notranslate"><span class="pre">load_toxcast()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.datasets.load_admet"><code class="docutils literal notranslate"><span class="pre">load_admet()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.datasets.load_gasperm"><code class="docutils literal notranslate"><span class="pre">load_gasperm()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.datasets.load_zinc250k"><code class="docutils literal notranslate"><span class="pre">load_zinc250k()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#smilesdataset-and-splitting"><code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code> and splitting</a><ul>
-<li><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset"><code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code></a><ul>
-<li><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset.data"><code class="docutils literal notranslate"><span class="pre">SMILESDataset.data</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset.target"><code class="docutils literal notranslate"><span class="pre">SMILESDataset.target</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset.subsample"><code class="docutils literal notranslate"><span class="pre">SMILESDataset.subsample()</span></code></a></li>
-<li><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset.train_test_split"><code class="docutils literal notranslate"><span class="pre">SMILESDataset.train_test_split()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Datasets</a><ul>
+<li><a class="reference internal" href="#collection-statistics">Collection statistics</a></li>
+<li><a class="reference internal" href="#load-a-dataset">Load a dataset</a></li>
+<li><a class="reference internal" href="#bring-your-own-data">Bring your own data</a></li>
+<li><a class="reference internal" href="#choose-a-split">Choose a split</a></li>
+<li><a class="reference internal" href="#loader-reference">Loader reference</a></li>
+<li><a class="reference internal" href="#deprecated-loaders">Deprecated loaders</a></li>
+<li><a class="reference internal" href="#dataset-interface">Dataset interface</a></li>
 </ul>
 </li>
 </ul>
@@ -671,9 +790,11 @@ unseen Taylor-Butina clusters; <code class="docutils literal notranslate"><span 
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=a6319924"></script>
+</div>
+<script src="_static/documentation_options.js?v=ca7ad2ea"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/torch-molecule.js?v=7701f30b"></script>
     </body>
 </html>

@@ -4,11 +4,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
-        <title>torch_molecule.datasets.constant - torch-molecule (0.1.7) documentation</title>
+    <link rel="shortcut icon" href="../../../_static/favicon.svg"><!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>torch_molecule.datasets.constant - torch-molecule</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/torch-molecule.css?v=50fedd17" />
     
     
 
@@ -17,18 +18,39 @@
   body {
     --color-code-background: #f2f2f2;
   --color-code-foreground: #1e1e1e;
+  --color-brand-primary: #984b35;
+  --color-brand-content: #984b35;
+  --color-background-primary: #faf9f6;
+  --color-background-secondary: #f1f0eb;
+  --color-foreground-primary: #242721;
+  --color-foreground-secondary: #555b51;
+  --color-foreground-muted: #64685e;
   
   }
   @media not print {
     body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
         --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #e8a38b;
+  --color-brand-content: #e8a38b;
+  --color-background-primary: #20231f;
+  --color-background-secondary: #292d27;
+  --color-foreground-primary: #f5f3eb;
+  --color-foreground-secondary: #c1c5ba;
+  --color-foreground-muted: #c1c5ba;
   
       }
     }
@@ -36,6 +58,25 @@
 </style></head>
   <body>
     
+<header class="tm-header">
+  <a class="tm-wordmark" href="../../../index.html" aria-label="torch-molecule home">
+    <svg viewBox="0 0 34 34" width="30" height="30" fill="none" aria-hidden="true"><path d="M9 7 25 10 22 27 7 23Z M9 7 22 27 M7 23 25 10" stroke="currentColor" stroke-width="1.5"/><g fill="currentColor"><circle cx="9" cy="7" r="3.5"/><circle cx="25" cy="10" r="3.5"/><circle cx="22" cy="27" r="3.5"/></g><circle cx="7" cy="23" r="3.5" fill="var(--tm-accent)"/></svg>
+    <span>torch-molecule</span>
+  </a>
+  <button class="tm-menu-toggle" aria-controls="tm-site-navigation" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
+  <nav class="tm-navigation" id="tm-site-navigation" aria-label="Main navigation">
+    <a href="../../../overview.html">Documentation</a>
+    <a href="../../../models.html">Models</a>
+    <a href="../../../example.html">Examples</a>
+    <a href="https://github.com/liugangcode/torch-molecule" class="tm-github">GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+  <form class="tm-search" role="search" action="../../../search.html" method="get">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="m13 13 4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+    <input aria-label="Search documentation" name="q" placeholder="Search docs" autocomplete="off"/>
+    <kbd aria-hidden="true">⌘ K</kbd>
+  </form>
+</header>
+
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
@@ -160,7 +201,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">torch-molecule (0.1.7) documentation</div></a>
+      <a href="../../../index.html"><div class="brand">torch-molecule</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -179,50 +220,87 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
-  
-  <span class="sidebar-brand-text">torch-molecule (0.1.7) documentation</span>
-  
-</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+      <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="../../../overview.html">
+  <span>Documentation</span>
+</a>
+<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<div id="searchbox"></div><div class="sidebar-scroll"><nav class="sidebar-tree" aria-label="Documentation navigation">
+  <p class="caption" role="heading" aria-level="2"><span class="caption-text">Get started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Datasets Overview</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../overview.html">Model Overview</a><input aria-label="Toggle navigation of Model Overview" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../api/encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Choose a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Explore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Model collection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../dataset.html">Datasets</a><input aria-label="Toggle navigation of Datasets" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_qm9.html">load_qm9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_chembl2k.html">load_chembl2k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_broad6k.html">load_broad6k</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_toxcast.html">load_toxcast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_admet.html">load_admet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_gasperm.html">load_gasperm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/datasets/load_zinc250k.html">load_zinc250k</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Main Components:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">API reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/predictor.html">Molecular Property Prediction Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/generator.html">Molecular Generation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/encoder.html">Molecular Encoder Models</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/predictor.html">Predictor API</a><input aria-label="Toggle navigation of Predictor API" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GNNMolecularPredictor.html">GNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GREAMolecularPredictor.html">GREA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/SGIRMolecularPredictor.html">SGIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GRINMolecularPredictor.html">GRIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/BFGNNMolecularPredictor.html">BFGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/DIRMolecularPredictor.html">DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/IRMMolecularPredictor.html">IRM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/RPGNNMolecularPredictor.html">RPGNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/SSRMolecularPredictor.html">SSR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/LSTMMolecularPredictor.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/SMILESTransformerMolecularPredictor.html">SMILES Transformer</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">API for utilities:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/nn.html">Neural Network Components</a></li>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/encoder.html">Encoder API</a><input aria-label="Toggle navigation of Encoder API" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/MoamaMolecularEncoder.html">MoAmA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/AttrMaskMolecularEncoder.html">AttrMask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GraphMAEMolecularEncoder.html">GraphMAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/ContextPredMolecularEncoder.html">ContextPred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/EdgePredMolecularEncoder.html">EdgePred</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/InfoGraphMolecularEncoder.html">InfoGraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/SupervisedMolecularEncoder.html">Supervised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/SANDMolecularEncoder.html">SAND</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/HFPretrainedMolecularEncoder.html">Hugging Face</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/generator.html">Generator API</a><input aria-label="Toggle navigation of Generator API" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/DemoDiffMolecularGenerator.html">DemoDiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GraphDITMolecularGenerator.html">GraphDiT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/DeFoGMolecularGenerator.html">DeFoG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GraphGAMolecularGenerator.html">Graph GA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/DigressMolecularGenerator.html">DiGress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GDSSMolecularGenerator.html">GDSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/JTVAEMolecularGenerator.html">JT-VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/GenMolMolecularGenerator.html">GenMol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/MolGPTMolecularGenerator.html">MolGPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/LSTMMolecularGenerator.html">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/models/HFPretrainedMolecularGenerator.html">Hugging Face</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/base.html">Base Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/nn.html">Neural Network Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/utils.html">Utility Functions</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Additional Information:</span></p>
+<p class="caption" role="heading" aria-level="2"><span class="caption-text">Project</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">Project Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../additional.html#project-structure">Project Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../additional.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../additional.html">About the project</a></li>
 </ul>
 
-</div>
-</div>
-
+</nav></div>
       </div>
       
     </div>
@@ -250,9 +328,16 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for torch_molecule.datasets.constant</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+          
+
+<nav class="tm-breadcrumb" aria-label="Breadcrumb">
+  <a href="../../../index.html">Home</a><span aria-hidden="true">/</span>
+  <a href="../../index.html">Module code</a><span aria-hidden="true">/</span>
+  <span>torch_molecule.datasets.constant</span>
+</nav>
+<h1>Source code for torch_molecule.datasets.constant</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <div class="viewcode-block" id="SMILESDataset">
@@ -261,13 +346,19 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">SMILESDataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Data class for storing molecular SMILES dataset with input and target data.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Attributes:</span>
 <span class="sd">        data (List[str]): Input data (e.g., list of SMILES strings)</span>
 <span class="sd">        target (np.ndarray | None): Target property values as 2D numpy array (rows=molecules, cols=targets) or None</span>
+<span class="sd">        target_names (List[str] | None): Name of each target column, when known</span>
+<span class="sd">        groups (List[str] | None): Structure key per row; rows with the same key are the same molecule</span>
+<span class="sd">        info (dict): Provenance, units, label kinds, and quality tags for hub datasets</span>
 <span class="sd">    """</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">target</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">target_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">groups</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">info</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SMILESDataset.subsample">
 <a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.constant.SMILESDataset.subsample">[docs]</a>
@@ -328,239 +419,14 @@
         <span class="p">)</span></div>
 </div>
 
-
-
-<span class="n">TOXCAST_TASKS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'ACEA_T47D_80hr_Negative'</span><span class="p">,</span> <span class="s1">'ACEA_T47D_80hr_Positive'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_CellCycleArrest_24h_dn'</span><span class="p">,</span> <span class="s1">'APR_HepG2_CellCycleArrest_24h_up'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_CellCycleArrest_72h_dn'</span><span class="p">,</span> <span class="s1">'APR_HepG2_CellLoss_24h_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_CellLoss_72h_dn'</span><span class="p">,</span> <span class="s1">'APR_HepG2_MicrotubuleCSK_24h_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_MicrotubuleCSK_24h_up'</span><span class="p">,</span> <span class="s1">'APR_HepG2_MicrotubuleCSK_72h_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_MicrotubuleCSK_72h_up'</span><span class="p">,</span> <span class="s1">'APR_HepG2_MitoMass_24h_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_MitoMass_24h_up'</span><span class="p">,</span> <span class="s1">'APR_HepG2_MitoMass_72h_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_MitoMass_72h_up'</span><span class="p">,</span> <span class="s1">'APR_HepG2_MitoMembPot_1h_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_MitoMembPot_24h_dn'</span><span class="p">,</span> <span class="s1">'APR_HepG2_MitoMembPot_72h_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_MitoticArrest_24h_up'</span><span class="p">,</span> <span class="s1">'APR_HepG2_MitoticArrest_72h_up'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_NuclearSize_24h_dn'</span><span class="p">,</span> <span class="s1">'APR_HepG2_NuclearSize_72h_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_NuclearSize_72h_up'</span><span class="p">,</span> <span class="s1">'APR_HepG2_OxidativeStress_24h_up'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_OxidativeStress_72h_up'</span><span class="p">,</span> <span class="s1">'APR_HepG2_StressKinase_1h_up'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_StressKinase_24h_up'</span><span class="p">,</span> <span class="s1">'APR_HepG2_StressKinase_72h_up'</span><span class="p">,</span>
-    <span class="s1">'APR_HepG2_p53Act_24h_up'</span><span class="p">,</span> <span class="s1">'APR_HepG2_p53Act_72h_up'</span><span class="p">,</span>
-    <span class="s1">'APR_Hepat_Apoptosis_24hr_up'</span><span class="p">,</span> <span class="s1">'APR_Hepat_Apoptosis_48hr_up'</span><span class="p">,</span>
-    <span class="s1">'APR_Hepat_CellLoss_24hr_dn'</span><span class="p">,</span> <span class="s1">'APR_Hepat_CellLoss_48hr_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_Hepat_DNADamage_24hr_up'</span><span class="p">,</span> <span class="s1">'APR_Hepat_DNADamage_48hr_up'</span><span class="p">,</span>
-    <span class="s1">'APR_Hepat_DNATexture_24hr_up'</span><span class="p">,</span> <span class="s1">'APR_Hepat_DNATexture_48hr_up'</span><span class="p">,</span>
-    <span class="s1">'APR_Hepat_MitoFxnI_1hr_dn'</span><span class="p">,</span> <span class="s1">'APR_Hepat_MitoFxnI_24hr_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_Hepat_MitoFxnI_48hr_dn'</span><span class="p">,</span> <span class="s1">'APR_Hepat_NuclearSize_24hr_dn'</span><span class="p">,</span>
-    <span class="s1">'APR_Hepat_NuclearSize_48hr_dn'</span><span class="p">,</span> <span class="s1">'APR_Hepat_Steatosis_24hr_up'</span><span class="p">,</span>
-    <span class="s1">'APR_Hepat_Steatosis_48hr_up'</span><span class="p">,</span> <span class="s1">'ATG_AP_1_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_AP_1_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_AP_2_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_AP_2_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_AR_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_AR_TRANS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_Ahr_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_Ahr_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_BRE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_BRE_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_CAR_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_CAR_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_CMV_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_CMV_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_CRE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_CRE_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_C_EBP_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_C_EBP_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_DR4_LXR_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_DR4_LXR_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_DR5_CIS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_DR5_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_E2F_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_E2F_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_EGR_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_ERE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_ERE_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_ERRa_TRANS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_ERRg_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_ERRg_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_ERa_TRANS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_E_Box_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_E_Box_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_Ets_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_Ets_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_FXR_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_FoxA2_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_FoxA2_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_FoxO_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_FoxO_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_GAL4_TRANS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_GATA_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_GATA_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_GLI_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_GLI_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_GRE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_GRE_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_GR_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_GR_TRANS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_HIF1a_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_HIF1a_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_HNF4a_TRANS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_HNF4a_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_HNF6_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_HNF6_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_HSE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_HSE_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_IR1_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_IR1_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_ISRE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_ISRE_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_LXRa_TRANS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_LXRa_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_LXRb_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_LXRb_TRANS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_MRE_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_M_06_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_M_19_CIS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_M_19_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_M_19_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_M_32_CIS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_M_32_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_M_32_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_M_32_TRANS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_M_61_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_Myb_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_Myb_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_Myc_CIS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_Myc_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_NFI_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_NFI_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_NF_kB_CIS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_NF_kB_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_NRF1_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_NRF1_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_NRF2_ARE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_NRF2_ARE_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_NURR1_TRANS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_NURR1_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_Oct_MLP_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_Oct_MLP_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_PBREM_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_PBREM_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_PPARa_TRANS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_PPARa_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_PPARd_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_PPARg_TRANS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_PPRE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_PPRE_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_PXRE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_PXRE_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_PXR_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_PXR_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_Pax6_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_RARa_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_RARa_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_RARb_TRANS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_RARb_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_RARg_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_RARg_TRANS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_RORE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_RORE_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_RORb_TRANS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_RORg_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_RORg_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_RXRa_TRANS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_RXRa_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_RXRb_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_RXRb_TRANS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_SREBP_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_SREBP_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_STAT3_CIS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_STAT3_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_Sox_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_Sox_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_Sp1_CIS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_Sp1_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_TAL_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_TAL_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_TA_CIS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_TA_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_TCF_b_cat_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_TCF_b_cat_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_TGFb_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_TGFb_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_THRa1_TRANS_dn'</span><span class="p">,</span>
-    <span class="s1">'ATG_THRa1_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_VDRE_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_VDRE_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_VDR_TRANS_dn'</span><span class="p">,</span> <span class="s1">'ATG_VDR_TRANS_up'</span><span class="p">,</span> <span class="s1">'ATG_XTT_Cytotoxicity_up'</span><span class="p">,</span>
-    <span class="s1">'ATG_Xbp1_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_Xbp1_CIS_up'</span><span class="p">,</span> <span class="s1">'ATG_p53_CIS_dn'</span><span class="p">,</span> <span class="s1">'ATG_p53_CIS_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_3C_Eselectin_down'</span><span class="p">,</span> <span class="s1">'BSK_3C_HLADR_down'</span><span class="p">,</span> <span class="s1">'BSK_3C_ICAM1_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_3C_IL8_down'</span><span class="p">,</span> <span class="s1">'BSK_3C_MCP1_down'</span><span class="p">,</span> <span class="s1">'BSK_3C_MIG_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_3C_Proliferation_down'</span><span class="p">,</span> <span class="s1">'BSK_3C_SRB_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_3C_Thrombomodulin_down'</span><span class="p">,</span> <span class="s1">'BSK_3C_Thrombomodulin_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_3C_TissueFactor_down'</span><span class="p">,</span> <span class="s1">'BSK_3C_TissueFactor_up'</span><span class="p">,</span> <span class="s1">'BSK_3C_VCAM1_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_3C_Vis_down'</span><span class="p">,</span> <span class="s1">'BSK_3C_uPAR_down'</span><span class="p">,</span> <span class="s1">'BSK_4H_Eotaxin3_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_4H_MCP1_down'</span><span class="p">,</span> <span class="s1">'BSK_4H_Pselectin_down'</span><span class="p">,</span> <span class="s1">'BSK_4H_Pselectin_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_4H_SRB_down'</span><span class="p">,</span> <span class="s1">'BSK_4H_VCAM1_down'</span><span class="p">,</span> <span class="s1">'BSK_4H_VEGFRII_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_4H_uPAR_down'</span><span class="p">,</span> <span class="s1">'BSK_4H_uPAR_up'</span><span class="p">,</span> <span class="s1">'BSK_BE3C_HLADR_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_BE3C_IL1a_down'</span><span class="p">,</span> <span class="s1">'BSK_BE3C_IP10_down'</span><span class="p">,</span> <span class="s1">'BSK_BE3C_MIG_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_BE3C_MMP1_down'</span><span class="p">,</span> <span class="s1">'BSK_BE3C_MMP1_up'</span><span class="p">,</span> <span class="s1">'BSK_BE3C_PAI1_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_BE3C_SRB_down'</span><span class="p">,</span> <span class="s1">'BSK_BE3C_TGFb1_down'</span><span class="p">,</span> <span class="s1">'BSK_BE3C_tPA_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_BE3C_uPAR_down'</span><span class="p">,</span> <span class="s1">'BSK_BE3C_uPAR_up'</span><span class="p">,</span> <span class="s1">'BSK_BE3C_uPA_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_CASM3C_HLADR_down'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_IL6_down'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_IL6_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_CASM3C_IL8_down'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_LDLR_down'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_LDLR_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_CASM3C_MCP1_down'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_MCP1_up'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_MCSF_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_CASM3C_MCSF_up'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_MIG_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_CASM3C_Proliferation_down'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_Proliferation_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_CASM3C_SAA_down'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_SAA_up'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_SRB_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_CASM3C_Thrombomodulin_down'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_Thrombomodulin_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_CASM3C_TissueFactor_down'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_VCAM1_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_CASM3C_VCAM1_up'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_uPAR_down'</span><span class="p">,</span> <span class="s1">'BSK_CASM3C_uPAR_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_KF3CT_ICAM1_down'</span><span class="p">,</span> <span class="s1">'BSK_KF3CT_IL1a_down'</span><span class="p">,</span> <span class="s1">'BSK_KF3CT_IP10_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_KF3CT_IP10_up'</span><span class="p">,</span> <span class="s1">'BSK_KF3CT_MCP1_down'</span><span class="p">,</span> <span class="s1">'BSK_KF3CT_MCP1_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_KF3CT_MMP9_down'</span><span class="p">,</span> <span class="s1">'BSK_KF3CT_SRB_down'</span><span class="p">,</span> <span class="s1">'BSK_KF3CT_TGFb1_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_KF3CT_TIMP2_down'</span><span class="p">,</span> <span class="s1">'BSK_KF3CT_uPA_down'</span><span class="p">,</span> <span class="s1">'BSK_LPS_CD40_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_LPS_Eselectin_down'</span><span class="p">,</span> <span class="s1">'BSK_LPS_Eselectin_up'</span><span class="p">,</span> <span class="s1">'BSK_LPS_IL1a_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_LPS_IL1a_up'</span><span class="p">,</span> <span class="s1">'BSK_LPS_IL8_down'</span><span class="p">,</span> <span class="s1">'BSK_LPS_IL8_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_LPS_MCP1_down'</span><span class="p">,</span> <span class="s1">'BSK_LPS_MCSF_down'</span><span class="p">,</span> <span class="s1">'BSK_LPS_PGE2_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_LPS_PGE2_up'</span><span class="p">,</span> <span class="s1">'BSK_LPS_SRB_down'</span><span class="p">,</span> <span class="s1">'BSK_LPS_TNFa_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_LPS_TNFa_up'</span><span class="p">,</span> <span class="s1">'BSK_LPS_TissueFactor_down'</span><span class="p">,</span> <span class="s1">'BSK_LPS_TissueFactor_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_LPS_VCAM1_down'</span><span class="p">,</span> <span class="s1">'BSK_SAg_CD38_down'</span><span class="p">,</span> <span class="s1">'BSK_SAg_CD40_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_SAg_CD69_down'</span><span class="p">,</span> <span class="s1">'BSK_SAg_Eselectin_down'</span><span class="p">,</span> <span class="s1">'BSK_SAg_Eselectin_up'</span><span class="p">,</span>
-    <span class="s1">'BSK_SAg_IL8_down'</span><span class="p">,</span> <span class="s1">'BSK_SAg_IL8_up'</span><span class="p">,</span> <span class="s1">'BSK_SAg_MCP1_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_SAg_MIG_down'</span><span class="p">,</span> <span class="s1">'BSK_SAg_PBMCCytotoxicity_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_SAg_PBMCCytotoxicity_up'</span><span class="p">,</span> <span class="s1">'BSK_SAg_Proliferation_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_SAg_SRB_down'</span><span class="p">,</span> <span class="s1">'BSK_hDFCGF_CollagenIII_down'</span><span class="p">,</span> <span class="s1">'BSK_hDFCGF_EGFR_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_hDFCGF_EGFR_up'</span><span class="p">,</span> <span class="s1">'BSK_hDFCGF_IL8_down'</span><span class="p">,</span> <span class="s1">'BSK_hDFCGF_IP10_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_hDFCGF_MCSF_down'</span><span class="p">,</span> <span class="s1">'BSK_hDFCGF_MIG_down'</span><span class="p">,</span> <span class="s1">'BSK_hDFCGF_MMP1_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_hDFCGF_MMP1_up'</span><span class="p">,</span> <span class="s1">'BSK_hDFCGF_PAI1_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_hDFCGF_Proliferation_down'</span><span class="p">,</span> <span class="s1">'BSK_hDFCGF_SRB_down'</span><span class="p">,</span>
-    <span class="s1">'BSK_hDFCGF_TIMP1_down'</span><span class="p">,</span> <span class="s1">'BSK_hDFCGF_VCAM1_down'</span><span class="p">,</span> <span class="s1">'CEETOX_H295R_11DCORT_dn'</span><span class="p">,</span>
-    <span class="s1">'CEETOX_H295R_ANDR_dn'</span><span class="p">,</span> <span class="s1">'CEETOX_H295R_CORTISOL_dn'</span><span class="p">,</span> <span class="s1">'CEETOX_H295R_DOC_dn'</span><span class="p">,</span>
-    <span class="s1">'CEETOX_H295R_DOC_up'</span><span class="p">,</span> <span class="s1">'CEETOX_H295R_ESTRADIOL_dn'</span><span class="p">,</span>
-    <span class="s1">'CEETOX_H295R_ESTRADIOL_up'</span><span class="p">,</span> <span class="s1">'CEETOX_H295R_ESTRONE_dn'</span><span class="p">,</span>
-    <span class="s1">'CEETOX_H295R_ESTRONE_up'</span><span class="p">,</span> <span class="s1">'CEETOX_H295R_OHPREG_up'</span><span class="p">,</span>
-    <span class="s1">'CEETOX_H295R_OHPROG_dn'</span><span class="p">,</span> <span class="s1">'CEETOX_H295R_OHPROG_up'</span><span class="p">,</span> <span class="s1">'CEETOX_H295R_PROG_up'</span><span class="p">,</span>
-    <span class="s1">'CEETOX_H295R_TESTO_dn'</span><span class="p">,</span> <span class="s1">'CLD_ABCB1_48hr'</span><span class="p">,</span> <span class="s1">'CLD_ABCG2_48hr'</span><span class="p">,</span>
-    <span class="s1">'CLD_CYP1A1_24hr'</span><span class="p">,</span> <span class="s1">'CLD_CYP1A1_48hr'</span><span class="p">,</span> <span class="s1">'CLD_CYP1A1_6hr'</span><span class="p">,</span> <span class="s1">'CLD_CYP1A2_24hr'</span><span class="p">,</span>
-    <span class="s1">'CLD_CYP1A2_48hr'</span><span class="p">,</span> <span class="s1">'CLD_CYP1A2_6hr'</span><span class="p">,</span> <span class="s1">'CLD_CYP2B6_24hr'</span><span class="p">,</span> <span class="s1">'CLD_CYP2B6_48hr'</span><span class="p">,</span>
-    <span class="s1">'CLD_CYP2B6_6hr'</span><span class="p">,</span> <span class="s1">'CLD_CYP3A4_24hr'</span><span class="p">,</span> <span class="s1">'CLD_CYP3A4_48hr'</span><span class="p">,</span> <span class="s1">'CLD_CYP3A4_6hr'</span><span class="p">,</span>
-    <span class="s1">'CLD_GSTA2_48hr'</span><span class="p">,</span> <span class="s1">'CLD_SULT2A_24hr'</span><span class="p">,</span> <span class="s1">'CLD_SULT2A_48hr'</span><span class="p">,</span> <span class="s1">'CLD_UGT1A1_24hr'</span><span class="p">,</span>
-    <span class="s1">'CLD_UGT1A1_48hr'</span><span class="p">,</span> <span class="s1">'NCCT_HEK293T_CellTiterGLO'</span><span class="p">,</span> <span class="s1">'NCCT_QuantiLum_inhib_2_dn'</span><span class="p">,</span>
-    <span class="s1">'NCCT_QuantiLum_inhib_dn'</span><span class="p">,</span> <span class="s1">'NCCT_TPO_AUR_dn'</span><span class="p">,</span> <span class="s1">'NCCT_TPO_GUA_dn'</span><span class="p">,</span>
-    <span class="s1">'NHEERL_ZF_144hpf_TERATOSCORE_up'</span><span class="p">,</span> <span class="s1">'NVS_ADME_hCYP19A1'</span><span class="p">,</span> <span class="s1">'NVS_ADME_hCYP1A1'</span><span class="p">,</span>
-    <span class="s1">'NVS_ADME_hCYP1A2'</span><span class="p">,</span> <span class="s1">'NVS_ADME_hCYP2A6'</span><span class="p">,</span> <span class="s1">'NVS_ADME_hCYP2B6'</span><span class="p">,</span>
-    <span class="s1">'NVS_ADME_hCYP2C19'</span><span class="p">,</span> <span class="s1">'NVS_ADME_hCYP2C9'</span><span class="p">,</span> <span class="s1">'NVS_ADME_hCYP2D6'</span><span class="p">,</span>
-    <span class="s1">'NVS_ADME_hCYP3A4'</span><span class="p">,</span> <span class="s1">'NVS_ADME_hCYP4F12'</span><span class="p">,</span> <span class="s1">'NVS_ADME_rCYP2C12'</span><span class="p">,</span>
-    <span class="s1">'NVS_ENZ_hAChE'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hAMPKa1'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hAurA'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hBACE'</span><span class="p">,</span>
-    <span class="s1">'NVS_ENZ_hCASP5'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hCK1D'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hDUSP3'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hES'</span><span class="p">,</span>
-    <span class="s1">'NVS_ENZ_hElastase'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hFGFR1'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hGSK3b'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hMMP1'</span><span class="p">,</span>
-    <span class="s1">'NVS_ENZ_hMMP13'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hMMP2'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hMMP3'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hMMP7'</span><span class="p">,</span>
-    <span class="s1">'NVS_ENZ_hMMP9'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hPDE10'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hPDE4A1'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hPDE5'</span><span class="p">,</span>
-    <span class="s1">'NVS_ENZ_hPI3Ka'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hPTEN'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hPTPN11'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hPTPN12'</span><span class="p">,</span>
-    <span class="s1">'NVS_ENZ_hPTPN13'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hPTPN9'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hPTPRC'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hSIRT1'</span><span class="p">,</span>
-    <span class="s1">'NVS_ENZ_hSIRT2'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hTrkA'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_hVEGFR2'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_oCOX1'</span><span class="p">,</span>
-    <span class="s1">'NVS_ENZ_oCOX2'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_rAChE'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_rCNOS'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_rMAOAC'</span><span class="p">,</span>
-    <span class="s1">'NVS_ENZ_rMAOAP'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_rMAOBC'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_rMAOBP'</span><span class="p">,</span> <span class="s1">'NVS_ENZ_rabI2C'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_bAdoR_NonSelective'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_bDR_NonSelective'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_g5HT4'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_gH2'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_gLTB4'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_gLTD4'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_gMPeripheral_NonSelective'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_gOpiateK'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_h5HT2A'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_h5HT5A'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_h5HT6'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_h5HT7'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_hAT1'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hAdoRA1'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hAdoRA2a'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_hAdra2A'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hAdra2C'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hAdrb1'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_hAdrb2'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hAdrb3'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hDRD1'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hDRD2s'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_hDRD4.4'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hH1'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hLTB4_BLT1'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hM1'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_hM2'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hM3'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hM4'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hNK2'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_hOpiate_D1'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hOpiate_mu'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_hTXA2'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_p5HT2C'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_r5HT1_NonSelective'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_r5HT_NonSelective'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_rAdra1B'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_rAdra1_NonSelective'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_rAdra2_NonSelective'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_rAdrb_NonSelective'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_rNK1'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_rNK3'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_rOpiate_NonSelective'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_rOpiate_NonSelectiveNa'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_rSST'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_rTRH'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_rV1'</span><span class="p">,</span> <span class="s1">'NVS_GPCR_rabPAF'</span><span class="p">,</span>
-    <span class="s1">'NVS_GPCR_rmAdra2B'</span><span class="p">,</span> <span class="s1">'NVS_IC_hKhERGCh'</span><span class="p">,</span> <span class="s1">'NVS_IC_rCaBTZCHL'</span><span class="p">,</span>
-    <span class="s1">'NVS_IC_rCaDHPRCh_L'</span><span class="p">,</span> <span class="s1">'NVS_IC_rNaCh_site2'</span><span class="p">,</span> <span class="s1">'NVS_LGIC_bGABARa1'</span><span class="p">,</span>
-    <span class="s1">'NVS_LGIC_h5HT3'</span><span class="p">,</span> <span class="s1">'NVS_LGIC_hNNR_NBungSens'</span><span class="p">,</span> <span class="s1">'NVS_LGIC_rGABAR_NonSelective'</span><span class="p">,</span>
-    <span class="s1">'NVS_LGIC_rNNR_BungSens'</span><span class="p">,</span> <span class="s1">'NVS_MP_hPBR'</span><span class="p">,</span> <span class="s1">'NVS_MP_rPBR'</span><span class="p">,</span> <span class="s1">'NVS_NR_bER'</span><span class="p">,</span>
-    <span class="s1">'NVS_NR_bPR'</span><span class="p">,</span> <span class="s1">'NVS_NR_cAR'</span><span class="p">,</span> <span class="s1">'NVS_NR_hAR'</span><span class="p">,</span> <span class="s1">'NVS_NR_hCAR_Antagonist'</span><span class="p">,</span>
-    <span class="s1">'NVS_NR_hER'</span><span class="p">,</span> <span class="s1">'NVS_NR_hFXR_Agonist'</span><span class="p">,</span> <span class="s1">'NVS_NR_hFXR_Antagonist'</span><span class="p">,</span> <span class="s1">'NVS_NR_hGR'</span><span class="p">,</span>
-    <span class="s1">'NVS_NR_hPPARa'</span><span class="p">,</span> <span class="s1">'NVS_NR_hPPARg'</span><span class="p">,</span> <span class="s1">'NVS_NR_hPR'</span><span class="p">,</span> <span class="s1">'NVS_NR_hPXR'</span><span class="p">,</span>
-    <span class="s1">'NVS_NR_hRAR_Antagonist'</span><span class="p">,</span> <span class="s1">'NVS_NR_hRARa_Agonist'</span><span class="p">,</span> <span class="s1">'NVS_NR_hTRa_Antagonist'</span><span class="p">,</span>
-    <span class="s1">'NVS_NR_mERa'</span><span class="p">,</span> <span class="s1">'NVS_NR_rAR'</span><span class="p">,</span> <span class="s1">'NVS_NR_rMR'</span><span class="p">,</span> <span class="s1">'NVS_OR_gSIGMA_NonSelective'</span><span class="p">,</span>
-    <span class="s1">'NVS_TR_gDAT'</span><span class="p">,</span> <span class="s1">'NVS_TR_hAdoT'</span><span class="p">,</span> <span class="s1">'NVS_TR_hDAT'</span><span class="p">,</span> <span class="s1">'NVS_TR_hNET'</span><span class="p">,</span> <span class="s1">'NVS_TR_hSERT'</span><span class="p">,</span>
-    <span class="s1">'NVS_TR_rNET'</span><span class="p">,</span> <span class="s1">'NVS_TR_rSERT'</span><span class="p">,</span> <span class="s1">'NVS_TR_rVMAT2'</span><span class="p">,</span> <span class="s1">'OT_AR_ARELUC_AG_1440'</span><span class="p">,</span>
-    <span class="s1">'OT_AR_ARSRC1_0480'</span><span class="p">,</span> <span class="s1">'OT_AR_ARSRC1_0960'</span><span class="p">,</span> <span class="s1">'OT_ER_ERaERa_0480'</span><span class="p">,</span>
-    <span class="s1">'OT_ER_ERaERa_1440'</span><span class="p">,</span> <span class="s1">'OT_ER_ERaERb_0480'</span><span class="p">,</span> <span class="s1">'OT_ER_ERaERb_1440'</span><span class="p">,</span>
-    <span class="s1">'OT_ER_ERbERb_0480'</span><span class="p">,</span> <span class="s1">'OT_ER_ERbERb_1440'</span><span class="p">,</span> <span class="s1">'OT_ERa_EREGFP_0120'</span><span class="p">,</span>
-    <span class="s1">'OT_ERa_EREGFP_0480'</span><span class="p">,</span> <span class="s1">'OT_FXR_FXRSRC1_0480'</span><span class="p">,</span> <span class="s1">'OT_FXR_FXRSRC1_1440'</span><span class="p">,</span>
-    <span class="s1">'OT_NURR1_NURR1RXRa_0480'</span><span class="p">,</span> <span class="s1">'OT_NURR1_NURR1RXRa_1440'</span><span class="p">,</span>
-    <span class="s1">'TOX21_ARE_BLA_Agonist_ch1'</span><span class="p">,</span> <span class="s1">'TOX21_ARE_BLA_Agonist_ch2'</span><span class="p">,</span>
-    <span class="s1">'TOX21_ARE_BLA_agonist_ratio'</span><span class="p">,</span> <span class="s1">'TOX21_ARE_BLA_agonist_viability'</span><span class="p">,</span>
-    <span class="s1">'TOX21_AR_BLA_Agonist_ch1'</span><span class="p">,</span> <span class="s1">'TOX21_AR_BLA_Agonist_ch2'</span><span class="p">,</span>
-    <span class="s1">'TOX21_AR_BLA_Agonist_ratio'</span><span class="p">,</span> <span class="s1">'TOX21_AR_BLA_Antagonist_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_AR_BLA_Antagonist_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_AR_BLA_Antagonist_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_AR_BLA_Antagonist_viability'</span><span class="p">,</span> <span class="s1">'TOX21_AR_LUC_MDAKB2_Agonist'</span><span class="p">,</span>
-    <span class="s1">'TOX21_AR_LUC_MDAKB2_Antagonist'</span><span class="p">,</span> <span class="s1">'TOX21_AR_LUC_MDAKB2_Antagonist2'</span><span class="p">,</span>
-    <span class="s1">'TOX21_AhR_LUC_Agonist'</span><span class="p">,</span> <span class="s1">'TOX21_Aromatase_Inhibition'</span><span class="p">,</span>
-    <span class="s1">'TOX21_AutoFluor_HEK293_Cell_blue'</span><span class="p">,</span> <span class="s1">'TOX21_AutoFluor_HEK293_Media_blue'</span><span class="p">,</span>
-    <span class="s1">'TOX21_AutoFluor_HEPG2_Cell_blue'</span><span class="p">,</span> <span class="s1">'TOX21_AutoFluor_HEPG2_Cell_green'</span><span class="p">,</span>
-    <span class="s1">'TOX21_AutoFluor_HEPG2_Media_blue'</span><span class="p">,</span> <span class="s1">'TOX21_AutoFluor_HEPG2_Media_green'</span><span class="p">,</span>
-    <span class="s1">'TOX21_ELG1_LUC_Agonist'</span><span class="p">,</span> <span class="s1">'TOX21_ERa_BLA_Agonist_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_ERa_BLA_Agonist_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_ERa_BLA_Agonist_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_ERa_BLA_Antagonist_ch1'</span><span class="p">,</span> <span class="s1">'TOX21_ERa_BLA_Antagonist_ch2'</span><span class="p">,</span>
-    <span class="s1">'TOX21_ERa_BLA_Antagonist_ratio'</span><span class="p">,</span> <span class="s1">'TOX21_ERa_BLA_Antagonist_viability'</span><span class="p">,</span>
-    <span class="s1">'TOX21_ERa_LUC_BG1_Agonist'</span><span class="p">,</span> <span class="s1">'TOX21_ERa_LUC_BG1_Antagonist'</span><span class="p">,</span>
-    <span class="s1">'TOX21_ESRE_BLA_ch1'</span><span class="p">,</span> <span class="s1">'TOX21_ESRE_BLA_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_ESRE_BLA_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_ESRE_BLA_viability'</span><span class="p">,</span> <span class="s1">'TOX21_FXR_BLA_Antagonist_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_FXR_BLA_Antagonist_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_FXR_BLA_agonist_ch2'</span><span class="p">,</span>
-    <span class="s1">'TOX21_FXR_BLA_agonist_ratio'</span><span class="p">,</span> <span class="s1">'TOX21_FXR_BLA_antagonist_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_FXR_BLA_antagonist_viability'</span><span class="p">,</span> <span class="s1">'TOX21_GR_BLA_Agonist_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_GR_BLA_Agonist_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_GR_BLA_Agonist_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_GR_BLA_Antagonist_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_GR_BLA_Antagonist_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_GR_BLA_Antagonist_viability'</span><span class="p">,</span> <span class="s1">'TOX21_HSE_BLA_agonist_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_HSE_BLA_agonist_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_HSE_BLA_agonist_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_HSE_BLA_agonist_viability'</span><span class="p">,</span> <span class="s1">'TOX21_MMP_ratio_down'</span><span class="p">,</span>
-    <span class="s1">'TOX21_MMP_ratio_up'</span><span class="p">,</span> <span class="s1">'TOX21_MMP_viability'</span><span class="p">,</span> <span class="s1">'TOX21_NFkB_BLA_agonist_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_NFkB_BLA_agonist_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_NFkB_BLA_agonist_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_NFkB_BLA_agonist_viability'</span><span class="p">,</span> <span class="s1">'TOX21_PPARd_BLA_Agonist_viability'</span><span class="p">,</span>
-    <span class="s1">'TOX21_PPARd_BLA_Antagonist_ch1'</span><span class="p">,</span> <span class="s1">'TOX21_PPARd_BLA_agonist_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_PPARd_BLA_agonist_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_PPARd_BLA_agonist_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_PPARd_BLA_antagonist_ratio'</span><span class="p">,</span> <span class="s1">'TOX21_PPARd_BLA_antagonist_viability'</span><span class="p">,</span>
-    <span class="s1">'TOX21_PPARg_BLA_Agonist_ch1'</span><span class="p">,</span> <span class="s1">'TOX21_PPARg_BLA_Agonist_ch2'</span><span class="p">,</span>
-    <span class="s1">'TOX21_PPARg_BLA_Agonist_ratio'</span><span class="p">,</span> <span class="s1">'TOX21_PPARg_BLA_Antagonist_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_PPARg_BLA_antagonist_ratio'</span><span class="p">,</span> <span class="s1">'TOX21_PPARg_BLA_antagonist_viability'</span><span class="p">,</span>
-    <span class="s1">'TOX21_TR_LUC_GH3_Agonist'</span><span class="p">,</span> <span class="s1">'TOX21_TR_LUC_GH3_Antagonist'</span><span class="p">,</span>
-    <span class="s1">'TOX21_VDR_BLA_Agonist_viability'</span><span class="p">,</span> <span class="s1">'TOX21_VDR_BLA_Antagonist_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_VDR_BLA_agonist_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_VDR_BLA_agonist_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_VDR_BLA_antagonist_ratio'</span><span class="p">,</span> <span class="s1">'TOX21_VDR_BLA_antagonist_viability'</span><span class="p">,</span>
-    <span class="s1">'TOX21_p53_BLA_p1_ch1'</span><span class="p">,</span> <span class="s1">'TOX21_p53_BLA_p1_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_p53_BLA_p1_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_p53_BLA_p1_viability'</span><span class="p">,</span> <span class="s1">'TOX21_p53_BLA_p2_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_p53_BLA_p2_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_p53_BLA_p2_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_p53_BLA_p2_viability'</span><span class="p">,</span> <span class="s1">'TOX21_p53_BLA_p3_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_p53_BLA_p3_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_p53_BLA_p3_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_p53_BLA_p3_viability'</span><span class="p">,</span> <span class="s1">'TOX21_p53_BLA_p4_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_p53_BLA_p4_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_p53_BLA_p4_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_p53_BLA_p4_viability'</span><span class="p">,</span> <span class="s1">'TOX21_p53_BLA_p5_ch1'</span><span class="p">,</span>
-    <span class="s1">'TOX21_p53_BLA_p5_ch2'</span><span class="p">,</span> <span class="s1">'TOX21_p53_BLA_p5_ratio'</span><span class="p">,</span>
-    <span class="s1">'TOX21_p53_BLA_p5_viability'</span><span class="p">,</span> <span class="s1">'Tanguay_ZF_120hpf_AXIS_up'</span><span class="p">,</span>
-    <span class="s1">'Tanguay_ZF_120hpf_ActivityScore'</span><span class="p">,</span> <span class="s1">'Tanguay_ZF_120hpf_BRAI_up'</span><span class="p">,</span>
-    <span class="s1">'Tanguay_ZF_120hpf_CFIN_up'</span><span class="p">,</span> <span class="s1">'Tanguay_ZF_120hpf_CIRC_up'</span><span class="p">,</span>
-    <span class="s1">'Tanguay_ZF_120hpf_EYE_up'</span><span class="p">,</span> <span class="s1">'Tanguay_ZF_120hpf_JAW_up'</span><span class="p">,</span>
-    <span class="s1">'Tanguay_ZF_120hpf_MORT_up'</span><span class="p">,</span> <span class="s1">'Tanguay_ZF_120hpf_OTIC_up'</span><span class="p">,</span>
-    <span class="s1">'Tanguay_ZF_120hpf_PE_up'</span><span class="p">,</span> <span class="s1">'Tanguay_ZF_120hpf_PFIN_up'</span><span class="p">,</span>
-    <span class="s1">'Tanguay_ZF_120hpf_PIG_up'</span><span class="p">,</span> <span class="s1">'Tanguay_ZF_120hpf_SNOU_up'</span><span class="p">,</span>
-    <span class="s1">'Tanguay_ZF_120hpf_SOMI_up'</span><span class="p">,</span> <span class="s1">'Tanguay_ZF_120hpf_SWIM_up'</span><span class="p">,</span>
-    <span class="s1">'Tanguay_ZF_120hpf_TRUN_up'</span><span class="p">,</span> <span class="s1">'Tanguay_ZF_120hpf_TR_up'</span><span class="p">,</span>
-    <span class="s1">'Tanguay_ZF_120hpf_YSE_up'</span>
-<span class="p">]</span>
 </pre></div>
+
+
         </article>
       </div>
       <footer>
         
+
         <div class="related-pages">
           
           
@@ -568,7 +434,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2025, Gang Liu
+                Copyright &#169; 2025–2026, Gang Liu
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -580,6 +446,11 @@
           </div>
         </div>
         
+<div class="tm-footer">
+  <span>torch-molecule <span class="tm-footer-dot">·</span> Open source, open discovery.</span>
+  <div><a href="../../../additional.html">Contribute</a><a href="https://github.com/liugangcode/torch-molecule/blob/main/LICENSE">MIT license</a><a href="https://github.com/liugangcode/torch-molecule">GitHub ↗</a></div>
+</div>
+
       </footer>
     </div>
     <aside class="toc-drawer no-toc">
@@ -588,9 +459,11 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=a6319924"></script>
+</div>
+<script src="../../../_static/documentation_options.js?v=ca7ad2ea"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/torch-molecule.js?v=7701f30b"></script>
     </body>
 </html>

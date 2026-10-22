@@ -17,6 +17,25 @@ builds `docs/build/html`, and publishes that directory to the `gh-pages` branch.
 Generated HTML can remain ignored: the workflow creates it from the tracked
 source files before publishing.
 
+## Dataset statistics
+
+The dataset guide uses the two responsive figures in
+`source/_static/dataset-statistics*.svg`. They use the same published `hub.json`
+as the molecular dataset hub; no dataset files are downloaded. Refresh them with:
+
+```bash
+micromamba run -n torch-molecule python docs/update_dataset_statistics.py
+```
+
+Use `--input path/to/hub.json` to render a saved release offline. Ordinary Sphinx
+builds use the committed figures and need no network access for the statistics.
+The documentation workflow refreshes them on pushes to `main` and daily at
+03:00 UTC, then publishes the website. It can also be run manually from GitHub
+Actions. The README embeds the published website figures, so both follow the
+latest successful deployment without automated commits to `main`. Browser and
+GitHub image caches may delay the new image. The image URLs become
+available on the first deployment containing these figures.
+
 ## Add a model reference
 
 Create `docs/source/api/models/MyMolecularPredictor.rst`:

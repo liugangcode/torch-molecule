@@ -103,6 +103,8 @@ article .admonition { margin: 16px 0; padding: 12px 16px; border: 1px solid var(
 article .admonition > .admonition-title { margin: -12px -16px 10px; padding-top: 8px; padding-bottom: 8px; font-size: 14px; }
 article .admonition > :last-child { margin-bottom: 0; }
 article .tm-example .highlight pre { max-height: 36rem; overflow: auto; }
+.tm-dataset-statistics { display: block; max-width: 960px; margin: 16px 0; }
+.tm-dataset-statistics img { display: block; width: 100%; height: auto; }
 article .tm-defaults { border: 1px solid var(--tm-line); border-radius: 4px; margin: 24px 0; padding: 0 18px; }
 article .tm-defaults summary { padding: 15px 0; cursor: pointer; font-size: 14px; font-weight: 600; }
 article .tm-defaults .highlight { max-height: 24rem; overflow: auto; margin-bottom: 18px; }

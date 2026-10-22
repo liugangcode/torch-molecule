@@ -6,14 +6,36 @@ numerical target array with shape ``(n_molecules, n_tasks)``. Dataset loaders
 return a :class:`~torch_molecule.datasets.constant.SMILESDataset` with ``data``
 and ``target`` attributes; unlabeled datasets have ``target=None``.
 
+Collection statistics
+---------------------
+
+Explore small-molecule and polymer datasets in the
+`molecular dataset hub <https://liugangcode.github.io/molecular-dataset-hub/>`_,
+including their original sources, licenses, quality tags, and available data.
+
+.. raw:: html
+
+   <a class="tm-dataset-statistics" href="https://liugangcode.github.io/molecular-dataset-hub/#explore">
+     <picture>
+       <source media="(max-width: 600px)" srcset="_static/dataset-statistics-compact.svg">
+       <img src="_static/dataset-statistics.svg" alt="Open the Molecular Dataset Hub for current dataset counts, Hugging Face coverage, source rows, tasks, and the interactive map.">
+     </picture>
+   </a>
+
+Read the hub's `current counts <https://liugangcode.github.io/molecular-dataset-hub/#stats>`_
+or select the figure to explore its interactive map.
+Hugging Face entries include public and gated datasets, and some provide files
+instead of SMILES tables. Source rows can repeat structures and are not a count
+of unique molecules. Each dataset retains its own license.
+
 Load a dataset
 --------------
 
 ``load_dataset`` reads any published dataset of the
 `molecular dataset hub <https://liugangcode.github.io/molecular-dataset-hub/>`_
-by its original name: 87 small-molecule and polymer datasets with their license,
-original sources, quality tags, and source splits. Files download on first use
-and are reused from ``local_dir``.
+by its original name. Use ``list_datasets()`` to see the current collection and
+filter by domain, category, quality, or access. Files download on first use and
+are reused from ``local_dir``.
 
 .. code-block:: python
 

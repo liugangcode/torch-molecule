@@ -122,7 +122,20 @@ print(model.generate(n_samples=5, scaffold="c1ccccc1"))
 
 > More examples can be found in the `examples` folder.
 
-`torch-molecule` supports applications in broad domains from chemistry, biology, to materials science. Load any of 87 published datasets from the [molecular dataset hub](https://liugangcode.github.io/molecular-dataset-hub/) by its original name, with its license, units, source splits, and quality tags:
+### Datasets
+
+Explore small-molecule and polymer datasets in the [molecular dataset hub](https://liugangcode.github.io/molecular-dataset-hub/), with original sources, licenses, units, source splits, and quality tags.
+
+<a href="https://liugangcode.github.io/molecular-dataset-hub/#explore">
+  <picture>
+    <source media="(max-width: 600px)" srcset="https://liugangcode.github.io/torch-molecule/_static/dataset-statistics-compact.svg">
+    <img src="https://liugangcode.github.io/torch-molecule/_static/dataset-statistics.svg" alt="Open the Molecular Dataset Hub for current dataset counts, Hugging Face coverage, source rows, tasks, and the interactive map.">
+  </picture>
+</a>
+
+[Current counts](https://liugangcode.github.io/molecular-dataset-hub/#stats) follow the hub's published metadata. Hugging Face entries include public and gated datasets and files without SMILES tables. Source rows may repeat structures; each dataset retains its own license.
+
+Load published SMILES tables by their original dataset name:
 
 ```python
 from torch_molecule.datasets import list_datasets, load_dataset

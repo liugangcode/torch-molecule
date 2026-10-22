@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="360" height="492" viewBox="0 0 360 492" role="img" aria-labelledby="title description">
+<metadata id="dataset-statistics">{&quot;snapshot&quot;: &quot;2026-10-22&quot;, &quot;datasets&quot;: 251, &quot;published_datasets&quot;: 205}</metadata>
 <title id="title">Molecular Dataset Hub statistics</title>
 <desc id="description">Snapshot 2026-10-22: 251 datasets, 205 published on Hugging Face, 24,699,163 source rows, 207 with processed tables, 242 processed tables, and 94,855 distinct tasks. Source rows may include repeated structures. Each dataset retains its own license.</desc>
 <style>

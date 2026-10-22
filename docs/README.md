@@ -21,7 +21,8 @@ source files before publishing.
 
 The dataset guide uses the two responsive figures in
 `source/_static/dataset-statistics*.svg`. They use the same published `hub.json`
-as the molecular dataset hub; no dataset files are downloaded. Refresh them with:
+as the molecular dataset hub; no dataset files are downloaded. The homepage
+reads its dataset count from the same figures' structured metadata. Refresh them with:
 
 ```bash
 micromamba run -n torch-molecule python docs/update_dataset_statistics.py

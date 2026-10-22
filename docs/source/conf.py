@@ -2,9 +2,11 @@
 
 import ast
 from datetime import date
+import json
 from pathlib import Path
 import sys
 import tomllib
+from xml.etree import ElementTree
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -35,6 +37,10 @@ html_theme_options = {
     "light_css_variables": {
         "color-brand-primary": "#984b35",
         "color-brand-content": "#984b35",
+        "color-link": "#984b35",
+        "color-link--hover": "#984b35",
+        "color-link--visited": "#984b35",
+        "color-link--visited--hover": "#984b35",
         "color-background-primary": "#faf9f6",
         "color-background-secondary": "#f1f0eb",
         "color-foreground-primary": "#242721",
@@ -44,6 +50,10 @@ html_theme_options = {
     "dark_css_variables": {
         "color-brand-primary": "#e8a38b",
         "color-brand-content": "#e8a38b",
+        "color-link": "#e8a38b",
+        "color-link--hover": "#e8a38b",
+        "color-link--visited": "#e8a38b",
+        "color-link--visited--hover": "#e8a38b",
         "color-background-primary": "#20231f",
         "color-background-secondary": "#292d27",
         "color-foreground-primary": "#f5f3eb",
@@ -68,7 +78,10 @@ model_names = next(
     if isinstance(node, ast.Assign)
     and any(isinstance(target, ast.Name) and target.id == "__all__" for target in node.targets)
 )
+dataset_figure = ElementTree.parse(Path(__file__).parent / "_static" / "dataset-statistics.svg")
+dataset_statistics = json.loads(dataset_figure.find("{http://www.w3.org/2000/svg}metadata").text)
 html_context = {
+    "dataset_statistics": dataset_statistics,
     "model_counts": {
         name: sum(model.endswith(f"Molecular{suffix}") for model in model_names)
         for name, suffix in [

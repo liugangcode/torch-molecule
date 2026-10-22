@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 380" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 330" role="img" aria-labelledby="title desc">
 <title id="title">Aspirin as a molecular graph</title>
 <desc id="desc">The thirteen heavy atoms and their bonds in aspirin, arranged using two-dimensional molecular coordinates. Oxygen atoms are shown in copper and carbon atoms in green.</desc>
 <g fill="none" stroke="#526b5c" stroke-width="1" opacity="0.24">
@@ -41,14 +41,10 @@
 <circle cx="388.82" cy="269.90" r="11" fill="#984b35"/>
 <circle cx="285.42" cy="292.00" r="11" fill="#984b35"/>
 </g>
-<g fill="#fffdf8" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" dominant-baseline="central">
+<g fill="#fffdf8" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" dominant-baseline="central">
 <text x="143.74" y="135.00">O</text>
 <text x="214.58" y="213.50">O</text>
 <text x="388.82" y="269.90">O</text>
 <text x="285.42" y="292.00">O</text>
-</g>
-<g fill="#526b5c" font-family="monospace" font-size="10" letter-spacing="1.4">
-<text x="48" y="354">SMILES → GRAPH</text>
-<text x="452" y="354" text-anchor="end">13 ATOMS · 13 BONDS</text>
 </g>
 </svg>

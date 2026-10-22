@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const navigation = document.querySelector(".tm-navigation");
   const search = document.querySelector(".tm-search input");
   const searchForm = document.querySelector(".tm-search");
+  new ResizeObserver(([entry]) => {
+    document.documentElement.style.setProperty("--tm-header-height", `${entry.target.offsetHeight}px`);
+  }).observe(document.querySelector(".tm-header"));
   const searchLink = document.createElement("a");
   searchLink.href = searchForm.action;
   searchLink.textContent = "Search documentation";

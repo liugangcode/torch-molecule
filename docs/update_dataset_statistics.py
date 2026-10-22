@@ -37,9 +37,12 @@ def statistics_svg(hub, compact=False):
         f'{summary["processed_tables"]:,} processed tables, and {summary["distinct_tasks"]:,} distinct tasks. '
         "Source rows may include repeated structures. Each dataset retains its own license."
     )
+    metadata = {"snapshot": hub["snapshot"], "datasets": summary["catalog_entries"],
+                "published_datasets": published}
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
         f'viewBox="0 0 {width} {height}" role="img" aria-labelledby="title description">',
+        f'<metadata id="dataset-statistics">{escape(json.dumps(metadata))}</metadata>',
         '<title id="title">Molecular Dataset Hub statistics</title>',
         f'<desc id="description">{escape(description)}</desc>',
         """<style>

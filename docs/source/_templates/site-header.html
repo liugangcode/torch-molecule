@@ -5,8 +5,9 @@
   </a>
   <button class="tm-menu-toggle" aria-controls="tm-site-navigation" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
   <nav class="tm-navigation" id="tm-site-navigation" aria-label="Main navigation">
-    <a href="{{ pathto('overview') }}"{% if pagename in ['overview', 'install', 'dataset', 'additional'] or pagename.startswith('api/') %} aria-current="page"{% endif %}>Documentation</a>
+    <a href="{{ pathto('overview') }}"{% if pagename in ['overview', 'install', 'additional'] or (pagename.startswith('api/') and not pagename.startswith('api/datasets/')) %} aria-current="page"{% endif %}>Documentation</a>
     <a href="{{ pathto('models') }}"{% if pagename == 'models' %} aria-current="page"{% endif %}>Models</a>
+    <a href="{{ pathto('dataset') }}"{% if pagename == 'dataset' or pagename.startswith('api/datasets/') %} aria-current="page"{% endif %}>Datasets</a>
     <a href="{{ pathto('example') }}"{% if pagename == 'example' %} aria-current="page"{% endif %}>Examples</a>
     <a href="https://github.com/liugangcode/torch-molecule" class="tm-github">GitHub <span aria-hidden="true">↗</span></a>
   </nav>

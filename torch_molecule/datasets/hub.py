@@ -146,6 +146,10 @@ def load_dataset(
     if entry["access"] == "link":
         source = entry["links"].get("original_data") or (entry["links"]["studies"] or [{}])[0].get("url")
         raise ValueError(f"{name} is not redistributed ({entry['access_reason']}). Get it from: {source}")
+    if not entry["tables"]:
+        files = [m["path"] for m in entry.get("modalities", []) if m["kind"] == "file"]
+        raise ValueError(f"{name} has no SMILES table; download its files from {entry['repo_id']} with "
+                         f"huggingface_hub.hf_hub_download: {files}")
     table = entry["tables"][0] if config is None else next((t for t in entry["tables"] if t["config"] == config), None)
     if table is None:
         raise KeyError(f"No table {config!r} in {name}; tables: {[t['config'] for t in entry['tables']]}")

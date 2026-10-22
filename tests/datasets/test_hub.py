@@ -48,6 +48,8 @@ def hub(tmp_path, monkeypatch):
          "tables": [table({"full": "data/t/full.parquet"}, ["pchembl"], task_column="assay")]},
         {**common, "name": "closed", "access": "link", "access_reason": "license not yet verified", "repo_id": None,
          "license_class": "unverified", "tables": []},
+        {**common, "name": "raw", "access": "public", "repo_id": "u/moldata-raw", "tables": [],
+         "modalities": [{"kind": "file", "modality": "source files", "path": "files/qm7.mat"}]},
     ]}
     path = tmp_path / "molecular-datasets-index" / "index.json"
     path.parent.mkdir()
@@ -91,6 +93,11 @@ def test_newer_index_schema_asks_for_upgrade(hub):
     path.write_text(json.dumps({**index, "schema": 99}))
     with pytest.raises(RuntimeError, match="Upgrade torch-molecule"):
         list_datasets()
+
+
+def test_files_only_dataset_names_its_files(hub):
+    with pytest.raises(ValueError, match="files/qm7.mat"):
+        load_dataset("raw")
 
 
 def test_link_only_dataset_points_to_source(hub):

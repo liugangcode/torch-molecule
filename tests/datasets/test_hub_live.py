@@ -18,7 +18,8 @@ def test_live_index_matches_loader_and_small_datasets_load(tmp_path):
         for table in entry["tables"]:
             assert {"config", "files", "task_column", "targets"} <= set(table), entry["name"]
     assert {row["name"] for row in list_datasets(local_dir=str(tmp_path))} == {e["name"] for e in entries}
-    smallest = sorted((e for e in published if not e["tables"][0]["task_column"]), key=lambda e: e["tables"][0]["rows"])[:3]
+    with_table = [e for e in published if e["tables"]]  # some datasets are published as files only
+    smallest = sorted((e for e in with_table if not e["tables"][0]["task_column"]), key=lambda e: e["tables"][0]["rows"])[:3]
     for entry in smallest:
         data = load_dataset(entry["name"], local_dir=str(tmp_path))
         assert len(data.data) == len(data.groups) > 0, entry["name"]

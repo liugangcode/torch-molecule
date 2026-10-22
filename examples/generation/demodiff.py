@@ -1,6 +1,6 @@
 """Train a small DemoDiff model on local SMILES, with optional demonstrations.
 
-Run from the project root in the torch-molecule mamba environment:
+Run from the repository root:
     python examples/generation/demodiff.py
     python examples/generation/demodiff.py --with-context
     python examples/generation/demodiff.py --data data/polymer100.csv --with-context

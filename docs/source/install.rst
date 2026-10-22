@@ -119,6 +119,6 @@ From the repository root, inside the project environment:
 
    python -m pip install -r docs/requirements.txt
    python -m sphinx -b html docs/source docs/build/html
-   python -m http.server 8000 --directory docs/build/html
+   python -m http.server 8000 --directory docs/build/html --bind 127.0.0.1
 
 Open ``http://localhost:8000`` to browse the local documentation.

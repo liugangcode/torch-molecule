@@ -5,7 +5,7 @@ Build from the repository root in the project environment:
 ```bash
 micromamba run -n torch-molecule python -m pip install -r docs/requirements.txt
 micromamba run -n torch-molecule sphinx-build -b html -W --keep-going docs/source docs/build/html
-micromamba run -n torch-molecule python -m http.server 8000 --directory docs/build/html
+micromamba run -n torch-molecule python -m http.server 8000 --directory docs/build/html --bind 127.0.0.1
 ```
 
 `micromamba run -n torch-molecule make -C docs html` writes to the same

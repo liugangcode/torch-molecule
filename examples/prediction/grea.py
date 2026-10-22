@@ -2,6 +2,8 @@ import numpy as np
 from torch_molecule import GREAMolecularPredictor
 from torch_molecule.utils.search import ParameterType, ParameterSpec
 import os
+from pathlib import Path
+import tempfile
 
 EPOCHS = 5
 
@@ -181,7 +183,7 @@ from torch_molecule import GREAMolecularPredictor
 from torch_molecule.utils.search import ParameterType, ParameterSpec
 import os
 
-def test_grea_upload():
+def test_grea_upload(repo_id):
     # Test data
     smiles_list = [
         'CNC[C@H]1OCc2cnnn2CCCC(=O)N([C@H](C)CO)C[C@@H]1C',
@@ -193,7 +195,6 @@ def test_grea_upload():
 
     # 8. Test Hugging Face upload
     print("\n=== Testing Hugging Face Hub upload ===")
-    # try:
     # Initialize and fit a small model for testing upload
     model_for_upload = GREAMolecularPredictor(
         num_task=1,
@@ -212,8 +213,7 @@ def test_grea_upload():
     
     # Push to Hugging Face Hub
     # Note: HF_TOKEN should be set in environment variables
-    repo_id = "liuganghuggingface/test-torch-molecule-ckpt-GREA-gas-separation"
-    model_for_upload.save(
+    model_for_upload.save_to_hf(
         repo_id=repo_id,
         commit_message="Upload GREA model for gas separation tasks",
         private=False
@@ -222,31 +222,14 @@ def test_grea_upload():
     
     # Test downloading and loading from Hub
     print("\n=== Testing model loading from Hugging Face Hub ===")        
-    # Load model
-    downloaded_model = GREAMolecularPredictor()
-    downloaded_model.load_from_hf(repo_id=repo_id, local_cache="./downloaded_model/GREA_O2.pt")
-    
-    # Test prediction with downloaded model
-    test_pred = downloaded_model.predict(smiles_list[3:])
-    print("Successfully loaded and tested model from Hugging Face Hub")
-    print(f"Test prediction shape: {test_pred['prediction'].shape}")
-        
-    # except Exception as e:
-        # print(f"Hugging Face Hub operations failed with error: {str(e)}")
-        # print("Note: Make sure HF_TOKEN environment variable is set")
-    
-    # finally:
-    #     # Clean up downloaded files
-    if os.path.exists("./downloaded_model"):
-        import shutil
-        shutil.rmtree("./downloaded_model")
-        print("Cleaned up downloaded model files")
-
-    # Previous cleanup code remains the same...
-    if os.path.exists("test_grea_model.pt"):
-        os.remove("test_grea_model.pt")
-        print("Cleaned up test_grea_model.pt")
+    with tempfile.TemporaryDirectory(prefix="torch-molecule-grea-") as download_dir:
+        downloaded_model = GREAMolecularPredictor()
+        downloaded_model.load_from_hf(
+            repo_id=repo_id, local_cache=str(Path(download_dir) / "GREA_O2.pt")
+        )
+        test_pred = downloaded_model.predict(smiles_list[3:])
+        print("Successfully loaded and tested model from Hugging Face Hub")
+        print(f"Test prediction shape: {test_pred['prediction'].shape}")
 
 if __name__ == "__main__":
     test_grea_predictor()
-    test_grea_upload()

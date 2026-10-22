@@ -99,7 +99,7 @@ Do not call ``fit`` again if you want to keep the loaded weights.
    from torch_molecule import GNNMolecularPredictor
 
    # predictor is the fitted model from the quickstart.
-   output = Path("artifacts/checkpoints")
+   output = Path("checkpoints")
    output.mkdir(parents=True, exist_ok=True)
    predictor.save_to_local(str(output / "gnn.pt"))
 

@@ -2,9 +2,10 @@ import pandas as pd
 import numpy as np
 from torch_molecule import GraphGAMolecularGenerator
 import os
+from pathlib import Path
 
 # Load training data
-path_to_data = pd.read_csv('../../data/polymer100.csv')
+path_to_data = pd.read_csv(Path(__file__).resolve().parents[2] / "data" / "polymer100.csv")
 train_data = path_to_data
 test_data = path_to_data
 

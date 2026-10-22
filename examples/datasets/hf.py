@@ -30,14 +30,8 @@ def test_download_and_cleanup(dataset_name="qm9"):
     print(f"Testing {dataset_name} Dataset Download and Loading")
     print("=" * 60)
     
-    # Create a temporary directory for testing
-    if False:
-        temp_dir = tempfile.mkdtemp()
-        test_csv_path = temp_dir
-    else:
-        test_csv_path = "torchmol_data"
-
     load_func = load_dataset(dataset_name)
+    test_csv_path = tempfile.mkdtemp(prefix="torch-molecule-datasets-")
     
     try:
         print(f"\n1. Testing download to temporary location: {test_csv_path}")

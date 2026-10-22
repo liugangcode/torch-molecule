@@ -52,7 +52,7 @@ def train_model(model_type='attrmask'):
     # Extract SMILES and properties
     train_smiles_list = train_data['smiles'].tolist()
     
-    # Uncomment the following line if you want to verify training on a small subset
+    # Use two molecules for a small API demonstration.
     train_smiles_list = train_smiles_list[:2]
     
     # Create output directory
@@ -79,33 +79,33 @@ def train_model(model_type='attrmask'):
     
     print(f"Trained {model_type} model saved to {output_dir}.")
     
-    model.save_to_hf(
-        repo_id=args.repo_id,
-        hf_token=args.hf_token
-    )
-    
-    print(f"Trained {model_type} model saved to Hugging Face Hub {args.repo_id}.")
+    if args.repo_id:
+        model.save_to_hf(
+            repo_id=args.repo_id,
+            hf_token=args.hf_token
+        )
+        print(f"Trained {model_type} model saved to Hugging Face Hub {args.repo_id}.")
     
 def load_model(model_type='attrmask'):
     # Load the specified model
     if model_type == 'attrmask':
         model = AttrMaskMolecularEncoder()
-        if args.repo_id is None: repo_id = 'Einae/AttrMask'
+        if not args.repo_id: repo_id = 'Einae/AttrMask'
         else: repo_id = args.repo_id
         file_name='model/attrmask/AttrMaskMolecularEncoder.pt'
     elif model_type == 'contextpred':
         model = ContextPredMolecularEncoder()
-        if args.repo_id is None: repo_id = 'Einae/ContextPred'
+        if not args.repo_id: repo_id = 'Einae/ContextPred'
         else: repo_id = args.repo_id
         file_name='model/contextpred/ContextPredMolecularEncoder.pt'
     elif model_type == 'edgepred':
         model = EdgePredMolecularEncoder()
-        if args.repo_id is None: repo_id = 'Einae/EdgePred'
+        if not args.repo_id: repo_id = 'Einae/EdgePred'
         else: repo_id = args.repo_id
         file_name='model/edgepred/EdgePredMolecularEncoder.pt'
     elif model_type == 'moama':
         model = MoamaMolecularEncoder()
-        if args.repo_id is None: repo_id = 'Einae/Moama'
+        if not args.repo_id: repo_id = 'Einae/Moama'
         else: repo_id = args.repo_id
         file_name='model/moama/MoamaMolecularEncoder.pt'
     else:
@@ -129,4 +129,5 @@ if __name__ == "__main__":
     
     train_model(model_type=args.model)
     
-    load_model(model_type=args.model)
+    if args.repo_id:
+        load_model(model_type=args.model)

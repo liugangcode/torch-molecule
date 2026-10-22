@@ -120,7 +120,7 @@ selects similar molecules as demonstrations. Run it from the repository root:
    python examples/generation/demodiff.py --data data/molecule100.csv --with-context
 
 It trains for 25 epochs, saves and reloads the model, and writes losses and
-generated molecules under ``artifacts/demodiff/examples_similarity/``.
+generated molecules. The script prints the output directory when it finishes.
 Use ``--epochs`` or ``--device`` to change the run. See the
 :ref:`complete DemoDiff example <DemoDiffMolecularGenerator-example>`
 and :doc:`api/generator` for the input format and generation options.

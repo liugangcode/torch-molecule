@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import shutil
+import tempfile
 from pathlib import Path
 from torch_molecule import (
     GNNMolecularPredictor,
@@ -23,11 +24,7 @@ REGRESSION_PROPERTIES = np.array([1.2, 2.3])
 
 def setup_test_directory():
     """Create and return test directory path."""
-    test_dir = Path("test_model_checkpoints")
-    if test_dir.exists():
-        shutil.rmtree(test_dir)
-    test_dir.mkdir()
-    return test_dir
+    return Path(tempfile.mkdtemp(prefix="torch-molecule-checkpoints-"))
 
 def cleanup_test_directory(test_dir):
     """Clean up test directory."""
@@ -121,7 +118,7 @@ def test_huggingface_interface():
     model.fit(SMILES_LIST, REGRESSION_PROPERTIES)
     
     # Mock data for testing
-    repo_id = "liuganghuggingface/test-torch-molecule"
+    repo_id = "your-username/example-model"
     metrics = {
         "mse": 0.123,
         "r2": 0.456
@@ -129,14 +126,12 @@ def test_huggingface_interface():
 
     # Test HF save interface
     with patch('huggingface_hub.HfApi') as mock_hf_api, \
+         patch('huggingface_hub.create_repo') as mock_create_repo, \
+         patch('huggingface_hub.metadata_update'), \
+         patch('torch_molecule.utils.hf.get_existing_repo_data', return_value=(False, {}, "")), \
          patch('torch.save') as mock_torch_save, \
          patch('json.dump') as mock_json_dump, \
          patch('builtins.open', create=True) as mock_open:
-        
-        # Mock HF API methods
-        mock_api_instance = mock_hf_api.return_value
-        mock_api_instance.create_repo = MagicMock()
-        mock_api_instance.upload_file = MagicMock()
         
         try:
             # Test model upload
@@ -148,9 +143,10 @@ def test_huggingface_interface():
             )
             
             # Verify repo creation
-            mock_api_instance.create_repo.assert_called_once_with(
-                repo_id=repo_id,
+            mock_create_repo.assert_called_once_with(
+                repo_id,
                 private=False,
+                token=None,
                 exist_ok=True
             )
             
@@ -172,7 +168,8 @@ def test_huggingface_interface():
         
         # Mock the downloaded checkpoint
         mock_checkpoint = {
-            "model_state_dict": MagicMock(),
+            "model_state_dict": model.model.state_dict(),
+            "model_name": "GREA_TEST",
             "hyperparameters": {
                 "num_task": 1,
                 "task_type": "regression",
@@ -195,7 +192,7 @@ def test_huggingface_interface():
                 num_task=1,
                 task_type="regression"
             )
-            new_model.load_from_hf(repo_id=repo_id, path=str(download_path))
+            new_model.load_from_hf(repo_id=repo_id, local_cache=str(download_path))
             
             # Verify download was attempted
             mock_hf_download.assert_called()
@@ -208,31 +205,6 @@ def test_huggingface_interface():
         except Exception as e:
             print(f"✗ Error in HF load test: {str(e)}")
 
-    # Test error cases
-    print("\n=== Testing HF Error Cases ===")
-    
-    # Test invalid repo_id
-    with patch('huggingface_hub.HfApi') as mock_hf_api:
-        mock_api_instance = mock_hf_api.return_value
-        mock_api_instance.create_repo.side_effect = Exception("Invalid repo")
-        
-        # try:
-        # model.save_to_hf(repo_id="invalid/repo")
-        # print("✗ Should have raised error for invalid repo")
-        # except Exception:
-        #     print("✓ Correctly handled invalid repo_id")
-    
-    # Test missing token
-    with patch('os.environ', {}):
-        # try:
-        # get HF_TOKEN from environment variable
-        # token = os.getenv("HUGGINGFACE_TOKEN")  # If set as an environment variable   )
-        model.save_to_hf(repo_id=repo_id, private=True)
-        print("✗ Should have raised error for missing token")
-
-        # except ValueError:
-        #     print("✓ Correctly handled missing HF token for private repo")
-    
     # Test invalid model state
     model.is_fitted_ = False
     try:

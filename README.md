@@ -52,43 +52,6 @@ See the [List of Supported Models](#list-of-supported-models) section for all av
    pip install .
    ```
 
-### Storage on this development machine
-
-This checkout stays in `/home/ubuntu/projects/torch-molecule`; generated files
-use the separate disk mounted at `/data`. The local `storage` symbolic link points
-to `/data/ubuntu/projects/torch-molecule`, with `datasets/`, `models/`,
-`checkpoints/` and `outputs/` beneath it. The `torchmol_data` link points to that
-dataset directory, so examples using `local_dir="torchmol_data"` from the
-repository root also write to the data disk. These links are ignored by Git and
-must be configured separately in another checkout.
-
-For scripts and notebooks run from any directory, use explicit paths:
-
-```python
-import os
-from pathlib import Path
-from torch_molecule.datasets import load_dataset
-
-storage = Path(os.environ.get("PROJECT_DATA_ROOT", "/data/ubuntu/projects")) / "torch-molecule"
-(storage / "datasets").mkdir(parents=True, exist_ok=True)
-(storage / "checkpoints").mkdir(parents=True, exist_ok=True)
-data = load_dataset("qm9", targets=["gap"], local_dir=str(storage / "datasets"))
-
-# After fitting your model:
-# model.save_to_local(str(storage / "checkpoints" / "model.pt"))
-```
-
-Save experiment results under `storage/outputs/` and explicitly downloaded model
-directories under `storage/models/`. A relative filename such as `model.pt`
-still writes to the process's current directory, so choose an explicit output
-path in new examples.
-
-`~/.config/project-storage.sh`, loaded by `~/.bashrc`, sets `PROJECT_DATA_ROOT`,
-redirects package and model caches to `/data/ubuntu/cache`, and keeps named mamba
-environments under `/data/ubuntu/envs`. Open a new terminal or source that file
-before starting Python or a notebook kernel. Continue using the dedicated
-`torch-molecule` mamba environment for this project.
-
 ### Additional Packages
 
 Optional model requirements install as pip extras, e.g. `pip install "torch-molecule[molgen]"` (or `pip install ".[molgen]"` from a source checkout):
@@ -103,9 +66,8 @@ Optional model requirements install as pip extras, e.g. `pip install "torch-mole
 | `scatter` | torch-scatter | BFGNN, GRIN |
 | `grin` | torch-scatter, CombineMols | GRIN with `repetition_augmentation=True` |
 
-`torch-scatter` wheels match your torch and CUDA build, so pass the PyG index, e.g.
-
-> `pip install "torch-molecule[scatter]" -f https://data.pyg.org/whl/torch-2.7.1+cu128.html`
+Install a `torch-scatter` wheel matching your PyTorch and CUDA versions using
+the [PyTorch Geometric installation guide](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html).
 
 ```python
 from torch_molecule import HFPretrainedMolecularGenerator
@@ -125,6 +87,9 @@ print(model.generate(n_samples=5, scaffold="c1ccccc1"))
 ### Datasets
 
 Explore small-molecule and polymer datasets in the [molecular dataset hub](https://liugangcode.github.io/molecular-dataset-hub/), with original sources, licenses, units, source splits, and quality tags.
+
+See the [dataset documentation](https://liugangcode.github.io/torch-molecule/dataset.html)
+for dataset selection, caching, target columns, and train/test splits.
 
 <a href="https://liugangcode.github.io/molecular-dataset-hub/#explore">
   <picture>

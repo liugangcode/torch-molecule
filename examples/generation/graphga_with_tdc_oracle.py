@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import json
 import glob
 import pandas as pd
@@ -58,11 +59,12 @@ class TargetOracle:
         return scores
     
 # placeholder for training smiles
-train_smiles = pd.read_csv('../../data/molecule100.csv')['smiles'].tolist()
+train_smiles = pd.read_csv(Path(__file__).resolve().parents[2] / "data" / "molecule100.csv")['smiles'].tolist()
 print(f"Loaded {len(train_smiles)} training SMILES")
 # remove non-valid smiles
+original_count = len(train_smiles)
 train_smiles = [s for s in train_smiles if Chem.MolFromSmiles(s) is not None]
-print(f"Removed {len(train_smiles) - len(train_smiles)} non-valid SMILES")
+print(f"Removed {original_count - len(train_smiles)} non-valid SMILES")
 
 for idx, name in enumerate(oracle_names, 1):
     print(f"Processing {name} [{idx}/{len(oracle_names)}] ({idx / len(oracle_names) * 100:.1f}%)")

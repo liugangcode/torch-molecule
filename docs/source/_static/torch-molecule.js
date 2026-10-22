@@ -110,12 +110,20 @@ document.addEventListener("DOMContentLoaded", () => {
     copy(event.currentTarget, document.querySelector('.tm-code-window [role="tabpanel"]:not([hidden]) code').textContent);
   });
   document.querySelectorAll("article .highlight pre").forEach((pre) => {
+    const toolbar = document.createElement("div");
+    toolbar.className = "tm-code-toolbar";
+    const label = document.createElement("span");
+    const block = pre.closest("div[class*='highlight-']");
+    const language = block?.className.split(" ").find((name) => name.startsWith("highlight-"))?.slice(10);
+    label.textContent = { python: "Python", bash: "Shell", console: "Console" }[language] || "Code";
     const button = document.createElement("button");
+    button.type = "button";
     button.className = "tm-doc-copy";
     button.textContent = "Copy";
     button.setAttribute("aria-label", "Copy code block");
     button.addEventListener("click", () => copy(button, pre.textContent));
-    pre.parentElement.append(button);
+    toolbar.append(label, button);
+    pre.parentElement.prepend(toolbar);
   });
   document.querySelectorAll("article pre, .table-wrapper").forEach((element) => { element.tabIndex = 0; });
   document.querySelectorAll(".table-wrapper").forEach((element) => {

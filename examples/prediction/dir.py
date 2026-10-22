@@ -2,6 +2,8 @@ import numpy as np
 from torch_molecule import DIRMolecularPredictor
 from torch_molecule.utils.search import ParameterType, ParameterSpec
 import os
+from pathlib import Path
+import tempfile
 
 def test_dir_predictor():
     # Test data
@@ -180,7 +182,7 @@ def test_dir_predictor():
         os.remove(save_path)
         print(f"Cleaned up {save_path}")
 
-def test_dir_upload():
+def test_dir_upload(repo_id):
     # Test data
     smiles_list = [
         'CNC[C@H]1OCc2cnnn2CCCC(=O)N([C@H](C)CO)C[C@@H]1C',
@@ -211,8 +213,7 @@ def test_dir_upload():
     
     # Push to Hugging Face Hub
     # Note: HF_TOKEN should be set in environment variables
-    repo_id = "liuganghuggingface/test-torch-molecule-ckpt-DIR-invariant"
-    model_for_upload.save(
+    model_for_upload.save_to_hf(
         repo_id=repo_id,
         commit_message="Upload DIR model for invariant rationale discovery",
         private=False
@@ -221,26 +222,14 @@ def test_dir_upload():
     
     # Test downloading and loading from Hub
     print("\n=== Testing model loading from Hugging Face Hub ===")        
-    # Load model
-    downloaded_model = DIRMolecularPredictor()
-    downloaded_model.load_from_hf(repo_id=repo_id, path="./downloaded_model/DIR_Invariant.pt")
-    
-    # Test prediction with downloaded model
-    test_pred = downloaded_model.predict(smiles_list[3:])
-    print("Successfully loaded and tested model from Hugging Face Hub")
-    print(f"Test prediction shape: {test_pred['prediction'].shape}")
-    
-    # Clean up downloaded files
-    if os.path.exists("./downloaded_model"):
-        import shutil
-        shutil.rmtree("./downloaded_model")
-        print("Cleaned up downloaded model files")
-
-    # Previous cleanup code remains the same...
-    if os.path.exists("test_dir_model.pt"):
-        os.remove("test_dir_model.pt")
-        print("Cleaned up test_dir_model.pt")
+    with tempfile.TemporaryDirectory(prefix="torch-molecule-dir-") as download_dir:
+        downloaded_model = DIRMolecularPredictor()
+        downloaded_model.load_from_hf(
+            repo_id=repo_id, local_cache=str(Path(download_dir) / "DIR_Invariant.pt")
+        )
+        test_pred = downloaded_model.predict(smiles_list[3:])
+        print("Successfully loaded and tested model from Hugging Face Hub")
+        print(f"Test prediction shape: {test_pred['prediction'].shape}")
 
 if __name__ == "__main__":
     test_dir_predictor()
-    # test_dir_upload()

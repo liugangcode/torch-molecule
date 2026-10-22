@@ -16,7 +16,7 @@ uses Morgan fingerprint Tanimoto similarity: 1 means identical fingerprints
 and 0 means no shared fingerprint bits. During generation, scores describe the
 demonstrations in the desired task; they do not guarantee measured similarities
 of generated molecules. Omit both ``contexts`` and ``score`` for
-unconditional training or generation. No additional packages are required.
+unconditional training or generation.
 
 .. code-block:: python
 
@@ -39,7 +39,6 @@ unconditional training or generation. No additional packages are required.
 The scores above are illustrative. Demonstrations guide generation;
 they are not guaranteed substructures. The tokenizer can lose stereochemistry
 and formal charges, while polymer attachment atoms are supported.
-Retrain checkpoints previously trained with distance values and a target score of 0.
 
 .. model-reference:: torch_molecule.generator.demodiff.modeling_demodiff.DemoDiffMolecularGenerator
    :methods: fit, generate

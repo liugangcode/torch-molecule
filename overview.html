@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="_static/torch-molecule.css?v=50fedd17" />
+    <link rel="stylesheet" type="text/css" href="_static/torch-molecule.css?v=170cd3f5" />
     
     
 
@@ -456,7 +456,7 @@ Do not call <code class="docutils literal notranslate"><span class="pre">fit</sp
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">GNNMolecularPredictor</span>
 
 <span class="c1"># predictor is the fitted model from the quickstart.</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"artifacts/checkpoints"</span><span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"checkpoints"</span><span class="p">)</span>
 <span class="n">output</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">predictor</span><span class="o">.</span><span class="n">save_to_local</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">output</span> <span class="o">/</span> <span class="s2">"gnn.pt"</span><span class="p">))</span>
 
@@ -553,6 +553,6 @@ local and Hugging Face checkpoint methods.</p>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
-    <script src="_static/torch-molecule.js?v=7701f30b"></script>
+    <script src="_static/torch-molecule.js?v=1633de13"></script>
     </body>
 </html>

@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/torch-molecule.css?v=50fedd17" />
+    <link rel="stylesheet" type="text/css" href="../../_static/torch-molecule.css?v=170cd3f5" />
     
     
 
@@ -351,7 +351,7 @@ uses Morgan fingerprint Tanimoto similarity: 1 means identical fingerprints
 and 0 means no shared fingerprint bits. During generation, scores describe the
 demonstrations in the desired task; they do not guarantee measured similarities
 of generated molecules. Omit both <code class="docutils literal notranslate"><span class="pre">contexts</span></code> and <code class="docutils literal notranslate"><span class="pre">score</span></code> for
-unconditional training or generation. No additional packages are required.</p>
+unconditional training or generation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">DemoDiffMolecularGenerator</span>
 
 <span class="n">smiles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"CCOCCN"</span><span class="p">,</span> <span class="s2">"c1ccccc1CCO"</span><span class="p">,</span> <span class="s2">"CC(=O)NCCO"</span><span class="p">]</span>
@@ -371,8 +371,7 @@ unconditional training or generation. No additional packages are required.</p>
 </div>
 <p>The scores above are illustrative. Demonstrations guide generation;
 they are not guaranteed substructures. The tokenizer can lose stereochemistry
-and formal charges, while polymer attachment atoms are supported.
-Retrain checkpoints previously trained with distance values and a target score of 0.</p>
+and formal charges, while polymer attachment atoms are supported.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">DemoDiffMolecularGenerator</span>
 </pre></div>
 </div>
@@ -424,7 +423,7 @@ are supported. Demonstrations guide generation but are not fixed substructures.<
 <div class="code-block-caption"><span class="caption-text">examples/generation/demodiff.py</span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
 <div class="tm-example highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">"""Train a small DemoDiff model on local SMILES, with optional demonstrations.</span>
 
-<span class="sd">Run from the project root in the torch-molecule mamba environment:</span>
+<span class="sd">Run from the repository root:</span>
 <span class="sd">    python examples/generation/demodiff.py</span>
 <span class="sd">    python examples/generation/demodiff.py --with-context</span>
 <span class="sd">    python examples/generation/demodiff.py --data data/polymer100.csv --with-context</span>
@@ -715,6 +714,6 @@ warns and returns available results, which may include duplicates.</p>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
-    <script src="../../_static/torch-molecule.js?v=7701f30b"></script>
+    <script src="../../_static/torch-molecule.js?v=1633de13"></script>
     </body>
 </html>

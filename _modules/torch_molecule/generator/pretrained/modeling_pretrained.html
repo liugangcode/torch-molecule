@@ -236,7 +236,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="../../../../overview.html">
   <span>Documentation</span>
 </a>
-<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+<div class="tm-docs-version">v0.2.0 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -389,10 +389,7 @@
 <span class="sd">      ``start_smiles`` / ``start_string`` / ``conditions`` (omni).</span>
 <span class="sd">    - SAFE-GPT: GPT-2 causal LM on SAFE strings; de novo and ``scaffold=`` prefix.</span>
 
-<span class="sd">    Other registered families can be loaded but may raise ``NotImplementedError``</span>
-<span class="sd">    until later phases are implemented.</span>
-
-<span class="sd">    Tested models include:</span>
+<span class="sd">    Supported model repositories include:</span>
 
 <span class="sd">    - NovoMolGen: Causal LM pretrained on ZINC-22 for de novo SMILES generation.</span>
 
@@ -680,7 +677,8 @@
 <span class="sd">            ``min_length``, and ``max_length``. For Molexar, use ``start_smiles``,</span>
 <span class="sd">            ``start_string``, ``generation_task``, or ``conditions`` for omni</span>
 <span class="sd">            models. For SAFE-GPT, use ``scaffold=`` with a SMILES prefix</span>
-<span class="sd">            (converted to SAFE internally).</span>
+<span class="sd">            (converted to SAFE internally). A prefix does not guarantee that</span>
+<span class="sd">            the final molecule retains the supplied substructure.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1044,7 +1042,7 @@
     </aside>
   </div>
 </div>
-<script src="../../../../_static/documentation_options.js?v=ca7ad2ea"></script>
+<script src="../../../../_static/documentation_options.js?v=938c9ccc"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

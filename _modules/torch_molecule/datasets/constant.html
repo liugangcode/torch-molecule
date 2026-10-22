@@ -236,7 +236,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="../../../overview.html">
   <span>Documentation</span>
 </a>
-<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+<div class="tm-docs-version">v0.2.0 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -411,8 +411,10 @@
 <span class="sd">        test_size : float, default=0.2</span>
 <span class="sd">            Requested holdout fraction.</span>
 <span class="sd">        method : {"random", "scaffold", "butina", "size"}, default="random"</span>
-<span class="sd">            Split protocol. ``random`` is an i.i.d. baseline; ``scaffold``</span>
-<span class="sd">            holds out unseen Bemis-Murcko scaffolds; ``butina`` holds out</span>
+<span class="sd">            ``random`` assigns individual rows, so duplicate structures can</span>
+<span class="sd">            appear in both splits. ``groups`` metadata is not used to assign</span>
+<span class="sd">            rows. ``scaffold`` holds out unseen Bemis-Murcko scaffolds;</span>
+<span class="sd">            ``butina`` holds out</span>
 <span class="sd">            unseen Taylor-Butina clusters; ``size`` splits by heavy-atom count.</span>
 <span class="sd">        seed : int, default=42</span>
 <span class="sd">            Random seed (used by ``random``).</span>
@@ -473,7 +475,7 @@
     </aside>
   </div>
 </div>
-<script src="../../../_static/documentation_options.js?v=ca7ad2ea"></script>
+<script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

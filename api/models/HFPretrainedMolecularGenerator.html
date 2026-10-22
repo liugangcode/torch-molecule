@@ -237,7 +237,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="../../overview.html">
   <span>Documentation</span>
 </a>
-<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+<div class="tm-docs-version">v0.2.0 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -374,9 +374,7 @@ or <code class="docutils literal notranslate"><span class="pre">scaffold=</span>
 <code class="docutils literal notranslate"><span class="pre">start_smiles</span></code> / <code class="docutils literal notranslate"><span class="pre">start_string</span></code> / <code class="docutils literal notranslate"><span class="pre">conditions</span></code> (omni).</p></li>
 <li><p>SAFE-GPT: GPT-2 causal LM on SAFE strings; de novo and <code class="docutils literal notranslate"><span class="pre">scaffold=</span></code> prefix.</p></li>
 </ul>
-<p>Other registered families can be loaded but may raise <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code>
-until later phases are implemented.</p>
-<p>Tested models include:</p>
+<p>Supported model repositories include:</p>
 <ul>
 <li><p>NovoMolGen: Causal LM pretrained on ZINC-22 for de novo SMILES generation.</p>
 <p>repo_id: <code class="docutils literal notranslate"><span class="pre">&quot;chandar-lab/NovoMolGen_32M_SMILES_BPE&quot;</span></code>
@@ -436,7 +434,7 @@ For MolGen this is still decoder <code class="docutils literal notranslate"><spa
 <span id="hfpretrainedmoleculargenerator-example"></span><h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">examples/generation/pretrained_safe_gpt.py</span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
-<div class="tm-example highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="tm-example highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">HFPretrainedMolecularGenerator</span>
@@ -475,7 +473,7 @@ For MolGen this is still decoder <code class="docutils literal notranslate"><spa
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Example generated SMILES:"</span><span class="p">,</span> <span class="n">generated_smiles</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Testing SAFE-GPT saving and loading ==="</span><span class="p">)</span>
-    <span class="n">save_path</span> <span class="o">=</span> <span class="s2">"pretrained_safe_gpt_test_model"</span>
+    <span class="n">save_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">"torchmol-safe-gpt-"</span><span class="p">)</span>
     <span class="n">model</span><span class="o">.</span><span class="n">save_to_local</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SAFE-GPT saved to </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
@@ -487,9 +485,8 @@ For MolGen this is still decoder <code class="docutils literal notranslate"><spa
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Generated </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">generated_smiles</span><span class="p">)</span><span class="si">}</span><span class="s2"> molecules with loaded model"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Example generated SMILES:"</span><span class="p">,</span> <span class="n">generated_smiles</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
 
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path</span><span class="p">):</span>
-        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cleaned up </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cleaned up </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
@@ -561,7 +558,8 @@ use <code class="docutils literal notranslate"><span class="pre">prefix_selfies<
 <code class="docutils literal notranslate"><span class="pre">min_length</span></code>, and <code class="docutils literal notranslate"><span class="pre">max_length</span></code>. For Molexar, use <code class="docutils literal notranslate"><span class="pre">start_smiles</span></code>,
 <code class="docutils literal notranslate"><span class="pre">start_string</span></code>, <code class="docutils literal notranslate"><span class="pre">generation_task</span></code>, or <code class="docutils literal notranslate"><span class="pre">conditions</span></code> for omni
 models. For SAFE-GPT, use <code class="docutils literal notranslate"><span class="pre">scaffold=</span></code> with a SMILES prefix
-(converted to SAFE internally).</p></li>
+(converted to SAFE internally). A prefix does not guarantee that
+the final molecule retains the supplied substructure.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -697,7 +695,7 @@ decodes are dropped, so the list may be shorter than <code class="docutils liter
     </aside>
   </div>
 </div>
-<script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+<script src="../../_static/documentation_options.js?v=938c9ccc"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

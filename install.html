@@ -237,7 +237,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="overview.html">
   <span>Documentation</span>
 </a>
-<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="search.html" role="search">
+<div class="tm-docs-version">v0.2.0 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -352,7 +352,8 @@
 <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <p>Create a dedicated environment, then install the published package or the latest
-source. Python 3.12 is a practical starting point for the current models.</p>
+source. Python 3.10 or newer is required; GenMol and Molexar require Python 3.11 or newer.
+Python 3.12 is a practical starting point for the current models.</p>
 <section id="create-an-environment">
 <h2>Create an environment<a class="headerlink" href="#create-an-environment" title="Link to this heading">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>micromamba<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>torch-molecule<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip
@@ -397,7 +398,8 @@ Install a PyTorch build suitable for your system using the
 <section id="optional-model-packages">
 <h2>Optional model packages<a class="headerlink" href="#optional-model-packages" title="Link to this heading">¶</a></h2>
 <p>Install additional packages only for the models you use. SAND and DemoDiff use
-the core project dependencies.</p>
+the core project dependencies. Hugging Face pretrained generators require
+PyTorch 2.6 or newer; their installation extras include this requirement.</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -417,7 +419,7 @@ the core project dependencies.</p>
 <td><p><code class="docutils literal notranslate"><span class="pre">transformers</span></code>, <code class="docutils literal notranslate"><span class="pre">selfies&gt;=2.1</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>Molexar through the pretrained generator</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">transformers</span></code>, <code class="docutils literal notranslate"><span class="pre">fragment-selfies</span></code>, <code class="docutils literal notranslate"><span class="pre">molexar</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">transformers&gt;=5.8</span></code>, <code class="docutils literal notranslate"><span class="pre">fragment-selfies</span></code>, <code class="docutils literal notranslate"><span class="pre">molexar</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>SAFE-GPT through the pretrained generator</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">transformers</span></code>, <code class="docutils literal notranslate"><span class="pre">safe-mol</span></code></p></td>
@@ -434,23 +436,30 @@ the core project dependencies.</p>
 </tbody>
 </table>
 </div>
-<p><strong>GenMol.</strong> From the source checkout, install the supported extra
-(Python 3.11 or newer):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[genmol]"</span>
+<p><strong>GenMol.</strong> In an environment with Python 3.11 or newer, install its extra:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"torch-molecule[genmol]"</span>
+</pre></div>
+</div>
+<p>Use separate environments for GenMol and Molexar. GenMol requires
+<code class="docutils literal notranslate"><span class="pre">transformers==4.57.1</span></code> and Molexar requires <code class="docutils literal notranslate"><span class="pre">transformers&gt;=5.8</span></code>; these
+versions cannot be installed together. For example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>micromamba<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>torch-molecule-genmol<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>pip
+micromamba<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>torch-molecule-genmol<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"torch-molecule[genmol]"</span>
 </pre></div>
 </div>
 <p><strong>Hugging Face models.</strong> Install the extra for your chosen checkpoint:
-<code class="docutils literal notranslate"><span class="pre">hf</span></code> (transformers only), <code class="docutils literal notranslate"><span class="pre">molgen</span></code>, <code class="docutils literal notranslate"><span class="pre">molexar</span></code>, or <code class="docutils literal notranslate"><span class="pre">safe</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">hf</span></code>, <code class="docutils literal notranslate"><span class="pre">molgen</span></code>, <code class="docutils literal notranslate"><span class="pre">molexar</span></code>, or <code class="docutils literal notranslate"><span class="pre">safe</span></code>. For example,
 SAFE-GPT uses:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"torch-molecule[safe]"</span>
 </pre></div>
 </div>
-<p>Molexar and Fragment-SELFIES are not on PyPI; after the <code class="docutils literal notranslate"><span class="pre">molexar</span></code> extra,
-install them from the
-<a class="reference external" href="https://github.com/fairydance/Molexar">Molexar</a> and
-<a class="reference external" href="https://github.com/fairydance/Fragment-SELFIES">Fragment-SELFIES</a> repositories.
-Use a separate environment when checkpoint dependencies conflict with another
-model’s version requirements.</p>
+<p>For Molexar, use Python 3.11 or newer and install its extra and source packages:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"torch-molecule[molexar]"</span>
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/yiyanliao/Fragment-SELFIES.git<span class="w"> </span>git+https://github.com/yiyanliao/Molexar.git
+</pre></div>
+</div>
+<p>Source: <a class="reference external" href="https://github.com/yiyanliao/Molexar">Molexar</a> and
+<a class="reference external" href="https://github.com/yiyanliao/Fragment-SELFIES">Fragment-SELFIES</a>.</p>
 <p><strong>Graph scatter operations.</strong> Install the <code class="docutils literal notranslate"><span class="pre">scatter</span></code> extra (<code class="docutils literal notranslate"><span class="pre">grin</span></code> adds
 <code class="docutils literal notranslate"><span class="pre">CombineMols</span></code>) with a <code class="docutils literal notranslate"><span class="pre">torch-scatter</span></code> wheel matching your
 installed PyTorch and CUDA versions using the
@@ -550,7 +559,7 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
     </aside>
   </div>
 </div>
-<script src="_static/documentation_options.js?v=ca7ad2ea"></script>
+<script src="_static/documentation_options.js?v=938c9ccc"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

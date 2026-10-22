@@ -237,7 +237,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand tm-docs-brand" href="overview.html">
   <span>Documentation</span>
 </a>
-<div class="tm-docs-version">v0.1.7 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="search.html" role="search">
+<div class="tm-docs-version">v0.2.0 <span>· Source documentation</span></div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -433,7 +433,10 @@ that also appear in training:</p>
 <p>Pass <code class="docutils literal notranslate"><span class="pre">train.data</span></code> and <code class="docutils literal notranslate"><span class="pre">train.target</span></code> to <code class="docutils literal notranslate"><span class="pre">fit</span></code>; supply the validation data
 through <code class="docutils literal notranslate"><span class="pre">X_val</span></code> and <code class="docutils literal notranslate"><span class="pre">y_val</span></code> when the model supports them. Keep a separate
 test set for a final performance estimate. <code class="docutils literal notranslate"><span class="pre">data.groups</span></code> holds a structure key
-per row, so repeated measurements of one molecule can stay in one split.</p>
+per row, but the splitters preserve this metadata without using it to assign
+rows. Random splitting assigns individual rows, so repeated structures can
+occur in both splits. Use <code class="docutils literal notranslate"><span class="pre">scaffold</span></code> or <code class="docutils literal notranslate"><span class="pre">butina</span></code>, or split by group yourself, when
+repeated measurements must stay together.</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -449,7 +452,7 @@ per row, so repeated measurements of one molecule can stay in one split.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">random</span></code></p></td>
-<td><p>Randomly assign molecules to each split</p></td>
+<td><p>Randomly assign rows to each split; repeated structures may overlap</p></td>
 <td><p>An initial baseline</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">scaffold</span></code></p></td>
@@ -693,8 +696,10 @@ measures.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>test_size</strong> (<em>float</em><em>, </em><em>default=0.2</em>) – Requested holdout fraction.</p></li>
-<li><p><strong>method</strong> (<em>{&quot;random&quot;</em><em>, </em><em>&quot;scaffold&quot;</em><em>, </em><em>&quot;butina&quot;</em><em>, </em><em>&quot;size&quot;}</em><em>, </em><em>default=&quot;random&quot;</em>) – Split protocol. <code class="docutils literal notranslate"><span class="pre">random</span></code> is an i.i.d. baseline; <code class="docutils literal notranslate"><span class="pre">scaffold</span></code>
-holds out unseen Bemis-Murcko scaffolds; <code class="docutils literal notranslate"><span class="pre">butina</span></code> holds out
+<li><p><strong>method</strong> (<em>{&quot;random&quot;</em><em>, </em><em>&quot;scaffold&quot;</em><em>, </em><em>&quot;butina&quot;</em><em>, </em><em>&quot;size&quot;}</em><em>, </em><em>default=&quot;random&quot;</em>) – <code class="docutils literal notranslate"><span class="pre">random</span></code> assigns individual rows, so duplicate structures can
+appear in both splits. <code class="docutils literal notranslate"><span class="pre">groups</span></code> metadata is not used to assign
+rows. <code class="docutils literal notranslate"><span class="pre">scaffold</span></code> holds out unseen Bemis-Murcko scaffolds;
+<code class="docutils literal notranslate"><span class="pre">butina</span></code> holds out
 unseen Taylor-Butina clusters; <code class="docutils literal notranslate"><span class="pre">size</span></code> splits by heavy-atom count.</p></li>
 <li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=42</em>) – Random seed (used by <code class="docutils literal notranslate"><span class="pre">random</span></code>).</p></li>
 <li><p><strong>**kwargs</strong> – Extra options forwarded to the splitter (<code class="docutils literal notranslate"><span class="pre">use_csk</span></code> for scaffold,
@@ -804,7 +809,7 @@ unseen Taylor-Butina clusters; <code class="docutils literal notranslate"><span 
     </aside>
   </div>
 </div>
-<script src="_static/documentation_options.js?v=ca7ad2ea"></script>
+<script src="_static/documentation_options.js?v=938c9ccc"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

@@ -415,13 +415,23 @@ attachment atoms before using it for polymer generation.</p>
 </section>
 <section id="choose-a-split">
 <h2>Choose a split<a class="headerlink" href="#choose-a-split" title="Link to this heading">¶</a></h2>
-<p>When the source defines a split, load it by name. A test split drops molecules
-that also appear in training:</p>
+<p>When the source defines a split, load it by name, so results compare with
+published ones. A test split drops molecules that also appear in training:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"moleculeace_chembl204_ki"</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">"train"</span><span class="p">)</span>
 <span class="n">test</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"moleculeace_chembl204_ki"</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">"test"</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Otherwise split the dataset yourself:</p>
+<p>Some benchmarks provide several splits, for example five scaffold and five
+random splits in WelQrate. <code class="docutils literal notranslate"><span class="pre">scheme</span></code> picks one; the default is the first:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="n">dataset_info</span><span class="p">(</span><span class="s2">"welqrate_aid1798"</span><span class="p">)</span>
+<span class="n">info</span><span class="p">[</span><span class="s2">"tables"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"split_schemes"</span><span class="p">]</span>       <span class="c1"># ['scaffold_1', ..., 'random_5']</span>
+<span class="k">for</span> <span class="n">scheme</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"scaffold_1"</span><span class="p">,</span> <span class="s2">"scaffold_2"</span><span class="p">,</span> <span class="s2">"scaffold_3"</span><span class="p">]:</span>
+    <span class="n">train</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"welqrate_aid1798"</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">"train"</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">)</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"welqrate_aid1798"</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">"test"</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">list_datasets(split=&quot;source&quot;)</span></code> lists the datasets that come with a split.
+Otherwise split the dataset yourself:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"polymer_gas_permeability"</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="p">[</span><span class="s2">"CO2"</span><span class="p">])</span>
 <span class="n">train</span><span class="p">,</span> <span class="n">validation</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span>
     <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
@@ -473,11 +483,41 @@ repeated measurements must stay together.</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">subsample(n=100,</span> <span class="pre">seed=42)</span></code> for a quick local experiment. Evaluate
 benchmarks on the intended dataset and split rather than a debugging subset.</p>
 </section>
+<section id="more-than-smiles-and-numbers">
+<h2>More than SMILES and numbers<a class="headerlink" href="#more-than-smiles-and-numbers" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">columns</span></code> returns other source columns next to the labels, row for row, in
+<code class="docutils literal notranslate"><span class="pre">data.extra</span></code>; they follow the rows through <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"welqrate_aid1798"</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"CID"</span><span class="p">,</span> <span class="s2">"activity_value"</span><span class="p">])</span>
+<span class="n">data</span><span class="o">.</span><span class="n">extra</span><span class="p">[</span><span class="s2">"CID"</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span>           <span class="c1"># PubChem compound IDs</span>
+</pre></div>
+</div>
+<p>For tables that are not a SMILES-to-number task (question and answer text,
+reactions, mixtures), <code class="docutils literal notranslate"><span class="pre">load_table</span></code> returns every column as a
+<code class="docutils literal notranslate"><span class="pre">pyarrow.Table</span></code>; <code class="docutils literal notranslate"><span class="pre">download_files</span></code> fetches native files such as 3D
+structures, spectra and images:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_files</span><span class="p">,</span> <span class="n">load_table</span>
+
+<span class="n">questions</span> <span class="o">=</span> <span class="n">load_table</span><span class="p">(</span><span class="s2">"fgbench"</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">"test"</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">paths</span> <span class="o">=</span> <span class="n">download_files</span><span class="p">(</span><span class="s2">"welqrate_aid1798"</span><span class="p">,</span> <span class="n">patterns</span><span class="o">=</span><span class="p">[</span><span class="s2">"structures/*"</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Hub</span></code> holds one collection release and where its files come from. The
+functions above use a default <code class="docutils literal notranslate"><span class="pre">Hub</span></code>; create one to pin a release, read a
+mirror (<code class="docutils literal notranslate"><span class="pre">index_repo=</span></code>), or work from a local copy (<code class="docutils literal notranslate"><span class="pre">index_path=</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hub</span>
+
+<span class="n">hub</span> <span class="o">=</span> <span class="n">Hub</span><span class="p">(</span><span class="n">release</span><span class="o">=</span><span class="s2">"v2026.10.30"</span><span class="p">,</span> <span class="n">local_dir</span><span class="o">=</span><span class="s2">"data"</span><span class="p">)</span>
+<span class="n">hub</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">"adme"</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="s2">"quality"</span><span class="p">][</span><span class="s2">"grade"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"ready"</span><span class="p">)</span>
+<span class="n">hub</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"moleculeace_chembl204_ki"</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">"test"</span><span class="p">)</span>
+<span class="n">hub</span><span class="o">.</span><span class="n">observations</span><span class="p">(</span><span class="s2">"moleculeace_chembl204_ki"</span><span class="p">)</span>   <span class="c1"># every source row before duplicates were merged</span>
+</pre></div>
+</div>
+</section>
 <section id="loader-reference">
 <h2>Loader reference<a class="headerlink" href="#loader-reference" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.datasets.load_dataset">
-<span class="sig-name descname"><span class="pre">load_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_censored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_leaked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#load_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_dataset" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">load_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_censored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_leaked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#load_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_dataset" title="Link to this definition">¶</a></dt>
 <dd><p>Load one table of a collection dataset as a <code class="docutils literal notranslate"><span class="pre">SMILESDataset</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -485,14 +525,20 @@ benchmarks on the intended dataset and split rather than a debugging subset.</p>
 <li><p><strong>name</strong> (<em>str</em>) – Dataset name from <code class="docutils literal notranslate"><span class="pre">list_datasets()</span></code>, for example <code class="docutils literal notranslate"><span class="pre">&quot;moleculeace_chembl204_ki&quot;</span></code>.</p></li>
 <li><p><strong>targets</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Target columns; default all targets of the table.</p></li>
 <li><p><strong>config</strong> (<em>str</em><em>, </em><em>optional</em>) – Table name; default the dataset’s first table.</p></li>
-<li><p><strong>split</strong> (<em>str</em><em>, </em><em>optional</em>) – A source split (<code class="docutils literal notranslate"><span class="pre">&quot;train&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;test&quot;</span></code>, …). Default: all rows.</p></li>
+<li><p><strong>split</strong> (<em>str</em><em>, </em><em>optional</em>) – A source split (<code class="docutils literal notranslate"><span class="pre">&quot;train&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;validation&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;test&quot;</span></code>, …). Default: all rows.
+<code class="docutils literal notranslate"><span class="pre">dataset_info(name)[&quot;tables&quot;][i][&quot;files&quot;]</span></code> lists the parts.</p></li>
+<li><p><strong>scheme</strong> (<em>str</em><em>, </em><em>optional</em>) – For sources with several splits (<code class="docutils literal notranslate"><span class="pre">table[&quot;split_schemes&quot;]</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;scaffold_3&quot;</span></code>
+or <code class="docutils literal notranslate"><span class="pre">&quot;random_1&quot;</span></code> in WelQrate), which one <code class="docutils literal notranslate"><span class="pre">split</span></code> refers to. Default the first.
+Rows a scheme leaves out are not loaded.</p></li>
 <li><p><strong>task_values</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – For long-format tables (one row per measurement, with a task column such as an
 assay ID), the task values to load; each becomes one target column, and rows
 keep NaN for the other tasks. Required for long-format tables.</p></li>
+<li><p><strong>columns</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Other source columns to return in <code class="docutils literal notranslate"><span class="pre">dataset.extra</span></code> (conditions, identifiers,
+dates, text). <code class="docutils literal notranslate"><span class="pre">load_table(name).schema</span></code> lists them.</p></li>
 <li><p><strong>include_censored</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Censored labels such as <code class="docutils literal notranslate"><span class="pre">&lt;10</span></code> become NaN unless True, in which case the
 bound (10) is used.</p></li>
 <li><p><strong>drop_leaked</strong> (<em>bool</em><em>, </em><em>default=True</em>) – When loading a non-train split, drop molecules that also appear in the
-source’s train split.</p></li>
+source’s train split (of the same scheme).</p></li>
 <li><p><strong>release</strong> (<em>str</em><em>, </em><em>optional</em>) – Collection release tag (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;v2026.10.22&quot;</span></code>) for reproducible results; default the
 latest release. New datasets appear here as soon as the collection publishes them.</p></li>
 <li><p><strong>local_dir</strong> (<em>str</em>)</p></li>
@@ -501,8 +547,9 @@ latest release. New datasets appear here as soon as the collection publishes the
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">data</span></code> holds canonical SMILES (mixture components joined with <code class="docutils literal notranslate"><span class="pre">.</span></code>),
 <code class="docutils literal notranslate"><span class="pre">target</span></code> is (rows, targets) with NaN for missing labels, <code class="docutils literal notranslate"><span class="pre">groups</span></code> holds the
-structure key of each row (use it to keep one molecule in one split), and
-<code class="docutils literal notranslate"><span class="pre">info</span></code> holds units, label kinds, license, original sources, and quality tags.</p>
+structure key of each row (use it to keep one molecule in one split), <code class="docutils literal notranslate"><span class="pre">extra</span></code>
+the requested <code class="docutils literal notranslate"><span class="pre">columns</span></code>, and <code class="docutils literal notranslate"><span class="pre">info</span></code> units, label kinds, splits, license,
+original sources, and quality tags.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset">SMILESDataset</a></p>
@@ -512,7 +559,7 @@ structure key of each row (use it to keep one molecule in one split), and
 
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.datasets.list_datasets">
-<span class="sig-name descname"><span class="pre">list_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#list_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.list_datasets" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">list_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#list_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.list_datasets" title="Link to this definition">¶</a></dt>
 <dd><p>Summaries of datasets in the collection, filtered by any given field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -522,12 +569,19 @@ structure key of each row (use it to keep one molecule in one split), and
 <li><p><strong>grade</strong> (<em>{&quot;ready&quot;</em><em>, </em><em>&quot;care&quot;</em><em>, </em><em>&quot;caution&quot;</em><em>, </em><em>&quot;unmeasured&quot;}</em><em>, </em><em>optional</em>) – Rough data-quality grade; see <code class="docutils literal notranslate"><span class="pre">dataset_info(name)[&quot;quality&quot;]</span></code> for its tags.</p></li>
 <li><p><strong>access</strong> (<em>{&quot;public&quot;</em><em>, </em><em>&quot;gated&quot;</em><em>, </em><em>&quot;link&quot;}</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">link</span></code> datasets are not redistributed; get them from their original source.</p></li>
 <li><p><strong>license_class</strong> (<em>{&quot;open&quot;</em><em>, </em><em>&quot;share_alike&quot;</em><em>, </em><em>&quot;noncommercial&quot;</em><em>, </em><em>&quot;unverified&quot;}</em><em>, </em><em>optional</em>)</p></li>
+<li><p><strong>split</strong> (<em>{&quot;source&quot;</em><em>, </em><em>&quot;none&quot;}</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">&quot;source&quot;</span></code>: the source divides the data into training and test sets.</p></li>
+<li><p><strong>search</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to find in the name, title, description, or application.</p></li>
+<li><p><strong>where</strong> (<em>callable</em><em>, </em><em>optional</em>) – Keeps a dataset when <code class="docutils literal notranslate"><span class="pre">where(dataset_info(name))</span></code> is true.</p></li>
 <li><p><strong>release</strong> (<em>str</em><em>, </em><em>optional</em>) – Collection release tag (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;v2026.10.22&quot;</span></code>); default the latest release.</p></li>
 <li><p><strong>local_dir</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>List</em>[dict]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>One summary per dataset, with <code class="docutils literal notranslate"><span class="pre">grade</span></code>, <code class="docutils literal notranslate"><span class="pre">tables</span></code>, <code class="docutils literal notranslate"><span class="pre">split</span></code> and the names of its
+split <code class="docutils literal notranslate"><span class="pre">schemes</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -535,7 +589,7 @@ structure key of each row (use it to keep one molecule in one split), and
 <dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.datasets.dataset_info">
 <span class="sig-name descname"><span class="pre">dataset_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#dataset_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.dataset_info" title="Link to this definition">¶</a></dt>
-<dd><p>Full index entry: license, links to original sources, quality tags, tables, and targets.</p>
+<dd><p>Full index entry: license, links to original sources, quality tags, tables, splits, and targets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -548,6 +602,214 @@ structure key of each row (use it to keep one molecule in one split), and
 <dd class="field-even"><p>dict</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.datasets.load_table">
+<span class="sig-name descname"><span class="pre">load_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#load_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_table" title="Link to this definition">¶</a></dt>
+<dd><p>Rows of one published table as a <code class="docutils literal notranslate"><span class="pre">pyarrow.Table</span></code> with every source column.</p>
+<p>For data that is not a SMILES-to-number task: question and answer text, reaction or
+mixture records, conditions. <code class="docutils literal notranslate"><span class="pre">split</span></code> and <code class="docutils literal notranslate"><span class="pre">scheme</span></code> work as in <a class="reference internal" href="#torch_molecule.datasets.load_dataset" title="torch_molecule.datasets.load_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_dataset()</span></code></a>.
+Call <code class="docutils literal notranslate"><span class="pre">.to_pandas()</span></code> on the result for a DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>config</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>split</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>scheme</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>columns</strong> (<em>Sequence</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>local_dir</strong> (<em>str</em>)</p></li>
+<li><p><strong>release</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.datasets.download_files">
+<span class="sig-name descname"><span class="pre">download_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#download_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.download_files" title="Link to this definition">¶</a></dt>
+<dd><p>Download a dataset’s native files (3D structures, spectra, images, archives).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>patterns</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Shell-style patterns such as <code class="docutils literal notranslate"><span class="pre">[&quot;structures/*.zip&quot;]</span></code>; default every file listed in
+<code class="docutils literal notranslate"><span class="pre">dataset_info(name)[&quot;modalities&quot;]</span></code>.</p></li>
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>local_dir</strong> (<em>str</em>)</p></li>
+<li><p><strong>release</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Local paths, in the order of the index.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="torch_molecule.datasets.Hub">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Hub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_repo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'liuganghuggingface/molecular-datasets-index'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#Hub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.Hub" title="Link to this definition">¶</a></dt>
+<dd><p>A release of the molecular datasets collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_dir</strong> (<em>str</em><em>, </em><em>default=&quot;torchmol_data&quot;</em>) – Download cache; files are fetched on first use.</p></li>
+<li><p><strong>release</strong> (<em>str</em><em>, </em><em>optional</em>) – Collection release tag (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;v2026.10.22&quot;</span></code>) for reproducible results; default the
+latest release.</p></li>
+<li><p><strong>index_repo</strong> (<em>str</em><em>, </em><em>default=&quot;liuganghuggingface/molecular-datasets-index&quot;</em>) – Hugging Face dataset repository that holds <code class="docutils literal notranslate"><span class="pre">index.json</span></code>.</p></li>
+<li><p><strong>index_path</strong> (<em>str</em><em>, </em><em>optional</em>) – A local <code class="docutils literal notranslate"><span class="pre">index.json</span></code> whose parent folder sits next to one folder per dataset
+repository. Defaults to the <code class="docutils literal notranslate"><span class="pre">TORCHMOL_DATASET_INDEX</span></code> environment variable.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.Hub.download">
+<span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#Hub.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.Hub.download" title="Link to this definition">¶</a></dt>
+<dd><p>Download a dataset’s native files (structures, spectra, images, archives); returns local paths.</p>
+<p><code class="docutils literal notranslate"><span class="pre">patterns</span></code> are shell-style globs over the paths in <code class="docutils literal notranslate"><span class="pre">dataset_info(name)[&quot;modalities&quot;]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>patterns</strong> (<em>Sequence</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>List</em>[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.Hub.fetch">
+<span class="sig-name descname"><span class="pre">fetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#Hub.fetch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.Hub.fetch" title="Link to this definition">¶</a></dt>
+<dd><p>Local path of one file of a collection repository, downloading it if needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>filename</strong> (<em>str</em>)</p></li>
+<li><p><strong>revision</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.Hub.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#Hub.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.Hub.info" title="Link to this definition">¶</a></dt>
+<dd><p>Full index entry: license, links to original sources, quality tags, tables, and targets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.Hub.list">
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#Hub.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.Hub.list" title="Link to this definition">¶</a></dt>
+<dd><p>Summaries of datasets, filtered by text, by index fields, or by a predicate.</p>
+<p><code class="docutils literal notranslate"><span class="pre">fields</span></code> match summary fields exactly (<code class="docutils literal notranslate"><span class="pre">category=&quot;adme&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">grade=&quot;ready&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">split=&quot;source&quot;</span></code>); <code class="docutils literal notranslate"><span class="pre">where</span></code> receives the full index entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>search</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>where</strong> (<em>Callable</em><em>[</em><em>[</em><em>dict</em><em>]</em><em>, </em><em>bool</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>List</em>[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.Hub.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_censored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_leaked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#Hub.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.Hub.load" title="Link to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#torch_molecule.datasets.load_dataset" title="torch_molecule.datasets.load_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_dataset()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>targets</strong> (<em>Sequence</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>config</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>split</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>scheme</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>task_values</strong> (<em>Sequence</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>columns</strong> (<em>Sequence</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>include_censored</strong> (<em>bool</em>)</p></li>
+<li><p><strong>drop_leaked</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#torch_molecule.datasets.constant.SMILESDataset" title="torch_molecule.datasets.constant.SMILESDataset"><em>SMILESDataset</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.Hub.observations">
+<span class="sig-name descname"><span class="pre">observations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#Hub.observations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.Hub.observations" title="Link to this definition">¶</a></dt>
+<dd><p>Every source row of a table before identical structures were merged, as a <code class="docutils literal notranslate"><span class="pre">pyarrow.Table</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>config</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.Hub.parts">
+<span class="sig-name descname"><span class="pre">parts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#Hub.parts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.Hub.parts" title="Link to this definition">¶</a></dt>
+<dd><p>Part names (<code class="docutils literal notranslate"><span class="pre">&quot;train&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;test&quot;</span></code>, …) of a table’s split; <code class="docutils literal notranslate"><span class="pre">[&quot;full&quot;]</span></code> when the source gives none.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>config</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>scheme</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>List</em>[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.Hub.table">
+<span class="sig-name descname"><span class="pre">table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#Hub.table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.Hub.table" title="Link to this definition">¶</a></dt>
+<dd><p>Rows of one published table as a <code class="docutils literal notranslate"><span class="pre">pyarrow.Table</span></code>, with every source column.</p>
+<p>Use this for fields <code class="docutils literal notranslate"><span class="pre">load_dataset</span></code> does not turn into targets: text answers,
+conditions, identifiers, dates. <code class="docutils literal notranslate"><span class="pre">split</span></code> and <code class="docutils literal notranslate"><span class="pre">scheme</span></code> work as in <code class="docutils literal notranslate"><span class="pre">load_dataset</span></code>;
+<code class="docutils literal notranslate"><span class="pre">table.to_pandas()</span></code> gives a DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>config</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>split</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>scheme</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>columns</strong> (<em>Sequence</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -599,7 +861,7 @@ structures removed, identical rows collapsed.</p>
 <h2>Dataset interface<a class="headerlink" href="#dataset-interface" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SMILESDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SMILESDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/constant.html#SMILESDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset" title="Link to this definition">¶</a></dt>
 <dd><p>Data class for storing molecular SMILES dataset with input and target data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -609,6 +871,7 @@ structures removed, identical rows collapsed.</p>
 <li><p><strong>target_names</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
 <li><p><strong>groups</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
 <li><p><strong>info</strong> (<em>dict</em>)</p></li>
+<li><p><strong>extra</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>list</em><em>] </em><em>| </em><em>None</em>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -659,10 +922,21 @@ structures removed, identical rows collapsed.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.info">
 <span class="sig-name descname"><span class="pre">info</span></span><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.info" title="Link to this definition">¶</a></dt>
-<dd><p>Provenance, units, label kinds, and quality tags for hub datasets</p>
+<dd><p>Provenance, units, label kinds, splits, and quality tags for hub datasets</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torch_molecule.datasets.constant.SMILESDataset.extra">
+<span class="sig-name descname"><span class="pre">extra</span></span><a class="headerlink" href="#torch_molecule.datasets.constant.SMILESDataset.extra" title="Link to this definition">¶</a></dt>
+<dd><p>Other per-row source columns, such as conditions or dates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, list] | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -794,6 +1068,7 @@ unseen Taylor-Butina clusters; <code class="docutils literal notranslate"><span 
 <li><a class="reference internal" href="#load-a-dataset">Load a dataset</a></li>
 <li><a class="reference internal" href="#bring-your-own-data">Bring your own data</a></li>
 <li><a class="reference internal" href="#choose-a-split">Choose a split</a></li>
+<li><a class="reference internal" href="#more-than-smiles-and-numbers">More than SMILES and numbers</a></li>
 <li><a class="reference internal" href="#loader-reference">Loader reference</a></li>
 <li><a class="reference internal" href="#deprecated-loaders">Deprecated loaders</a></li>
 <li><a class="reference internal" href="#dataset-interface">Dataset interface</a></li>

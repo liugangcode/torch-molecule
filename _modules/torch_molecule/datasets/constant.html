@@ -350,7 +350,7 @@
 </nav>
 <h1>Source code for torch_molecule.datasets.constant</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <div class="viewcode-block" id="SMILESDataset">
@@ -365,13 +365,15 @@
 <span class="sd">        target (np.ndarray | None): Target property values as 2D numpy array (rows=molecules, cols=targets) or None</span>
 <span class="sd">        target_names (List[str] | None): Name of each target column, when known</span>
 <span class="sd">        groups (List[str] | None): Structure key per row; rows with the same key are the same molecule</span>
-<span class="sd">        info (dict): Provenance, units, label kinds, and quality tags for hub datasets</span>
+<span class="sd">        info (dict): Provenance, units, label kinds, splits, and quality tags for hub datasets</span>
+<span class="sd">        extra (Dict[str, list] | None): Other per-row source columns, such as conditions or dates</span>
 <span class="sd">    """</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">target</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">target_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">groups</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">info</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">extra</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="SMILESDataset.subsample">
 <a class="viewcode-back" href="../../../dataset.html#torch_molecule.datasets.constant.SMILESDataset.subsample">[docs]</a>

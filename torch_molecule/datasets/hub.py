@@ -223,7 +223,7 @@ def load_dataset(
     local_dir : str, optional
         Download cache; default ``$TORCHMOL_DATA`` or ``~/torchmol_data``.
     release : str, optional
-        Hub release tag (e.g. ``"v2026.10.31"``) for reproducible results; default the latest.
+        Hub release tag (e.g. ``"v2026.10.31.2"``) for reproducible results; default the latest.
 
     Returns
     -------

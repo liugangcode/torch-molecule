@@ -77,7 +77,7 @@ Datasets that cannot be redistributed are listed too; loading one raises an
 error that names the original source. Gated datasets need
 ``huggingface-cli login`` and an accepted access request on the dataset page.
 Files download on first use to ``~/torchmol_data`` (set ``TORCHMOL_DATA`` or
-``local_dir=`` to change it); ``release="v2026.10.31"`` pins a hub release.
+``local_dir=`` to change it); ``release="v2026.10.31.2"`` pins a hub release.
 Names from earlier releases, such as ``moleculeace_chembl204_ki``, still load.
 
 .. note::

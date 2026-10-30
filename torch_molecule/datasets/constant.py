@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 import numpy as np
 
 @dataclass
@@ -12,13 +12,15 @@ class SMILESDataset:
         target (np.ndarray | None): Target property values as 2D numpy array (rows=molecules, cols=targets) or None
         target_names (List[str] | None): Name of each target column, when known
         groups (List[str] | None): Structure key per row; rows with the same key are the same molecule
-        info (dict): Provenance, units, label kinds, and quality tags for hub datasets
+        info (dict): Provenance, units, label kinds, splits, and quality tags for hub datasets
+        extra (Dict[str, list] | None): Other per-row source columns, such as conditions or dates
     """
     data: List[str]
     target: np.ndarray | None
     target_names: Optional[List[str]] = None
     groups: Optional[List[str]] = None
     info: dict = field(default_factory=dict)
+    extra: Optional[Dict[str, list]] = None
 
     def subsample(self, n: int, seed: int = 0) -> "SMILESDataset":
         """Draw a random subset without replacement.

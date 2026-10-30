@@ -79,14 +79,26 @@ attachment atoms before using it for polymer generation.
 Choose a split
 --------------
 
-When the source defines a split, load it by name. A test split drops molecules
-that also appear in training:
+When the source defines a split, load it by name, so results compare with
+published ones. A test split drops molecules that also appear in training:
 
 .. code-block:: python
 
    train = load_dataset("moleculeace_chembl204_ki", split="train")
    test = load_dataset("moleculeace_chembl204_ki", split="test")
 
+Some benchmarks provide several splits, for example five scaffold and five
+random splits in WelQrate. ``scheme`` picks one; the default is the first:
+
+.. code-block:: python
+
+   info = dataset_info("welqrate_aid1798")
+   info["tables"][0]["split_schemes"]       # ['scaffold_1', ..., 'random_5']
+   for scheme in ["scaffold_1", "scaffold_2", "scaffold_3"]:
+       train = load_dataset("welqrate_aid1798", split="train", scheme=scheme)
+       test = load_dataset("welqrate_aid1798", split="test", scheme=scheme)
+
+``list_datasets(split="source")`` lists the datasets that come with a split.
 Otherwise split the dataset yourself:
 
 .. code-block:: python
@@ -129,12 +141,52 @@ repeated measurements must stay together.
 Use ``subsample(n=100, seed=42)`` for a quick local experiment. Evaluate
 benchmarks on the intended dataset and split rather than a debugging subset.
 
+More than SMILES and numbers
+----------------------------
+
+``columns`` returns other source columns next to the labels, row for row, in
+``data.extra``; they follow the rows through ``train_test_split``:
+
+.. code-block:: python
+
+   data = load_dataset("welqrate_aid1798", columns=["CID", "activity_value"])
+   data.extra["CID"][:3]           # PubChem compound IDs
+
+For tables that are not a SMILES-to-number task (question and answer text,
+reactions, mixtures), ``load_table`` returns every column as a
+``pyarrow.Table``; ``download_files`` fetches native files such as 3D
+structures, spectra and images:
+
+.. code-block:: python
+
+   from torch_molecule.datasets import download_files, load_table
+
+   questions = load_table("fgbench", split="test").to_pandas()
+   paths = download_files("welqrate_aid1798", patterns=["structures/*"])
+
+``Hub`` holds one collection release and where its files come from. The
+functions above use a default ``Hub``; create one to pin a release, read a
+mirror (``index_repo=``), or work from a local copy (``index_path=``):
+
+.. code-block:: python
+
+   from torch_molecule.datasets import Hub
+
+   hub = Hub(release="v2026.10.30", local_dir="data")
+   hub.list(category="adme", where=lambda e: e["quality"]["grade"] == "ready")
+   hub.load("moleculeace_chembl204_ki", split="test")
+   hub.observations("moleculeace_chembl204_ki")   # every source row before duplicates were merged
+
 Loader reference
 ----------------
 
 .. autofunction:: torch_molecule.datasets.load_dataset
 .. autofunction:: torch_molecule.datasets.list_datasets
 .. autofunction:: torch_molecule.datasets.dataset_info
+.. autofunction:: torch_molecule.datasets.load_table
+.. autofunction:: torch_molecule.datasets.download_files
+.. autoclass:: torch_molecule.datasets.Hub
+   :members: list, info, load, table, parts, observations, download, fetch
 
 Deprecated loaders
 ------------------

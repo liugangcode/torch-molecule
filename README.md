@@ -130,6 +130,23 @@ test = load_dataset("moleculeace_chembl204_ki", split="test")     # test drops m
 zinc = load_dataset("zinc250k", targets=[])                 # structures only: target is None
 ```
 
+Several splits, extra columns, long-format tables, and data that is not a property table:
+
+```python
+from torch_molecule.datasets import download_files, load_dataset, load_table, task_values
+
+load_dataset("welqrate_aid1798", split="test", scheme="scaffold_2")   # one of WelQrate's 10 splits
+load_dataset("welqrate_aid1798", columns=["CID"]).extra["CID"]        # other source columns, row for row
+
+tasks = task_values("cara")                       # one row per measurement: assays, most-measured first
+data = load_dataset("cara", task_values=tasks[:10])                   # one target per assay
+
+load_table("fgbench", split="test")               # every column as a pyarrow.Table (text, reactions, mixtures)
+download_files("welqrate_aid1798", patterns=["structures/*"])         # native files such as 3D structures
+```
+
+`scheme`, `columns`, `task_values`, `load_table` and `download_files` are newer than the 0.2.0 release on PyPI; until the next release, install from GitHub: `pip install git+https://github.com/liugangcode/torch-molecule`.
+
 `load_qm9`, `load_chembl2k`, `load_broad6k`, `load_toxcast`, `load_admet`, `load_gasperm`, and `load_zinc250k` still work but are deprecated aliases of `load_dataset` and will be removed.
 
 (We are actively adding more datasets. We welcome your suggestions and contributions on your datasets!)

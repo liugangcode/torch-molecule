@@ -37,6 +37,13 @@ by its original name. Use ``list_datasets()`` to see the current collection and
 filter by domain, category, quality, or access. Files download on first use and
 are reused from ``local_dir``.
 
+.. note::
+
+   ``scheme``, ``columns``, ``task_values``, ``load_table``, ``download_files``
+   and ``Hub`` are newer than the 0.2.0 release on PyPI. Until the next release,
+   install from GitHub:
+   ``pip install git+https://github.com/liugangcode/torch-molecule``.
+
 .. code-block:: python
 
    from torch_molecule.datasets import list_datasets, load_dataset
@@ -64,7 +71,7 @@ and censored values such as ``<10`` are ``NaN`` unless ``include_censored=True``
 Datasets that cannot be redistributed are listed too; loading one raises an
 error that names the original source. Gated datasets (noncommercial terms) need
 ``huggingface-cli login`` and an accepted access request on the dataset page.
-Pass ``release="v2026.10.22"`` to pin a collection release.
+Pass ``release="v2026.10.30"`` to pin a collection release.
 
 Bring your own data
 -------------------
@@ -160,7 +167,7 @@ More than SMILES and numbers
 
 .. code-block:: python
 
-   data = load_dataset("welqrate_aid1798", columns=["CID", "activity_value"])
+   data = load_dataset("welqrate_aid1798", columns=["CID"])
    data.extra["CID"][:3]           # PubChem compound IDs
 
 For tables that are not a SMILES-to-number task (question and answer text,

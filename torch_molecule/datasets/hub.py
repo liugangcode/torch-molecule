@@ -148,6 +148,19 @@ class Hub:
         entry, table = self._table(name, config)
         return self._rows(entry, table, split, scheme, columns)
 
+    def task_values(self, name: str, config: Optional[str] = None) -> List[str]:
+        """Values of a long-format table's task column (assays, targets), most-labeled first."""
+        from collections import Counter
+
+        entry, table = self._table(name, config)
+        column = table["task_column"]
+        if not column:
+            targets = [t["name"] for t in table["targets"]]
+            raise ValueError(f"{name}/{table['config']} is not long-format; its targets are {targets}")
+        counts = Counter(self._rows(entry, table, None, None, [column])[column].to_pylist())
+        counts.pop(None, None)
+        return [value for value, _ in sorted(counts.items(), key=lambda item: (-item[1], str(item[0])))]
+
     def observations(self, name: str, config: Optional[str] = None):
         """Every source row of a table before identical structures were merged, as a ``pyarrow.Table``."""
         import pyarrow.parquet as pq
@@ -208,7 +221,7 @@ class Hub:
             raise KeyError(f"Unknown targets {sorted(unknown)}; available: {list(target_info)}")
         if table["task_column"] and not task_values:
             raise ValueError(f"{name}/{table['config']} is long-format by {table['task_column']!r}; "
-                             "pass task_values=[...]")
+                             f"pass task_values=[...], for example from task_values({name!r})")
         extra = list(columns or [])
         needed = ["structure_key", *chosen, *([table["task_column"]] if table["task_column"] else []), *extra]
         rows = self._rows(entry, table, split, scheme, needed)
@@ -445,6 +458,15 @@ def load_table(name: str, config: Optional[str] = None, split: Optional[str] = N
     Call ``.to_pandas()`` on the result for a DataFrame.
     """
     return Hub(local_dir, release).table(name, config=config, split=split, scheme=scheme, columns=columns)
+
+
+def task_values(name: str, config: Optional[str] = None, local_dir: str = "torchmol_data",
+                release: Optional[str] = None) -> List[str]:
+    """Task values (assay or target IDs) of a long-format table, most-labeled first.
+
+    Pass some of them to ``load_dataset(name, task_values=[...])``; each becomes one target column.
+    """
+    return Hub(local_dir, release).task_values(name, config)
 
 
 def download_files(name: str, patterns: Optional[Sequence[str]] = None, local_dir: str = "torchmol_data",

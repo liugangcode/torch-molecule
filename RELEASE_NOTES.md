@@ -9,6 +9,8 @@
 - `load_table()` returns every column of a published table as a `pyarrow.Table`, for
   question-answer, reaction and mixture data; `download_files()` fetches native files
   such as 3D structures, spectra and images.
+- `task_values()` lists the assays or targets of a long-format table, most-measured
+  first, to pass to `load_dataset(..., task_values=...)`.
 - `list_datasets()` filters by `split="source"`, by text (`search=`), or by any index
   field (`where=`), and reports each dataset's split schemes.
 - `Hub` holds one collection release and where its files come from: pin a release,

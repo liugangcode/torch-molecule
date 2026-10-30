@@ -6,7 +6,7 @@ import pytest
 pa = pytest.importorskip("pyarrow")
 pq = pytest.importorskip("pyarrow.parquet")
 
-from torch_molecule.datasets import Hub, dataset_info, download_files, list_datasets, load_dataset, load_table
+from torch_molecule.datasets import Hub, dataset_info, download_files, list_datasets, load_dataset, load_table, task_values
 
 
 def _key(smiles):
@@ -98,6 +98,9 @@ def test_load_split_drops_leaked_molecules_and_censored_labels(hub):
 def test_long_format_needs_task_values(hub):
     with pytest.raises(ValueError, match="task_values"):
         load_dataset("assays")
+    assert task_values("assays") == ["A1", "A2", "A3"]
+    with pytest.raises(ValueError, match="not long-format"):
+        task_values("sol")
     data = load_dataset("assays", task_values=["A1", "A3"])
     assert data.data == ["CCO", "CCC"] and data.target_names == ["A1", "A3"]
     assert data.target[0, 0] == 6.0 and np.isnan(data.target[0, 1]) and data.target[1, 1] == 5.0

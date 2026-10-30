@@ -34,8 +34,8 @@ def test_live_source_splits_and_schemes_load(tmp_path):
     train, test = hub.load(entry["name"], split="train"), hub.load(entry["name"], split="test")
     assert not set(train.groups) & set(test.groups), entry["name"]
 
-    schemes = [e for e in hub.entries() if e["access"] == "public" and len(e["tables"][0].get("split_schemes", [])) > 1
-               if e["tables"]]
+    schemes = [e for e in hub.entries()
+               if e["access"] == "public" and e["tables"] and len(e["tables"][0].get("split_schemes", [])) > 1]
     if schemes:
         entry = min(schemes, key=lambda e: e["tables"][0]["rows"])
         scheme = entry["tables"][0]["split_schemes"][-1]

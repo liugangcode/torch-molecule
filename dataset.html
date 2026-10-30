@@ -388,6 +388,15 @@ are reused from <code class="docutils literal notranslate"><span class="pre">loc
 <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"targets"</span><span class="p">][</span><span class="s2">"gap"</span><span class="p">][</span><span class="s2">"units"</span><span class="p">])</span>   <span class="c1"># Hartree</span>
 </pre></div>
 </div>
+<p>Some tables hold one row per measurement, with a task column such as an assay
+ID (<code class="docutils literal notranslate"><span class="pre">dataset_info(name)[&quot;tables&quot;][0][&quot;task_column&quot;]</span></code>). <code class="docutils literal notranslate"><span class="pre">task_values</span></code> lists
+the tasks, most-measured first; each one you pass becomes a target column:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch_molecule.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">task_values</span>
+
+<span class="n">assays</span> <span class="o">=</span> <span class="n">task_values</span><span class="p">(</span><span class="s2">"cara"</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"cara"</span><span class="p">,</span> <span class="n">task_values</span><span class="o">=</span><span class="n">assays</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
 <p>Labels stay as the source reported them: missing labels are <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (never 0),
 and censored values such as <code class="docutils literal notranslate"><span class="pre">&lt;10</span></code> are <code class="docutils literal notranslate"><span class="pre">NaN</span></code> unless <code class="docutils literal notranslate"><span class="pre">include_censored=True</span></code>.
 Datasets that cannot be redistributed are listed too; loading one raises an
@@ -605,6 +614,26 @@ split <code class="docutils literal notranslate"><span class="pre">schemes</span
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="torch_molecule.datasets.task_values">
+<span class="sig-name descname"><span class="pre">task_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#task_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.task_values" title="Link to this definition">¶</a></dt>
+<dd><p>Task values (assay or target IDs) of a long-format table, most-labeled first.</p>
+<p>Pass some of them to <code class="docutils literal notranslate"><span class="pre">load_dataset(name,</span> <span class="pre">task_values=[...])</span></code>; each becomes one target column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>config</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>local_dir</strong> (<em>str</em>)</p></li>
+<li><p><strong>release</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>List</em>[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="torch_molecule.datasets.load_table">
 <span class="sig-name descname"><span class="pre">load_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torchmol_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#load_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.load_table" title="Link to this definition">¶</a></dt>
 <dd><p>Rows of one published table as a <code class="docutils literal notranslate"><span class="pre">pyarrow.Table</span></code> with every source column.</p>
@@ -806,6 +835,23 @@ conditions, identifiers, dates. <code class="docutils literal notranslate"><span
 <li><p><strong>scheme</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
 <li><p><strong>columns</strong> (<em>Sequence</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torch_molecule.datasets.Hub.task_values">
+<span class="sig-name descname"><span class="pre">task_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torch_molecule/datasets/hub.html#Hub.task_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torch_molecule.datasets.Hub.task_values" title="Link to this definition">¶</a></dt>
+<dd><p>Values of a long-format table’s task column (assays, targets), most-labeled first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>config</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>List</em>[str]</p>
 </dd>
 </dl>
 </dd></dl>

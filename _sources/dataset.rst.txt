@@ -48,6 +48,17 @@ are reused from ``local_dir``.
    print(data.target.shape)          # (n_molecules, 3)
    print(data.info["targets"]["gap"]["units"])   # Hartree
 
+Some tables hold one row per measurement, with a task column such as an assay
+ID (``dataset_info(name)["tables"][0]["task_column"]``). ``task_values`` lists
+the tasks, most-measured first; each one you pass becomes a target column:
+
+.. code-block:: python
+
+   from torch_molecule.datasets import task_values
+
+   assays = task_values("cara")
+   data = load_dataset("cara", task_values=assays[:10])
+
 Labels stay as the source reported them: missing labels are ``NaN`` (never 0),
 and censored values such as ``<10`` are ``NaN`` unless ``include_censored=True``.
 Datasets that cannot be redistributed are listed too; loading one raises an
@@ -183,10 +194,11 @@ Loader reference
 .. autofunction:: torch_molecule.datasets.load_dataset
 .. autofunction:: torch_molecule.datasets.list_datasets
 .. autofunction:: torch_molecule.datasets.dataset_info
+.. autofunction:: torch_molecule.datasets.task_values
 .. autofunction:: torch_molecule.datasets.load_table
 .. autofunction:: torch_molecule.datasets.download_files
 .. autoclass:: torch_molecule.datasets.Hub
-   :members: list, info, load, table, parts, observations, download, fetch
+   :members: list, info, load, table, parts, task_values, observations, download, fetch
 
 Deprecated loaders
 ------------------

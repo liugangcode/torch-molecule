@@ -423,5 +423,6 @@ def _subset(dataset: SMILESDataset, indices: Sequence[int]) -> SMILESDataset:
         if target.ndim == 1:
             target = target.reshape(-1, 1)
     groups = None if dataset.groups is None else [dataset.groups[i] for i in indices]
+    extra = None if dataset.extra is None else {k: [v[i] for i in indices] for k, v in dataset.extra.items()}
     return SMILESDataset(data=data, target=target, target_names=dataset.target_names,
-                         groups=groups, info=dataset.info)
+                         groups=groups, info=dataset.info, extra=extra)

@@ -1,3 +1,20 @@
+# Unreleased
+
+## Datasets
+
+- `load_dataset(..., scheme=...)` loads any of a source's several splits, such as
+  WelQrate's five scaffold and five random splits; `dataset.info["schemes"]` lists them.
+- `load_dataset(..., columns=[...])` returns other source columns (identifiers,
+  conditions, dates) in `dataset.extra`; they follow the rows through splitting.
+- `load_table()` returns every column of a published table as a `pyarrow.Table`, for
+  question-answer, reaction and mixture data; `download_files()` fetches native files
+  such as 3D structures, spectra and images.
+- `list_datasets()` filters by `split="source"`, by text (`search=`), or by any index
+  field (`where=`), and reports each dataset's split schemes.
+- `Hub` holds one collection release and where its files come from: pin a release,
+  read a mirror (`index_repo=`) or a local copy (`index_path=`), and read the rows behind
+  merged duplicates with `Hub.observations()`.
+
 # torch-molecule 0.2.0
 
 This release adds four public model classes, dataset discovery and loading from

@@ -7,10 +7,9 @@ pytestmark = pytest.mark.skipif(os.environ.get("TORCHMOL_HUB_LIVE") != "1", reas
 
 
 def test_live_index_matches_loader_and_small_datasets_load(tmp_path):
-    from torch_molecule.datasets import list_datasets, load_dataset
-    from torch_molecule.datasets.hub import _index
+    from torch_molecule.datasets import Hub, list_datasets, load_dataset
 
-    entries = _index(str(tmp_path))
+    entries = Hub(str(tmp_path)).entries()
     published = [e for e in entries if e["access"] == "public"]
     assert published, "no public datasets in the index"
     for entry in entries:
@@ -23,3 +22,21 @@ def test_live_index_matches_loader_and_small_datasets_load(tmp_path):
     for entry in smallest:
         data = load_dataset(entry["name"], local_dir=str(tmp_path))
         assert len(data.data) == len(data.groups) > 0, entry["name"]
+
+
+def test_live_source_splits_and_schemes_load(tmp_path):
+    from torch_molecule.datasets import Hub
+
+    hub = Hub(str(tmp_path))
+    split = [e for e in hub.entries() if e["access"] == "public" and e["tables"] and not e["tables"][0]["task_column"]
+             and "test" in e["tables"][0]["files"]]
+    entry = min(split, key=lambda e: e["tables"][0]["rows"])
+    train, test = hub.load(entry["name"], split="train"), hub.load(entry["name"], split="test")
+    assert not set(train.groups) & set(test.groups), entry["name"]
+
+    schemes = [e for e in hub.entries()
+               if e["access"] == "public" and e["tables"] and len(e["tables"][0].get("split_schemes", [])) > 1]
+    if schemes:
+        entry = min(schemes, key=lambda e: e["tables"][0]["rows"])
+        scheme = entry["tables"][0]["split_schemes"][-1]
+        assert hub.load(entry["name"], split="test", scheme=scheme).info["scheme"] == scheme

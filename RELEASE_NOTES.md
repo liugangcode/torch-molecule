@@ -2,20 +2,25 @@
 
 ## Datasets
 
-- `load_dataset(..., scheme=...)` loads any of a source's several splits, such as
-  WelQrate's five scaffold and five random splits; `dataset.info["schemes"]` lists them.
-- `load_dataset(..., columns=[...])` returns other source columns (identifiers,
-  conditions, dates) in `dataset.extra`; they follow the rows through splitting.
-- `load_table()` returns every column of a published table as a `pyarrow.Table`, for
-  question-answer, reaction and mixture data; `download_files()` fetches native files
-  such as 3D structures, spectra and images.
-- `task_values()` lists the assays or targets of a long-format table, most-measured
-  first, to pass to `load_dataset(..., task_values=...)`.
-- `list_datasets()` filters by `split="source"`, by text (`search=`), or by any index
-  field (`where=`), and reports each dataset's split schemes.
-- `Hub` holds one collection release and where its files come from: pin a release,
-  read a mirror (`index_repo=`) or a local copy (`index_path=`), and read the rows behind
-  merged duplicates with `Hub.observations()`.
+- `load_dataset(name, config=None, *, split=..., targets=..., ...)` follows scikit-learn:
+  the name (and, for datasets with several tables, the config) first, everything else by
+  keyword. `return_X_y=True` returns `(smiles, target)`.
+- Hub datasets that were published per target, assay, or property are now one dataset
+  with one config each: `load_dataset("moleculeace", "chembl204_ki")`,
+  `load_dataset("welqrate", "aid1798")`, `load_dataset("opera", "logp")`. Former names
+  such as `moleculeace_chembl204_ki` still load. A dataset with several configs asks for
+  one instead of picking the first.
+- `dataset.info` holds the config's `title`, the dataset `description`, and per target a
+  readable `label` and `about` (ChEMBL target, organism, UniProt; PubChem assay).
+- `list_datasets("thrombin")` searches names, titles, config titles, and label names;
+  `grade=` matches any config's grade.
+- `scheme=` loads any of a source's several splits (WelQrate's five scaffold and five
+  random splits); `columns=` returns other source columns in `dataset.extra`;
+  `task_values()` lists the assays of tables with one row per measurement;
+  `load_table()` returns every column as a `pyarrow.Table`; `download_files()` fetches
+  native files such as 3D structures, spectra and images.
+- Files are cached in `~/torchmol_data` (`TORCHMOL_DATA` or `local_dir=` to change it)
+  instead of the working directory.
 
 # torch-molecule 0.2.0
 

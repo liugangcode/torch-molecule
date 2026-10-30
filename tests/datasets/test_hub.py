@@ -6,7 +6,7 @@ import pytest
 pa = pytest.importorskip("pyarrow")
 pq = pytest.importorskip("pyarrow.parquet")
 
-from torch_molecule.datasets import Hub, dataset_info, download_files, list_datasets, load_dataset, load_table, task_values
+from torch_molecule.datasets import dataset_info, download_files, list_datasets, load_dataset, load_table, task_values
 
 
 def _key(smiles):
@@ -45,6 +45,8 @@ def hub(tmp_path, monkeypatch):
     ])
     _write(tmp_path / "moldata-screen/observations/t.parquet", [{"structure_key": _key("C1CC1"), "active": "1"}] * 3)
     _write(tmp_path / "moldata-raw/files/qm7.mat", [])
+    _write(tmp_path / "moldata-bench/data/a/full.parquet", [{"structure_key": _key("CCO"), "y": "7.1"}])
+    _write(tmp_path / "moldata-bench/data/b/full.parquet", [{"structure_key": _key("CCN"), "y": "6.2"}])
     table = lambda files, targets, task_column=None: {  # noqa: E731
         "config": "t", "files": files, "task_column": task_column,
         "targets": [{"name": t, "kind": "regression", "units": "u"} for t in targets]}
@@ -66,7 +68,13 @@ def hub(tmp_path, monkeypatch):
          "license_class": "unverified", "tables": []},
         {**common, "name": "raw", "access": "public", "repo_id": "u/moldata-raw", "tables": [],
          "modalities": [{"kind": "file", "modality": "source files", "path": "files/qm7.mat"}]},
-    ]}
+        {**common, "name": "bench", "access": "public", "repo_id": "u/moldata-bench", "default_config": None,
+         "tables": [{**table({"full": "data/a/full.parquet"}, ["y"]), "config": "a", "title": "Prothrombin · Ki",
+                     "quality": {"grade": "care", "tags": []}},
+                    {**table({"full": "data/b/full.parquet"}, ["y"]), "config": "b", "title": "Factor X · Ki",
+                     "quality": {"grade": "ready", "tags": []}}]},
+    ], "renamed": {"bench_b": {"name": "bench", "config": "b"}}}
+    index["datasets"][-1]["tables"][0]["targets"][0]["label"] = "Prothrombin · pKi"
     path = tmp_path / "molecular-datasets-index" / "index.json"
     path.parent.mkdir()
     path.write_text(json.dumps(index))
@@ -99,7 +107,7 @@ def test_long_format_needs_task_values(hub):
     with pytest.raises(ValueError, match="task_values"):
         load_dataset("assays")
     assert task_values("assays") == ["A1", "A2", "A3"]
-    with pytest.raises(ValueError, match="not long-format"):
+    with pytest.raises(ValueError, match="one column per target"):
         task_values("sol")
     data = load_dataset("assays", task_values=["A1", "A3"])
     assert data.data == ["CCO", "CCC"] and data.target_names == ["A1", "A3"]
@@ -145,11 +153,24 @@ def test_legacy_loaders_are_deprecated_aliases(monkeypatch):
     assert calls[0][1] == {"targets": ["gap"], "local_dir": "d"}
 
 
-def test_list_filters_by_text_split_and_predicate(hub):
+def test_list_searches_titles_and_labels(hub):
     assert [d["name"] for d in list_datasets(search="screening")] == ["screen"]
-    rows = list_datasets(split="source")
-    assert [d["name"] for d in rows] == ["sol", "screen"] and rows[1]["schemes"] == ["random_1", "scaffold_1"]
-    assert [d["name"] for d in list_datasets(where=lambda e: e["tables"] and e["tables"][0]["task_column"])] == ["assays"]
+    assert [d["name"] for d in list_datasets(search="thrombin")] == ["bench"]  # a config title
+    assert [d["name"] for d in list_datasets(grade="care")] == ["bench"]  # a config's grade
+    assert {d["name"]: d["configs"] for d in list_datasets()}["bench"] == ["a", "b"]
+
+
+def test_group_configs_and_former_names(hub):
+    with pytest.raises(ValueError, match="load_dataset\\('bench', 'a'\\)"):
+        load_dataset("bench")
+    a = load_dataset("bench", "a")
+    assert a.data == ["CCO"] and a.info["title"] == "Prothrombin · Ki" and a.info["quality"]["grade"] == "care"
+    assert a.info["targets"]["y"]["label"] == "Prothrombin · pKi"
+    assert load_dataset("bench_b").data == ["CCN"]  # the former name of config b
+    smiles, y = load_dataset("bench", "a", return_X_y=True)
+    assert smiles == ["CCO"] and y.shape == (1, 1)
+    with pytest.raises(KeyError, match="configs"):
+        load_dataset("bench", "c")
 
 
 def test_split_schemes_select_rows_by_column(hub):
@@ -178,15 +199,8 @@ def test_extra_columns_follow_rows_through_splits(hub):
 def test_raw_tables_observations_and_files(hub):
     rows = load_table("screen", split="test", scheme="random_1")
     assert rows.num_rows == 1 and "year" in rows.column_names
-    assert Hub().observations("screen").num_rows == 3
     assert download_files("raw")[0].endswith("files/qm7.mat")
     with pytest.raises(KeyError):
         download_files("raw", patterns=["*.sdf"])
     with pytest.raises(ValueError, match="https://example.org/data"):
         download_files("closed")
-
-
-def test_hub_reads_an_explicit_index_path(hub, monkeypatch):
-    path = str(hub / "molecular-datasets-index" / "index.json")
-    monkeypatch.delenv("TORCHMOL_DATASET_INDEX")
-    assert Hub(index_path=path).info("sol")["license"] == "CC0-1.0"

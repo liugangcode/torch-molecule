@@ -113,39 +113,27 @@ for dataset selection, caching, target columns, and train/test splits.
 
 [Current counts](https://liugangcode.github.io/molecular-dataset-hub/#stats) follow the hub's published metadata. Hugging Face entries include public and gated datasets and files without SMILES tables. Source rows may repeat structures; each dataset retains its own license.
 
-Load published SMILES tables by their original dataset name:
+Load any hub dataset by name, the way scikit-learn loads its datasets:
 
 ```python
 from torch_molecule.datasets import list_datasets, load_dataset
 
-list_datasets(category="adme", grade="ready")      # browse by category, quality grade, or license
+X, y = load_dataset("qm9", targets=["gap"], return_X_y=True)   # SMILES list, (133885, 1) array
 
-data = load_dataset("qm9", targets=["homo", "lumo", "gap"], local_dir="torchmol_data")
-smiles_list, property_np_array = data.data, data.target   # 133,885 molecules, shape (133885, 3)
-data.info["targets"]["gap"]["units"]                        # 'Hartree'
+data = load_dataset("moleculeace", "chembl204_ki", split="train")   # one of a dataset's configs
+data.info["title"]                                     # 'Prothrombin (CHEMBL204) · Ki'
 
-train = load_dataset("moleculeace_chembl204_ki", split="train")   # source splits where defined;
-test = load_dataset("moleculeace_chembl204_ki", split="test")     # test drops molecules seen in train
-
-zinc = load_dataset("zinc250k", targets=[])                 # structures only: target is None
+list_datasets("thrombin")                              # search names, titles, and label names
+list_datasets(category="adme", grade="ready")
 ```
 
-Several splits, extra columns, long-format tables, and data that is not a property table:
+More options, all keywords of `load_dataset`: `scheme=` picks one of several source splits (WelQrate's ten),
+`columns=` returns other source columns in `data.extra`, `task_values=` selects assays of tables with one row
+per measurement (`task_values(name)` lists them), and `load_table` / `download_files` return every column or
+the native files (3D structures, spectra, images). See the [dataset documentation](https://liugangcode.github.io/torch-molecule/dataset.html).
 
-```python
-from torch_molecule.datasets import download_files, load_dataset, load_table, task_values
-
-load_dataset("welqrate_aid1798", split="test", scheme="scaffold_2")   # one of WelQrate's 10 splits
-load_dataset("welqrate_aid1798", columns=["CID"]).extra["CID"]        # other source columns, row for row
-
-tasks = task_values("cara")                       # one row per measurement: assays, most-measured first
-data = load_dataset("cara", task_values=tasks[:10])                   # one target per assay
-
-load_table("fgbench", split="test")               # every column as a pyarrow.Table (text, reactions, mixtures)
-download_files("welqrate_aid1798", patterns=["structures/*"])         # native files such as 3D structures
-```
-
-`scheme`, `columns`, `task_values`, `load_table` and `download_files` are newer than the 0.2.0 release on PyPI; until the next release, install from GitHub: `pip install git+https://github.com/liugangcode/torch-molecule`.
+This interface is newer than the 0.2.0 release on PyPI; until the next release, install from GitHub:
+`pip install git+https://github.com/liugangcode/torch-molecule`.
 
 `load_qm9`, `load_chembl2k`, `load_broad6k`, `load_toxcast`, `load_admet`, `load_gasperm`, and `load_zinc250k` still work but are deprecated aliases of `load_dataset` and will be removed.
 
@@ -159,7 +147,7 @@ After preparing the dataset, split it, then fit a model with an sklearn-style AP
 from torch_molecule.datasets import load_dataset
 from torch_molecule import GREAMolecularPredictor
 
-data = load_dataset("qm9", targets=["gap"], local_dir="torchmol_data")
+data = load_dataset("qm9", targets=["gap"])
 # "random" | "scaffold" | "butina" | "size"
 # scaffold: unseen Bemis-Murcko scaffolds; butina: Tanimoto clusters; size: heavy-atom count
 train, val = data.train_test_split(test_size=0.2, method="scaffold", seed=42)

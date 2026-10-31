@@ -5,6 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   followReference();
   window.addEventListener("hashchange", followReference);
+
+  // Keep each comma and the closing parenthesis with the parameter before it, so a wrapped
+  // signature never starts a line with "," or ")".
+  for (const param of document.querySelectorAll("dt.sig > .sig-param")) {
+    const next = param.nextSibling;
+    if (next?.nodeType === Node.TEXT_NODE && next.textContent.startsWith(",")) {
+      param.append(",");
+      next.textContent = next.textContent.slice(1);
+    } else if (next?.classList?.contains("sig-paren")) param.append(next);
+  }
   const menu = document.querySelector(".tm-menu-toggle");
   const navigation = document.querySelector(".tm-navigation");
   const search = document.querySelector(".tm-search input");

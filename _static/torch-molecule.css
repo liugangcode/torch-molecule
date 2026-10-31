@@ -85,20 +85,24 @@ article .highlight .tm-doc-copy { min-height: 32px; min-width: 64px; font-size: 
 article .tm-doc-copy:hover { border-color: var(--tm-accent); color: var(--tm-accent); }
 article[role=main] .table-wrapper.container { max-width: 100%; overflow-x: auto; margin: 16px 0 24px; padding: 0; border: 1px solid var(--tm-line); border-radius: 4px; }
 article table.docutils { display: table; width: 100%; min-width: 36rem; margin: 0; border-collapse: collapse; font-size: 16px; border: 0; box-shadow: none; }
-article table.docutils .pre, article p code.literal .pre { white-space: nowrap; overflow-wrap: normal; }
+article table.docutils .pre { white-space: nowrap; overflow-wrap: normal; }
+/* Inline code moves to the next line whole and breaks only when it is wider than the line. */
+article p code.literal .pre { display: inline-block; max-width: 100%; overflow-wrap: anywhere; }
 article table.indextable td, article table.domainindex-table td { overflow-wrap: anywhere; }
 article table.docutils td, article table.docutils th { padding: 8px 12px; border-bottom: 1px solid var(--tm-line); text-align: left; }
 article table.docutils th { background: var(--tm-surface); }
 article table.docutils tr:last-child td { border-bottom: 0; }
 article table.docutils td p { margin: 0; }
 article dl.py { margin: 16px 0 24px; }
-article dl.py dt.sig { background: var(--tm-surface); border: 1px solid var(--tm-line); border-radius: 4px; padding: 12px 16px; font-size: var(--tm-code-size); font-weight: 400; line-height: 1.65; text-indent: 0; overflow-wrap: anywhere; }
+article dl.py dt.sig { display: flow-root; background: var(--tm-surface); border: 1px solid var(--tm-line); border-radius: 4px; padding: 12px 16px; font-size: var(--tm-code-size); font-weight: 400; line-height: 1.65; text-indent: 0; overflow-wrap: anywhere; }
 /* A parameter moves to the next line whole and breaks only when it is wider than the line. */
 article .sig .sig-param { display: inline-block; max-width: 100%; font-weight: 400; }
 article .sig .pre { white-space: normal; }
 article .sig .viewcode-link { width: auto; margin-left: 12px; }
 article .sig .viewcode-link .pre { white-space: nowrap; }
 article .sig .sig-prename::after { content: "\200b"; }
+article .sig abbr[title] { text-decoration: none; }
+article .sig > .headerlink { position: absolute; }  /* takes no line of its own after [source] */
 article .sig-name { font-weight: 600; }
 article .sig-name, article .sig-prename { color: var(--tm-accent); }
 article dl.py > dd { margin-left: 0 !important; }

@@ -176,3 +176,6 @@ tools/
 procedure.txt
 dev/
 /artifacts/
+
+# Developer-only rules: a separate private repository (torch-molecule-dev) nested here
+project_rules/

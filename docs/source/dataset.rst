@@ -80,12 +80,6 @@ Files download on first use to ``~/torchmol_data`` (set ``TORCHMOL_DATA`` or
 ``local_dir=`` to change it); ``release="v2026.10.31.3"`` pins a hub release.
 Names from earlier releases, such as ``moleculeace_chembl204_ki``, still load.
 
-.. note::
-
-   This interface is newer than the 0.2.0 release on PyPI. Until the next
-   release, install from GitHub:
-   ``pip install git+https://github.com/liugangcode/torch-molecule``.
-
 Bring your own data
 -------------------
 

@@ -132,9 +132,6 @@ More options, all keywords of `load_dataset`: `scheme=` picks one of several sou
 per measurement (`task_values(name)` lists them), and `load_table` / `download_files` return every column or
 the native files (3D structures, spectra, images). See the [dataset documentation](https://liugangcode.github.io/torch-molecule/dataset.html).
 
-This interface is newer than the 0.2.0 release on PyPI; until the next release, install from GitHub:
-`pip install git+https://github.com/liugangcode/torch-molecule`.
-
 `load_qm9`, `load_chembl2k`, `load_broad6k`, `load_toxcast`, `load_admet`, `load_gasperm`, and `load_zinc250k` still work but are deprecated aliases of `load_dataset` and will be removed.
 
 (We are actively adding more datasets. We welcome your suggestions and contributions on your datasets!)

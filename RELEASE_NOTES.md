@@ -1,26 +1,25 @@
-# Unreleased
+# torch-molecule 0.2.1
 
-## Datasets
+Simpler access to the [molecular dataset hub](https://liugangcode.github.io/molecular-dataset-hub/),
+in the style of scikit-learn's loaders:
 
-- `load_dataset(name, config=None, *, split=..., targets=..., ...)` follows scikit-learn:
-  the name (and, for datasets with several tables, the config) first, everything else by
-  keyword. `return_X_y=True` returns `(smiles, target)`.
-- Hub datasets that were published per target, assay, or property are now one dataset
-  with one config each: `load_dataset("moleculeace", "chembl204_ki")`,
-  `load_dataset("welqrate", "aid1798")`, `load_dataset("opera", "logp")`. Former names
-  such as `moleculeace_chembl204_ki` still load. A dataset with several configs asks for
-  one instead of picking the first.
-- `dataset.info` holds the config's `title`, the dataset `description`, and per target a
-  readable `label` and `about` (ChEMBL target, organism, UniProt; PubChem assay).
-- `list_datasets("thrombin")` searches names, titles, config titles, and label names;
-  `grade=` matches any config's grade.
-- `scheme=` loads any of a source's several splits (WelQrate's five scaffold and five
-  random splits); `columns=` returns other source columns in `dataset.extra`;
-  `task_values()` lists the assays of tables with one row per measurement;
-  `load_table()` returns every column as a `pyarrow.Table`; `download_files()` fetches
-  native files such as 3D structures, spectra and images.
-- Files are cached in `~/torchmol_data` (`TORCHMOL_DATA` or `local_dir=` to change it)
-  instead of the working directory.
+```python
+from torch_molecule.datasets import load_dataset, list_datasets
+
+X, y = load_dataset("qm9", targets=["gap"], return_X_y=True)
+data = load_dataset("moleculeace", "chembl204_ki", split="train")
+list_datasets("thrombin")
+```
+
+- Sources published per target or assay (MoleculeACE, WelQrate, OPERA, ...) are now one dataset
+  with one config each; former names such as `moleculeace_chembl204_ki` still load. A dataset
+  with several configs asks for one instead of loading the first.
+- `data.info` says what each config and target is (title, label, units, ChEMBL or PubChem context).
+- New `scheme=`, `columns=`, `task_values()`, `load_table()` and `download_files()` for source
+  splits, extra columns, assays, full tables and native files.
+- Files are cached in `~/torchmol_data` (`TORCHMOL_DATA` to change it).
+
+0.2.0 cannot read the hub's renamed datasets; upgrade with `pip install -U torch-molecule`.
 
 # torch-molecule 0.2.0
 

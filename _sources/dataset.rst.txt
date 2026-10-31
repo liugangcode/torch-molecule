@@ -31,40 +31,60 @@ of unique molecules. Each dataset retains its own license.
 Load a dataset
 --------------
 
-``load_dataset`` reads any published dataset of the
+``load_dataset`` loads any dataset of the
 `molecular dataset hub <https://liugangcode.github.io/molecular-dataset-hub/>`_
-by its original name. Use ``list_datasets()`` to see the current collection and
-filter by domain, category, quality, or access. Files download on first use and
-are reused from ``local_dir``.
+by name, the way scikit-learn's loaders do:
 
 .. code-block:: python
 
-   from torch_molecule.datasets import list_datasets, load_dataset
+   from torch_molecule.datasets import load_dataset
 
-   list_datasets(category="adme", grade="ready")   # browse the collection
+   X, y = load_dataset("qm9", targets=["gap"], return_X_y=True)
+
+Without ``return_X_y`` you get a
+:class:`~torch_molecule.datasets.constant.SMILESDataset` that also says what the
+numbers are:
+
+.. code-block:: python
 
    data = load_dataset("qm9", targets=["homo", "lumo", "gap"])
-   print(len(data.data))
-   print(data.target.shape)          # (n_molecules, 3)
-   print(data.info["targets"]["gap"]["units"])   # Hartree
+   data.data[:2], data.target.shape     # SMILES, (133885, 3)
+   data.info["targets"]["gap"]["units"] # 'Hartree'
 
-Some tables hold one row per measurement, with a task column such as an assay
-ID (``dataset_info(name)["tables"][0]["task_column"]``). ``task_values`` lists
-the tasks, most-measured first; each one you pass becomes a target column:
+Some datasets hold several tables, one per target, assay, or property; name one
+as the second argument. MoleculeACE has one per protein target:
 
 .. code-block:: python
 
-   from torch_molecule.datasets import task_values
+   data = load_dataset("moleculeace", "chembl204_ki")
+   data.info["title"]                                  # 'Prothrombin (CHEMBL204) · Ki'
+   data.info["targets"]["y [pEC50/pKi]"]["about"]      # ChEMBL target, organism, UniProt
 
-   assays = task_values("cara")
-   data = load_dataset("cara", task_values=assays[:10])
+``list_datasets()`` lists the hub, optionally by text, category, or quality
+grade; ``dataset_info(name)`` describes one dataset and its configs:
+
+.. code-block:: python
+
+   from torch_molecule.datasets import dataset_info, list_datasets
+
+   list_datasets("thrombin")                    # finds moleculeace by a config title
+   list_datasets(category="adme", grade="ready")
+   [t["config"] for t in dataset_info("moleculeace")["tables"]]
 
 Labels stay as the source reported them: missing labels are ``NaN`` (never 0),
 and censored values such as ``<10`` are ``NaN`` unless ``include_censored=True``.
 Datasets that cannot be redistributed are listed too; loading one raises an
-error that names the original source. Gated datasets (noncommercial terms) need
+error that names the original source. Gated datasets need
 ``huggingface-cli login`` and an accepted access request on the dataset page.
-Pass ``release="v2026.10.22"`` to pin a collection release.
+Files download on first use to ``~/torchmol_data`` (set ``TORCHMOL_DATA`` or
+``local_dir=`` to change it); ``release="v2026.10.31.3"`` pins a hub release.
+Names from earlier releases, such as ``moleculeace_chembl204_ki``, still load.
+
+.. note::
+
+   This interface is newer than the 0.2.0 release on PyPI. Until the next
+   release, install from GitHub:
+   ``pip install git+https://github.com/liugangcode/torch-molecule``.
 
 Bring your own data
 -------------------
@@ -95,21 +115,18 @@ published ones. A test split drops molecules that also appear in training:
 
 .. code-block:: python
 
-   train = load_dataset("moleculeace_chembl204_ki", split="train")
-   test = load_dataset("moleculeace_chembl204_ki", split="test")
+   train = load_dataset("moleculeace", "chembl204_ki", split="train")
+   test = load_dataset("moleculeace", "chembl204_ki", split="test")
 
 Some benchmarks provide several splits, for example five scaffold and five
 random splits in WelQrate. ``scheme`` picks one; the default is the first:
 
 .. code-block:: python
 
-   info = dataset_info("welqrate_aid1798")
-   info["tables"][0]["split_schemes"]       # ['scaffold_1', ..., 'random_5']
    for scheme in ["scaffold_1", "scaffold_2", "scaffold_3"]:
-       train = load_dataset("welqrate_aid1798", split="train", scheme=scheme)
-       test = load_dataset("welqrate_aid1798", split="test", scheme=scheme)
+       train = load_dataset("welqrate", "aid1798", split="train", scheme=scheme)
+       test = load_dataset("welqrate", "aid1798", split="test", scheme=scheme)
 
-``list_datasets(split="source")`` lists the datasets that come with a split.
 Otherwise split the dataset yourself:
 
 .. code-block:: python
@@ -160,10 +177,21 @@ More than SMILES and numbers
 
 .. code-block:: python
 
-   data = load_dataset("welqrate_aid1798", columns=["CID", "activity_value"])
+   data = load_dataset("welqrate", "aid1798", columns=["CID"])
    data.extra["CID"][:3]           # PubChem compound IDs
 
-For tables that are not a SMILES-to-number task (question and answer text,
+Some tables hold one row per measurement, with a task column such as an assay
+ID. ``task_values`` lists the tasks, most-measured first; each one you pass
+becomes a target column:
+
+.. code-block:: python
+
+   from torch_molecule.datasets import task_values
+
+   assays = task_values("cara", "lo_all")
+   data = load_dataset("cara", "lo_all", task_values=assays[:10])
+
+For tables that are not SMILES and numbers (question and answer text,
 reactions, mixtures), ``load_table`` returns every column as a
 ``pyarrow.Table``; ``download_files`` fetches native files such as 3D
 structures, spectra and images:
@@ -173,20 +201,7 @@ structures, spectra and images:
    from torch_molecule.datasets import download_files, load_table
 
    questions = load_table("fgbench", split="test").to_pandas()
-   paths = download_files("welqrate_aid1798", patterns=["structures/*"])
-
-``Hub`` holds one collection release and where its files come from. The
-functions above use a default ``Hub``; create one to pin a release, read a
-mirror (``index_repo=``), or work from a local copy (``index_path=``):
-
-.. code-block:: python
-
-   from torch_molecule.datasets import Hub
-
-   hub = Hub(release="v2026.10.30", local_dir="data")
-   hub.list(category="adme", where=lambda e: e["quality"]["grade"] == "ready")
-   hub.load("moleculeace_chembl204_ki", split="test")
-   hub.observations("moleculeace_chembl204_ki")   # every source row before duplicates were merged
+   paths = download_files("qm9", patterns=["structures/*"])
 
 Loader reference
 ----------------
@@ -197,8 +212,6 @@ Loader reference
 .. autofunction:: torch_molecule.datasets.task_values
 .. autofunction:: torch_molecule.datasets.load_table
 .. autofunction:: torch_molecule.datasets.download_files
-.. autoclass:: torch_molecule.datasets.Hub
-   :members: list, info, load, table, parts, task_values, observations, download, fetch
 
 Deprecated loaders
 ------------------
